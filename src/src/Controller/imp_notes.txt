@@ -1,0 +1,12 @@
+PettyCashReceiptVouchers:-	Not required cheque mode.
+							credit the giver, debit the reciver.
+
+ContraVouchers:-			credit the giver, debit the reciver.(Cash and bank)
+
+CreditNotes	:-				Purchase Return credit note.
+							purchae a/c credit, party ko debit.
+							
+DeditNotes	:-				Sales Return Dedit note.
+							Sales a/c debit, party ko credit.
+							
+JournalVouchers:			credit the giver, debit the reciver.		

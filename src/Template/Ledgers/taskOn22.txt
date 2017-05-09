@@ -1,0 +1,2 @@
+employee company wise in QO,SO.
+vendor  company wise in PO.

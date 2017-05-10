@@ -97,8 +97,8 @@
 					<td><?= h(++$page_no) ?></td>
 					<td><?= h(($jobCard->jc1.'/JC-'.str_pad($jobCard->jc2, 3, '0', STR_PAD_LEFT).'/'.$jobCard->jc3.'/'.$jobCard->jc4))?></td>
 					<td><?= h(($jobCard->sales_order->so1.'/SO-'.str_pad($jobCard->sales_order->so2, 3, '0', STR_PAD_LEFT).'/'.$jobCard->sales_order->so3.'/'.$jobCard->sales_order->so4))?></td> 
-					<td><?= date("d-m-Y",strtotime($jobCard->created_on));?></td>
  					<td><?= date("d-m-Y",strtotime($jobCard->required_date));?></td>
+					<td><?= date("d-m-Y",strtotime($jobCard->created_on));?></td>
 					<td class="actions">
 					<?php if(in_array(24,$allowed_pages)){ ?>
 					<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $jobCard->id],array('escape'=>false,'class'=>'btn btn-xs yellow tooltips','target'=>'blank','data-original-title'=>'View')); ?>

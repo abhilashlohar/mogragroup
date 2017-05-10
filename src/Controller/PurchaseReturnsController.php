@@ -88,7 +88,7 @@ class PurchaseReturnsController extends AppController
 					$itemLedger->processed_on = date("Y-m-d");
 					$this->PurchaseReturns->ItemLedgers->save($itemLedger);
 				}
-				$totalVAT=0; $total_amount=0;
+				$vat_amounts=[]; $total_amounts=[];
 				foreach($invoiceBooking->invoice_booking_rows as $invoice_booking_row){
 					$amount=$invoice_booking_row->unit_rate_from_po*$invoice_booking_row->quantity;
 					$amount=$amount+$invoice_booking_row->misc;
@@ -110,15 +110,15 @@ class PurchaseReturnsController extends AppController
 					$amountofVAT=($amount*$invoice_booking_row->sale_tax)/100;
 					$amount=$amount*((100+$invoice_booking_row->sale_tax)/100);
 					
-					$totalVAT=$totalVAT+$amountofVAT;
+					$vat_amounts[$invoice_booking_row->item_id]=$amountofVAT;
 					
 					$amount=$amount+$invoice_booking_row->other_charges;
-					$total_amount=$total_amount+$amount;
+					$total_amounts[$invoice_booking_row->item_id]=$amount;
 				}
 				
-				echo $totalVAT;
+				pr($vat_amounts);
 				echo '<br/>';
-				echo $total_amount;
+				pr($total_amounts);
 				
 				posing for supplier
 				$total_amount

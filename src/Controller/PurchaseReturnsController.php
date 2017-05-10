@@ -76,18 +76,59 @@ class PurchaseReturnsController extends AppController
 			}
 			
 			 if ($this->PurchaseReturns->save($purchaseReturn)) {   
-				foreach($purchaseReturn->purchase_return_rows as $purchase_return_row){	
-				$results=$this->PurchaseReturns->ItemLedgers->find()->where(['ItemLedgers.item_id' => $purchase_return_row->item_id,'ItemLedgers.in_out' => 'In','rate_updated' => 'Yes','company_id' => $st_company_id])->first();
-				$itemLedger = $this->PurchaseReturns->ItemLedgers->newEntity();
-				$itemLedger->item_id = $purchase_return_row->item_id;
-				$itemLedger->source_model = 'Purchase Return';
-				$itemLedger->source_id = $purchaseReturn->id;
-				$itemLedger->in_out = 'Out';
-				$itemLedger->rate = $results->rate;
-				$itemLedger->company_id = $invoiceBooking->company_id;
-				$itemLedger->processed_on = date("Y-m-d");
-				$this->PurchaseReturns->ItemLedgers->save($itemLedger);
+				foreach($purchaseReturn->purchase_return_rows as $purchase_return_row){
+					$results=$this->PurchaseReturns->ItemLedgers->find()->where(['ItemLedgers.item_id' => $purchase_return_row->item_id,'ItemLedgers.in_out' => 'In','rate_updated' => 'Yes','company_id' => $st_company_id])->first();
+					$itemLedger = $this->PurchaseReturns->ItemLedgers->newEntity();
+					$itemLedger->item_id = $purchase_return_row->item_id;
+					$itemLedger->source_model = 'Purchase Return';
+					$itemLedger->source_id = $purchaseReturn->id;
+					$itemLedger->in_out = 'Out';
+					$itemLedger->rate = $results->rate;
+					$itemLedger->company_id = $invoiceBooking->company_id;
+					$itemLedger->processed_on = date("Y-m-d");
+					$this->PurchaseReturns->ItemLedgers->save($itemLedger);
 				}
+				$totalVAT=0; $total_amount=0;
+				foreach($invoiceBooking->invoice_booking_rows as $invoice_booking_row){
+					$amount=$invoice_booking_row->unit_rate_from_po*$invoice_booking_row->quantity;
+					$amount=$amount+$invoice_booking_row->misc;
+					
+					if($invoice_booking_row->discount_per==1){
+						$amount=$amount*((100-$invoice_booking_row->discount)/100);
+					}else{
+						$amount=$amount-$invoice_booking_row->discount;
+					}
+					
+					if($invoice_booking_row->pnf_per==1){
+						$amount=$amount*((100+$invoice_booking_row->pnf)/100);
+					}else{
+						$amount=$amount+$invoice_booking_row->pnf;
+					}
+					
+					$amount=$amount*((100+	$invoice_booking_row->excise_duty)/100);
+					
+					$amountofVAT=($amount*$invoice_booking_row->sale_tax)/100;
+					$amount=$amount*((100+$invoice_booking_row->sale_tax)/100);
+					
+					$totalVAT=$totalVAT+$amountofVAT;
+					
+					$amount=$amount+$invoice_booking_row->other_charges;
+					$total_amount=$total_amount+$amount;
+				}
+				
+				echo $totalVAT;
+				echo '<br/>';
+				echo $total_amount;
+				
+				posing for supplier
+				$total_amount
+				
+				posting for purchase acc
+				$total_amount-$totalVAT
+				
+				posting for VAT acc
+				$totalVAT
+				exit;
 				
 				
                 $this->Flash->success(__('The purchase return has been saved.'));

@@ -240,8 +240,7 @@ With reference to your price list we are pleased to place an order for the follo
 					</div>
 					
 					<div id="ex_div" style="display:none;">
-						<div class="col-md-3" id="qwert"></div>
-						
+						<div id="qwert"></div>
 					</div>
 				</div>
 				
@@ -596,6 +595,19 @@ $(document).ready(function(){
 			$('#ex_div').hide();
 		}
 	});
+	
+	$('.select_address').die().live("click",function() {
+		$("#myModal1").show();
+    });
+	
+	$('.insert_address').die().live("click",function() { 
+		var addr=$(this).text();
+		$('textarea[name="customer_address"]').val(addr);
+		$("#myModal1").hide();
+    });
+	$('.closebtn').die().live("click",function() { 
+		$("#myModal1").hide();
+    });
 });
 </script>
 	

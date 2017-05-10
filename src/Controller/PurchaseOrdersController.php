@@ -534,8 +534,10 @@ class PurchaseOrdersController extends AppController
 		$filename=explode('-',$filename);
 		$Filename=$this->PurchaseOrders->Filenames->find()->where(['file1'=>$filename[0],'file2'=>$filename[1]])->first();
 		
-		$Customer=$this->PurchaseOrders->Customers->get($Filename->customer_id);
-		
+		$Customer=$this->PurchaseOrders->Customers->get($Filename->customer_id, [
+            'contain' => ['CustomerAddress']
+			]);
+		//pr($Customer); exit;
 		$this->set(compact('Customer'));
 	}
 

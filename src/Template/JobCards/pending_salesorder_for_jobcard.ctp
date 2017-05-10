@@ -10,17 +10,52 @@
 <div class="portlet-body">
 	<div class="row">
 		<div class="col-md-12">
+		<form method="GET" >
+				
+				<table class="table table-condensed">
+					<tbody>
+						<tr>
+							<td>
+								<div class="row">
+									
+									<div class="col-md-6">
+										<div class="input-group" id="pnf_text">
+											<span class="input-group-addon">SO-</span><input type="text" name="sales_order_no" class="form-control input-sm" placeholder="Sales Order No" value="<?php echo @$sales_order_no; ?>">
+										</div>
+									</div>
+									<div class="col-md-6">
+										<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
+									</div>
+								</div>
+							</td>
+							<td><input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>"></td>
+							<td>
+								<div class="row">
+									<div class="col-md-6">
+										<input type="text" name="From" class="form-control input-sm date-picker" placeholder="From" value="<?php echo @$From; ?>" data-date-format="dd-mm-yyyy" >
+									</div>
+									<div class="col-md-6">
+										<input type="text" name="To" class="form-control input-sm date-picker" placeholder="To" value="<?php echo @$To; ?>" data-date-format="dd-mm-yyyy" >
+									</div>
+								</div>
+							</td>
+							<td><input type="text" name="po_no" class="form-control input-sm" placeholder="PO No." value="<?php echo @$po_no; ?>"></td>
+							<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+						</tr>
+					</tbody>
+				</table>
+				</form>
 			<?php $page_no=$this->Paginator->current('JobCards'); $page_no=($page_no-1)*20; ?>	 
 			<table class="table table-bordered table-striped ">
 				<thead>
 				<tr>
-					<td style="font-size:120%;">Sr.No.</td>
-					<td style="font-size:120%;">Sales Order</td>
-					<td style="font-size:120%;">Customer</td>
-					<td style="font-size:120%;">Date</td>
-					<td style="font-size:120%;">PO No.</td>
-					<td style="font-size:120%;">Action</td>
-				</tr>
+					<th >Sr.No.</th>
+					<th>Sales Order</th>
+					<th>Customer</th>
+					<th>Date</th>
+					<th>PO No.</th>
+					<th>Action</th>
+				</tr></thead>
 				<tbody>
 		    <?php foreach ($SalesOrders as $SalesOrder): ?>
 				<tr>

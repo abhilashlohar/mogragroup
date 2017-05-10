@@ -25,46 +25,40 @@
 				); ?>
 			<?php  ?>
 			</div>
-		</div>
-	</div>
+			</div>
+
 	<div class="portlet-body">
 		<div class="row">
+		<div class="col-md-12">
 			<form method="GET" >
 				<input type="hidden">
 				<table class="table table-condensed">
-					<thead>
-						<tr>
-							<th>GRN No</th>
-							<th>Supplier </th>
-							<th>Date </th>
-							<th></th>
-						</tr>
-					</thead>
+					
 					<tbody>
 					
 						<tr>
 							<td>
 								<div class="row">
 
-									<div class="col-md-5">
+									<div class="col-md-6">
 										<div class="input-group" >
 											<span class="input-group-addon">GRN-</span><input type="text" name="grn_no" class="form-control input-sm" placeholder="GRN No" value="<?php echo @$grn_no; ?>">
 										</div>
 									</div>
-									<div class="col-md-5">
+									<div class="col-md-6">
 										<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
 									</div>
-									<div class="col-md-2"></div>
+									
 								</div>
 							</td>
-							<td><input type="text" name="vendor" class="form-control input-sm" placeholder="Party" value="<?php echo @$vendor; ?>"></td>
+							<td><input type="text" name="vendor" class="form-control input-sm" placeholder="Supplier Name" value="<?php echo @$vendor; ?>"></td>
 							<td>
 								<div class="row">
 									<div class="col-md-6">
-										<input type="text" name="From" class="form-control input-sm date-picker" placeholder="From" value="<?php echo @$From; ?>" data-date-format="dd-mm-yyyy" >
+										<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Date From" value="<?php echo @$From; ?>" data-date-format="dd-mm-yyyy" >
 									</div>
 									<div class="col-md-6">
-										<input type="text" name="To" class="form-control input-sm date-picker" placeholder="To" value="<?php echo @$To; ?>" data-date-format="dd-mm-yyyy" >
+										<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Date To" value="<?php echo @$To; ?>" data-date-format="dd-mm-yyyy" >
 									</div>
 								</div>
 							</td>
@@ -74,14 +68,14 @@
 					</tbody>
 				</table>
 			</form>
-			<div class="col-md-12">
+			
 				<?php $page_no=$this->Paginator->current('Invoices'); $page_no=($page_no-1)*20; ?>
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
 						<tr>
 							<th>Sr. No.</th>
-							<th>GRN No.</th>
-							<th>PO No.</th>
+							<th width="20%">GRN No.</th>
+							<th width="20%">PO No.</th>
 							<th>Supplier</th>
 							<th>Date Created</th>
 							<th class="actions"><?= __('Actions') ?></th>
@@ -111,6 +105,9 @@
 						<?php endforeach; ?>
 					</tbody>
 				</table>
+					</div>
+			</div>
+		</div>
 				<div class="paginator">
 					<ul class="pagination">
 						<?= $this->Paginator->prev('< ' . __('previous')) ?>
@@ -121,5 +118,5 @@
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
+	
+	

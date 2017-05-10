@@ -30,42 +30,36 @@ class InvoicesController extends AppController
 		$st_company_id = $session->read('st_company_id');
 		
 		$where=[];
-		$company_alise=$this->request->query('company_alise');
 		$invoice_no=$this->request->query('invoice_no');
 		$file=$this->request->query('file');
 		$customer=$this->request->query('customer');
 		$From=$this->request->query('From');
 		$To=$this->request->query('To');
 		$total_From=$this->request->query('total_From');
-		$total_To=$this->request->query('total_To');
 		$page=$this->request->query('page');
-		$this->set(compact('ref_no','customer','total_From','total_To','From','To','page','invoice_no','company_alise','file','inventory_status'));
-		if(!empty($company_alise)){
-			$where['in1 LIKE']='%'.$company_alise.'%';
-		}
+		$this->set(compact('customer','total_From','From','To','page','invoice_no','file'));
+		
 		if(!empty($invoice_no)){
-			$where['in2 LIKE']='%'.$invoice_no.'%';
+			$where['Invoices.in2 LIKE']=$invoice_no;
 		}
 		if(!empty($file)){
-			$where['in3 LIKE']='%'.$file.'%';
+			$where['Invoices.in3 LIKE']='%'.$file.'%';
 		}
 		if(!empty($customer)){
 			$where['Customers.customer_name LIKE']='%'.$customer.'%';
 		}
 		if(!empty($From)){
 			$From=date("Y-m-d",strtotime($this->request->query('From')));
-			$where['date_created >=']=$From;
+			$where['Invoices.date_created >=']=$From;
 		}
 		if(!empty($To)){
 			$To=date("Y-m-d",strtotime($this->request->query('To')));
-			$where['date_created <=']=$To;
+			$where['Invoices.date_created <=']=$To;
 		}
 		if(!empty($total_From)){
-			$where['total_after_pnf >=']=$total_From;
+			$where['Invoices.total_after_pnf']=$total_From;
 		}
-		if(!empty($total_To)){
-			$where['total_after_pnf <=']=$total_To;
-		}
+		
 	
         $this->paginate = [
             'contain' => ['Customers', 'Companies']
@@ -84,7 +78,7 @@ class InvoicesController extends AppController
 		}
 		if($inventory_voucher=='true'){
 			$invoices=[];
-			$invoices=$this->paginate($this->Invoices->find()->contain(['InvoiceRows'=>['Items'=>function ($q) {
+			$invoices=$this->paginate($this->Invoices->find()->where($where)->contain(['InvoiceRows'=>['Items'=>function ($q) {
 				return $q->where(['source !='=>'Purchessed']);
 				}]])->where(['company_id'=>$st_company_id,'inventory_voucher_status'=>'Pending','inventory_voucher_create'=>'Yes'])->order(['Invoices.id' => 'DESC']));
 		}else{

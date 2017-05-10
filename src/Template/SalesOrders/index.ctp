@@ -42,7 +42,6 @@
 			<?php }?>
 			</div>
 		</div>
-	</div>
 	<div class="portlet-body">
 		<div class="row">
 			<div class="col-md-12">
@@ -54,15 +53,15 @@
 						<tr>
 							<td>
 								<div class="row">
-									<div class="col-md-4">
+									<!--<div class="col-md-4">
 										<input type="text" name="company_alise" class="form-control input-sm" placeholder="Company" value="<?php echo @$company_alise; ?>">
-									</div>
-									<div class="col-md-4">
+									</div>-->
+									<div class="col-md-6">
 										<div class="input-group" id="pnf_text">
 											<span class="input-group-addon">SO-</span><input type="text" name="sales_order_no" class="form-control input-sm" placeholder="Sales Order No" value="<?php echo @$sales_order_no; ?>">
 										</div>
 									</div>
-									<div class="col-md-4">
+									<div class="col-md-6">
 										<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
 									</div>
 								</div>
@@ -88,12 +87,12 @@
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
 						<tr>
-							<th>S. No.</th>
-							<th>Sales Order No</th>
-							<th>Customer</th>
-							<th>Date</th>
-							<th>PO No.</th>
-							<th>Actions</th>
+							<th width="10%">S. No.</th>
+							<th width="20%">Sales Order No</th>
+							<th width="15%">Customer</th>
+							<th width="10%">Date</th>
+							<th width="10%">PO No.</th>
+							<th width="23%">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -103,7 +102,7 @@
 							<td><?= h(($salesOrder->so1.'/SO-'.str_pad($salesOrder->so2, 3, '0', STR_PAD_LEFT).'/'.$salesOrder->so3.'/'.$salesOrder->so4)) ?></td>
 							<td><?= h($salesOrder->customer->customer_name) ?></td>
 							<td><?php echo date("d-m-Y",strtotime($salesOrder->created_on)); ?></td>
-							<td><?= h($salesOrder->customer_po_no) ?></td>
+							<td><?= h($salesOrder->customer_po_no); ?></td>
 							<td class="actions">
 							<?php if(in_array(22,$allowed_pages)){ ?>
 								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $salesOrder->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>
@@ -139,6 +138,9 @@
 						<?php endforeach; ?>
 					</tbody>
 				</table>
+				</div>
+	</div>
+	</div>
 				<div class="paginator">
 					<ul class="pagination">
 						<?= $this->Paginator->prev('< ' . __('previous')) ?>
@@ -149,5 +151,4 @@
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
+

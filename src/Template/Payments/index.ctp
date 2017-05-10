@@ -5,19 +5,40 @@
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Payment Vouchers</span>
 		</div>
-	</div>
+	
 	<div class="portlet-body">
 		<div class="row">
+		<form method="GET" >
+				<table class="table table-condensed">
+					<tbody>
+						<tr>
+							<td>
+							<div class="row">
+									<div class="col-md-6">
+										<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction Date From" value="<?php echo @$From; ?>" data-date-format="dd-mm-yyyy" >
+									</div>
+									<div class="col-md-6">
+										<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Transaction Date To" value="<?php echo @$To; ?>" data-date-format="dd-mm-yyyy" >
+									</div>
+								</div>
+							
+							</td>
+							<td><input type="text" name="vouch_no" class="form-control input-sm" placeholder="Voucher No" value="<?php echo @$vouch_no; ?>"></td>
+							<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+						</tr>
+					</tbody>
+				</table>
+				</form>
 			<div class="col-md-12">
 				<?php $page_no=$this->Paginator->current('Payments'); $page_no=($page_no-1)*20; ?>
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
 						<tr>
-							<th>Sr. No.</th>
-							<th>Transaction Date</th>
-							<th>Vocher No</th>
-							<th>Amount</th>
-							<th class="actions"><?= __('Actions') ?></th>
+							<th width="5%">Sr. No.</th>
+							<th width="15%">Transaction Date</th>
+							<th width="20%">Vocher No</th>
+							<th width="20%"	>Amount</th>
+							<th width="10%" class="actions"><?= __('Actions') ?></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -37,6 +58,9 @@
 						<?php endforeach; ?>
 					</tbody>
 				</table>
+				</div>
+			</div>
+		</div>
 				<div class="paginator">
 					<ul class="pagination">
 						<?= $this->Paginator->prev('< ' . __('previous')) ?>
@@ -47,5 +71,3 @@
 				</div>
 			</div>
 		</div>
-	</div>
-</div>

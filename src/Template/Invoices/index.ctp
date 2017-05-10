@@ -28,36 +28,24 @@
 			<?php echo $this->Html->link( '<i class="fa fa-file-excel-o"></i> Excel', '/Invoices/Export-Excel/'.@$url_excel.'',['class' =>'btn btn-sm green tooltips pull-right','target'=>'_blank','escape'=>false,'data-original-title'=>'Download as excel']); ?>
 		<?php } ?>
 		</div>
-	</div>
+	
 	<div class="portlet-body">
 		<div class="row">
 			<div class="col-md-12">
 				<form method="GET" >
 				<input type="hidden" name="inventory_voucher" value="<?php echo @$inventory_voucher; ?>">
 				<table class="table table-condensed">
-					<thead>
-						<tr>
-							<th>Invoice No</th>
-							<th>Customer</th>
-							<th>Date</th>
-							<th>Total</th>
-							<th></th>
-						</tr>
-					</thead>
 					<tbody>
-					
 						<tr>
 							<td>
 								<div class="row">
-									<div class="col-md-4">
-										<input type="text" name="company_alise" class="form-control input-sm" placeholder="Company" value="<?php echo @$company_alise; ?>">
-									</div>
-									<div class="col-md-4">
+									
+									<div class="col-md-6">
 										<div class="input-group" style="" id="pnf_text">
 											<span class="input-group-addon">IN-</span><input type="text" name="invoice_no" class="form-control input-sm" placeholder="Invoice No" value="<?php echo @$invoice_no; ?>">
 										</div>
 									</div>
-									<div class="col-md-4">
+									<div class="col-md-6">
 										<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
 									</div>
 								</div>
@@ -66,18 +54,17 @@
 							<td>
 								<div class="row">
 									<div class="col-md-6">
-										<input type="text" name="From" class="form-control input-sm date-picker" placeholder="From" value="<?php echo @$From; ?>" data-date-format="dd-mm-yyyy" >
+										<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Date From" value="<?php echo @$From; ?>" data-date-format="dd-mm-yyyy" >
 									</div>
 									<div class="col-md-6">
-										<input type="text" name="To" class="form-control input-sm date-picker" placeholder="To" value="<?php echo @$To; ?>" data-date-format="dd-mm-yyyy" >
+										<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Date To" value="<?php echo @$To; ?>" data-date-format="dd-mm-yyyy" >
 									</div>
 								</div>
 							</td>
 							<td>
 							<table>
 								<tr>
-									<td><input type="text" name="total_From" class="form-control input-sm" placeholder="From" value="<?php echo @$total_From; ?>" style="width: 100px;"></td>
-									<td><input type="text" name="total_To" class="form-control input-sm" placeholder="To" value="<?php echo @$total_To; ?>" style="width: 100px;"></td>
+									<td><input type="text" name="total_From" class="form-control input-sm" placeholder="Total" value="<?php echo @$total_From; ?>"></td>
 								</tr>
 							</table>
 							</td>
@@ -139,6 +126,9 @@
 						<?php endforeach; ?>
 					</tbody>
 				</table>
+				</div>
+			</div>
+		</div>
 				<div class="paginator">
 					<ul class="pagination">
 						<?= $this->Paginator->prev('< ' . __('previous')) ?>
@@ -149,8 +139,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
+
 <script>
 $( function() {
 $( "#sortable" ).sortable();

@@ -3,18 +3,10 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 
-/**
- * JobCards Controller
- *
- * @property \App\Model\Table\JobCardsTable $JobCards
- */
+
 class JobCardsController extends AppController
 {
-    /**
-     * Index method
-     *
-     * @return \Cake\Network\Response|null
-     */
+    
     public function index($status=null)
     {
 		$this->viewBuilder()->layout('index_layout');
@@ -39,14 +31,14 @@ class JobCardsController extends AppController
 		
 		$this->set(compact('jc_no','so_no','jc_file_no','so_file_no','Required_From','Required_To','Created_From','Created_To'));
 		if(!empty($jc_no)){
-			$where1['jc2 LIKE']='%'.$jc_no.'%';
+			$where1['JobCards.jc2 LIKE']='%'.$jc_no.'%';
 		}
 		if(!empty($so_no)){
 			$where1['SalesOrders.so2 LIKE']='%'.$so_no.'%';
 		}
 		
 		if(!empty($jc_file_no)){
-			$where1['jc3 LIKE']='%'.$jc_file_no.'%';
+			$where1['JobCards.jc3 LIKE']='%'.$jc_file_no.'%';
 		}
 		
 		if(!empty($so_file_no)){
@@ -55,26 +47,26 @@ class JobCardsController extends AppController
 		
 		if(!empty($Required_From)){
 			$Required_From=date("Y-m-d",strtotime($this->request->query('Required_From')));
-			$where1['JobCards.date_created >=']=$Required_From;
+			$where1['JobCards.required_date >=']=$Required_From;
 		}
 		if(!empty($Required_To)){
 			$Required_To=date("Y-m-d",strtotime($this->request->query('Required_To')));
-			$where1['JobCards.date_created <=']=$Required_To;
+			$where1['JobCards.required_date <=']=$Required_To;
 		}
 		if(!empty($Created_From)){
 			$Created_From=date("Y-m-d",strtotime($this->request->query('Created_From')));
-			$where1['JobCards.date_created >=']=$Created_From;
+			$where1['JobCards.created_on >=']=$Created_From;
 		}
 		if(!empty($Created_To)){
 			$Created_To=date("Y-m-d",strtotime($this->request->query('Created_To')));
-			$where1['JobCards.date_created <=']=$Created_To;
+			$where1['JobCards.created_on <=']=$Created_To;
 		}
 		//pr($inventory_voucher_status); exit;
         $this->paginate = [
             'contain' => ['SalesOrders']
         ];
 		if($inventory_voucher_status=='true'){
-			$jobCards = $this->paginate($this->JobCards->find()->where(['status' => 'Pending','JobCards.company_id'=>$st_company_id]));
+			$jobCards = $this->paginate($this->JobCards->find()->where($where1)->where(['status' => 'Pending','JobCards.company_id'=>$st_company_id]));
 		}else{
 			$jobCards = $this->paginate($this->JobCards->find()->where($where)->where($where1)->where(['JobCards.company_id'=>$st_company_id])->order(['JobCards.id' => 'DESC']));
 		}
@@ -258,6 +250,37 @@ class JobCardsController extends AppController
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		
+		$where=[];
+		$sales_order_no=$this->request->query('sales_order_no');
+		$file=$this->request->query('file');
+		$customer=$this->request->query('customer');
+		$po_no=$this->request->query('po_no');
+		$From=$this->request->query('From');
+		$To=$this->request->query('To');
+		
+		$this->set(compact('sales_order_no','customer','po_no','From','To','file'));
+		
+		if(!empty($sales_order_no)){
+			$where['SalesOrders.so2 LIKE']=$sales_order_no;
+		}
+		if(!empty($file)){
+			$where['SalesOrders.so3 LIKE']='%'.$file.'%';
+		}
+		if(!empty($customer)){
+			$where['Customers.customer_name LIKE']='%'.$customer.'%';
+		}
+		if(!empty($po_no)){
+			$where['JobCards.customer_po_no LIKE']='%'.$po_no.'%';
+		}
+		if(!empty($From)){
+			$From=date("Y-m-d",strtotime($this->request->query('From')));
+			$where['JobCards.created_on >=']=$From;
+		}
+		if(!empty($To)){
+			$To=date("Y-m-d",strtotime($this->request->query('To')));
+			$where['JobCards.created_on <=']=$To;
+		}
+		
 		$this->paginate = [
             'contain' => ['Customers','JobCards','SalesOrderRows'=>['Items'=>function ($q){
 				return $q->where(['Items.source'=>'Purchessed/Manufactured']);
@@ -265,7 +288,7 @@ class JobCardsController extends AppController
         ];
 		
 		$SalesOrders=$this->paginate(
-			$this->JobCards->SalesOrders->find()->select(['total_rows' => 
+			$this->JobCards->SalesOrders->find()->where($where)->select(['total_rows' => 
 				$this->JobCards->SalesOrders->find()->func()->count('SalesOrderRows.id')])
 					->matching(
 						'SalesOrderRows.Items', function ($q) {

@@ -38,7 +38,7 @@
 			<?php } ?>
 			</div>
 		</div>
-	</div>
+	
 	
 	<div class="portlet-body">
 		<div class="row">
@@ -46,31 +46,25 @@
 			<form method="GET" >
 				<input type="hidden" name="inventory_voucher" value="<?php echo @$inventory_voucher; ?>">
 				<table class="table table-condensed">
-					<thead>
-						<tr>
-							<th>Purchase No</th>
-							<th>Party </th>
-							<th></th>
-						</tr>
-					</thead>
+				
 					<tbody>
 					
 						<tr>
 							<td>
 								<div class="row">
 
-									<div class="col-md-5">
+									<div class="col-md-6">
 										<div class="input-group" style="" id="pnf_text">
 											<span class="input-group-addon">PO-</span><input type="text" name="purchase_no" class="form-control input-sm" placeholder="Purchase No" value="<?php echo @$purchase_no; ?>">
 										</div>
 									</div>
-									<div class="col-md-5">
+									<div class="col-md-6">
 										<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
 									</div>
-									<div class="col-md-2"></div>
+									
 								</div>
 							</td>
-							<td><input type="text" name="vendor" class="form-control input-sm" placeholder="Party" value="<?php echo @$vendor; ?>"></td>
+							<td><input type="text" name="vendor" class="form-control input-sm" placeholder="Supplier" value="<?php echo @$vendor; ?>"></td>
 							
 							<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
 						</tr>
@@ -117,6 +111,9 @@
 						<?php endforeach; ?>
 					</tbody>
 				</table>
+				</div>
+			</div>
+		</div>
 				<div class="paginator">
 					<ul class="pagination">
 						<?= $this->Paginator->prev('< ' . __('previous')) ?>
@@ -124,8 +121,7 @@
 						<?= $this->Paginator->next(__('next') . ' >') ?>
 					</ul>
 					<p><?= $this->Paginator->counter() ?></p>
-				</div>
-			</div>
-		</div>
+				
 	</div>
+</div>
 </div>

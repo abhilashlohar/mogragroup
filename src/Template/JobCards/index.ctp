@@ -22,30 +22,21 @@
 	</div>
 <div class="portlet-body">
 	<div class="row">
-	<form method="GET" >
+		<div class="col-md-12">
+			<form method="GET" >
 				<input type="hidden">
 				<table class="table table-condensed">
-					<thead>
-						<tr>
-							<th>JobCard No</th>
-							<th>SalesOrder No </th>
-							<th>Required Date </th>
-							<th>Created Date </th>
-							<th></th>
-						</tr>
-					</thead>
 					<tbody>
-					
-						<tr>
+					<tr>
 							<td>
 								<div class="row">
 									<div class="col-md-6">
 										<div class="input-group" >
-											<span class="input-group-addon">JC-</span><input type="text" name="jc_no" class="form-control input-sm" placeholder="GRN No" value="<?php echo @$jc_no; ?>">
+											<span class="input-group-addon">JC-</span><input type="text" name="jc_no" class="form-control input-sm" placeholder="JC No" value="<?php echo @$jc_no; ?>">
 										</div>
 									</div>
 									<div class="col-md-6">
-										<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$jc_file_no; ?>">
+										<input type="text" name="jc_file_no" class="form-control input-sm" placeholder="File" value="<?php echo @$jc_file_no; ?>">
 									</div>
 									<div class="col-md-2"></div>
 								</div>
@@ -54,30 +45,30 @@
 								<div class="row">
 									<div class="col-md-6">
 										<div class="input-group" >
-											<span class="input-group-addon">SO-</span><input type="text" name="so_no" class="form-control input-sm" placeholder="GRN No" value="<?php echo @$so_no; ?>">
+											<span class="input-group-addon">SO-</span><input type="text" name="so_no" class="form-control input-sm" placeholder="SO No" value="<?php echo @$so_no; ?>">
 										</div>
 									</div>
 									<div class="col-md-6">
-										<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$so_file_no; ?>">
+										<input type="text" name="so_file_no" class="form-control input-sm" placeholder="File" value="<?php echo @$so_file_no; ?>">
 									</div>
 									<div class="col-md-2"></div>
 								</div>
 							</td>
 							<td><div class="row">
 									<div class="col-md-6">
-										<input type="text" name="Required_From" class="form-control input-sm date-picker" placeholder="From" value="<?php echo @$Required_From; ?>" data-date-format="dd-mm-yyyy" >
+										<input type="text" name="Required_From" class="form-control input-sm date-picker" placeholder="Required From" value="<?php echo @$Required_From; ?>" data-date-format="dd-mm-yyyy" >
 									</div>
 									<div class="col-md-6">
-										<input type="text" name="Required_To" class="form-control input-sm date-picker" placeholder="To" value="<?php echo @$Required_To; ?>" data-date-format="dd-mm-yyyy" >
+										<input type="text" name="Required_To" class="form-control input-sm date-picker" placeholder="Required To" value="<?php echo @$Required_To; ?>" data-date-format="dd-mm-yyyy" >
 									</div>
 								</div></td>
 							<td>
 								<div class="row">
 									<div class="col-md-6">
-										<input type="text" name="Created_From" class="form-control input-sm date-picker" placeholder="From" value="<?php echo @$Created_From; ?>" data-date-format="dd-mm-yyyy" >
+										<input type="text" name="Created_From" class="form-control input-sm date-picker" placeholder="Created From" value="<?php echo @$Created_From; ?>" data-date-format="dd-mm-yyyy" >
 									</div>
 									<div class="col-md-6">
-										<input type="text" name="Created_To" class="form-control input-sm date-picker" placeholder="To" value="<?php echo @$Created_To; ?>" data-date-format="dd-mm-yyyy" >
+										<input type="text" name="Created_To" class="form-control input-sm date-picker" placeholder="Created To" value="<?php echo @$Created_To; ?>" data-date-format="dd-mm-yyyy" >
 									</div>
 								</div>
 							</td>
@@ -87,17 +78,19 @@
 					</tbody>
 				</table>
 			</form>
-		<div class="col-md-12">
+		
 			<?php $page_no=$this->Paginator->current('JobCards'); $page_no=($page_no-1)*20; ?>	 
 			<table class="table table-bordered table-striped table-hover ">
+				<thead>
 				<tr>
-					<td style="font-size:120%;">Sr.No.</td>
-					<td style="font-size:120%;">Job Card No.</td>
-					<td style="font-size:120%;">Sales Order</td>
-					<td style="font-size:120%;">Required Date</td>
-					<td style="font-size:120%;">Created Date</td>
-					<td style="font-size:120%;">Action</td>
+					<th >Sr.No.</th>
+					<th>Job Card No.</th>
+					<th>Sales Order</th>
+					<th>Required Date</th>
+					<th>Created Date</th>
+					<th>Action</th>
 				</tr>
+				</thead>
 				<tbody>
 		    <?php foreach ($jobCards as $jobCard): ?>
 				<tr>

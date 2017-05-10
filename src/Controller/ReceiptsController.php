@@ -22,10 +22,32 @@ class ReceiptsController extends AppController
 		
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
+		
+		$where = [];
+		$vouch_no = $this->request->query('vouch_no');
+		$From = $this->request->query('From');
+		$To = $this->request->query('To');
+		
+		$this->set(compact('vouch_no','From','To'));
+		
+		if(!empty($vouch_no)){
+			$where['Receipts.voucher_no LIKE']=$vouch_no;
+		}
+		
+		if(!empty($From)){
+			$From=date("Y-m-d",strtotime($this->request->query('From')));
+			$where['Receipts.transaction_date >=']=$From;
+		}
+		if(!empty($To)){
+			$To=date("Y-m-d",strtotime($this->request->query('To')));
+			$where['Receipts.transaction_date <=']=$To;
+		}
+		
+		
         $this->paginate = [
             'contain' => []
         ];
-        $receipts = $this->paginate($this->Receipts->find()->where(['company_id'=>$st_company_id])->contain(['ReceiptRows'=>function($q){
+        $receipts = $this->paginate($this->Receipts->find()->where($where)->where(['company_id'=>$st_company_id])->contain(['ReceiptRows'=>function($q){
 			$ReceiptRows = $this->Receipts->ReceiptRows->find();
 			$totalCrCase = $ReceiptRows->newExpr()
 				->addCase(

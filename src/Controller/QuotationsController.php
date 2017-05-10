@@ -3,18 +3,10 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 
-/**
- * Quotations Controller
- *
- * @property \App\Model\Table\QuotationsTable $Quotations
- */
+
 class QuotationsController extends AppController
 {
-	/**
-     * Index method
-     *
-     * @return \Cake\Network\Response|null
-     */
+	
     public function index($status=null)
     {
 		
@@ -43,7 +35,7 @@ class QuotationsController extends AppController
 			$where['company_id']=$company_id;
 		}
 		if(!empty($qt2)){
-			$where['qt2 LIKE']=$qt2;
+			$where['Quotations.qt2 LIKE']=$qt2;
 		}
 		if(!empty($file)){
 			$where['Quotations.qt3 LIKE']='%'.$file.'%';

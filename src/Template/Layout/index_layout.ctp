@@ -510,10 +510,10 @@ select
 							</a>
 							<ul class="sub-menu">
 							<?php if(in_array(98,$allowed_pages)){ ?>
-								<li><?php echo $this->Html->link( 'Add', '/PettyCashReceiptVouchers/add' ); ?></li>
+								<li><?php echo $this->Html->link( 'Add', '/PettyCashVouchers/add' ); ?></li>
 							<?php } ?>
 							<?php if(in_array(99,$allowed_pages)|| in_array(100,$allowed_pages) ||in_array(101,$allowed_pages)){ ?>
-								<li><?php echo $this->Html->link( 'View', '/PettyCashReceiptVouchers' ); ?></li>
+								<li><?php echo $this->Html->link( 'View', '/PettyCashVouchers' ); ?></li>
 							<?php } ?>
 							</ul>
 						</li>

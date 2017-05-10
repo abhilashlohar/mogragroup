@@ -13,49 +13,37 @@
 					<tbody>
 						<tr>
 							<td>
-								<div class="row">
-
-									<div class="col-md-4">
+								
 										<div class="input-group" style="" id="pnf_text">
 											<span class="input-group-addon">IB-No</span><input type="text" name="book_no" class="form-control input-sm" placeholder="Invoice Booking No" value="<?php echo @$book_no; ?>">
 										</div>
-									</div>
-									<div class="col-md-4">
+									</td>
+									<td>
 										<input type="text" name="file" class="form-control input-sm" placeholder="IB File" value="<?php echo @$file; ?>">
-									</div>
-									<div class="col-md-4">
+									</td>
+									<td>
 										<div class="input-group" style="" id="pnf_text">
 											<span class="input-group-addon">Grn-No</span><input type="text" name="grn_no" class="form-control input-sm" placeholder="Grn No" value="<?php echo @$grn_no; ?>">
 										</div>
-									</div>
-									
-									
-								</div>
-							</td>
+									</td>
+								
 							<td>
-							<div class="row">
-							<div class="col-md-6">
-										
 											<input type="text" name="file_grn_no" class="form-control input-sm" placeholder="Grn File" value="<?php echo @$file_grn_no; ?>">
 										
-									</div>
-									<div class="col-md-6">
+									</td>
+									<td>
 										<div class="input-group" style="" id="pnf_text">
 											<span class="input-group-addon">IN</span><input type="text" name="in_no" class="form-control input-sm" placeholder="Invoice No" value="<?php echo @$in_no; ?>">
 										</div>
-									</div>
-							</div>
-							</td>
-							<td>
-							<div class="row">
-									<div class="col-md-6">
-										<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Date From" value="<?php echo @$From; ?>" data-date-format="dd-mm-yyyy" >
-									</div>
-									<div class="col-md-6">
-										<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Date To" value="<?php echo @$To; ?>" data-date-format="dd-mm-yyyy" >
-									</div>
-								</div>
+									</td>
 							
+							<td>
+							
+										<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Date From" value="<?php echo @$From; ?>" data-date-format="dd-mm-yyyy" >
+									</td>
+									<td>
+										<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Date To" value="<?php echo @$To; ?>" data-date-format="dd-mm-yyyy" >
+									
 							</td>
 							
 							<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>

@@ -38,33 +38,25 @@
 					
 						<tr>
 							<td>
-								<div class="row">
-
-									<div class="col-md-6">
 										<div class="input-group" >
 											<span class="input-group-addon">GRN-</span><input type="text" name="grn_no" class="form-control input-sm" placeholder="GRN No" value="<?php echo @$grn_no; ?>">
 										</div>
-									</div>
-									<div class="col-md-6">
+									</td>
+									<td>
 										<input type="text" name="po_no" class="form-control input-sm" placeholder="PO No" value="<?php echo @$po_no; ?>">
-									</div>
 									
-								</div>
 							</td>
 							<td>
-							<div class="row">
-							<div class="col-md-12">
+							
 							<input type="text" name="vendor" class="form-control input-sm" placeholder="Supplier Name" value="<?php echo @$vendor; ?>">
-							</div></div></td>
+							</td>
 							<td>
-								<div class="row">
-									<div class="col-md-6">
+								
 										<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Date From" value="<?php echo @$From; ?>" data-date-format="dd-mm-yyyy" >
-									</div>
-									<div class="col-md-6">
+									</td>
+									<td>
 										<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Date To" value="<?php echo @$To; ?>" data-date-format="dd-mm-yyyy" >
-									</div>
-								</div>
+									
 							</td>
 							
 							<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>

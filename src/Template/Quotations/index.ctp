@@ -57,16 +57,14 @@ if(!empty($status)){
 					<tbody>
 						<tr>
 							<td>
-								<div class="row">
-									<div class="col-md-6">
+								
 										<div class="input-group" style="" id="pnf_text">
 											<span class="input-group-addon">QT-</span><input type="text" name="qt2" class="form-control input-sm" placeholder="Quotation No" value="<?php echo @$qt2; ?>">
 										</div>
-									</div>
-									<div class="col-md-6">
+									</td>
+									<td>
 										<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
-									</div>
-								</div>
+									
 							</td>
 							<td><input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>"></td>
 							<td><input type="text" name="salesman" class="form-control input-sm" placeholder="Salesman" value="<?php echo @$salesman; ?>"></td>

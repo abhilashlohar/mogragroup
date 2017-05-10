@@ -92,7 +92,16 @@ class PaymentsController extends AppController
         $payment = $this->Payments->get($id, [
             'contain' => ['BankCashes', 'Companies', 'PaymentRows' => ['ReceivedFroms'], 'Creator']
         ]);
-
+		
+		$ref_details=[];
+		foreach($payment->payment_rows as $payment_row){
+			$ReferenceDetails=$this->Payments->ReferenceDetails->find()->where(['ledger_account_id'=>$payment_row->received_from_id,'payment_id'=>$payment->id]);
+			$ref_details[$payment_row->received_from_id]=$ReferenceDetails->toArray();
+		}
+		
+								
+		
+		$this->set(compact('ref_details'));
         $this->set('payment', $payment);
         $this->set('_serialize', ['payment']);
     }

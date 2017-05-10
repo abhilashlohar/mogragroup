@@ -38,29 +38,23 @@
 					<tbody>
 						<tr>
 							<td>
-								<div class="row">
-									
-									<div class="col-md-6">
 										<div class="input-group" style="" id="pnf_text">
 											<span class="input-group-addon">IN-</span><input type="text" name="invoice_no" class="form-control input-sm" placeholder="Invoice No" value="<?php echo @$invoice_no; ?>">
 										</div>
-									</div>
-									<div class="col-md-6">
+									</td>
+									<td>
 										<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
-									</div>
-								</div>
+									
 							</td>
 							<td><input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>"></td>
 							<td>
-								<div class="row">
-									<div class="col-md-6">
+								
 										<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Date From" value="<?php echo @$From; ?>" data-date-format="dd-mm-yyyy" >
-									</div>
-									<div class="col-md-6">
+									</td>
+									<td>
 										<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Date To" value="<?php echo @$To; ?>" data-date-format="dd-mm-yyyy" >
-									</div>
-								</div>
-							</td>
+									</td>
+							
 							<td>
 							<table>
 								<tr>

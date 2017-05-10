@@ -10,6 +10,9 @@
 p{
 margin-bottom: 0;
 }
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    padding: 5px !important;
+}
 </style>
 <style type="text/css" media="print">
 @page {
@@ -19,7 +22,7 @@ margin-bottom: 0;
 </style>
 <a class="btn  blue hidden-print margin-bottom-5 pull-right" onclick="javascript:window.print();">Print <i class="fa fa-print"></i></a>
 
-<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 55%;font-size: 14px;" class="maindiv">	
+<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 55%;font-size: 12px;" class="maindiv">	
 	<table width="100%" class="divHeader">
 		<tr>
 			<td width="30%"><?php echo $this->Html->image('/logos/'.$payment->company->logo, ['width' => '40%']); ?></td>
@@ -50,7 +53,7 @@ margin-bottom: 0;
 			<td width="50%" valign="top" align="right">
 				<table>
 					<tr>
-						<td>Date.</td>
+						<td>Transaction Date.</td>
 						<td width="20" align="center">:</td>
 						<td><?= h(date("d-m-Y",strtotime($payment->transaction_date))) ?></td>
 					</tr>
@@ -58,6 +61,24 @@ margin-bottom: 0;
 			</td>
 		</tr>
 	</table>
+	
+	<table width="100%">
+	<tr>
+	<td width="50%" valign="top" align="right"></td>
+	<td width="50%" valign="top" align="right">
+			
+			<table>
+					<tr>
+						<td>Created Date.</td>
+						<td width="20" align="center">:</td>
+						<td><?= h(date("d-m-Y",strtotime($payment->created_on))) ?></td>
+					</tr>
+				</table>
+			</td>
+	</tr>
+	</table>
+	
+	
 	<br/>
 	<table width="100%" class="table" style="font-size:12px">
 		<tr>
@@ -65,12 +86,34 @@ margin-bottom: 0;
 			<th><?= __('Amount') ?></th>
 			<th><?= __('Narration') ?></th>
 		</tr>
-		<?php $total_cr=0; $total_dr=0; foreach ($payment->payment_rows as $paymentRows): ?>
+		<?php $total_cr=0; $total_dr=0; foreach ($payment->payment_rows as $paymentRows):  ?>
 		<tr>
 			<td style="white-space: nowrap;"><?= h($paymentRows->ReceivedFrom->name) ?></td>
 			<td style="white-space: nowrap;"><?= h($this->Number->format($paymentRows->amount,[ 'places' => 2])) ?> <?= h($paymentRows->cr_dr) ?></td>
 			<td><?= h($paymentRows->narration) ?></td>
+			
 		</tr>
+		<?php if(!empty($ref_details[$paymentRows->received_from_id])):?>
+		<tr >
+
+		<td colspan="3" style="border-top:none !important;">
+			<table width="100%">
+			
+			<?php foreach($ref_details[$paymentRows->received_from_id] as $refdetail): ?>
+			<tr>
+					<td style="width :180px !important;"> <?= h($refdetail->reference_type). '-' .h($refdetail->reference_no) ?></td>
+					
+					<td > <?php if($refdetail->credit != '0' ){ ?> 
+					<?= h($refdetail->credit) ?> Cr 
+					<?php } elseif( $refdetail->debit != '0'){?>
+					<?= h($refdetail->debit) ?> Dr
+					<?php } ?></td>
+					</tr>
+			<?php endforeach; ?>
+			</table>
+		</td>
+		
+		</tr><?php endif; ?>
 		<?php if($paymentRows->cr_dr=="Cr"){
 			$total_cr=$total_cr+$paymentRows->amount;
 		}else{

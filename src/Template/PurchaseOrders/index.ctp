@@ -51,18 +51,14 @@
 					
 						<tr>
 							<td>
-								<div class="row">
-
-									<div class="col-md-6">
+							
 										<div class="input-group" style="" id="pnf_text">
 											<span class="input-group-addon">PO-</span><input type="text" name="purchase_no" class="form-control input-sm" placeholder="Purchase No" value="<?php echo @$purchase_no; ?>">
 										</div>
-									</div>
-									<div class="col-md-6">
-										<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
-									</div>
+									</td>
 									
-								</div>
+									<td>	<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
+									
 							</td>
 							<td><input type="text" name="vendor" class="form-control input-sm" placeholder="Supplier" value="<?php echo @$vendor; ?>"></td>
 							

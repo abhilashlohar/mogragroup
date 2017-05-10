@@ -29,48 +29,35 @@
 					<tbody>
 					<tr>
 							<td>
-								<div class="row">
-									<div class="col-md-6">
-										<div class="input-group" >
-											<span class="input-group-addon">JC-</span><input type="text" name="jc_no" class="form-control input-sm" placeholder="JC No" value="<?php echo @$jc_no; ?>">
-										</div>
-									</div>
-									<div class="col-md-6">
+								<div class="input-group" >
+											<span class="input-group-addon">JC-</span><input type="text" name="jc_no" class="form-control input-sm" placeholder="JC No" value="<?php echo @$jc_no; ?>"></div>
+										
+									</td>
+									<td>
 										<input type="text" name="jc_file_no" class="form-control input-sm" placeholder="File" value="<?php echo @$jc_file_no; ?>">
-									</div>
-									<div class="col-md-2"></div>
-								</div>
-							</td>
+									</td>
+									
 							<td>
-								<div class="row">
-									<div class="col-md-6">
 										<div class="input-group" >
 											<span class="input-group-addon">SO-</span><input type="text" name="so_no" class="form-control input-sm" placeholder="SO No" value="<?php echo @$so_no; ?>">
 										</div>
-									</div>
-									<div class="col-md-6">
+									</td>
+									<td>
 										<input type="text" name="so_file_no" class="form-control input-sm" placeholder="File" value="<?php echo @$so_file_no; ?>">
-									</div>
-									<div class="col-md-2"></div>
-								</div>
-							</td>
-							<td><div class="row">
-									<div class="col-md-6">
+									</td>
+									
+								<td>
 										<input type="text" name="Required_From" class="form-control input-sm date-picker" placeholder="Required From" value="<?php echo @$Required_From; ?>" data-date-format="dd-mm-yyyy" >
-									</div>
-									<div class="col-md-6">
+									</td><td>
 										<input type="text" name="Required_To" class="form-control input-sm date-picker" placeholder="Required To" value="<?php echo @$Required_To; ?>" data-date-format="dd-mm-yyyy" >
-									</div>
-								</div></td>
+									</td>
 							<td>
-								<div class="row">
-									<div class="col-md-6">
+								
 										<input type="text" name="Created_From" class="form-control input-sm date-picker" placeholder="Created From" value="<?php echo @$Created_From; ?>" data-date-format="dd-mm-yyyy" >
-									</div>
-									<div class="col-md-6">
+									</td>
+									<td>
 										<input type="text" name="Created_To" class="form-control input-sm date-picker" placeholder="Created To" value="<?php echo @$Created_To; ?>" data-date-format="dd-mm-yyyy" >
-									</div>
-								</div>
+									
 							</td>
 							
 							<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>

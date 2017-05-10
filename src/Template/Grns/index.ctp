@@ -46,12 +46,16 @@
 										</div>
 									</div>
 									<div class="col-md-6">
-										<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
+										<input type="text" name="po_no" class="form-control input-sm" placeholder="PO No" value="<?php echo @$po_no; ?>">
 									</div>
 									
 								</div>
 							</td>
-							<td><input type="text" name="vendor" class="form-control input-sm" placeholder="Supplier Name" value="<?php echo @$vendor; ?>"></td>
+							<td>
+							<div class="row">
+							<div class="col-md-12">
+							<input type="text" name="vendor" class="form-control input-sm" placeholder="Supplier Name" value="<?php echo @$vendor; ?>">
+							</div></div></td>
 							<td>
 								<div class="row">
 									<div class="col-md-6">

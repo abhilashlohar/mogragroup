@@ -29,17 +29,17 @@ class GrnsController extends AppController
 		
 		$where1=[];
 		$grn_no=$this->request->query('grn_no');
-		$file=$this->request->query('file');
+		$po_no=$this->request->query('po_no');
 		$vendor=$this->request->query('vendor');
 		$From=$this->request->query('From');
 		$To=$this->request->query('To');
-		$this->set(compact('grn_no','vendor','From','file','To'));
+		$this->set(compact('grn_no','vendor','From','po_no','To'));
 		if(!empty($grn_no)){
 			//pr($grn_no); exit;
 			$where1['grn2 LIKE']=$grn_no;
 		}
-		if(!empty($file)){
-			$where1['grn3 LIKE']='%'.$file.'%';
+		if(!empty($po_no)){
+			$where1['PurchaseOrders.po3 LIKE']='%'.$po_no.'%';
 		}
 		
 		if(!empty($vendor)){

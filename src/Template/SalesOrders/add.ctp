@@ -23,19 +23,19 @@ if(!empty($copy))
 		</div>
 
 		<div class="actions">
-		<div class="btn-group">
-                                                                        <button id="btnGroupVerticalDrop5" type="button" class="btn yellow dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                                                                        Pull Quotation <i class="fa fa-angle-down"></i>
-                                                                        </button>
-                                                                        <ul class="dropdown-menu" role="menu" aria-labelledby="btnGroupVerticalDrop5">
-                                                                            <li>
-                                                                               <?php echo $this->Html->link(' Keep Open Quotation','/Quotations/index?pull-request=true',array('escape'=>false)); ?>
-                                                                            </li>
-                                                                            <li>
-                                                                               <?php echo $this->Html->link('Close Quotation','/Quotations/index?pull-request=true',array('escape'=>false)); ?>
-                                                                            </li>
-                                                                        </ul>
-                                                                    </div>
+			<div class="btn-group">
+				<button id="btnGroupVerticalDrop5" type="button" class="btn yellow dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+				Pull Quotation <i class="fa fa-angle-down"></i>
+				</button>
+				<ul class="dropdown-menu" role="menu" aria-labelledby="btnGroupVerticalDrop5">
+					<li>
+					   <?php echo $this->Html->link(' Keep Open Quotation','/Quotations/index?pull-request=true',array('escape'=>false)); ?>
+					</li>
+					<li>
+					   <?php echo $this->Html->link('Close Quotation','/Quotations/index?pull-request=true',array('escape'=>false)); ?>
+					</li>
+				</ul>
+			</div>
         </div>
 
 		

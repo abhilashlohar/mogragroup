@@ -25,11 +25,11 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
     <div class="portlet-title">
         <div class="caption" >
             <i class="icon-globe font-blue-steel"></i>
-            <span class="caption-subject font-blue-steel uppercase">Add Contra Voucher</span>
+            <span class="caption-subject font-blue-steel uppercase">Add Payment</span>
         </div>
     </div>
     <div class="portlet-body form">
-    <?= $this->Form->create($contravoucher,['id'=>'form_sample_3']) ?>
+    <?= $this->Form->create($payment,['id'=>'form_sample_3']) ?>
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group">
@@ -208,19 +208,19 @@ $(document).ready(function() {
     function rename_rows(){
         var i=0;
         $("#main_table tbody#main_tbody tr.main_tr").each(function(){
-            $(this).find("td:eq(0) select.received_from").select2().attr({name:"contra_voucher_rows["+i+"][received_from_id]", id:"contra_voucher_rows-"+i+"-received_from_id"}).rules('add', {
+            $(this).find("td:eq(0) select.received_from").select2().attr({name:"payment_rows["+i+"][received_from_id]", id:"quotation_rows-"+i+"-received_from_id"}).rules('add', {
                         required: true,
                         notEqualToGroup: ['.received_from'],
                         messages: {
                             notEqualToGroup: "Do not select same party again."
                         }
                     });
-            $(this).find("td:eq(1) input").attr({name:"contra_voucher_rows["+i+"][amount]", id:"contra_voucher_rows-"+i+"-amount"}).rules('add', {
+            $(this).find("td:eq(1) input").attr({name:"payment_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"}).rules('add', {
                         required: true,
                         min: 0.01,
                     });
-            $(this).find("td:eq(1) select").attr({name:"contra_voucher_rows["+i+"][cr_dr]", id:"contra_voucher_rows-"+i+"-cr_dr"});
-            $(this).find("td:nth-child(4) textarea").attr({name:"contra_voucher_rows["+i+"][narration]", id:"contra_voucher_rows-"+i+"-narration"}).rules("add", "required");
+            $(this).find("td:eq(1) select").attr({name:"payment_rows["+i+"][cr_dr]", id:"quotation_rows-"+i+"-cr_dr"});
+            $(this).find("td:nth-child(4) textarea").attr({name:"payment_rows["+i+"][narration]", id:"quotation_rows-"+i+"-narration"}).rules("add", "required");
             i++;
         });
     }
@@ -254,19 +254,19 @@ $(document).ready(function() {
             if(is_select){
                 $(this).find("td:nth-child(2) select").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_no]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_no"}).rules("add", "required");
             }else if(is_input){
-                var url='<?php echo $this->Url->build(['controller'=>'ContraVoucher','action'=>'checkRefNumberUnique']); ?>';
+                var url='<?php echo $this->Url->build(['controller'=>'Payments','action'=>'checkRefNumberUnique']); ?>';
                 url=url+'/'+received_from_id+'/'+i;
                 $(this).find("td:nth-child(2) input").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_no]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_no", class:"form-control input-sm ref_number-"+received_from_id}).rules('add', {
-                    required: true,
-                    noSpace: true,
-                    notEqualToGroup: ['.ref_number-'+received_from_id],
-                    remote: {
-                        url: url,
-                    },
-                    messages: {
-                        remote: "Not an unique."
-                    }
-                });
+                                                        required: true,
+                                                        noSpace: true,
+                                                        notEqualToGroup: ['.ref_number-'+received_from_id],
+                                                        remote: {
+                                                            url: url,
+                                                        },
+                                                        messages: {
+                                                            remote: "Not an unique."
+                                                        }
+                                                    });
             }
             
             $(this).find("td:nth-child(3) input").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_amount]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_amount"}).rules("add", "required");
@@ -328,7 +328,7 @@ $(document).ready(function() {
         var ref_type=$(this).find('option:selected').val();
         var received_from_id=$(this).closest('tr.main_tr').find('td select:eq(0)').val();
         if(ref_type=="Against Reference"){
-            var url="<?php echo $this->Url->build(['controller'=>'ContraVouchers','action'=>'fetchRefNumbers']); ?>";
+            var url="<?php echo $this->Url->build(['controller'=>'Payments','action'=>'fetchRefNumbers']); ?>";
             url=url+'/'+received_from_id+'/'+cr_dr,
             $.ajax({
                 url: url,

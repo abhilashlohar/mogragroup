@@ -22,12 +22,12 @@ margin-bottom: 0;
 <div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 55%;font-size: 14px;" class="maindiv">    
     <table width="100%" class="divHeader">
         <tr>
-            <td width="30%"><?php echo $this->Html->image('/logos/'.$contravoucher->company->logo, ['width' => '40%']); ?></td>
-            <td align="center" width="30%" style="font-size: 12px;"><div align="center" style="font-size: 16px;font-weight: bold;color: #0685a8;">COUNTRA VOUCHER</div></td>
+            <td width="30%"><?php echo $this->Html->image('/logos/'.$pettycashvoucher->company->logo, ['width' => '40%']); ?></td>
+            <td align="center" width="30%" style="font-size: 12px;"><div align="center" style="font-size: 16px;font-weight: bold;color: #0685a8;">PETTY CASH VOUCHER</div></td>
             <td align="right" width="40%" style="font-size: 12px;">
-            <span style="font-size: 14px;"><?= h($contravoucher->company->name) ?></span>
-            <span><?= $this->Text->autoParagraph(h($contravoucher->company->address)) ?>
-            <?= h($contravoucher->company->mobile_no) ?></span>
+            <span style="font-size: 14px;"><?= h($pettycashvoucher->company->name) ?></span>
+            <span><?= $this->Text->autoParagraph(h($pettycashvoucher->company->address)) ?>
+            <?= h($pettycashvoucher->company->mobile_no) ?></span>
             </td>
         </tr>
         <tr>
@@ -43,7 +43,7 @@ margin-bottom: 0;
                     <tr>
                         <td>Voucher No</td>
                         <td width="20" align="center">:</td>
-                        <td><?= h('#'.str_pad($contravoucher->voucher_no, 4, '0', STR_PAD_LEFT)) ?></td>
+                        <td><?= h('#'.str_pad($pettycashvoucher->voucher_no, 4, '0', STR_PAD_LEFT)) ?></td>
                     </tr>
                 </table>
             </td>
@@ -52,7 +52,7 @@ margin-bottom: 0;
                     <tr>
                         <td>Date.</td>
                         <td width="20" align="center">:</td>
-                        <td><?= h(date("d-m-Y",strtotime($contravoucher->transaction_date))) ?></td>
+                        <td><?= h(date("d-m-Y",strtotime($pettycashvoucher->transaction_date))) ?></td>
                     </tr>
                 </table>
             </td>
@@ -65,17 +65,17 @@ margin-bottom: 0;
             <th><?= __('Amount') ?></th>
             <th><?= __('Narration') ?></th>
         </tr>
-        <?php
-         $total_cr=0; $total_dr=0; foreach ($contravoucher->contra_voucher_rows as $contra_voucher_row): ?>
+        <?php $total_cr=0; $total_dr=0; 
+         foreach($pettycashvoucher->petty_cash_voucher_rows as $petty_cash_voucher_row): ?>
         <tr>
-            <td style="white-space: nowrap;"><?= h($contra_voucher_row->ReceivedFrom->name) ?></td>
-            <td style="white-space: nowrap;"><?= h($this->Number->format($contra_voucher_row->amount,[ 'places' => 2])) ?> <?= h($contra_voucher_row->cr_dr) ?></td>
-            <td><?= h($contra_voucher_row->narration) ?></td>
+            <td style="white-space: nowrap;"><?= h($petty_cash_voucher_row->ReceivedFrom->name) ?></td>
+            <td style="white-space: nowrap;"><?= h($this->Number->format($petty_cash_voucher_row->amount,[ 'places' => 2])) ?> <?= h($petty_cash_voucher_row->cr_dr) ?></td>
+            <td><?= h($petty_cash_voucher_row->narration) ?></td>
         </tr>
-        <?php if($contra_voucher_row->cr_dr=="Cr"){
-            $total_cr=$total_cr+$contra_voucher_row->amount;
+        <?php if($petty_cash_voucher_row->cr_dr=="Cr"){
+            $total_cr=$total_cr+$petty_cash_voucher_row->amount;
         }else{
-            $total_dr=$total_dr+$contra_voucher_row->amount;
+            $total_dr=$total_dr+$petty_cash_voucher_row->amount;
         }
         $total=$total_dr-$total_cr; endforeach; ?>
     </table>
@@ -96,9 +96,9 @@ margin-bottom: 0;
                     </tr>
                     <tr>
                         <td style="font-size: 12px;">
-                        via <?= h($contravoucher->payment_mode) ?> 
-                        <?php if($contravoucher->payment_mode=="Cheque"){
-                            echo ' ('.$contravoucher->cheque_no.')';
+                        via <?= h($pettycashvoucher->payment_mode) ?> 
+                        <?php if($pettycashvoucher->payment_mode=="Cheque"){
+                            echo ' ('.$pettycashvoucher->cheque_no.')';
                         } ?>
                         </td>
                     </tr>
@@ -109,11 +109,11 @@ margin-bottom: 0;
                     <tr>
                        <td width="15%" align="center"> 
                         <?php 
-                         echo $this->Html->Image('/signatures/'.$contravoucher->creator->signature,['height'=>'40px','style'=>'height:40px;']); 
+                         echo $this->Html->Image('/signatures/'.$pettycashvoucher->creator->signature,['height'=>'40px','style'=>'height:40px;']); 
                          ?></br>
                          </hr>
                          <span><b>Prepared By</b></span><br/>
-                         <span><?= h($contravoucher->company->name) ?></span><br/>
+                         <span><?= h($pettycashvoucher->company->name) ?></span><br/>
                         </td>
                     </tr>
                 </table>

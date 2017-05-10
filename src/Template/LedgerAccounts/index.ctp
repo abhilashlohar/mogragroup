@@ -243,4 +243,3 @@ var $rows = $('#main_tble tbody tr');
 	});
 });
 </script>
-

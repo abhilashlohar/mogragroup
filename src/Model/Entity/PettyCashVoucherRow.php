@@ -4,20 +4,19 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * PettyCashReceiptVoucher Entity
+ * PettyCashVoucherRow Entity
  *
  * @property int $id
+ * @property int $petty_cash_voucher_id
  * @property int $received_from_id
- * @property int $bank_cash_id
- * @property string $narration
  * @property float $amount
- * @property int $created_by
- * @property \Cake\I18n\Time $created_on
+ * @property string $cr_dr
+ * @property string $narration
  *
+ * @property \App\Model\Entity\PettyCashVoucher $petty_cash_voucher
  * @property \App\Model\Entity\ReceivedFrom $received_from
- * @property \App\Model\Entity\BankCash $bank_cash
  */
-class PettyCashReceiptVoucher extends Entity
+class PettyCashVoucherRow extends Entity
 {
 
     /**

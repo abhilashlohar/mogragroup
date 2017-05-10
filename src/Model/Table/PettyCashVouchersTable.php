@@ -7,21 +7,21 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * ContraVouchers Model
+ * PettyCashVouchers Model
  *
  * @property \Cake\ORM\Association\BelongsTo $BankCashes
  * @property \Cake\ORM\Association\BelongsTo $Companies
- * @property \Cake\ORM\Association\HasMany $ContraVoucherRows
+ * @property \Cake\ORM\Association\HasMany $PettyCashVoucherRows
  *
- * @method \App\Model\Entity\ContraVoucher get($primaryKey, $options = [])
- * @method \App\Model\Entity\ContraVoucher newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\ContraVoucher[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\ContraVoucher|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\ContraVoucher patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\ContraVoucher[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\ContraVoucher findOrCreate($search, callable $callback = null)
+ * @method \App\Model\Entity\PettyCashVoucher get($primaryKey, $options = [])
+ * @method \App\Model\Entity\PettyCashVoucher newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\PettyCashVoucher[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\PettyCashVoucher|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\PettyCashVoucher patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\PettyCashVoucher[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\PettyCashVoucher findOrCreate($search, callable $callback = null)
  */
-class ContraVouchersTable extends Table
+class PettyCashVouchersTable extends Table
 {
 
     /**
@@ -34,22 +34,22 @@ class ContraVouchersTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('contra_vouchers');
+        $this->table('petty_cash_vouchers');
         $this->displayField('id');
         $this->primaryKey('id');
-
 
         $this->belongsTo('VouchersReferences');
         $this->belongsTo('FinancialYears');
         $this->belongsTo('ReferenceBalances');
         $this->belongsTo('ReferenceDetails');
         $this->belongsTo('Ledgers');
+
+
         $this->belongsTo('BankCashes', [
             'className' => 'LedgerAccounts',
             'foreignKey' => 'bank_cash_id',
             'propertyName' => 'BankCash',
         ]);
-        
         $this->belongsTo('ReceivedFroms', [
             'className' => 'LedgerAccounts',
             'foreignKey' => 'received_from_id',
@@ -61,27 +61,14 @@ class ContraVouchersTable extends Table
             'foreignKey' => 'created_by',
             'propertyName' => 'creator',
         ]);
-        
-
-        
-        $this->belongsTo('BankCashes', [
-            'className' => 'LedgerAccounts',
-            'foreignKey' => 'bank_cash_id',
-            'propertyName' => 'BankCash',
-        ]);
 
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
         ]);
-
-        
-        $this->hasMany('ContraVoucherRows', [
-            'foreignKey' => 'contra_voucher_id',
-            'saveStrategy' => 'replace'
+        $this->hasMany('PettyCashVoucherRows', [
+            'foreignKey' => 'petty_cash_voucher_id'
         ]);
-
-
     }
 
     /**
@@ -96,31 +83,12 @@ class ContraVouchersTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-
-
         $validator
             ->integer('voucher_no')
             ->requirePresence('voucher_no', 'create')
             ->notEmpty('voucher_no');
 
         $validator
-            ->integer('created_by')
-            ->requirePresence('created_by', 'create')
-            ->notEmpty('created_by');
-
-        $validator
-            ->date('created_on')
-            ->requirePresence('created_on', 'create')
-            ->notEmpty('created_on');
-
-
-        $validator
-            ->integer('voucher_no')
-            ->requirePresence('voucher_no', 'create')
-            ->notEmpty('voucher_no');
-
-        $validator
-
             ->integer('created_by')
             ->requirePresence('created_by', 'create')
             ->notEmpty('created_by');
@@ -132,16 +100,7 @@ class ContraVouchersTable extends Table
 
         $validator
             ->requirePresence('payment_mode', 'create')
-            ->notEmpty('payment_mode')
-            ->date('transaction_date')
-            ->requirePresence('transaction_date', 'create')
-            ->notEmpty('transaction_date');
-
-
-
-        $validator
-            ->requirePresence('cheque_no', 'create')
-            ->notEmpty('cheque_no');
+            ->notEmpty('payment_mode');
 
         return $validator;
     }

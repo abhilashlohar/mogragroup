@@ -21,15 +21,20 @@ class InvoiceBookingsController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
+		$purchase_return=$this->request->query('purchase-return');
         $this->paginate = [
             'contain' => ['Grns']
         ];
+		if($sales_return=='true'){
+			$invoiceBookings = $this->paginate($this->InvoiceBookings->find()->where(['InvoiceBookings.company_id'=>$st_company_id])->order(['InvoiceBookings.id' => 'DESC']));
+		}else{
+			$invoiceBookings = $this->paginate($this->InvoiceBookings->find()->where(['InvoiceBookings.company_id'=>$st_company_id])->order(['InvoiceBookings.id' => 'DESC']));
+		}
 		
-		$invoiceBookings = $this->paginate($this->InvoiceBookings->find()->where(['InvoiceBookings.company_id'=>$st_company_id])->order(['InvoiceBookings.id' => 'DESC']));
 		
 		
 
-        $this->set(compact('invoiceBookings','status'));
+        $this->set(compact('invoiceBookings','status','purchase_return'));
         $this->set('_serialize', ['invoiceBookings']);
     }
 

@@ -67,6 +67,7 @@ class SaleReturnsController extends AppController
 						->where(['CustomerAddress.default_address' => 1]);}],'Employees','SaleTaxes']
         ]);
 		$c_LedgerAccount=$this->SaleReturns->LedgerAccounts->find()->where(['company_id'=>$st_company_id,'source_model'=>'Customers','source_id'=>$invoice->customer->id])->first();
+
 		
 		$ReferenceDetails=$this->SaleReturns->ReferenceDetails->find()->where(['ledger_account_id'=>$c_LedgerAccount->id,'invoice_id'=>$invoice->id]);
 		
@@ -81,6 +82,17 @@ class SaleReturnsController extends AppController
 					
 			}
 			
+			$saleReturn->company_id=$invoice->company_id;
+			$saleReturn->sr1=$invoice->in1;
+			$last_sr_no=$this->SaleReturns->find()->select(['sr2'])->where(['company_id' => $st_company_id])->order(['sr2' => 'DESC'])->first();
+			if($last_sr_no){
+				$saleReturn->sr2=$last_sr_no->sr2+1;
+			}else{
+				$saleReturn->sr2=1;
+			}
+			$saleReturn->sr3=$invoice->in3;
+			$saleReturn->sr4=$invoice->in4;
+			//exit;
 			 if ($this->SaleReturns->save($saleReturn)) {
 				
 				//GET CUSTOMER LEDGER-ACCOUNT-ID
@@ -118,7 +130,9 @@ class SaleReturnsController extends AppController
 				$ledger_saletax=$invoice->sale_tax_amount;
 				$ledger = $this->SaleReturns->Ledgers->newEntity();
 				$ledger->ledger_account_id = $invoice->st_ledger_account_id;
-				$ledger->debit = $invoice->sale_tax_amount;
+
+				$ledger->debit = $saleReturn->sale_tax_amount;
+
 				$ledger->credit = 0;
 				$ledger->voucher_id = $saleReturn->id;
 				$ledger->company_id = $invoice->company_id;
@@ -172,14 +186,19 @@ class SaleReturnsController extends AppController
 					foreach($saleReturn->check as $sale_return_row){
 				
 						$item_id=$sale_return_row;
-						$item_detail=$this->SaleReturns->ItemLedgers->find()->where(['item_id'=>$sale_return_row,'source_id'=>$invoice->id,'source_model'=>'Invoices'])->first();
+						$item_detail=$this->SaleReturns->ItemLedgers->find()->where(['item_id'=>$sale_return_row,'source_id'=>$invoice->id,'source_model != '=>'Sale Return','in_out'=>'In'])->first();
+						//pr($item_detail); exit;
 						$itemLedger = $this->SaleReturns->ItemLedgers->newEntity();
 						$itemLedger->item_id = $item_id;
 						$itemLedger->quantity = $saleReturn->sale_return_rows[$i]['quantity'];
 						$itemLedger->source_model = 'Sale Return';
 						$itemLedger->source_id = $saleReturn->id;
 						$itemLedger->in_out = 'In';
-						$itemLedger->rate = $item_detail->rate;
+						if(!$item_detail){
+							$itemLedger->rate = 0;
+						}else{
+							$itemLedger->rate = $item_detail->rate;
+						}
 						$itemLedger->company_id = $invoice->company_id;
 						$itemLedger->processed_on = date("Y-m-d");
 						$this->SaleReturns->ItemLedgers->save($itemLedger);
@@ -196,6 +215,7 @@ class SaleReturnsController extends AppController
 					if(sizeof(@$ref_rows)>0){
 						foreach($ref_rows as $ref_row){ 
 							$ref_row=(object)$ref_row;
+							
 							if($ref_row->ref_type=='New Reference' or $ref_row->ref_type=='Advance Reference'){
 								$query = $this->SaleReturns->ReferenceBalances->query();
 								$query->insert(['ledger_account_id', 'reference_no', 'credit', 'debit'])
@@ -206,10 +226,13 @@ class SaleReturnsController extends AppController
 									'debit' => 0
 								]);
 								$query->execute();
-							}else{
+							}else{ 
 								$ReferenceBalance=$this->SaleReturns->ReferenceBalances->find()->where(['ledger_account_id'=>$c_LedgerAccount->id,'reference_no'=>$ref_row->ref_no])->first();
+								
 								$ReferenceBalance=$this->SaleReturns->ReferenceBalances->get($ReferenceBalance->id);
+								
 								$ReferenceBalance->credit=$ReferenceBalance->credit+$ref_row->ref_amount;
+								//pr($ReferenceBalance); exit;
 								$this->SaleReturns->ReferenceBalances->save($ReferenceBalance);
 							}
 							$query = $this->SaleReturns->ReferenceDetails->query();
@@ -294,10 +317,9 @@ class SaleReturnsController extends AppController
 				}
 					
 			}
-			
-			
-			
-            if ($this->SaleReturns->save($saleReturn)) {
+
+        if ($this->SaleReturns->save($saleReturn)) {
+
 				
 				$this->SaleReturns->Ledgers->deleteAll(['voucher_id' => $saleReturn->id, 'voucher_source' => 'Sale Return']);
 				$this->SaleReturns->ItemLedgers->deleteAll(['source_id' => $saleReturn->id, 'source_model' => 'Sale Return','company_id'=>$st_company_id]);
@@ -427,7 +449,7 @@ class SaleReturnsController extends AppController
 					if(sizeof(@$ref_rows)>0){
 						foreach($ref_rows as $ref_row){
 							$ref_row=(object)$ref_row;
-							//pr($ref_row);
+
 							$ReferenceDetail=$this->SaleReturns->ReferenceDetails->find()->where(['ledger_account_id'=>$c_LedgerAccount->id,'reference_no'=>$ref_row->ref_no,'sale_return_id'=>$saleReturn->id])->first();
 							
 							if($ReferenceDetail){ //pr($ref_row->ref_old_amount); exit;
@@ -461,7 +483,8 @@ class SaleReturnsController extends AppController
 									$this->SaleReturns->ReferenceBalances->save($ReferenceBalance);
 								}
 								
-								$query = $this->Invoices->ReferenceDetails->query();
+
+								$query = $this->SaleReturns->ReferenceDetails->query();
 								$query->insert(['ledger_account_id', 'sale_return_id', 'reference_no', 'credit', 'debit', 'reference_type'])
 								->values([
 									'ledger_account_id' => $c_LedgerAccount->id,
@@ -481,7 +504,8 @@ class SaleReturnsController extends AppController
                 $this->Flash->success(__('The sale return has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
-            } else {
+
+            } else { 
                 $this->Flash->error(__('The sale return could not be saved. Please, try again.'));
             }
         }

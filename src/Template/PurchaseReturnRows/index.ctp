@@ -12,6 +12,7 @@
         <thead>
             <tr>
                 <th><?= $this->Paginator->sort('id') ?></th>
+                <th><?= $this->Paginator->sort('purchase_return_id') ?></th>
                 <th><?= $this->Paginator->sort('item_id') ?></th>
                 <th><?= $this->Paginator->sort('quantity') ?></th>
                 <th class="actions"><?= __('Actions') ?></th>
@@ -21,6 +22,7 @@
             <?php foreach ($purchaseReturnRows as $purchaseReturnRow): ?>
             <tr>
                 <td><?= $this->Number->format($purchaseReturnRow->id) ?></td>
+                <td><?= $this->Number->format($purchaseReturnRow->purchase_return_id) ?></td>
                 <td><?= $purchaseReturnRow->has('item') ? $this->Html->link($purchaseReturnRow->item->name, ['controller' => 'Items', 'action' => 'view', $purchaseReturnRow->item->id]) : '' ?></td>
                 <td><?= $this->Number->format($purchaseReturnRow->quantity) ?></td>
                 <td class="actions">

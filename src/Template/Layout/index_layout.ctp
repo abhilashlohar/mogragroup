@@ -645,6 +645,21 @@ select
 						?>
 					</ul>
 				</li>
+				<li>
+					<a href="javascript:;">
+					<i class="fa fa-puzzle-piece"></i>
+					<span class="title">Purchase Return</span>
+					<span class="arrow "></span>
+					</a>
+					<ul class="sub-menu">
+						<?php 
+						echo '<li>'.$this->Html->link('<i class="icon-home"></i> Create','/InvoiceBookings/index?purchase-return=true',array('escape'=>false)).'</li>';
+						 ?>
+						<?php 
+						echo '<li>'.$this->Html->link('<i class="icon-home"></i> View','/PurchaseReturns/',array('escape'=>false)).'</li>';
+						?>
+					</ul>
+				</li>
 			</ul>
 			<!-- END SIDEBAR MENU -->
 		</div>

@@ -9,6 +9,7 @@ use Cake\Validation\Validator;
 /**
  * PurchaseReturnRows Model
  *
+ * @property \Cake\ORM\Association\BelongsTo $PurchaseReturns
  * @property \Cake\ORM\Association\BelongsTo $Items
  *
  * @method \App\Model\Entity\PurchaseReturnRow get($primaryKey, $options = [])
@@ -36,6 +37,10 @@ class PurchaseReturnRowsTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 
+        $this->belongsTo('PurchaseReturns', [
+            'foreignKey' => 'purchase_return_id',
+            'joinType' => 'INNER'
+        ]);
         $this->belongsTo('Items', [
             'foreignKey' => 'item_id',
             'joinType' => 'INNER'
@@ -71,6 +76,7 @@ class PurchaseReturnRowsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
+        $rules->add($rules->existsIn(['purchase_return_id'], 'PurchaseReturns'));
         $rules->add($rules->existsIn(['item_id'], 'Items'));
 
         return $rules;

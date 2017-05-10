@@ -1,7 +1,6 @@
 <?php 
 if($financial_year_data['Response'] == "Close" ){
  			echo "Financial Year Closed"; 
-
  		} else { ?>
 <style>
 table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table > thead > tr > td, table > tbody > tr > td, table > tfoot > tr > td{
@@ -189,7 +188,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 							</td>
 							<td>
 								<?php  
-								echo $this->Form->input('sale_return_rows.'.$q.'.quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','max'=>$invoice_row->quantity,'value'=>0]); 
+								echo $this->Form->input('sale_return_rows.'.$q.'.quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','max'=>$invoice_row->quantity,'value'=>0,'required','min'=>'1']); 
 								?>
 							</td>
 							<td>
@@ -274,7 +273,10 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 				</tr>
 				<tr>
 					<td  align="right"><b>Sale Tax Amount </b></td>
-					<td><?php echo $invoice->sale_tax_amount; ?></td>
+
+					<td><?php echo $this->Form->input('sale_tax_per', ['type' => 'hidden','label' => false,'class' => 'form-control input-sm','readonly','step'=>0.01,'value'=>$invoice->sale_tax_per]); ?>
+					<?php echo $this->Form->input('sale_tax_amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly','step'=>0.01]); ?></td>
+
 				</tr>
 				<tr>
 					<td  align="left">
@@ -388,9 +390,6 @@ $(document).ready(function() {
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
-			company_id:{
-				required: true,
-			},
 			
 			
 		},
@@ -421,7 +420,6 @@ $(document).ready(function() {
 		},
 
 		invalidHandler: function (event, validator) { //display error alert on form submit   
-			put_code_description();
 			success3.hide();
 			error3.show();
 			//Metronic.scrollTo(error3, -200);
@@ -443,6 +441,7 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
+			rename_rows();
 			success3.show();
 			error3.hide();
 			form[0].submit();
@@ -490,6 +489,10 @@ $(document).ready(function() {
 		}
 		calculate_total();
 	});
+	$('.quantity').die().live("keyup",function() {
+		var qty =$(this).val();
+			rename_rows(); 
+    });
 	
 	$('input[name="discount_per"]').die().live("keyup",function() {
 		calculate_total();
@@ -540,6 +543,8 @@ function rename_rows(){
 					$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
 				}
 			}else{
+
+				$(this).find('td:nth-child(2) input').attr({ name:"q" , readonly:"readonly"}).rules( "remove", "required" );
 				$(this).find('td:nth-child(3) input').attr({ name:"q" , readonly:"readonly"}).rules( "remove", "required" );
 				$(this).find('td:nth-child(4) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
 				$(this).find('td:nth-child(5) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
@@ -629,7 +634,7 @@ function rename_rows(){
 	rename_ref_rows();
 	function rename_ref_rows(){
 		var i=0;
-		$("table.main_ref_table tbody tr").each(function(){ 
+		$("table.main_ref_table tbody tr").each(function(){
 			//alert();
 			$(this).find("td:nth-child(1) select").attr({name:"ref_rows["+i+"][ref_type]", id:"ref_rows-"+i+"-ref_type"}).rules("add", "required");
 			var is_select=$(this).find("td:nth-child(2) select").length;
@@ -654,6 +659,7 @@ function rename_rows(){
 			}
 					$(this).find("td:nth-child(3) input").attr({name:"ref_rows["+i+"][ref_amount]", id:"ref_rows-"+i+"-ref_amount"}).rules("add", "required");
 			i++;
+			
 		});
 		
 		var is_tot_input=$("table.main_ref_table tfoot tr:eq(1) td:eq(1) input").length;

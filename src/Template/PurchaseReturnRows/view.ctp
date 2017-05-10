@@ -21,6 +21,10 @@
             <td><?= $this->Number->format($purchaseReturnRow->id) ?></td>
         </tr>
         <tr>
+            <th><?= __('Purchase Return Id') ?></th>
+            <td><?= $this->Number->format($purchaseReturnRow->purchase_return_id) ?></td>
+        </tr>
+        <tr>
             <th><?= __('Quantity') ?></th>
             <td><?= $this->Number->format($purchaseReturnRow->quantity) ?></td>
         </tr>

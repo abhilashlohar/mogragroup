@@ -17,6 +17,7 @@
     <fieldset>
         <legend><?= __('Edit Purchase Return Row') ?></legend>
         <?php
+            echo $this->Form->input('purchase_return_id');
             echo $this->Form->input('item_id', ['options' => $items]);
             echo $this->Form->input('quantity');
         ?>

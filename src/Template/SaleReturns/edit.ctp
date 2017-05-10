@@ -199,16 +199,19 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 								<?php echo $this->Form->input('sale_return_rows.'.$q.'.amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly','placeholder' => 'Amount','step'=>0.01]); ?>
 							</td>
 							<td>
-								<?php echo @$invoice->sale_tax->tax_figure; ?>
+								<?php echo @$invoice_row->sale_return_quantity; ?>
 							</td>
-							<?php 
-							if($invoice->sale_return_quantity>0){ $checked2="Checked";
-									 } 
-								else{	$checked2="";
-									 } 
+							<?php $checked2="";
+							if($invoice_row->sale_return_quantity > 0)
+							{
+								$checked2='Checked';
+							}else{	
+								$checked2="";
+							} 
 							?> 
 							<td>
-								<label><?php echo $this->Form->input('check.'.$q, ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$invoice_row->item_id,'Checked'=>$checked2]); ?></label>
+								<label><?php 
+								echo $this->Form->input('check.'.$q, ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$invoice_row->item_id,$checked2]); ?></label>
 							</td>
 						</tr>
 						
@@ -217,7 +220,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 						<?php $options1=[]; $choosen=[];
 							if(sizeof(@$ItemSerialNumber[@$invoice_row->item_id])>0){
 								foreach($ItemSerialNumber[@$invoice_row->item_id] as $item_serial_number){
-									if($item_serial_number->status=="In"){
+									if($item_serial_number->status=="In" && $item_serial_number->sale_return_id==$saleReturn->id){
 										$choosen[]=$item_serial_number->id;
 									}
 									$options1[]=['text' =>$item_serial_number->serial_no, 'value' => $item_serial_number->id];
@@ -289,7 +292,9 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 				</tr>
 				<tr>
 					<td  align="right"><b>Sale Tax Amount </b></td>
-					<td><?php echo $invoice->sale_tax_amount; ?></td>
+
+					<td><?php echo $this->Form->input('sale_tax_per', ['type' => 'hidden','label' => false,'class' => 'form-control input-sm','readonly','step'=>0.01,'value'=>$invoice->sale_tax_per]); ?>
+					<?php echo $this->Form->input('sale_tax_amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly','step'=>0.01]); ?></td>
 				</tr>
 				<tr>
 					<td  align="left">
@@ -329,8 +334,8 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 									</td>
 									<td>
 									<?php 
-											echo $this->Form->input('old_amount', ['label' => false,'class' => '','type'=>'hidden','value'=>$old_ref_row->credit]);
-											echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm ref_amount_textbox','placeholder'=>'Amount','value'=>$old_ref_row->credit]);
+										echo $this->Form->input('old_amount', ['label' => false,'class' => 'ref_old_amount','type'=>'hidden','value'=>$old_ref_row->credit]);
+										echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm ref_amount_textbox','placeholder'=>'Amount','value'=>$old_ref_row->credit]);
 																
 									?>
 									</td>
@@ -466,7 +471,6 @@ $(document).ready(function() {
 		},
 
 		invalidHandler: function (event, validator) { //display error alert on form submit   
-			put_code_description();
 			success3.hide();
 			error3.show();
 			//Metronic.scrollTo(error3, -200);
@@ -560,10 +564,13 @@ $(document).ready(function() {
     });
 	rename_rows();
 function rename_rows(){
-		$("#main_tb tbody tr.tr1").each(function(){  //alert();
-			var row_no=$(this).attr('row_no');
+		var i=1; 
+		var row_no=0;
+		$("#main_tb tbody tr.tr1").each(function(){  
+			
 			var val=$(this).find('td:nth-child(7) input[type="checkbox"]:checked').val();
 			if(val){
+				$(this).find("td:nth-child(1)").html(i); 
 				$(this).find('td:nth-child(2) input').attr("name","sale_return_rows["+row_no+"][item_id]").attr("id","sale_return_rows-"+row_no+"-item_id").rules("add", "required");
 				$(this).find('td:nth-child(3) input').attr("name","sale_return_rows["+row_no+"][quantity]").attr("id","sale_return_rows-"+row_no+"-quantity").removeAttr("readonly").rules("add", "required");
 				$(this).find('td:nth-child(4) input').attr("name","sale_return_rows["+row_no+"][rate]").attr("id","sale_return_rows-"+row_no+"-rate").rules("add", "required");
@@ -585,6 +592,7 @@ function rename_rows(){
 					$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
 				}
 			}else{
+				$(this).find("td:nth-child(1)").html(i); 
 				$(this).find('td:nth-child(3) input').attr({ name:"q" , readonly:"readonly"}).rules( "remove", "required" );
 				$(this).find('td:nth-child(4) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
 				$(this).find('td:nth-child(5) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
@@ -596,7 +604,7 @@ function rename_rows(){
 				}
 			}
 			
-				
+			i++;	
 				
 		});
 	}
@@ -670,7 +678,6 @@ function rename_rows(){
 		$("table.main_ref_table tbody").append(tr);
 		rename_ref_rows();
 	}
-	
 	rename_ref_rows();
 	function rename_ref_rows(){
 		var i=0;
@@ -681,7 +688,7 @@ function rename_rows(){
 			var is_input=$(this).find("td:nth-child(2) input").length;
 			
 			if(is_select){
-				$(this).find("td:nth-child(2) select").attr({name:"ref_rows["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no"}).rules("add", "required");
+				$(this).find("td:nth-child(2) select").attr({name:"ref_rows["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no"}).rules("add", "required"); 
 			}else if(is_input){ 
 				var url='<?php echo $this->Url->build(['controller'=>'SaleReturns','action'=>'checkRefNumberUnique']); ?>';
 				url=url+'/<?php echo $c_LedgerAccount->id; ?>/'+i;
@@ -696,9 +703,15 @@ function rename_rows(){
 								remote: "Not an unique."
 							}
 						});
-			}
-					$(this).find("td:nth-child(3) input").attr({name:"ref_rows["+i+"][ref_amount]", id:"ref_rows-"+i+"-ref_amount"}).rules("add", "required");
-			i++;
+				}
+				var is_ref_old_amount=$(this).find("td:nth-child(3) input.ref_old_amount").length;
+				if(is_ref_old_amount){
+					$(this).find("td:nth-child(3) input:eq(0)").attr({name:"ref_rows["+i+"][ref_old_amount]", id:"ref_rows-"+i+"-ref_old_amount"});
+					$(this).find("td:nth-child(3) input:eq(1)").attr({name:"ref_rows["+i+"][ref_amount]", id:"ref_rows-"+i+"-ref_amount"}).rules("add", "required");
+				}else{
+				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"ref_rows["+i+"][ref_amount]", id:"ref_rows-"+i+"-ref_amount"}).rules("add", "required");
+				}
+				i++;
 		});
 		
 		var is_tot_input=$("table.main_ref_table tfoot tr:eq(1) td:eq(1) input").length;
@@ -745,18 +758,20 @@ function rename_rows(){
 	});
 	
 	$('.ref_amount_textbox').live("keyup",function() {
-		do_ref_total(); 
+		do_ref_total();  
 	});
-	
+	do_ref_total();
 	function do_ref_total(){
-		var main_amount=parseFloat($('input[name="grand_total"]').val());
+		var main_amount=parseFloat($('input[name="grand_total"]').val()); 
+		
 		if(!main_amount){ main_amount=0; }
 		
 		var total_ref=0;
 		$("table.main_ref_table tbody tr").each(function(){
-			var am=parseFloat($(this).find('td:nth-child(3) input').val());
+			var am=parseFloat($(this).find('td:nth-child(3) input:eq(0)').val());
 			if(!am){ am=0; }
 			total_ref=total_ref+am;
+			 
 		});
 		
 		var on_acc=main_amount-total_ref; 

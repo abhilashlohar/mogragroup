@@ -1,137 +1,194 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Sale Return'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Customers'), ['controller' => 'Customers', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Customer'), ['controller' => 'Customers', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Sale Taxes'), ['controller' => 'SaleTaxes', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Sale Tax'), ['controller' => 'SaleTaxes', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Companies'), ['controller' => 'Companies', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Company'), ['controller' => 'Companies', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Sales Orders'), ['controller' => 'SalesOrders', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Sales Order'), ['controller' => 'SalesOrders', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Employees'), ['controller' => 'Employees', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Employee'), ['controller' => 'Employees', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Transporters'), ['controller' => 'Transporters', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Transporter'), ['controller' => 'Transporters', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Sale Return Rows'), ['controller' => 'SaleReturnRows', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Sale Return Row'), ['controller' => 'SaleReturnRows', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="saleReturns index large-9 medium-8 columns content">
-    <h3><?= __('Sale Returns') ?></h3>
-    <table cellpadding="0" cellspacing="0">
-        <thead>
-            <tr>
-                <th><?= $this->Paginator->sort('id') ?></th>
-                <th><?= $this->Paginator->sort('temp_limit') ?></th>
-                <th><?= $this->Paginator->sort('customer_id') ?></th>
-                <th><?= $this->Paginator->sort('lr_no') ?></th>
-                <th><?= $this->Paginator->sort('discount_type') ?></th>
-                <th><?= $this->Paginator->sort('total') ?></th>
-                <th><?= $this->Paginator->sort('pnf') ?></th>
-                <th><?= $this->Paginator->sort('pnf_type') ?></th>
-                <th><?= $this->Paginator->sort('pnf_per') ?></th>
-                <th><?= $this->Paginator->sort('total_after_pnf') ?></th>
-                <th><?= $this->Paginator->sort('sale_tax_per') ?></th>
-                <th><?= $this->Paginator->sort('sale_tax_id') ?></th>
-                <th><?= $this->Paginator->sort('sale_tax_amount') ?></th>
-                <th><?= $this->Paginator->sort('exceise_duty') ?></th>
-                <th><?= $this->Paginator->sort('ed_description') ?></th>
-                <th><?= $this->Paginator->sort('fright_amount') ?></th>
-                <th><?= $this->Paginator->sort('fright_text') ?></th>
-                <th><?= $this->Paginator->sort('grand_total') ?></th>
-                <th><?= $this->Paginator->sort('due_payment') ?></th>
-                <th><?= $this->Paginator->sort('date_created') ?></th>
-                <th><?= $this->Paginator->sort('company_id') ?></th>
-                <th><?= $this->Paginator->sort('process_status') ?></th>
-                <th><?= $this->Paginator->sort('sales_order_id') ?></th>
-                <th><?= $this->Paginator->sort('in1') ?></th>
-                <th><?= $this->Paginator->sort('in2') ?></th>
-                <th><?= $this->Paginator->sort('in4') ?></th>
-                <th><?= $this->Paginator->sort('in3') ?></th>
-                <th><?= $this->Paginator->sort('customer_po_no') ?></th>
-                <th><?= $this->Paginator->sort('po_date') ?></th>
-                <th><?= $this->Paginator->sort('additional_note') ?></th>
-                <th><?= $this->Paginator->sort('employee_id') ?></th>
-                <th><?= $this->Paginator->sort('created_by') ?></th>
-                <th><?= $this->Paginator->sort('transporter_id') ?></th>
-                <th><?= $this->Paginator->sort('discount_per') ?></th>
-                <th><?= $this->Paginator->sort('discount') ?></th>
-                <th><?= $this->Paginator->sort('form47') ?></th>
-                <th><?= $this->Paginator->sort('form49') ?></th>
-                <th><?= $this->Paginator->sort('status') ?></th>
-                <th><?= $this->Paginator->sort('inventory_voucher_status') ?></th>
-                <th><?= $this->Paginator->sort('payment_mode') ?></th>
-                <th><?= $this->Paginator->sort('fright_ledger_account') ?></th>
-                <th><?= $this->Paginator->sort('sales_ledger_account') ?></th>
-                <th><?= $this->Paginator->sort('st_ledger_account_id') ?></th>
-                <th><?= $this->Paginator->sort('pdf_font_size') ?></th>
-                <th class="actions"><?= __('Actions') ?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($saleReturns as $saleReturn): ?>
-            <tr>
-                <td><?= $this->Number->format($saleReturn->id) ?></td>
-                <td><?= $this->Number->format($saleReturn->temp_limit) ?></td>
-                <td><?= $saleReturn->has('customer') ? $this->Html->link($saleReturn->customer->customer_name, ['controller' => 'Customers', 'action' => 'view', $saleReturn->customer->id]) : '' ?></td>
-                <td><?= h($saleReturn->lr_no) ?></td>
-                <td><?= h($saleReturn->discount_type) ?></td>
-                <td><?= $this->Number->format($saleReturn->total) ?></td>
-                <td><?= $this->Number->format($saleReturn->pnf) ?></td>
-                <td><?= h($saleReturn->pnf_type) ?></td>
-                <td><?= $this->Number->format($saleReturn->pnf_per) ?></td>
-                <td><?= $this->Number->format($saleReturn->total_after_pnf) ?></td>
-                <td><?= $this->Number->format($saleReturn->sale_tax_per) ?></td>
-                <td><?= $saleReturn->has('sale_tax') ? $this->Html->link($saleReturn->sale_tax->tax_figure, ['controller' => 'SaleTaxes', 'action' => 'view', $saleReturn->sale_tax->id]) : '' ?></td>
-                <td><?= $this->Number->format($saleReturn->sale_tax_amount) ?></td>
-                <td><?= $this->Number->format($saleReturn->exceise_duty) ?></td>
-                <td><?= h($saleReturn->ed_description) ?></td>
-                <td><?= $this->Number->format($saleReturn->fright_amount) ?></td>
-                <td><?= h($saleReturn->fright_text) ?></td>
-                <td><?= $this->Number->format($saleReturn->grand_total) ?></td>
-                <td><?= $this->Number->format($saleReturn->due_payment) ?></td>
-                <td><?= h($saleReturn->date_created) ?></td>
-                <td><?= $saleReturn->has('company') ? $this->Html->link($saleReturn->company->name, ['controller' => 'Companies', 'action' => 'view', $saleReturn->company->id]) : '' ?></td>
-                <td><?= h($saleReturn->process_status) ?></td>
-                <td><?= $saleReturn->has('sales_order') ? $this->Html->link($saleReturn->sales_order->id, ['controller' => 'SalesOrders', 'action' => 'view', $saleReturn->sales_order->id]) : '' ?></td>
-                <td><?= h($saleReturn->in1) ?></td>
-                <td><?= $this->Number->format($saleReturn->in2) ?></td>
-                <td><?= h($saleReturn->in4) ?></td>
-                <td><?= h($saleReturn->in3) ?></td>
-                <td><?= h($saleReturn->customer_po_no) ?></td>
-                <td><?= h($saleReturn->po_date) ?></td>
-                <td><?= h($saleReturn->additional_note) ?></td>
-                <td><?= $saleReturn->has('employee') ? $this->Html->link($saleReturn->employee->name, ['controller' => 'Employees', 'action' => 'view', $saleReturn->employee->id]) : '' ?></td>
-                <td><?= $this->Number->format($saleReturn->created_by) ?></td>
-                <td><?= $saleReturn->has('transporter') ? $this->Html->link($saleReturn->transporter->transporter_name, ['controller' => 'Transporters', 'action' => 'view', $saleReturn->transporter->id]) : '' ?></td>
-                <td><?= $this->Number->format($saleReturn->discount_per) ?></td>
-                <td><?= $this->Number->format($saleReturn->discount) ?></td>
-                <td><?= h($saleReturn->form47) ?></td>
-                <td><?= h($saleReturn->form49) ?></td>
-                <td><?= h($saleReturn->status) ?></td>
-                <td><?= h($saleReturn->inventory_voucher_status) ?></td>
-                <td><?= h($saleReturn->payment_mode) ?></td>
-                <td><?= $this->Number->format($saleReturn->fright_ledger_account) ?></td>
-                <td><?= $this->Number->format($saleReturn->sales_ledger_account) ?></td>
-                <td><?= $this->Number->format($saleReturn->st_ledger_account_id) ?></td>
-                <td><?= h($saleReturn->pdf_font_size) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $saleReturn->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $saleReturn->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $saleReturn->id], ['confirm' => __('Are you sure you want to delete # {0}?', $saleReturn->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-        </ul>
-        <p><?= $this->Paginator->counter() ?></p>
-    </div>
+'<?php $url_excel="/?".$url; ?>
+
+<div class="portlet light bordered">
+	<div class="portlet-title">
+		<div class="caption">
+			<i class="icon-globe font-blue-steel"></i>
+			<span class="caption-subject font-blue-steel uppercase">Invoices</span> 
+			
+		</div>
+		<div class="actions">
+	
+		</div>
+	</div>
+	<div class="portlet-body">
+		<div class="row">
+			<div class="col-md-12">
+				<form method="GET" >
+				<input type="hidden" name="inventory_voucher" value="<?php echo @$inventory_voucher; ?>">
+				<table class="table table-condensed">
+					<thead>
+						<tr>
+							<th>Invoice No</th>
+							<th>Customer</th>
+							<th>Date</th>
+							<th>Total</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+					
+						<tr>
+							<td>
+								<div class="row">
+									<div class="col-md-4">
+										<input type="text" name="company_alise" class="form-control input-sm" placeholder="Company" value="<?php echo @$company_alise; ?>">
+									</div>
+									<div class="col-md-4">
+										<div class="input-group" style="" id="pnf_text">
+											<span class="input-group-addon">IN-</span><input type="text" name="invoice_no" class="form-control input-sm" placeholder="Invoice No" value="<?php echo @$invoice_no; ?>">
+										</div>
+									</div>
+									<div class="col-md-4">
+										<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
+									</div>
+								</div>
+							</td>
+							<td><input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>"></td>
+							<td>
+								<div class="row">
+									<div class="col-md-6">
+										<input type="text" name="From" class="form-control input-sm date-picker" placeholder="From" value="<?php echo @$From; ?>" data-date-format="dd-mm-yyyy" >
+									</div>
+									<div class="col-md-6">
+										<input type="text" name="To" class="form-control input-sm date-picker" placeholder="To" value="<?php echo @$To; ?>" data-date-format="dd-mm-yyyy" >
+									</div>
+								</div>
+							</td>
+							<td>
+							<table>
+								<tr>
+									<td><input type="text" name="total_From" class="form-control input-sm" placeholder="From" value="<?php echo @$total_From; ?>" style="width: 100px;"></td>
+									<td><input type="text" name="total_To" class="form-control input-sm" placeholder="To" value="<?php echo @$total_To; ?>" style="width: 100px;"></td>
+								</tr>
+							</table>
+							</td>
+							<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+						</tr>
+					</tbody>
+				</table>
+				</form>
+				<?php $page_no=$this->Paginator->current('Invoices'); $page_no=($page_no-1)*20; ?>
+				<table class="table table-bordered table-striped table-hover">
+					<thead>
+						<tr>
+							<th>Sr. No.</th>
+							<th>Invoice No.</th>
+							<th>Customer</th>
+							<th>Date</th>
+							<th>Total</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach ($invoices as $invoice): 
+						if($invoice->status=='Pending'){ $tr_color='#FFF'; }
+						if($invoice->status=='Cancel'){ $tr_color='#FFF'; }
+						?>
+						<tr>
+							<td><?= h(++$page_no) ?></td>
+							<td><?= h(($invoice->in1.'/IN-'.str_pad($invoice->in2, 3, '0', STR_PAD_LEFT).'/'.$invoice->in3.'/'.$invoice->in4)) ?></td>
+							<td><?= h($invoice->customer->customer_name) ?></td>
+							<td><?php echo date("d-m-Y",strtotime($invoice->date_created)); ?></td>
+							<td><?= h($invoice->total_after_pnf) ?></td>
+							<td class="actions">
+								<?php if(in_array(23,$allowed_pages)){ ?>
+								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $invoice->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>
+								<?php } ?>
+								<?php if($invoice->status !='Cancel' and $inventory_voucher!="true" and in_array(8,$allowed_pages)){
+									
+								if(!in_array(date("m-Y",strtotime($invoice->date_created)),$closed_month))
+								 { 
+								echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $invoice->id,],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); 
+								 }
+								if( in_array(33,$allowed_pages)){
+								echo $this->Html->link('<i class="fa fa-minus-circle"></i> ',['action' => '#'],array('escape'=>false,'class'=>'btn btn-xs red tooltips close_btn','data-original-title'=>'Close','role'=>'button','invoice_id'=>$invoice->id));
+								}
+								}?>
+								<?php
+								if($inventory_voucher=="true"){
+								echo $this->Html->link('<i class="fa fa-repeat"></i>  Create Inventory Voucher','/Inventory-Vouchers/edit?invoice='.$invoice->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+								
+								} ?><?php 
+								if($sales_return=="true" && $invoice->sale_return_status=='No'){
+								echo $this->Html->link('<i class="fa fa-repeat"></i>  Sale Return','/SaleReturns/Add?invoice='.$invoice->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+								}elseif($sales_return=="true" && $invoice->sale_return_status=='Yes'){
+									echo $this->Html->link('<i class="fa fa-repeat"></i> Edit Sale Return','/SaleReturns/Edit?invoice='.$invoice->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+								} ?>
+								
+							</td>
+						</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+				<div class="paginator">
+					<ul class="pagination">
+						<?= $this->Paginator->prev('< ' . __('previous')) ?>
+						<?= $this->Paginator->numbers() ?>
+						<?= $this->Paginator->next(__('next') . ' >') ?>
+					</ul>
+					<p><?= $this->Paginator->counter() ?></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+$( function() {
+$( "#sortable" ).sortable();
+$( "#sortable" ).disableSelection();
+} );
+</script>
+<?php echo $this->Html->css('/drag_drop/jquery-ui.css'); ?>
+<?php echo $this->Html->script('/drag_drop/jquery-1.12.4.js'); ?>
+<?php echo $this->Html->script('/drag_drop/jquery-ui.js'); ?>
+
+<script>
+$(document).ready(function() { 
+	
+	$('#close_popup_btn').die().live("click",function() {
+		var invoice_id=$(this).attr('invoice_id');
+		var url="<?php echo $this->Url->build(['controller'=>'Invoices','action'=>'Cancel']); 
+		?>";
+		
+		url=url+'/'+invoice_id
+		$.ajax({
+			url: url,
+		}).done(function(response) {
+			location.reload();
+		});		
+		
+    });
+
+	
+	$('.close_btn').die().live("click",function() {
+		var invoice_id=$(this).attr('invoice_id');
+		$("#myModal2").show();
+		$("#close_popup_btn").attr('invoice_id',invoice_id);
+    });
+	
+	$('.closebtn2').on("click",function() { 
+		$("#myModal2").hide();
+    });
+	
+	
+	
+	
+});	
+</script>
+
+<div id="myModal2" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+			
+				Are you sure you want to cancel
+				
+			</div>
+			<div class="modal-footer">
+				<button class="btn default closebtn2">Close</button>
+				<button class="btn red close_rsn" id="close_popup_btn">Close Invoice</button>
+			</div>
+		</div>
+	</div>
 </div>

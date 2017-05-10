@@ -8,11 +8,13 @@
 		<div class="actions">
 			<?= $this->Html->link(
 				'Add',
-				'/Items/Opening-Balance'
+				'/Items/Opening-Balance',
+				['class' => 'btn btn-default']
 			); ?>
 			<?= $this->Html->link(
 				'View',
-				'/Items/Opening-Balance-View'
+				'/Items/Opening-Balance-View',
+				['class' => 'btn btn-default']
 			); ?>
 		</div>
 	</div>
@@ -22,7 +24,7 @@
 			<div class="col-md-4">
 				<div class="form-group">
 					<label class="control-label">Item <span class="required" aria-required="true">*</span></label>
-					<?php echo $this->Form->input('Item_id', ['empty'=>'--select--','label' => false,'class' => 'form-control input-sm select2me','options'=>$Items]); ?>
+					<?php echo $this->Form->input('Item_id', ['empty'=>'--select--','label' => false,'class' => 'form-control input-sm select2me','options'=>$Items,'required']); ?>
 				</div>
 			</div>
 			<div class="col-md-3">
@@ -54,7 +56,7 @@
 			<div class="col-md-3">
 				<label class="control-label">serial_number_enable</label>
 				<div class="checkbox-list">
-					<?php echo $this->Form->radio('serial_number_enable',[['value' => '1', 'text' => 'Yes'],['value' => '0', 'text' => 'No']]); ?>
+					<?php echo $this->Form->radio('serial_number_enable',[['value' => '1', 'text' => 'Yes'],['value' => '0', 'text' => 'No', 'checked']]); ?>
 				</div>
 			</div>
 		</div>
@@ -83,9 +85,6 @@ $(document).ready(function() {
 		rules: {
 			item_id :{
 				required: true,
-			},
-			date  : {
-				  required: true,
 			},
 			quantity  : {
 				  required: true,
@@ -185,16 +184,17 @@ $(document).ready(function() {
 			var p=1;
 			var r=0;
 			$('#itm_srl_num').find('input.sr_no').remove();
+			$('#itm_srl_num').find('span.help-block-error').remove();
 			for (i = 0; i < quantity; i++) {
 			$('#itm_srl_num').append('<input type="text" class="sr_no" name="serial_numbers['+r+'][]" placeholder="'+p+' serial number" id="sr_no'+r+'" />');
-			//$('#itm_srl_num').rules('add', {required: true});
+			
 			$('#itm_srl_num').find('input#sr_no'+r).rules('add', {required: true});
 			p++;
 			r++;
 			}
 		}
 		else if(serial_number=='0'){ 
-			$('#itm_srl_num').find('input.sr_no').remove();
+			$('#itm_srl_num').html('');
 			
 		}
 	   

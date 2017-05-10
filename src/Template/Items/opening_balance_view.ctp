@@ -8,11 +8,13 @@
 		<div class="actions">
 			<?= $this->Html->link(
 				'Add',
-				'/Items/Opening-Balance'
+				'/Items/Opening-Balance',
+				['class' => 'btn btn-default']
 			); ?>
 			<?= $this->Html->link(
 				'View',
-				'/Items/Opening-Balance-View'
+				'/Items/Opening-Balance-View',
+				['class' => 'btn btn-default']
 			); ?>
 		</div>
 	</div>
@@ -53,15 +55,22 @@
 					<td><?= h($ItemLedger->quantity*$ItemLedger->rate) ?></td>
 					<td><?= $ItemLedger->item->item_companies[0]->serial_number_enable ? 'Yes' : 'No'?></td>
 					<td>
+					<?= $this->Html->link('<i class="fa fa-pencil-square-o"></i> ',
+							['action' => 'EditItemOpeningBalance', $ItemLedger->id], 
+							[
+								'escape' => false,
+								'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'
+							]
+						) ?>
 					<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
-								['action' => 'DeleteItemOpeningBalance', $ItemLedger->id], 
-								[
-									'escape' => false,
-									'class'=>'btn btn-xs red tooltips','data-original-title'=>'Delete',
-									
-									'confirm' => __('Are you sure ?', $ItemLedger->id)
-								]
-							) ?>
+							['action' => 'DeleteItemOpeningBalance', $ItemLedger->id], 
+							[
+								'escape' => false,
+								'class'=>'btn btn-xs red tooltips','data-original-title'=>'Delete',
+								
+								'confirm' => __('Are you sure ?', $ItemLedger->id)
+							]
+						) ?>
 					</td>
 				</tr>
 			<?php } ?>

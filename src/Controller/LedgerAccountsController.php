@@ -25,15 +25,22 @@ class LedgerAccountsController extends AppController
 		
         if ($this->request->is('post')) {
             $ledgerAccount = $this->LedgerAccounts->patchEntity($ledgerAccount, $this->request->data);
-			$ledgerAccount->source_model='Ledger Account';
-			$ledgerAccount->company_id = $st_company_id;
-            if ($this->LedgerAccounts->save($ledgerAccount)) {
-                $this->Flash->success(__('The ledger account has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The ledger account could not be saved. Please, try again.'));
-            }
+			foreach($ledgerAccount->companies['_ids'] as $company_id){
+				$query = $this->LedgerAccounts->query();
+				$query->insert(['account_second_subgroup_id', 'name', 'alias', 'source_model', 'source_id', 'bill_to_bill_account', 'company_id'])
+						->values([
+							'account_second_subgroup_id' => $ledgerAccount->account_second_subgroup_id,
+							'name' => $ledgerAccount->name,
+							'alias' => '',
+							'source_model' => 'Ledger Account',
+							'source_id' => 0,
+							'bill_to_bill_account' => '',
+							'company_id' => $company_id,
+						]);
+				$query->execute();
+			}
+            $this->Flash->success(__('The ledger account has been saved.'));
+			return $this->redirect(['action' => 'index']);
 		}	
 		
         $accountSecondSubgroups = $this->LedgerAccounts->AccountSecondSubgroups->find('list');
@@ -42,7 +49,9 @@ class LedgerAccountsController extends AppController
 		
 		$ledgerAccounts = $this->LedgerAccounts->find()->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups'=>['AccountCategories']]]])->where(['LedgerAccounts.company_id'=>$st_company_id]);
 		
-		$this->set(compact('ledgerAccounts'));
+		$Companies = $this->LedgerAccounts->Companies->find('list');
+		
+		$this->set(compact('ledgerAccounts', 'Companies'));
         $this->set('_serialize', ['ledgerAccounts']);
     }
 

@@ -110,24 +110,24 @@ class PurchaseReturnsController extends AppController
 					$amountofVAT=($amount*$invoice_booking_row->sale_tax)/100;
 					$amount=$amount*((100+$invoice_booking_row->sale_tax)/100);
 					
-					$vat_amounts[$invoice_booking_row->item_id]=$amountofVAT;
+					$vat_amounts[$invoice_booking_row->item_id]=$amountofVAT/$invoice_booking_row->quantity;
 					
 					$amount=$amount+$invoice_booking_row->other_charges;
-					$total_amounts[$invoice_booking_row->item_id]=$amount;
+					$total_amounts[$invoice_booking_row->item_id]=$amount/$invoice_booking_row->quantity;
 				}
 				
 				pr($vat_amounts);
 				echo '<br/>';
 				pr($total_amounts);
 				
-				posing for supplier
+				/*posing for supplier
 				$total_amount
 				
 				posting for purchase acc
 				$total_amount-$totalVAT
 				
 				posting for VAT acc
-				$totalVAT
+				$totalVAT*/
 				exit;
 				
 				

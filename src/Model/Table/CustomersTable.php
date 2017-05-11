@@ -117,9 +117,7 @@ class CustomersTable extends Table
             'joinType' => 'INNER'
         ]);
 		
-		$this->hasMany('CustomerCompanies', [
-            'foreignKey' => 'customer_id'
-        ]);
+		
 		$this->belongsTo('ReceiptVouchers');
 		$this->belongsTo('ReferenceDetails');
 		$this->belongsTo('Ledgers');
@@ -132,6 +130,9 @@ class CustomersTable extends Table
             'joinTable' => 'customer_companies'
         ]);
 		
+		$this->hasMany('CustomerCompanies', [
+            'foreignKey' => 'customer_id'
+        ]);
     }
 
     /**

@@ -733,7 +733,6 @@ select
 <!-- END FOOTER -->
 
 <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
-<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/jquery-migrate.min.js'); ?>
 <!-- IMPORTANT! Load jquery-ui-1.10.3.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
 <?php echo $this->Html->script('/assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js'); ?>
@@ -745,8 +744,6 @@ select
 <?php echo $this->Html->script('/assets/global/plugins/uniform/jquery.uniform.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/icheck/icheck.min.js'); ?>
-
-<?php echo $this->Html->script('/bootstrap-wysihtml5.js'); ?>
 
 
 

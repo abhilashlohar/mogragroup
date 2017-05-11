@@ -247,14 +247,14 @@ $(document).ready(function() {
     function rename_ref_rows(sel,received_from_id){
         var i=0;
         $(sel).find("table.ref_table tbody tr").each(function(){
-            $(this).find("td:nth-child(1) select").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_type]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_type"}).rules("add", "required");
+            $(this).find("td:nth-child(1) select").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_type]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_type"}).rules("add", "required").rules("remove", "remote");
             var is_select=$(this).find("td:nth-child(2) select").length;
             var is_input=$(this).find("td:nth-child(2) input").length;
             
             if(is_select){
                 $(this).find("td:nth-child(2) select").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_no]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_no"}).rules("add", "required");
             }else if(is_input){
-                var url='<?php echo $this->Url->build(['controller'=>'ContraVoucher','action'=>'checkRefNumberUnique']); ?>';
+                var url='<?php echo $this->Url->build(['controller'=>'ContraVouchers','action'=>'checkRefNumberUnique']); ?>';
                 url=url+'/'+received_from_id+'/'+i;
                 $(this).find("td:nth-child(2) input").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_no]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_no", class:"form-control input-sm ref_number-"+received_from_id}).rules('add', {
                     required: true,

@@ -67,8 +67,9 @@
 			<div class="col-md-8"></div>	
 			<div class="col-md-4 caption-subject " align="left" style="background-color:#E7E2CB; font-size: 16px;"><b>Opening Balance : </b>
 				<?php $opening_balance=0; 
-					//pr($total_opening_balance);
 					
+					
+					$final_opening_blnc = 0;
 					if($total_opening_balance[0]->total_opening_debit > $total_opening_balance[0]->total_opening_credit)
 					{
 						 $final_opening_blnc = $total_opening_balance[0]->total_opening_debit - $total_opening_balance[0]->total_opening_credit;
@@ -123,7 +124,7 @@
 					$url_path="/receipts/view/".$ledger->voucher_id;
 				}
 				
-				if($ledger->voucher_source != 'Opening Balance')	
+				if($ledger->voucher_source == 'Opening Balance')	
 				{
 				?>
 				<tr>

@@ -675,7 +675,7 @@ select
 						echo '<li>'.$this->Html->link('<i class="icon-home"></i> Create','/InvoiceBookings/index?purchase-return=true',array('escape'=>false)).'</li>';
 						 ?>
 						<?php 
-						echo '<li>'.$this->Html->link('<i class="icon-home"></i> View','/PurchaseReturns/',array('escape'=>false)).'</li>';
+						echo '<li>'.$this->Html->link('<i class="icon-home"></i> View','/PurchaseReturns/',['escape'=>false]).'</li>';
 						?>
 					</ul>
 				</li>

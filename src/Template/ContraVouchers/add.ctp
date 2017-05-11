@@ -252,7 +252,9 @@ $(document).ready(function() {
             var is_input=$(this).find("td:nth-child(2) input").length;
             
             if(is_select){
-                $(this).find("td:nth-child(2) select").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_no]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_no"}).rules("remove", "remote").rules("add", "required");
+                $(this).find("td:nth-child(2) select").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_no]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_no"}).rules("remove");
+				
+                $(this).find("td:nth-child(2) select").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_no]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_no"}).rules("add", "required");
             }else if(is_input){
                 var url='<?php echo $this->Url->build(['controller'=>'ContraVouchers','action'=>'checkRefNumberUnique']); ?>';
                 url=url+'/'+received_from_id+'/'+i;

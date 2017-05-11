@@ -669,7 +669,6 @@ function rename_rows(){
 				$(this).find("td:nth-child(2) select").attr({name:"ref_rows["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no"}).rules("add", "required"); 
 			}else if(is_input){ 
 				var url='<?php echo $this->Url->build(['controller'=>'SaleReturns','action'=>'checkRefNumberUnique']); ?>';
-				
 				url=url+'/<?php echo $c_LedgerAccount->id; ?>/'+i;
 				$(this).find("td:nth-child(2) input").attr({name:"ref_rows["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no", class:"form-control input-sm ref_number"}).rules('add', {
 							required: true,
@@ -732,6 +731,7 @@ function rename_rows(){
 		var current_obj=$(this);
 		var due_amount=$(this).find('option:selected').attr('due_amount');
 		$(this).closest('tr').find('td:eq(2) input').val(due_amount);
+		var sel=$(this);
 		do_ref_total();
 		delete_one_ref_no(sel);
 	});
@@ -739,7 +739,8 @@ function rename_rows(){
 	$('.ref_amount_textbox').live("keyup",function() {
 		do_ref_total();  
 	});
-	do_ref_total();
+	
+do_ref_total();
 	function do_ref_total(){
 		var main_amount=parseFloat($('input[name="grand_total"]').val()); 
 		

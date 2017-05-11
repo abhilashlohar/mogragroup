@@ -28,12 +28,12 @@ class SaleTaxesController extends AppController
             $saleTax = $this->SaleTaxes->patchEntity($saleTax, $this->request->data);
 			
             if ($this->SaleTaxes->save($saleTax)) {
-				
+				pr($saleTax); exit;
 				foreach($saleTax->companies as $company){
 					$LedgerAccount = $this->SaleTaxes->LedgerAccounts->newEntity();
 					$LedgerAccount->account_second_subgroup_id=$saleTax->account_second_subgroup_id;
 					$LedgerAccount->name=$saleTax->tax_figure;
-					$LedgerAccount->alias='';
+					$LedgerAccount->alias=$saleTax->invoice_description;
 					$LedgerAccount->source_model='SaleTaxes';
 					$LedgerAccount->source_id=$saleTax->id;
 					$LedgerAccount->bill_to_bill_account='';

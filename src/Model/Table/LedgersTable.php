@@ -43,6 +43,7 @@ class LedgersTable extends Table
         ]);
 		$this->belongsTo('ReferenceDetails');
 		$this->belongsTo('ReferenceBalances');
+		$this->belongsTo('FinancialYears');
     }
 
     /**

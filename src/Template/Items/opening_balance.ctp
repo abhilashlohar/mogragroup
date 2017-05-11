@@ -2,7 +2,7 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel 	">Item opening balance</span>
+			<span class="caption-subject font-blue-steel">Item opening balance</span>
 		</div>
 		
 		<div class="actions">

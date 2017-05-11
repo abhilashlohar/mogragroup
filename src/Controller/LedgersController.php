@@ -177,14 +177,23 @@ class LedgersController extends AppController
 		
 		$session = $this->request->session();
 		$company_id = $session->read('st_company_id');
-			
-        if ($this->request->is('post')) {
+		$st_year_id = $session->read('st_year_id');
+		$financial_year = $this->Ledgers->FinancialYears->find()->where(['id'=>$st_year_id])->first();	
+				
+		if ($this->request->is('post')) {
 			
 			$total_row=sizeof($this->request->data['reference_no']);
 			
+			$Ledgersexists = $this->Ledgers->exists(['ledger_account_id' => $this->request->data['ledger_account_id'],'company_id'=>$company_id]);
+			if($Ledgersexists){
+				$this->Flash->error(__('Opening Balance already exists'));
+				return $this->redirect(['action' => 'openingBalance']);
+			}
+
+			
 		    for($row=0; $row<$total_row; $row++)
 		    {
-			   ////////////////  Ledger ////////////////////////////////
+			 ////////////////  Ledger ////////////////////////////////
 				$query = $this->Ledgers->query();
 				$query->insert(['transaction_date', 'ledger_account_id', 'voucher_source', 'credit', 'debit','company_id','ref_no'])
 				->values([
@@ -239,7 +248,7 @@ class LedgersController extends AppController
 			}])->where(['company_id'=>$company_id])->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups'=>['AccountCategories'=>function($q){
 				return $q->where(['AccountCategories.id IN'=>[1,2]]);
 			}]]]]);
-        $this->set(compact('ledger', 'ledgerAccounts'));
+        $this->set(compact('ledger', 'ledgerAccounts','financial_year'));
         $this->set('_serialize', ['ledger']);
     }
 	

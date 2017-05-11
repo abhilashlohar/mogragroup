@@ -497,8 +497,18 @@ $ref_rows=$this->request->data['ref_rows'];
 		$this->set(compact('ReferenceBalances','cr_dr'));
 	}
 	function checkRefNumberUnique($received_from_id,$i){
-		$reference_no=$this->request->query['ref_rows'][$received_from_id][$i]['ref_no'];
-		$ReferenceBalances=$this->Receipts->ReferenceBalances->find()->where(['ledger_account_id'=>$received_from_id,'reference_no'=>$reference_no]);
+		$reference_no=$this->request->query['ref_rows'][$i]['ref_no'];
+		$ReferenceBalances=$this->PurchaseReturns->ReferenceBalances->find()->where(['ledger_account_id'=>$received_from_id,'reference_no'=>$reference_no]);
+		if($ReferenceBalances->count()==0){
+			echo 'true';
+		}else{
+			echo 'false';
+		}
+		exit;
+	}
+	function checkRefNumberUniqueEdit($received_from_id,$i,$is_old){
+		$reference_no=$this->request->query['ref_rows'][$i]['ref_no'];
+		$ReferenceBalances=$this->PurchaseReturns->ReferenceBalances->find()->where(['ledger_account_id'=>$received_from_id,'reference_no'=>$reference_no]);
 		if($ReferenceBalances->count()==1 && $is_old=="yes"){
 			echo 'true';
 		}elseif($ReferenceBalances->count()==0){

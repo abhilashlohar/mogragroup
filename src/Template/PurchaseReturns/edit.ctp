@@ -374,10 +374,9 @@ rename_ref_rows();
 			if(is_select){
 				$(this).find("td:nth-child(2) select").attr({name:"ref_rows["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no"}).rules("add", "required");
 			}else if(is_input){
-				var url='<?php echo $this->Url->build(['controller'=>'PurchaseReturns','action'=>'checkRefNumberUnique']); ?>';
+				var url='<?php echo $this->Url->build(['controller'=>'PurchaseReturns','action'=>'checkRefNumberUniqueEdit']); ?>';
 				var is_old=$(this).find("td:nth-child(2) input").attr('is_old');
 				url=url+'/<?php echo $v_LedgerAccount->id; ?>/'+i+'/'+is_old;
-				alert(url);		
 				$(this).find("td:nth-child(2) input").attr({name:"ref_rows["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no", class:"form-control input-sm ref_number"}).rules('add', {
 							required: true,
 							noSpace: true,
@@ -386,7 +385,7 @@ rename_ref_rows();
 								url: url,
 							},
 							messages: {
-								remote: "Not an unique1."
+								remote: "Not an unique."
 							}
 						});
 				}

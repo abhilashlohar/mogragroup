@@ -212,7 +212,7 @@ class ItemsController extends AppController
 		
 			$ItemLedgersexists = $this->Items->ItemLedgers->exists(['source_model'=>'Items','item_id' => $item_id,'company_id'=>$st_company_id]);
 			if($ItemLedgersexists){
-				$this->Flash->error(__('The Item opening balance already created'));
+				$this->Flash->error(__('Item opening balance already exists'));
 				return $this->redirect(['action' => 'openingBalance']);
 			}
 			

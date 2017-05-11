@@ -16,7 +16,7 @@
 		<div class="row">
 			<div class="col-md-12">
 			<form method="GET" >
-			<table width="30%">
+			<table width="30%" >
 				<tbody>
 					<tr>
 						<td><input type="text" name="ledger_name" class="form-control input-sm" placeholder="Ledger Account" value="<?php echo @$ledger_name; ?>"></td>

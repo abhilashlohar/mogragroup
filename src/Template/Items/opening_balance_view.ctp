@@ -17,7 +17,7 @@
 				['class' => 'btn btn-default']
 			); ?>
 		</div>
-	</div>
+	
 	<div class="portlet-body form">
 		<form method="GET" >
 			<input type="hidden" name="pull-request" value="<?php echo @$pull_request; ?>">
@@ -77,4 +77,5 @@
 			</tbody>
 		</table>
 	</div>
+</div>
 </div>

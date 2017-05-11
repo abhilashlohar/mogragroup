@@ -96,7 +96,7 @@
 														<input type="text" name="file_number" class="form-control input-sm" placeholder="File Number" value="<?php echo @$file_number; ?>">
 													</div>
 												</div>
-												<div class="col-md-4"> <?php echo @$customer; ?>
+												<div class="col-md-4"> 
 													<input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>">
 												</div>
 												<div class="col-md-4">

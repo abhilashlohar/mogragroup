@@ -9,14 +9,7 @@
 		<div class="table-scrollable">
 			<form method="GET" >
 				<table class="table table-condensed">
-				<thead>
-					<tr>
-						<th>Customer Name</th>
-						<th>District</th>
-						<th>Customer Seg</th>
-						<th></th>
-					</tr>
-				</thead>
+				
 				<tbody>
 					<tr>
 						<td><input type="text" name="customer" class="form-control input-sm" placeholder="Customer Name" value="<?php echo @$customer; ?>"></td>

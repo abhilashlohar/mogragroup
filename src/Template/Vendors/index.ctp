@@ -4,10 +4,27 @@
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Suppliers</span>
 		</div>
-	</div>
+	
 	<div class="portlet-body">
 		<div class="row">
 			<div class="col-md-12">
+			<form method="GET" >
+				<input type="hidden" name="pull-request" value="<?php echo @$pull_request; ?>">
+				<table width="30%">
+					<tbody>
+						<tr>
+							<td>
+							
+								<input type="text" name="supp_name" class="form-control input-sm" placeholder="Supplier Name" value="<?php echo @$supp_name; ?>">
+								
+							</td>
+							<td>
+								<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				</form>
 			<?php $page_no=$this->Paginator->current('Quotations'); $page_no=($page_no-1)*20; ?>
 				<table class="table table-bordered table-striped table-hover">
 					<thead>

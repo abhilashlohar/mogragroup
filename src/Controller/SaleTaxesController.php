@@ -27,9 +27,8 @@ class SaleTaxesController extends AppController
         if ($this->request->is('post')) {
             $saleTax = $this->SaleTaxes->patchEntity($saleTax, $this->request->data);
 			
-            if ($this->SaleTaxes->save($saleTax)) {
-				pr($saleTax); exit;
-				foreach($saleTax->companies as $company){
+            if ($this->SaleTaxes->save($saleTax)) { 
+					foreach($saleTax->companies as $company){
 					$LedgerAccount = $this->SaleTaxes->LedgerAccounts->newEntity();
 					$LedgerAccount->account_second_subgroup_id=$saleTax->account_second_subgroup_id;
 					$LedgerAccount->name=$saleTax->tax_figure;
@@ -40,7 +39,6 @@ class SaleTaxesController extends AppController
 					$LedgerAccount->company_id=$company->id;
 					$this->SaleTaxes->LedgerAccounts->save($LedgerAccount);
 				}
-			
 				$this->Flash->success(__('The sale tax has been saved.'));
 				return $this->redirect(['action' => 'index']);
 			}else {
@@ -53,7 +51,6 @@ class SaleTaxesController extends AppController
         $this->set('_serialize', ['saleTax']);
 		
         $saleTaxes = $this->paginate($this->SaleTaxes);
-		
 		$st_LedgerAccounts=$this->SaleTaxes->LedgerAccounts->find()->where(['source_model'=>'SaleTaxes','company_id'=>$st_company_id]);	
 		$sale_tax_ledger_accounts=[];
 		$sale_tax_ledger_accounts1=[];
@@ -140,8 +137,8 @@ class SaleTaxesController extends AppController
             if ($this->SaleTaxes->save($saleTax)) {
 					$query = $this->SaleTaxes->LedgerAccounts->query();
 					$query->update()
-						->set(['account_second_subgroup_id' => $saleTax->account_second_subgroup_id])
-						->where(['id' => $saleTax->ledger_account_id])
+						->set(['account_second_subgroup_id' => $saleTax->account_second_subgroup_id,'name'=>$saleTax->tax_figure,'alias'=>$saleTax->invoice_description])
+						->where(['source_id' => $saleTax->id,'source_model'=>'SaleTaxes'])
 						->execute();
                 $this->Flash->success(__('The sale tax has been saved.'));
 

@@ -67,12 +67,31 @@
 			<div class="col-md-8"></div>	
 			<div class="col-md-4 caption-subject " align="left" style="background-color:#E7E2CB; font-size: 16px;"><b>Opening Balance : </b>
 				<?php $opening_balance=0; 
+					
+					if($total_opening_balance[0]->total_opening_debit > $total_opening_balance[0]->total_opening_credit)
+					{
+						 $final_opening_blnc = $total_opening_balance[0]->total_opening_debit - $total_opening_balance[0]->total_opening_credit;
+						
+					}
+					else if($total_balance[0]->total_opening_debit< $total_balance[0]->total_opening_credit)
+					{
+						 $final_opening_blnc = $total_opening_balance[0]->total_opening_debit - $total_opening_balance[0]->total_opening_credit;	
+					}
+					
+					
+					
+					
+					
+					
+					
+					
+					/////////////////
 					if($total_balance[0]->total_debit> $total_balance[0]->total_credit){ 
-						$opening_balance=$total_balance[0]->total_debit-$total_balance[0]->total_credit;?>
+						$opening_balance=$total_balance[0]->total_debit-$total_balance[0]->total_credit + $final_opening_blnc ;?>
 						<?= $this->Number->format(abs($opening_balance),[ 'places' => 2])?>
 						<?php echo " Dr"; 
 					}else if($total_balance[0]->total_debit< $total_balance[0]->total_credit){ 
-						$opening_balance=$total_balance[0]->total_debit-$total_balance[0]->total_credit;?>
+						$opening_balance=$total_balance[0]->total_debit-$total_balance[0]->total_credit + $final_opening_blnc ;?>
 						<?= $this->Number->format(abs($opening_balance),[ 'places' => 2])?>
 						<?php echo " Cr"; } 
 					else{ 
@@ -109,6 +128,8 @@
 					$url_path="/receipts/view/".$ledger->voucher_id;
 				}
 				
+				if($ledger->voucher_source != 'Opening Balance')	
+				{
 				?>
 				<tr>
 						<td><?php echo date("d-m-Y",strtotime($ledger->transaction_date)); ?></td>
@@ -127,7 +148,7 @@
 						<td align="right"><?= $this->Number->format($ledger->credit,[ 'places' => 2]); 
 							$total_credit+=$ledger->credit; ?></td>
 				</tr>
-				<?php endforeach; ?>
+				<?php } endforeach; ?>
 				<tr>
 					<td colspan="3" align="right">Total</td>
 					<td align="right" ><?= $this->Number->format( $total_debit,[ 'places' => 2])?> Dr</td>

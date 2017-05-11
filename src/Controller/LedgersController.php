@@ -242,6 +242,9 @@ class LedgersController extends AppController
         $this->set(compact('ledger', 'ledgerAccounts'));
         $this->set('_serialize', ['ledger']);
     }
+	
+	
+	
 	public function checkReferenceNo()
     {
 		$reference_no=$this->request->query['reference_no'][0];
@@ -263,6 +266,9 @@ class LedgersController extends AppController
 		$this->response->body($output);
 		return $this->response;
 	}
+	
+	
+	
 	public function AccountStatement (){
 		$this->viewBuilder()->layout('index_layout');
 		
@@ -279,7 +285,6 @@ class LedgersController extends AppController
             'contain' => ['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups'=>['AccountCategories']]]]
         ]);
 			
-			//pr($Ledger_Account_data->account_second_subgroup->account_first_subgroup->account_group->account_category->name); exit;
 			
 		$Ledgers_rows=$this->Ledgers->find()
 		->contain(['LedgerAccounts'])
@@ -291,8 +296,10 @@ class LedgersController extends AppController
 		
 		$query = $this->Ledgers->find();
 		$total_balance=$query->select(['total_debit' => $query->func()->sum('debit'),'total_credit' => $query->func()->sum('credit')])->where(['Ledgers.ledger_account_id' => $ledger_account_id,'Ledgers.transaction_date <'=>$transaction_from_date])->toArray();
-		
-		}
+
+		$query = $this->Ledgers->find();
+		$total_opening_balance=$query->select(['total_opening_debit' => $query->func()->sum('debit'),'total_opening_credit' => $query->func()->sum('credit')])->where(['Ledgers.ledger_account_id' => $ledger_account_id, 'Ledgers.voucher_source'=>'Opening Balance','Ledgers.transaction_date'=>$transaction_from_date])->toArray();
+	}
 		$ledger=$this->Ledgers->LedgerAccounts->find('list',
 				['keyField' => function ($row) {
 					return $row['id'];
@@ -305,8 +312,13 @@ class LedgersController extends AppController
 					}
 					
 				}])->where(['company_id'=>$st_company_id]);
-		$this->set(compact('ledger','Ledgers_rows','total_balance','ledger_account_id','transaction_from_date','transaction_to_date','Ledger_Account_data'));
+
+
+
+		$this->set(compact('ledger','Ledgers_rows','total_balance','ledger_account_id','transaction_from_date','transaction_to_date','Ledger_Account_data','total_opening_balance'));
 	}
+	
+	
 	public function openingBalanceView (){
 		$this->viewBuilder()->layout('index_layout');
 		$session = $this->request->session();

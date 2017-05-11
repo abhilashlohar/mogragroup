@@ -1,4 +1,3 @@
-
 <style>
 table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table > thead > tr > td, table > tbody > tr > td, table > tfoot > tr > td{
     vertical-align: top !important;
@@ -172,14 +171,13 @@ $(document).ready(function() {
     }, "No space allowed");
     
     jQuery.validator.addMethod("notEqualToGroup", function (value, element, options) {
-        // get all the elements passed here with the same class
+
         var elems = $(element).parents('form').find(options[0]);
-        // the value of the current element
+
         var valueToCompare = value;
-        // count
+
         var matchesFound = 0;
-        // loop each element and compare its value with the current value
-        // and increase the count every time we find one
+
         jQuery.each(elems, function () {
             thisVal = $(this).val();
             if (thisVal == valueToCompare) {

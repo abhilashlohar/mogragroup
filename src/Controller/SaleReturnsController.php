@@ -563,6 +563,18 @@ class SaleReturnsController extends AppController
 		}
 		exit;
 	}
+	function checkRefNumberUniqueEdit($received_from_id,$i,$is_old){
+		$reference_no=$this->request->query['ref_rows'][$i]['ref_no'];
+		$ReferenceBalances=$this->SaleReturns->ReferenceBalances->find()->where(['ledger_account_id'=>$received_from_id,'reference_no'=>$reference_no]);
+		if($ReferenceBalances->count()==1 && $is_old=="yes"){
+			echo 'true';
+		}elseif($ReferenceBalances->count()==0){
+			echo 'true';
+		}else{
+			echo 'false';
+		}
+		exit;
+	}
 	public function fetchRefNumbers($ledger_account_id){
 		$this->viewBuilder()->layout('');
 		$ReferenceBalances=$this->SaleReturns->ReferenceBalances->find()->where(['ledger_account_id'=>$ledger_account_id]);

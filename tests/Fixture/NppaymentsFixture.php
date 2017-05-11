@@ -49,12 +49,12 @@ class NppaymentsFixture extends TestFixture
             'voucher_no' => 1,
             'bank_cash_id' => 1,
             'created_by' => 1,
-            'created_on' => '2017-05-09',
+            'created_on' => '2017-05-11',
             'payment_mode' => 'Lorem ipsum dolor sit amet',
             'company_id' => 1,
-            'transaction_date' => '2017-05-09',
+            'transaction_date' => '2017-05-11',
             'edited_by' => 1,
-            'edited_on' => '2017-05-09',
+            'edited_on' => '2017-05-11',
             'cheque_no' => 'Lorem ipsum dolor sit amet'
         ],
     ];

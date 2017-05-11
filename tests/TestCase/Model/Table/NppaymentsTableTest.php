@@ -107,6 +107,7 @@ class NppaymentsTableTest extends TestCase
         'app.receipt_breakups',
         'app.payment_vouchers',
         'app.paid_tos',
+        'app.payment_breakups',
         'app.credit_notes',
         'app.purchase_accs',
         'app.parties',

@@ -483,6 +483,25 @@ select
 							<?php } ?>
 							</ul>
 						</li>
+
+
+						<li>
+							<a href="javascript:;">
+							<i class="icon-basket"></i>
+							<span class="title">Non Print Payment </span>
+							<span class="arrow "></span>
+							</a>
+							<ul class="sub-menu">
+							<?php if(in_array(90,$allowed_pages)){ ?>
+								<li><?php echo $this->Html->link( 'Add', '/Nppayments/add' ); ?></li>
+							<?php } ?>
+							<?php if(in_array(91,$allowed_pages)|| in_array(92,$allowed_pages) ||in_array(93,$allowed_pages)){ ?>
+								<li><?php echo $this->Html->link( 'View', '/Nppayments' ); ?></li>
+							<?php } ?>
+							</ul>
+						</li>
+
+
 						<?php } ?>
 						<?php if(in_array(94,$allowed_pages)||in_array(95,$allowed_pages)|| in_array(96,$allowed_pages) ||in_array(97,$allowed_pages)){ ?>
 						<li>

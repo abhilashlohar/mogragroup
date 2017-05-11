@@ -33,7 +33,7 @@
 		</tr>
 		
 		<tr>
-			<td><?= $this->Form->input('ref_no',['type'=>'text','label'=>false,'value'=>$ledger->ref_no]) ?></td>
+		<td><?= $this->Form->input('ref_no',['type'=>'text','label'=>false,'value'=>$ledger->ref_no]) ?></td>
 			<td><?= $this->Form->input('credit',['type'=>'text','class'=>'','label'=>false, 'value'=>$ledger->credit]) ?></td>
 			<td><?= $this->Form->input('debit',['type'=>'text','class'=>'','label'=>false, 'value'=>$ledger->debit]) ?></td>
 		</tr>

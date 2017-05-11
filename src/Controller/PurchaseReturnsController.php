@@ -18,6 +18,9 @@ class PurchaseReturnsController extends AppController
      */
     public function index()
     {
+		$this->viewBuilder()->layout('index_layout');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
         $this->paginate = [
             'contain' => ['InvoiceBookings', 'Companies']
         ];
@@ -64,6 +67,7 @@ class PurchaseReturnsController extends AppController
 		$v_LedgerAccount=$this->PurchaseReturns->LedgerAccounts->find()->where(['company_id'=>$st_company_id,'source_model'=>'Vendors','source_id'=>$invoiceBooking->vendor_id])->first();
 		
 		 if ($this->request->is('post')) {
+			$ref_rows=$this->request->data['ref_rows'];
 			$purchaseReturn = $this->PurchaseReturns->patchEntity($purchaseReturn, $this->request->data);
 			$purchaseReturn->company_id=$st_company_id;
 			$purchaseReturn->created_on= date("Y-m-d");
@@ -74,7 +78,6 @@ class PurchaseReturnsController extends AppController
 			}else{
 				$purchaseReturn->voucher_no=1;
 			}
-			
 			 if ($this->PurchaseReturns->save($purchaseReturn)) {   
 				foreach($purchaseReturn->purchase_return_rows as $purchase_return_row){
 					$results=$this->PurchaseReturns->ItemLedgers->find()->where(['ItemLedgers.item_id' => $purchase_return_row->item_id,'ItemLedgers.in_out' => 'In','rate_updated' => 'Yes','company_id' => $st_company_id])->first();
@@ -91,47 +94,146 @@ class PurchaseReturnsController extends AppController
 				$vat_amounts=[]; $total_amounts=[];
 				foreach($invoiceBooking->invoice_booking_rows as $invoice_booking_row){
 					$amount=$invoice_booking_row->unit_rate_from_po*$invoice_booking_row->quantity;
+
 					$amount=$amount+$invoice_booking_row->misc;
-					
 					if($invoice_booking_row->discount_per==1){
 						$amount=$amount*((100-$invoice_booking_row->discount)/100);
 					}else{
 						$amount=$amount-$invoice_booking_row->discount;
 					}
-					
+
 					if($invoice_booking_row->pnf_per==1){
 						$amount=$amount*((100+$invoice_booking_row->pnf)/100);
 					}else{
 						$amount=$amount+$invoice_booking_row->pnf;
 					}
-					
+
 					$amount=$amount*((100+	$invoice_booking_row->excise_duty)/100);
-					
 					$amountofVAT=($amount*$invoice_booking_row->sale_tax)/100;
 					$amount=$amount*((100+$invoice_booking_row->sale_tax)/100);
-					
+
 					$vat_amounts[$invoice_booking_row->item_id]=$amountofVAT/$invoice_booking_row->quantity;
-					
 					$amount=$amount+$invoice_booking_row->other_charges;
 					$total_amounts[$invoice_booking_row->item_id]=$amount/$invoice_booking_row->quantity;
 				}
+//pr($total_amounts); exit;
+				$total_vat_item=0;
+				$total_amounts_item=0;
+				foreach($purchaseReturn->purchase_return_rows as $purchase_return_row){
+					$total_vat=$vat_amounts[$purchase_return_row->item_id]*$purchase_return_row->quantity;
+					$total_vat_item=$total_vat_item+$total_vat;
+					
+					$total_amt=$total_amounts[$purchase_return_row->item_id]*$purchase_return_row->quantity;
+					$total_amounts_item=$total_amounts_item+$total_amt;
+
+				}
+
+				foreach($purchaseReturn->purchase_return_rows as $purchase_return_row){
+						$query = $this->PurchaseReturns->InvoiceBookings->InvoiceBookingRows->query();
+						$query->update()
+							->set(['purchase_return_quantity'=>$purchase_return_row->quantity])
+							->where(['invoice_booking_id' => $invoiceBooking->id,'item_id'=>$purchase_return_row->item_id])
+							->execute();
+				}
+						
+						$query = $this->PurchaseReturns->InvoiceBookings->query();
+						$query->update()
+						->set(['purchase_return_status' => 'Yes','purchase_return_id'=>$purchaseReturn->id])
+						->where(['id' => $invoiceBooking->id])
+						->execute();
+
+						$query = $this->PurchaseReturns->query();
+						$query->update()
+						->set(['invoice_booking_id'=>$invoiceBooking->id])
+						->where(['id' => $purchaseReturn->id])
+						->execute();
+					
 				
-				pr($vat_amounts);
-				echo '<br/>';
-				pr($total_amounts);
+				if($invoiceBooking->purchase_ledger_account==35){
+					//ledger posting for PURCHASE ACCOUNT
+					$ledger = $this->PurchaseReturns->Ledgers->newEntity();
+					$ledger->ledger_account_id = $invoiceBooking->purchase_ledger_account;
+					$ledger->debit = 0;
+					$ledger->credit = $total_amounts_item;
+					$ledger->voucher_id = $purchaseReturn->id;
+					$ledger->company_id = $st_company_id;
+					$ledger->voucher_source = 'Purchase Return';
+					$ledger->transaction_date = date("Y-m-d");
+					$this->PurchaseReturns->Ledgers->save($ledger);
+				}else{
+					//ledger posting for PURCHASE ACCOUNT
+					$ledger = $this->PurchaseReturns->Ledgers->newEntity();
+					$ledger->ledger_account_id = $invoiceBooking->purchase_ledger_account;
+					$ledger->debit = 0;
+					$ledger->credit = $total_amounts_item-$total_vat_item;
+					$ledger->voucher_id = $purchaseReturn->id;
+					$ledger->company_id = $st_company_id;
+					$ledger->voucher_source = 'Purchase Return';
+					$ledger->transaction_date = date("Y-m-d");
+					$this->PurchaseReturns->Ledgers->save($ledger);
+					
+					//ledger posting for PURCHASE ACCOUNT
+					$ledger = $this->PurchaseReturns->Ledgers->newEntity();
+					$ledger->ledger_account_id = $invoiceBooking->ledger_account_for_vat;
+					$ledger->debit = 0;
+					$ledger->credit = $total_vat_item;
+					$ledger->voucher_id = $purchaseReturn->id;
+					$ledger->company_id = $st_company_id;
+					$ledger->voucher_source = 'Purchase Return';
+					$ledger->transaction_date = date("Y-m-d");
+					$this->PurchaseReturns->Ledgers->save($ledger);
+				}
+
+				$v_LedgerAccount=$this->PurchaseReturns->LedgerAccounts->find()->where(['company_id'=>$st_company_id,'source_model'=>'Vendors','source_id'=>$invoiceBooking->vendor_id])->first();
+				$ledger = $this->PurchaseReturns->Ledgers->newEntity();
+				$ledger->ledger_account_id = $v_LedgerAccount->id;
+				$ledger->debit = $total_amounts_item;
+				$ledger->credit =0;
+				$ledger->voucher_id = $purchaseReturn->id;
+				$ledger->company_id = $invoiceBooking->company_id;
+				$ledger->transaction_date = date("Y-m-d");
+				$ledger->voucher_source = 'Purchase Return';
+				$this->PurchaseReturns->Ledgers->save($ledger);
+
+					if(sizeof(@$ref_rows)>0){
+						
+						foreach($ref_rows as $ref_row){ 
+							$ref_row=(object)$ref_row;
+							if($ref_row->ref_type=='New Reference' or $ref_row->ref_type=='Advance Reference'){
+								$query = $this->PurchaseReturns->ReferenceBalances->query();
+								
+								$query->insert(['ledger_account_id', 'reference_no', 'credit', 'debit'])
+								->values([
+									'ledger_account_id' => $v_LedgerAccount->id,
+									'reference_no' => $ref_row->ref_no,
+									'credit' => 0,
+									'debit' => $ref_row->ref_amount
+								]);
+								$query->execute();
+							}else{
+								$ReferenceBalance=$this->PurchaseReturns->ReferenceBalances->find()->where(['ledger_account_id'=>$v_LedgerAccount->id,'reference_no'=>$ref_row->ref_no])->first();
+								$ReferenceBalance=$this->PurchaseReturns->ReferenceBalances->get($ReferenceBalance->id);
+								$ReferenceBalance->debit=$ReferenceBalance->debit+$ref_row->ref_amount;
+								
+								$this->PurchaseReturns->ReferenceBalances->save($ReferenceBalance);
+							}
+							
+							$query = $this->PurchaseReturns->ReferenceDetails->query();
+							$query->insert(['ledger_account_id', 'purchase_return_id', 'reference_no', 'credit', 'debit', 'reference_type'])
+							->values([
+								'ledger_account_id' => $v_LedgerAccount->id,
+								'purchase_return_id' => $purchaseReturn->id,
+								'reference_no' => $ref_row->ref_no,
+								'credit' =>  0,
+								'debit' =>$ref_row->ref_amount,
+								'reference_type' => $ref_row->ref_type
+							]);
+						
+							$query->execute();
+						}
+					}
 				
-				/*posing for supplier
-				$total_amount
-				
-				posting for purchase acc
-				$total_amount-$totalVAT
-				
-				posting for VAT acc
-				$totalVAT*/
-				exit;
-				
-				
-                $this->Flash->success(__('The purchase return has been saved.'));
+				$this->Flash->success(__('The purchase return has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             } else {// pr($purchaseReturn); exit;

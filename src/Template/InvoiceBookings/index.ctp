@@ -83,9 +83,11 @@
 								<?php if(in_array(123,$allowed_pages)){ ?>
                                 <?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $invoiceBooking->id,],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View')); ?>
                                 <?php } ?>
-								<?php if($purchase_return=="true"){
+								<?php if($purchase_return=="true"  && $invoiceBooking->purchase_return_status=='No'){
 								echo $this->Html->link('<i class="fa fa-repeat"></i>  Purchase Return','/PurchaseReturns/Add?invoiceBooking='.$invoiceBooking->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
-								} ?>
+								}elseif($purchase_return=="true" && $invoiceBooking->purchase_return_status=='Yes'){
+									echo $this->Html->link('<i class="fa fa-repeat"></i> Edit Sale Return','/PurchaseReturns/Edit?invoiceBooking='.$invoiceBooking->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+								} ?> 
 							</td>
 						</tr>
 						<?php endforeach; ?>

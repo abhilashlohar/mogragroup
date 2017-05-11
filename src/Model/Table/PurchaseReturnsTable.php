@@ -52,6 +52,7 @@ class PurchaseReturnsTable extends Table
         ]);
 		$this->belongsTo('ReferenceDetails');
 		$this->belongsTo('ReferenceBalances');
+		$this->belongsTo('Ledgers');
     }
 
     /**

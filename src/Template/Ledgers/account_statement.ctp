@@ -67,6 +67,7 @@
 			<div class="col-md-8"></div>	
 			<div class="col-md-4 caption-subject " align="left" style="background-color:#E7E2CB; font-size: 16px;"><b>Opening Balance : </b>
 				<?php $opening_balance=0; 
+					//pr($total_opening_balance);
 					
 					if($total_opening_balance[0]->total_opening_debit > $total_opening_balance[0]->total_opening_credit)
 					{
@@ -77,16 +78,10 @@
 					{
 						 $final_opening_blnc = $total_opening_balance[0]->total_opening_debit - $total_opening_balance[0]->total_opening_credit;	
 					}
-					
-					
-					
-					
-					
-					
-					
-					
-					/////////////////
-					if($total_balance[0]->total_debit> $total_balance[0]->total_credit){ 
+				
+				/////////////////
+				
+				if($total_balance[0]->total_debit> $total_balance[0]->total_credit){ 
 						$opening_balance=$total_balance[0]->total_debit-$total_balance[0]->total_credit + $final_opening_blnc ;?>
 						<?= $this->Number->format(abs($opening_balance),[ 'places' => 2])?>
 						<?php echo " Dr"; 
@@ -95,7 +90,7 @@
 						<?= $this->Number->format(abs($opening_balance),[ 'places' => 2])?>
 						<?php echo " Cr"; } 
 					else{ 
-						echo "0.00"; }
+						  echo 0 + $final_opening_blnc; }
 					?>
 			</div>
 		</div>

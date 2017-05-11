@@ -29,7 +29,7 @@ class VendorsController extends AppController
 		$this->set(compact('supp_name'));
 		
 		if(!empty($supp_name)){
-			$where['Vendors.company_name']=$supp_name;
+			$where['Vendors.company_name LIKE']= '%'.$supp_name.'%';
 		}
 	
 

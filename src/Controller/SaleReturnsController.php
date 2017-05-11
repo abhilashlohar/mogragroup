@@ -19,10 +19,11 @@ class SaleReturnsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-        $this->paginate = [
-            'contain' => ['Customers', 'SaleTaxes', 'Companies', 'SalesOrders', 'Employees', 'Transporters']
-        ];
-        $saleReturns = $this->paginate($this->SaleReturns);
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+       
+		$saleReturns = $this->paginate($this->SaleReturns->find()->where(['company_id'=>$st_company_id])->order(['SaleReturns.id' => 'DESC']));
+		//pr($saleReturns); exit;
 
         $this->set(compact('saleReturns'));
         $this->set('_serialize', ['saleReturns']);
@@ -83,6 +84,7 @@ class SaleReturnsController extends AppController
 			}
 			
 			$saleReturn->company_id=$invoice->company_id;
+			$saleReturn->date_created=date("Y-m-d");
 			$saleReturn->sr1=$invoice->in1;
 			$last_sr_no=$this->SaleReturns->find()->select(['sr2'])->where(['company_id' => $st_company_id])->order(['sr2' => 'DESC'])->first();
 			if($last_sr_no){
@@ -317,15 +319,11 @@ class SaleReturnsController extends AppController
 				}
 					
 			}
+			$saleReturn->date_created=date("Y-m-d");
 
         if ($this->SaleReturns->save($saleReturn)) {
-
-				
 				$this->SaleReturns->Ledgers->deleteAll(['voucher_id' => $saleReturn->id, 'voucher_source' => 'Sale Return']);
 				$this->SaleReturns->ItemLedgers->deleteAll(['source_id' => $saleReturn->id, 'source_model' => 'Sale Return','company_id'=>$st_company_id]);
-				
-				
-				
 				$c_LedgerAccount=$this->SaleReturns->LedgerAccounts->find()->where(['company_id'=>$st_company_id,'source_model'=>'Customers','source_id'=>$invoice->customer->id])->first();
 				$ledger_grand=$saleReturn->grand_total;
 				$ledger = $this->SaleReturns->Ledgers->newEntity();
@@ -426,7 +424,8 @@ class SaleReturnsController extends AppController
 					foreach($saleReturn->check as $sale_return_row){
 				
 						$item_id=$sale_return_row;
-						$item_detail=$this->SaleReturns->ItemLedgers->find()->where(['item_id'=>$sale_return_row,'source_id'=>$invoice->id,'source_model'=>'Invoices'])->first();
+						$item_detail=$this->SaleReturns->ItemLedgers->find()->where(['item_id'=>$sale_return_row,'source_model != '=>'Invoices'])->first();
+						//pr($item_detail); exit;
 						$itemLedger = $this->SaleReturns->ItemLedgers->newEntity();
 						$itemLedger->item_id = $item_id;
 						$itemLedger->quantity = $saleReturn->sale_return_rows[$i]['quantity'];
@@ -509,11 +508,11 @@ class SaleReturnsController extends AppController
                 $this->Flash->error(__('The sale return could not be saved. Please, try again.'));
             }
         }
-		
+		//pr($invoice->id); exit;
 		foreach($invoice->sale_return->sale_return_rows as $sale_return_row){
 			if($sale_return_row->item_serial_number){
 			@$ItemSerialNumber_In[$sale_return_row->item_id]= explode(",",$sale_return_row->item_serial_number);
-			$ItemSerialNumber[$sale_return_row->item_id]=$this->SaleReturns->SaleReturnRows->ItemSerialNumbers->find()->where(['item_id'=>$sale_return_row->item_id,'status'=>'In','company_id'=>$st_company_id])->orWhere(['ItemSerialNumbers.invoice_id'=>$invoice->id,'item_id'=>$sale_return_row->item_id,'status'=>'Out','company_id'=>$st_company_id])->toArray();
+			$ItemSerialNumber[$sale_return_row->item_id]=$this->SaleReturns->SaleReturnRows->ItemSerialNumbers->find()->where(['item_id'=>$sale_return_row->item_id,'status'=>'In','company_id'=>$st_company_id,'ItemSerialNumbers.invoice_id'=>$invoice->id])->orWhere(['ItemSerialNumbers.invoice_id'=>$invoice->id,'item_id'=>$sale_return_row->item_id,'status'=>'Out','company_id'=>$st_company_id])->toArray();
 			}
 				
 		}

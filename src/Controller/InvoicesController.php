@@ -1005,8 +1005,8 @@ class InvoicesController extends AppController
 									'ledger_account_id' => $c_LedgerAccount->id,
 									'invoice_id' => $invoice->id,
 									'reference_no' => $ref_row->ref_no,
-									'credit' => $ref_row->ref_amount,
-									'debit' => 0,
+									'credit' => 0,
+									'debit' => $ref_row->ref_amount,
 									'reference_type' => $ref_row->ref_type
 								])
 								->execute();

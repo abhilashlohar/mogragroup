@@ -489,10 +489,7 @@ $(document).ready(function() {
 		}
 		calculate_total();
 	});
-	$('.quantity').die().live("keyup",function() {
-		var qty =$(this).val();
-			rename_rows(); 
-    });
+	
 	
 	$('input[name="discount_per"]').die().live("keyup",function() {
 		calculate_total();
@@ -516,8 +513,10 @@ $(document).ready(function() {
 	$('.rename_check').die().live("click",function() {
 		rename_rows(); calculate_total();
     });
+	
+
 	rename_rows();
-function rename_rows(){
+	function rename_rows(){
 		$("#main_tb tbody tr.tr1").each(function(){  //alert();
 			var row_no=$(this).attr('row_no');
 			var val=$(this).find('td:nth-child(7) input[type="checkbox"]:checked').val();
@@ -529,9 +528,9 @@ function rename_rows(){
 				$(this).css('background-color','#fffcda');
 				var qty=$(this).find('td:nth-child(3) input[type="text"]').val();
 				var serial_l=$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(2) select').length;
-			
-				if(serial_l>0){ 	alert(serial_l);
-					$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(2) select').removeAttr("readonly").attr("name","sale_return_rows["+row_no+"][item_serial_numbers][]").attr("id","sale_return_rows-"+row_no+"-item_serial_no").attr('maxlength',qty).select2().rules('add', {
+				alert(qty);
+				if(serial_l>0){ 	
+					$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(2) select').removeAttr("readonly").attr("name","sale_return_rows["+row_no+"][item_serial_numbers][]").attr("id","sale_return_rows-"+row_no+"-item_serial_no").attr('maxlength',qty).rules('add', {
 						    required: true,
 							minlength: qty,
 							maxlength: qty,
@@ -562,6 +561,7 @@ function rename_rows(){
 	}
 	
 	$('.quantity').die().live("keyup",function() {
+			rename_rows(); 
 			calculate_total();
     });	
 			

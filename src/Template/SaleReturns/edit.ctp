@@ -199,7 +199,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 								<?php echo $this->Form->input('sale_return_rows.'.$q.'.amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly','placeholder' => 'Amount','step'=>0.01]); ?>
 							</td>
 							<td>
-								<?php echo @$invoice_row->sale_return_quantity; ?>
+								<?php echo @$invoice->sale_tax->tax_figure; ?>
 							</td>
 							<?php $checked2="";
 							if($invoice_row->sale_return_quantity > 0)
@@ -250,10 +250,10 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 					?> 
 					<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per','Checked'=>$checked2]); ?></label>(in %)</b>
 						<div class="input-group col-md-2" style="display:none;" id="discount_text">
-						<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 value="<?php echo $invoice->discount_per; ?> "><span class="input-group-addon">%</span>
+						<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 readonly value="<?php echo $invoice->discount_per; ?> "><span class="input-group-addon">%</span>
 						</div>
 					</td>
-					<td><?php echo $this->Form->input('discount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount','step'=>0.01,'value'=>$invoice->discount]); ?></td>
+					<td><?php echo $this->Form->input('discount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly','placeholder' => 'Discount','step'=>0.01,'value'=>$invoice->discount]); ?></td>
 				</tr>
 				
 				<tr style="background-color:#e6faf9;">
@@ -266,25 +266,24 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 				</tr>
 				<tr>
 				<?php 
-						if($invoice->pnf_type==1){ $checked3="Checked";
-							 } 
-						else{	$checked3="";
-							 } 
+					if($invoice->pnf_type==1){ $checked3="Checked";
+					}else{	$checked3="";
+					} 
 					?> 
 					<td  align="right">
 					<b>P&F <label><?php echo $this->Form->input('pnf_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'pnfper','Checked'=>$checked2]); ?></label>(in %)</b>
 					<?php if($invoice->pnf_type=='1'){ ?>
 						<div class="input-group col-md-2"  id="pnf_text">
-							<input type="text" name="pnf_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 value='<?= h($invoice->pnf_per) ?>'><span class="input-group-addon">%</span>
+							<input type="text" name="pnf_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01  readonly value='<?= h($invoice->pnf_per) ?>'><span class="input-group-addon">%</span>
 						</div>
 					<?php }else{ ?>
 						<div class="input-group col-md-2"  id="pnf_text" style="display:none;">
-							<input type="text" name="pnf_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 value='0'><span class="input-group-addon">%</span>
+							<input type="text" name="pnf_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 readonly value='0'><span class="input-group-addon">%</span>
 						</div>
 					<?php } ?>
 					
 					</td>
-					<td><?php echo $this->Form->input('pnf', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'P&F','step'=>0.01]); ?></td>
+					<td><?php echo $this->Form->input('pnf', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly','placeholder' => 'P&F','step'=>0.01]); ?></td>
 				</tr>
 				<tr>
 					<td  align="right"><b>Total after P&F </b></td>
@@ -500,29 +499,7 @@ $(document).ready(function() {
 	});
 	
 	//--	 END OF VALIDATION
-	
-	if($("#discount_per").is(':checked')){
-		$("#discount_text").show();
-		$('input[name="discount"]').attr('readonly','readonly');
-		
-	}else{
-		$("#discount_text").hide();
-		$('input[name="discount"]').removeAttr('readonly');
-		$('input[name="discount_per"]').val(0);
-		$('input[name="discount"]').val(0);
-	}
-	$("#discount_per").on('click',function(){
-		if($(this).is(':checked')){
-			$("#discount_text").show();
-			$('input[name="discount"]').attr('readonly','readonly');
-		}else{ 
-			$("#discount_text").hide();
-			$('input[name="discount"]').removeAttr('readonly');
-			$('input[name="discount_per"]').val(0);
-			$('input[name="discount"]').val(0);
-		}
-		calculate_total();
-	});
+
 	
 	$("#pnfper").on('click',function(){
 		if($(this).is(':checked')){
@@ -532,7 +509,7 @@ $(document).ready(function() {
 
 		}else{
 			$("#pnf_text").hide();
-			$('input[name="pnf"]').removeAttr('readonly');
+			//$('input[name="pnf"]').removeAttr('readonly');
 			$('input[name="pnf"]').val(0);
 			$('input[name="pnfper"]').val(0);
 			
@@ -562,7 +539,8 @@ $(document).ready(function() {
 	$('.rename_check').die().live("click",function() {
 		rename_rows(); calculate_total();
     });
-	rename_rows();
+
+rename_rows();
 function rename_rows(){
 		var i=1; 
 		var row_no=0;
@@ -580,7 +558,7 @@ function rename_rows(){
 				var serial_l=$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(2) select').length;
 			
 				if(serial_l>0){ 	//alert(serial_l);
-					$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(2) select').removeAttr("readonly").attr("name","sale_return_rows["+row_no+"][item_serial_numbers][]").attr("id","sale_return_rows-"+row_no+"-item_serial_no").attr('maxlength',qty).select2().rules('add', {
+					$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(2) select').removeAttr("readonly").attr("name","sale_return_rows["+row_no+"][item_serial_numbers][]").attr("id","sale_return_rows-"+row_no+"-item_serial_no").attr('maxlength',qty).rules('add', {
 						    required: true,
 							minlength: qty,
 							maxlength: qty,
@@ -691,6 +669,7 @@ function rename_rows(){
 				$(this).find("td:nth-child(2) select").attr({name:"ref_rows["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no"}).rules("add", "required"); 
 			}else if(is_input){ 
 				var url='<?php echo $this->Url->build(['controller'=>'SaleReturns','action'=>'checkRefNumberUnique']); ?>';
+				
 				url=url+'/<?php echo $c_LedgerAccount->id; ?>/'+i;
 				$(this).find("td:nth-child(2) input").attr({name:"ref_rows["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no", class:"form-control input-sm ref_number"}).rules('add', {
 							required: true,
@@ -768,7 +747,12 @@ function rename_rows(){
 		
 		var total_ref=0;
 		$("table.main_ref_table tbody tr").each(function(){
-			var am=parseFloat($(this).find('td:nth-child(3) input:eq(0)').val());
+			var is_ref_old_amount=$(this).find("td:nth-child(3) input.ref_old_amount").length;
+				if(is_ref_old_amount){
+					var am=parseFloat($(this).find('td:nth-child(3) input:eq(1)').val());
+				}else{
+				var am=parseFloat($(this).find('td:nth-child(3) input:eq(0)').val());
+				}
 			if(!am){ am=0; }
 			total_ref=total_ref+am;
 			 

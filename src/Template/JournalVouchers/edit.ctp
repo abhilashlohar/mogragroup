@@ -319,16 +319,16 @@ $(document).ready(function() {
 				if(!is_old){ is_old='No'; }
 				url=url+'/'+received_from_id+'/'+i+'/'+is_old+'/'+auto_inc;
 				$(this).find("td:nth-child(2) input").attr({name:"ref_rows["+auto_inc+"]["+i+"][ref_no]", id:"ref_rows-"+auto_inc+"-"+i+"-ref_no", class:"form-control input-sm ref_number-"+received_from_id}).rules('add', {
-														required: true,
-														noSpace: true,
-														notEqualToGroup: ['.ref_number-'+received_from_id],
-														remote: {
-															url: url,
-														},
-														messages: {
-															remote: "Not an unique."
-														}
-													});
+												required: true,
+												noSpace: true,
+												notEqualToGroup: ['.ref_number-'+received_from_id],
+												remote: {
+													url: url,
+												},
+												messages: {
+													remote: "Not an unique."
+												}
+											});
 			}
 			
 			var is_ref_old_amount=$(this).find("td:nth-child(3) input:eq(0)").length;

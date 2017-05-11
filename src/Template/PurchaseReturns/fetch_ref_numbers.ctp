@@ -1,6 +1,7 @@
 <?php
 $options=[];
 foreach($ReferenceBalances as $ReferenceBalance){
+	//pr($ReferenceBalance); 
 		$due_amount=$ReferenceBalance->credit-$ReferenceBalance->debit;
 		$total=$ReferenceBalance->credit;
 	if($due_amount>0){

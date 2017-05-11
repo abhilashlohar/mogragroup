@@ -672,7 +672,6 @@ function rename_rows(){
 				var is_old=$(this).find("td:nth-child(2) input").attr('is_old');				
 				var url='<?php echo $this->Url->build(['controller'=>'SaleReturns','action'=>'checkRefNumberUniqueEdit']); ?>';
 				url=url+'/<?php echo $c_LedgerAccount->id; ?>/'+i+'/'+is_old;
-
 				$(this).find("td:nth-child(2) input").attr({name:"ref_rows["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no", class:"form-control input-sm ref_number"}).rules('add', {
 							required: true,
 							noSpace: true,

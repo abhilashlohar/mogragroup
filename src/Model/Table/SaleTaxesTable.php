@@ -43,6 +43,19 @@ class SaleTaxesTable extends Table
             'foreignKey' => 'sale_tax_id'
         ]); 
 		
+
+		$this->belongsToMany('Companies', [
+            'foreignKey' => 'sale_taxe_id',
+            'targetForeignKey' => 'company_id',
+            'joinTable' => 'sale_tax_companies'
+        ]);
+        $this->hasMany('SaleTaxCompanies', [
+            'foreignKey' => 'sale_tax_id',
+			'saveStrategy' => 'replace'
+
+        ]);
+
+
 		$this->belongsTo('AccountCategories', [
             'foreignKey' => 'account_category_id',
             'joinType' => 'INNER'
@@ -63,15 +76,7 @@ class SaleTaxesTable extends Table
             'joinType' => 'INNER'
         ]);
 		
-		$this->belongsToMany('Companies', [
-            'foreignKey' => 'sale_taxe_id',
-            'targetForeignKey' => 'company_id',
-            'joinTable' => 'sale_tax_companies'
-        ]);
-		$this->hasMany('SaleTaxCompanies', [
-            'foreignKey' => 'sale_taxe_id',
-			'saveStrategy' => 'replace'
-        ]);
+		
 		
 		$this->belongsTo('Ledgers');
 		$this->belongsTo('VoucherLedgerAccounts');

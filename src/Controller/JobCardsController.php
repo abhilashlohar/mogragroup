@@ -323,11 +323,18 @@ class JobCardsController extends AppController
 		if ($this->request->is(['patch', 'post', 'put'])) {
             $jobCard = $this->JobCards->patchEntity($jobCard, $this->request->data);
             if ($this->JobCards->save($jobCard)) {
-					
-					pr($jobCard);
+				   
+				   //$query = $this->JobCards->SalesOrders->SalesOrderRows->find()->where(['sales_order_id'=>$sales_order_id]);
+
+				  $query=$this->JobCards->SalesOrders->find()->select(['total_rows' => 
+					$this->SalesOrders->find()->func()->count('SalesOrderRows.id')])
+					->leftJoinWith('SalesOrderRows', function ($q) {
+					return $q->where();
+					});
+					pr($query);
 					exit;
 					
-					foreach($jobCard->sales_order_rows as $sales_order_row ){
+				    foreach($jobCard->sales_order_rows as $sales_order_row ){
 						$query = $this->JobCards->SalesOrders->SalesOrderRows->query();
 							$query->update()
 							->set(['source_type' =>$sales_order_row['source_type']])

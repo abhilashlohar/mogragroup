@@ -67,7 +67,8 @@ class PettyCashVouchersTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->hasMany('PettyCashVoucherRows', [
-            'foreignKey' => 'petty_cash_voucher_id'
+            'foreignKey' => 'petty_cash_voucher_id',
+			'saveStrategy' => 'replace'
         ]);
     }
 

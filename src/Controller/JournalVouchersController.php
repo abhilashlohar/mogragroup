@@ -357,7 +357,7 @@ class JournalVouchersController extends AppController
 									}
 									
 								}else{
-									$ReferenceBalance=$this->JournalVouchers->ReferenceBalances->find()->where(['ledger_account_id'=>$journal_voucher_row->received_from_id,'reference_no'=>$ref_row->ref_no,'auto_inc'=>$i])->first();
+									$ReferenceBalance=$this->JournalVouchers->ReferenceBalances->find()->where(['ledger_account_id'=>$journal_voucher_row->received_from_id,'reference_no'=>$ref_row->ref_no])->first();
 									$ReferenceBalance=$this->JournalVouchers->ReferenceBalances->get($ReferenceBalance->id);
 									if($journal_voucher_row->cr_dr=="Dr"){
 										$ReferenceBalance->debit=$ReferenceBalance->debit+$ref_row->ref_amount;

@@ -28,7 +28,7 @@
 				<div class="col-md-2">
 						<div class="form-group">
 							<label class="control-label">Date</label>
-							<?php echo $this->Form->input('date', ['type' => 'text','label' => false,'class' => 'form-control input-sm ','data-date-format' => 'dd-mm-yyyy','value' =>date("d-m-Y",strtotime($financial_year->date_from)),'readonly']); ?>
+							<?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm ','data-date-format' => 'dd-mm-yyyy','value' =>date("d-m-Y",strtotime($financial_year->date_from)),'readonly']); ?>
 						</div>
 					</div>
 				

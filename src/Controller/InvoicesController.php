@@ -702,7 +702,7 @@ class InvoicesController extends AppController
 		$sale_tax_ledger_accounts=[];
 			foreach($invoice->sales_order->sales_order_rows as $sales_order_row){
 				$st_LedgerAccount=$this->Invoices->LedgerAccounts->find()->where(['source_id'=>$sales_order_row->sale_tax->id,'source_model'=>'SaleTaxes','company_id'=>$st_company_id])->first();
-				pr(['source_id'=>$sales_order_row->sale_tax->id,'source_model'=>'SaleTaxes','company_id'=>$st_company_id]); exit;
+				
 				$sale_tax_ledger_accounts[$sales_order_row->sale_tax->id]=$st_LedgerAccount->id;
 			}	
 		

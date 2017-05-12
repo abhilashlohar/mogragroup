@@ -41,4 +41,4 @@ Add new field in reference_details purchase_return_id(Int).
 
 
 ------------Abhilash--------------
-sales-order-rows  sal_taxe_id--->sale_taxe_id
+sales-order-rows  sal_taxe_id--->sale_tax_id

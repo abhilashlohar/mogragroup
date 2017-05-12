@@ -140,6 +140,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 			
 			
 			<input type="text"  name="checked_row_length" id="checked_row_length" style="height: 0px;padding: 0;border: none;" />
+			<div id="form_2_services_error"></div>
 			<table class="table tableitm" id="main_tb">
 				<thead>
 					<tr>
@@ -179,7 +180,9 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 								<?php echo @$invoice->sale_tax->tax_figure; ?>
 							</td>
 							<td>
+								<div class="checkbox-list" data-error-container="#form_2_services_error">
 								<label><?php echo $this->Form->input('check.'.$q, ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$invoice_row->item_id]); ?></label>
+								</div>
 							</td>
 						</tr>
 						
@@ -711,6 +714,8 @@ $(document).ready(function() {
 		}
 		$("table.main_ref_table tfoot tr:nth-child(2) td:nth-child(2) input").val(total_ref.toFixed(2));
 	}
+	
+	$('.rename_check').rules("add", "required");
 });
 </script>
 

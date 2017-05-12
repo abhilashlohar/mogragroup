@@ -323,6 +323,10 @@ class JobCardsController extends AppController
 		if ($this->request->is(['patch', 'post', 'put'])) {
             $jobCard = $this->JobCards->patchEntity($jobCard, $this->request->data);
             if ($this->JobCards->save($jobCard)) {
+					
+					pr($jobCard);
+					exit;
+					
 					foreach($jobCard->sales_order_rows as $sales_order_row ){
 						$query = $this->JobCards->SalesOrders->SalesOrderRows->query();
 							$query->update()

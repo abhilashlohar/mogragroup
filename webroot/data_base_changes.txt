@@ -37,3 +37,8 @@ Add new field in Invoice-Booking purchase_return_status(Varchar)(default->No).
 Add new field in Invoice-Booking purchase_return_id(Int).
 Add new field in Invoice_Booking_rows purchase_return_quantity(Int).
 Add new field in reference_details purchase_return_id(Int).
+
+
+
+------------Abhilash--------------
+sales-order-rows  sal_taxe_id--->sale_taxe_id

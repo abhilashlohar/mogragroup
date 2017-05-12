@@ -46,27 +46,30 @@
 			<form method="GET" >
 				<input type="hidden" name="inventory_voucher" value="<?php echo @$inventory_voucher; ?>">
 				<table class="table table-condensed">
-				
 					<tbody>
-					
 						<tr>
 							<td>
-							
-										<div class="input-group" style="" id="pnf_text">
-											<span class="input-group-addon">PO-</span><input type="text" name="purchase_no" class="form-control input-sm" placeholder="Purchase No" value="<?php echo @$purchase_no; ?>">
-										</div>
-									</td>
-									
-									<td>	<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
+								<div class="input-group" style="" id="pnf_text">
+								  <span class="input-group-addon">PO-</span><input type="text" name="purchase_no" class="form-control input-sm" placeholder="Purchase No" value="<?php echo @$purchase_no; ?>">
+								</div>
+							</td>
+						    <td>	
+							     <input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
 									
 							</td>
-							<td><input type="text" name="vendor" class="form-control input-sm" placeholder="Supplier" value="<?php echo @$vendor; ?>"></td>
+							<td>
+							      <input type="text" name="vendor" class="form-control input-sm" placeholder="Supplier" value="<?php echo @$vendor; ?>">
+							</td>
 							
-							<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+							<input type="hidden" name="pull-request" value='true' />
+							
+							<td>
+							     <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button>
+							</td>
 						</tr>
 					</tbody>
 				</table>
-				</form>
+			</form>
 				<?php $page_no=$this->Paginator->current('Purchase Orders'); $page_no=($page_no-1)*20; ?>
 				<table class="table table-bordered table-striped table-hover">
 						<thead>
@@ -82,8 +85,7 @@
 					</thead>
 
 					<tbody>
-						<?php foreach ($purchaseOrders as $purchaseOrder): 
-?>
+						<?php foreach ($purchaseOrders as $purchaseOrder): ?>
 						<tr>
 							<td><?= h(++$page_no) ?></td>
 							

@@ -74,8 +74,6 @@ class PurchaseOrdersController extends AppController
 		$this->set(compact('url'));
     }
 
-    
-
     /**
      * View method
      *

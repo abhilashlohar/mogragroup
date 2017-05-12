@@ -335,7 +335,7 @@ $(document).ready(function() {
 												}
 											});
 			}else if(is_input){
-				var url='<?php echo $this->Url->build(['controller'=>'JournalVouchers','action'=>'checkRefNumberUniqueEdit']); ?>';
+				var url='<?php echo $this->Url->build(['controller'=>'PettyCashVouchers','action'=>'checkRefNumberUniqueEdit']); ?>';
 				var is_old=$(this).find("td:nth-child(2) input").attr('is_old');
 				if(!is_old){ is_old='No'; }
 				url=url+'/'+received_from_id+'/'+i+'/'+is_old+'/'+auto_inc;
@@ -415,7 +415,7 @@ $(document).ready(function() {
 		var ref_type=$(this).find('option:selected').val();
 		var received_from_id=$(this).closest('tr.main_tr').find('td select:eq(0)').val();
 		if(ref_type=="Against Reference"){
-			var url="<?php echo $this->Url->build(['controller'=>'JournalVouchers','action'=>'fetchRefNumbers']); ?>";
+			var url="<?php echo $this->Url->build(['controller'=>'PettyCashVouchers','action'=>'fetchRefNumbers']); ?>";
 			url=url+'/'+received_from_id+'/'+cr_dr,
 			$.ajax({
 				url: url,

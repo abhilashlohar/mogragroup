@@ -610,8 +610,8 @@ class PettyCashVouchersController extends AppController
 	}
 	
     
-    function checkRefNumberUniqueEdit($received_from_id,$i,$is_old){
-        $reference_no=$this->request->query['ref_rows'][$received_from_id][$i]['ref_no'];
+    function checkRefNumberUniqueEdit($received_from_id,$i,$is_old,$auto_inc){
+        $reference_no=$this->request->query['ref_rows'][$auto_inc][$i]['ref_no'];
         $ReferenceBalances=$this->PettyCashVouchers->ReferenceBalances->find()->where(['ledger_account_id'=>$received_from_id,'reference_no'=>$reference_no]);
         if($ReferenceBalances->count()==1 && $is_old=="yes"){
             echo 'true';

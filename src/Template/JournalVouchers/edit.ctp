@@ -31,7 +31,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 			<div class="col-md-3">
 				<div class="form-group">
 					<label class="control-label">Transaction Date<span class="required" aria-required="true">*</span></label>
-					<?php echo $this->Form->input('created_on', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','value' => date("d-m-Y",strtotime($journalVoucher->created_on)),'data-date-start-date' => date("d-m-Y",strtotime($financial_year->date_from)),'data-date-end-date' => date("d-m-Y",strtotime($financial_year->date_to))]); ?>
+					<?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','value' => date("d-m-Y",strtotime($journalVoucher->transaction_date)),'data-date-start-date' => date("d-m-Y",strtotime($financial_year->date_from)),'data-date-end-date' => date("d-m-Y",strtotime($financial_year->date_to))]); ?>
 				</div>
 			</div>
 			
@@ -306,12 +306,11 @@ $(document).ready(function() {
 			var is_input=$(this).find("td:nth-child(2) input").length;
 			
 			if(is_select){
+				$(this).find("td:nth-child(2) select").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_no]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_no"}).rules("remove");
+
 				$(this).find("td:nth-child(2) select").attr({name:"ref_rows["+auto_inc+"]["+i+"][ref_no]", id:"ref_rows-"+auto_inc+"-"+i+"-ref_no", class:"form-control input-sm ref_list ref_number-"+received_from_id}).rules('add', {
 												required: true,
-												notEqualToGroup: ['.ref_number-'+received_from_id],
-												messages: {
-													notEqualToGroup: "Not an unique."
-												}
+												notEqualToGroup: ['.ref_number-'+received_from_id]
 											});
 			}else if(is_input){
 				var url='<?php echo $this->Url->build(['controller'=>'JournalVouchers','action'=>'checkRefNumberUniqueEdit']); ?>';

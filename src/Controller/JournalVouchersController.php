@@ -99,8 +99,7 @@ class JournalVouchersController extends AppController
 					$ledger->company_id=$st_company_id;
 					$ledger->voucher_id = $journalVoucher->id;
 					$ledger->voucher_source = 'Journal Voucher';
-					$ledger->transaction_date = $journalVoucher->created_on;
-					$ledger->transaction_date = $journalVoucher->created_on;
+					$ledger->transaction_date = date("Y-m-d",strtotime($journalVoucher->transaction_date));
 					$ledger->company_id = $st_company_id;
 					$this->JournalVouchers->Ledgers->save($ledger);
 					
@@ -276,7 +275,7 @@ class JournalVouchersController extends AppController
 			$journalVoucher->company_id=$st_company_id;
 			$journalVoucher->created_by = $journalVoucher -> created_by;
 			$journalVoucher->created_on = $journalVoucher -> created_on;
-            if ($this->JournalVouchers->save($journalVoucher)) {
+			if ($this->JournalVouchers->save($journalVoucher)) {
 				
 				$this->JournalVouchers->Ledgers->deleteAll(['voucher_id' => $journalVoucher->id, 'voucher_source' => 'Journal Voucher']);
 				$total_cr=0; $total_dr=0;
@@ -297,7 +296,7 @@ class JournalVouchersController extends AppController
 					$ledger->company_id=$st_company_id;
 					$ledger->voucher_id = $journalVoucher->id;
 					$ledger->voucher_source = 'Journal Voucher';
-					$ledger->transaction_date = $journalVoucher->created_on;
+					$ledger->transaction_date = date("Y-m-d",strtotime($journalVoucher->transaction_date));
 					$ledger->company_id = $st_company_id;
 					$this->JournalVouchers->Ledgers->save($ledger);
 					$query = $this->JournalVouchers->JournalVoucherRows->query();

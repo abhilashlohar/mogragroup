@@ -313,7 +313,7 @@ class JobCardsController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$sales_order_id=$this->request->query('sales-order');
 		$sales_order_id=$this->request->query('sales-order');
-		
+		$count_sales_item == 0;   
 		$jobCard = $this->JobCards->SalesOrders->get($sales_order_id, [
             'contain' => ['Customers','SalesOrderRows'=>['Items'=>function ($q){
 					return $q->where(['Items.source' => 'Purchessed/Manufactured']);
@@ -323,27 +323,46 @@ class JobCardsController extends AppController
 		if ($this->request->is(['patch', 'post', 'put'])) {
             $jobCard = $this->JobCards->patchEntity($jobCard, $this->request->data);
             if ($this->JobCards->save($jobCard)) {
-				   
-				   //$query = $this->JobCards->SalesOrders->SalesOrderRows->find()->where(['sales_order_id'=>$sales_order_id]);
+				
+				$query = $this->JobCards->SalesOrders->SalesOrderRows->find()->where(['sales_order_id'=>$sales_order_id]);
+				$count_sales_item = $query->count();
 
-				  $query=$this->JobCards->SalesOrders->find()->select(['total_rows' => 
-					$this->SalesOrders->find()->func()->count('SalesOrderRows.id')])
-					->leftJoinWith('SalesOrderRows', function ($q) {
-					return $q->where();
-					});
-					pr($query);
-					exit;
+				foreach($jobCard->sales_order_rows as $sales_order_row ){
+
+						if($sales_order_row['source_type'] = 'Purchessed')
+						{
+							$count_sales_item = $count_sales_item - 1; 
+							$query = $this->JobCards->SalesOrders->SalesOrderRows->query();
+								$query->update()
+								->set(['source_type' =>$sales_order_row['source_type']])
+								->where(['id' => $sales_order_row['id']])
+								->execute();	
+
+						}
+						else
+						{
+							$query = $this->JobCards->SalesOrders->SalesOrderRows->query();
+								$query->update()
+								->set(['source_type' =>$sales_order_row['source_type']])
+								->where(['id' => $sales_order_row['id']])
+								->execute();	
+						}
+
 					
-				    foreach($jobCard->sales_order_rows as $sales_order_row ){
-						$query = $this->JobCards->SalesOrders->SalesOrderRows->query();
-							$query->update()
-							->set(['source_type' =>$sales_order_row['source_type']])
-							->where(['id' => $sales_order_row['id']])
-							->execute();
-					} 
-		
-                $this->Flash->success(__('The job card has been saved.'));
-                $this->redirect(['controller' =>'JobCards','action' => 'Add?Sales-Order='.$sales_order_id]);
+					}
+
+					if($count_sales_item == 0)
+					{
+						$this->Flash->success(__('All items are purchessed job card  not created.'));
+						$this->redirect(['controller' =>'JobCards','action' => 'index']);
+					}
+					else
+					{
+						$this->Flash->success(__('The job card has been saved.'));
+						$this->redirect(['controller' =>'JobCards','action' => 'Add?Sales-Order='.$sales_order_id]);
+					}
+					
+                
             } else { 
                 $this->Flash->error(__('The job card could not be saved. Please, try again.'));
             }

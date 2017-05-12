@@ -61,7 +61,7 @@
 							      <input type="text" name="vendor" class="form-control input-sm" placeholder="Supplier" value="<?php echo @$vendor; ?>">
 							</td>
 							
-							<input type="hidden" name="pull-request" value='true' />
+							<input type="hidden" name="pull-request" value='<?php echo $pull_request; ?>'  />
 							
 							<td>
 							     <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button>

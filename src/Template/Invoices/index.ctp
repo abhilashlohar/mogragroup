@@ -37,7 +37,7 @@
 				<table class="table table-condensed">
 					<tbody>
 						<tr>
-							<td>
+							<td><input type='hidden' name='sales_return' value='<?php echo $sales_return; ?>' />
 										<div class="input-group" style="" id="pnf_text">
 											<span class="input-group-addon">IN-</span><input type="text" name="invoice_no" class="form-control input-sm" placeholder="Invoice No" value="<?php echo @$invoice_no; ?>">
 										</div>

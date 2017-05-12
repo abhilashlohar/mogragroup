@@ -43,7 +43,7 @@
 								</div>
 							</td>
 							<td><input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>"></td>
-							<td>
+							<td> 		
 								<div class="row">
 									<div class="col-md-6">
 										<input type="text" name="From" class="form-control input-sm date-picker" placeholder="From" value="<?php echo @$From; ?>" data-date-format="dd-mm-yyyy" >

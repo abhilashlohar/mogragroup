@@ -657,7 +657,7 @@ select
 					</a>
 					<ul class="sub-menu">
 						<?php 
-						echo '<li>'.$this->Html->link('<i class="icon-home"></i> Create','/Invoices/index?sales-return=true',array('escape'=>false)).'</li>';
+						echo '<li>'.$this->Html->link('<i class="icon-home"></i> Create','/Invoices/index?sales_return=true',array('escape'=>false)).'</li>';
 						 ?>
 						<?php 
 						echo '<li>'.$this->Html->link('<i class="icon-home"></i> View','/SaleReturns/',array('escape'=>false)).'</li>';

@@ -24,7 +24,7 @@ class InvoicesController extends AppController
 		$url=parse_url($url,PHP_URL_QUERY);
 		$this->viewBuilder()->layout('index_layout');
 		$inventory_voucher=$this->request->query('inventory_voucher');
-		$sales_return=$this->request->query('sales-return');
+		$sales_return=$this->request->query('sales_return');
 		//pr($sales_return); exit;
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');

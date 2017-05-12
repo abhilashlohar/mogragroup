@@ -34,12 +34,12 @@ class SaleTaxCompaniesTable extends Table
         parent::initialize($config);
 
         $this->table('sale_tax_companies');
-        $this->displayField('sale_taxe_id');
+        $this->displayField('sale_tax_id');
        // $this->primaryKey(['company_id']);
 		$this->primaryKey(['sale_taxe_id', 'company_id']);
 
         $this->belongsTo('SaleTaxes', [
-            'foreignKey' => 'sale_taxe_id',
+            'foreignKey' => 'sale_tax_id',
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('Companies', [
@@ -57,7 +57,7 @@ class SaleTaxCompaniesTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['sale_taxe_id'], 'SaleTaxes'));
+        $rules->add($rules->existsIn(['sale_tax_id'], 'SaleTaxes'));
         $rules->add($rules->existsIn(['company_id'], 'Companies'));
 
         return $rules;

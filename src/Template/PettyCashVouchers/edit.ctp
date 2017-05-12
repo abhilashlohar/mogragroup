@@ -14,7 +14,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 }u
 </style>
 <?php $ref_types=['New Reference'=>'New Ref','Against Reference'=>'Agst Ref','Advance Reference'=>'Advance']; ?>
-<?php $cr_dr_options=['Dr'=>'Dr','Cr'=>'Cr']; ?>
+<?php  $cr_dr_options=['Dr'=>'Dr','Cr'=>'Cr']; ?>
 <div class="portlet light bordered">
     <div class="portlet-title">
         <div class="caption" >
@@ -98,26 +98,26 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php foreach($old_ref_rows[$petty_cash_voucher_row->received_from_id] as $old_ref_row){ ?>
+                            <?php foreach($old_ref_rows[$petty_cash_voucher_row->auto_inc] as $old_ref_row){  ?>
                                 <tr>
                                     <td><?php echo $this->Form->input('ref_types', ['empty'=>'--Select-','options'=>$ref_types,'label' => false,'class' => 'form-control input-sm ref_type','value'=>$old_ref_row->reference_type]); ?></td>
                                     <td class="ref_no">
                                     <?php if($old_ref_row->reference_type=="Against Reference"){
-                                        echo $this->requestAction('PettyCashVouchers/fetchRefNumbersEdit/'.$petty_cash_voucher_row->received_from_id.'/'.$old_ref_row->reference_no.'/'.$old_ref_row->debit.'/'.$old_ref_row->credit.'/'.$petty_cash_voucher_row->cr_dr);
-                                    }else{
+										echo $this->requestAction('JournalVouchers/fetchRefNumbersEdit/'.$petty_cash_voucher_row->auto_inc.'/'.$old_ref_row->reference_no.'/'.$old_ref_row->debit.'/'.$old_ref_row->credit.'/'.$petty_cash_voucher_row->cr_dr.'/'.$petty_cash_voucher_row->received_from_id);
+									}else{  
                                         echo '<input type="text" class="form-control input-sm" placeholder="Ref No." value="'.$old_ref_row->reference_no.'" readonly="readonly" is_old="yes">';
                                     }?>
                                     </td>
                                     <td>
-                                    <?php 
-                                    if($petty_cash_voucher_row->cr_dr=="Dr"){
+                                    <?php  
+                                    if($petty_cash_voucher_row->cr_dr=="Dr"){ 
                                         echo $this->Form->input('old_amount', ['label' => false,'class' => '','type'=>'hidden','value'=>$old_ref_row->debit]);
                                         echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm ref_amount_textbox','placeholder'=>'Amount','value'=>$old_ref_row->debit]);
-                                    }else{
+                                    }else{ 
                                         echo $this->Form->input('old_amount', ['label' => false,'class' => '','type'=>'hidden','value'=>$old_ref_row->credit]);
                                         echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm ref_amount_textbox','placeholder'=>'Amount','value'=>$old_ref_row->credit]);
                                     }
-                                     ?>
+                                    ?>
                                     </td>
                                     <td><a class="btn btn-xs btn-default deleterefrow" href="#" role="button" old_ref="<?php echo $old_ref_row->reference_no; ?>" old_ref_type="<?php echo $old_ref_row->reference_type; ?>"><i class="fa fa-times"></i></a></td>
                                 </tr>
@@ -158,7 +158,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
     <?= $this->Form->end() ?>
     </div>
 </div>
-<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+<?php  echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 
 <script>
 $(document).ready(function() {

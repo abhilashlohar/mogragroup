@@ -65,7 +65,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 							<?php echo @$invoice->in3; ?>
 						</div>
 						<div class="col-md-3">
-							<?php echo $this->Form->input('in4', ['label' => false,'class' => 'form-control input-sm','readonly']); ?>
+							<?php echo $this->Form->input('in4', ['label' => false,'class' => 'form-control input-sm','readonly','value' => @$invoice->in4]); ?>
 						</div>
 					</div>
 				</div>
@@ -138,28 +138,6 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 				</div>
 			</div><br/>
 			
-						<div class="row">
-			<?php if(!empty($invoice->form47)) {?>
-				<div class="col-md-6">
-				<div class="form-group">
-						<label class="col-md-3 control-label">Road Permit No  <span class="required" aria-required="true">*</span></label>
-						<div class="col-md-9">
-							<?php echo $this->Form->input('form47', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Form 47','required']); ?>
-						</div>
-					</div>
-				</div>
-			<?php } ?>
-				<?php if(!empty($invoice->form49)) {?>
-				<div class="col-md-6">
-				<div class="form-group">
-						<label class="col-md-3 control-label">Form 49 <span class="required" aria-required="true">*</span></label>
-						<div class="col-md-9">
-							<?php echo $this->Form->input('form49', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Form 49','required']); ?>
-						</div>
-					</div>
-				</div>
-				<?php } ?>
-			</div><br/>
 			
 			<input type="text"  name="checked_row_length" id="checked_row_length" style="height: 0px;padding: 0;border: none;" />
 			<table class="table tableitm" id="main_tb">
@@ -188,7 +166,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 							</td>
 							<td>
 								<?php  
-								echo $this->Form->input('sale_return_rows.'.$q.'.quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','max'=>$invoice_row->quantity,'value'=>0,'required','min'=>'1']); 
+								echo $this->Form->input('sale_return_rows.'.$q.'.quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','max'=>$invoice_row->quantity,'value'=>0,'required']); 
 								?>
 							</td>
 							<td>
@@ -467,13 +445,24 @@ $(document).ready(function() {
 			$('input[name="discount"]').attr('readonly','readonly');
 		}else{ 
 			$("#discount_text").hide();
-			$('input[name="discount"]').removeAttr('readonly');
+			//$('input[name="discount"]').removeAttr('readonly');
 			$('input[name="discount_per"]').val(0);
 			$('input[name="discount"]').val(0);
 		}
 		calculate_total();
 	});
-	
+	if($(this).is(':checked')){
+			$("#pnf_text").show();
+			$('input[name="pnf"]').attr('readonly','readonly');
+			$('input[name="pnf_per"]').val(0);
+
+		}else{
+			$("#pnf_text").hide();
+			//$('input[name="pnf"]').removeAttr('readonly');
+			$('input[name="pnf"]').val(0);
+			$('input[name="pnfper"]').val(0);
+			
+		}
 	$("#pnfper").on('click',function(){
 		if($(this).is(':checked')){
 			$("#pnf_text").show();
@@ -482,7 +471,7 @@ $(document).ready(function() {
 
 		}else{
 			$("#pnf_text").hide();
-			$('input[name="pnf"]').removeAttr('readonly');
+			//$('input[name="pnf"]').removeAttr('readonly');
 			$('input[name="pnf"]').val(0);
 			$('input[name="pnfper"]').val(0);
 			

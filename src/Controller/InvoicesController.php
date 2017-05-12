@@ -371,9 +371,6 @@ class InvoicesController extends AppController
         $invoice = $this->Invoices->newEntity();
         if ($this->request->is('post')) {
 		
-		
-		$ref_rows=$this->request->data['ref_rows'];
-		
 			$invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
 			foreach($invoice->invoice_rows as $invoice_row){
 				if($invoice_row->item_serial_numbers){

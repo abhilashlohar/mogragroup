@@ -528,7 +528,6 @@ $(document).ready(function() {
 				$(this).css('background-color','#fffcda');
 				var qty=$(this).find('td:nth-child(3) input[type="text"]').val();
 				var serial_l=$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(2) select').length;
-				alert(qty);
 				if(serial_l>0){ 	
 					$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(2) select').removeAttr("readonly").attr("name","sale_return_rows["+row_no+"][item_serial_numbers][]").attr("id","sale_return_rows-"+row_no+"-item_serial_no").attr('maxlength',qty).rules('add', {
 						    required: true,
@@ -662,7 +661,7 @@ $(document).ready(function() {
 			
 		});
 		
-		var is_tot_input=$("table.main_ref_table tfoot tr:eq(1) td:eq(1) input").length;
+		var is_tot_input=$("table.main_ref_table tfoot tr:eq(1) td:eq(1) input").length; 
 		if(is_tot_input){
 			$("table.main_ref_table tfoot tr:eq(1) td:eq(1) input").attr({name:"ref_rows_total", id:"ref_rows_total"}).rules('add', { equalTo: "#grand-total" });
 		}

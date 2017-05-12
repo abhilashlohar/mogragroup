@@ -110,10 +110,6 @@ class JournalVouchersController extends AppController
 							->where(['id' => $journal_voucher_row->id])
 							->execute();
 					
-					
-					//$siz=(sizeof(@$journalVoucher->ref_rows[$i])); 
-					//pr($journal_voucher_row->received_from_id);exit;
-					//pr($siz);exit;
 					if(sizeof(@$journalVoucher->ref_rows[$i])>0){
 						foreach($journalVoucher->ref_rows[$i] as $ref_row){
 							$ref_row=(object)$ref_row;

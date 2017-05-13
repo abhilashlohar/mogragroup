@@ -124,7 +124,7 @@
 					$url_path="/receipts/view/".$ledger->voucher_id;
 				}
 				
-				if($ledger->voucher_source == 'Opening Balance')	
+				if($ledger->voucher_source !== 'Opening Balance')	
 				{
 				?>
 				<tr>

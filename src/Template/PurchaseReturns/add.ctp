@@ -129,12 +129,7 @@ $this->Form->templates([
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td><?php echo $this->Form->input('ref_types', ['empty'=>'--Select-','options'=>$ref_types,'label' => false,'class' => 'form-control input-sm ref_type']); ?></td>
-								<td class="ref_no"></td>
-								<td><?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm ref_amount_textbox','placeholder'=>'Amount']); ?></td>
-								<td><a class="btn btn-xs btn-default deleterefrow" href="#" role="button"><i class="fa fa-times"></i></a></td>
-							</tr>
+							
 						</tbody>
 						<tfoot>
 							<tr>
@@ -335,11 +330,13 @@ $(document).ready(function() {
 	$('.addrefrow').live("click",function() { 
 		 add_ref_row();
 	});
+	add_ref_row();
 	function add_ref_row(){
 		var tr=$("#sample_ref table.ref_table tbody tr").clone();
 		$("table.main_ref_table tbody").append(tr);
 		rename_ref_rows();
 	}
+	//rename_ref_rows();
 		function rename_ref_rows(){
 		var i=0;
 		$("table.main_ref_table tbody tr").each(function(){

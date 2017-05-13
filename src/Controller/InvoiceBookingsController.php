@@ -22,8 +22,7 @@ class InvoiceBookingsController extends AppController
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		$purchase_return=$this->request->query('purchase-return');
-		
-		$where = [];
+	    $where = [];
 		$book_no = $this->request->query('book_no');
 		$grn_no = $this->request->query('grn_no');
 		$file = $this->request->query('file');

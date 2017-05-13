@@ -71,6 +71,40 @@ $this->Form->templates([
 									</div>
 								</div>
 				</div><br/>
+				<div class="row">
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">Supplier Invoice Date. <span class="required" aria-required="true">*</span></label><br/>
+							<?php echo @date("d-m-Y",strtotime($invoiceBooking->supplier_date)); ?>
+							
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">Invoice No. <span class="required" aria-required="true">*</span></label><br/>
+							<?php echo @$invoiceBooking->ib1; ?>/<?php echo @$invoiceBooking->ib3; ?>/<?php echo substr($s_year_from, -2).'-'.substr($s_year_to, -2); ?>
+							<br/>
+							<? ?>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">Purchase Account <span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('purchase_ledger_account', ['options' => $ledger_account_details,'label' => false,'class' => 'form-control input-sm']); ?>
+							<?php echo $this->Form->input('cst_vat', ['label' => false,'type' => 'hidden']); ?>
+							<br/>
+							<? ?>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group" id="ledger_account_for_vat">
+							<label class="control-label">Ledger Account for VAT<span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('ledger_account_for_vat', ['options' => $ledger_account_vat,'label' => false,'class' => 'form-control input-sm']); ?>
+							<br/>
+							<? ?>
+						</div>
+					</div>
+				</div>
 			<div style="overflow: auto;">
 			<input type="text"  name="checked_row_length" id="checked_row_length" style="height: 0px;padding: 0;border: none;" value="" />
 				<table class="table tableitm" id="main_tb">

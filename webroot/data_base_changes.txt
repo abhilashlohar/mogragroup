@@ -17,29 +17,10 @@ change ledger_account_id to received_from_id in journal_voucher_rows.
 Add new field in journal_voucher_rows:-narration(varchar 100)
 
 
---------Gopal(03/05/2017)------
-Add new field in journal_voucher_rows :-auto_inc(int)
-Add new field in reference_details :-auto_inc(int)
-<<<<<<< HEAD
-Add new field in reference_balances :-auto_inc(int)
-=======
-Add new field in reference_balances :-auto_inc(int)
-
---------Gopal(08/05/2017)(Sales Return)------
-Add new field in Invoice sale_return_status(Varchar)(default->No).
-Add new field in Invoice sale_return_id(Int).
-Add new field in Invoice_rows sale_return_quantity(Int).
-Add new field in reference_details sale_return_id(Int).
-Add new field in item_serial_numbers sale_return_id(Int).
-
---------Gopal(08/05/2017)(Purchase Return)------
-Add new field in Invoice-Booking purchase_return_status(Varchar)(default->No).
-Add new field in Invoice-Booking purchase_return_id(Int).
-Add new field in Invoice_Booking_rows purchase_return_quantity(Int).
-Add new field in Invoice_Booking_rows 	total(Int).
-Add new field in reference_details purchase_return_id(Int).
 
 
 
-------------Abhilash--------------
-sales-order-rows  sal_taxe_id--->sale_tax_id
+
+
+
+

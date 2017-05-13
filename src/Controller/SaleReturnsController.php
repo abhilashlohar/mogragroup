@@ -75,7 +75,7 @@ class SaleReturnsController extends AppController
 		$ReferenceDetails=$this->SaleReturns->ReferenceDetails->find()->where(['ledger_account_id'=>$c_LedgerAccount->id,'invoice_id'=>$invoice->id]);
 		
         if ($this->request->is('post')) {
-			$ref_rows=$this->request->data['ref_rows'];
+			$ref_rows=@$this->request->data['ref_rows'];
             $saleReturn = $this->SaleReturns->patchEntity($saleReturn, $this->request->data);
 			foreach($saleReturn->sale_return_rows as $sale_return_row){   
 				if($sale_return_row->item_serial_numbers){

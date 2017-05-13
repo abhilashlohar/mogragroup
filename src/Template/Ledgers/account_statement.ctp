@@ -31,7 +31,7 @@
 									<?php echo $this->Form->input('ledger_account_id', ['empty'=>'--Select--','options' => $ledger,'empty' => "--Select Ledger Account--",'label' => false,'class' => 'form-control input-sm select2me','required','value'=>$ledger_account_id]); ?>
 							</div>
 							<div class="col-md-4">
-								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo @date('d-m-Y', strtotime($transaction_from_date));  ?>" required data-date-format="dd-mm-yyyy" >
+								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo @date('1-4-Y', strtotime($transaction_from_date));  ?>" required data-date-format="dd-mm-yyyy" >
 							</div>
 							<div class="col-md-4">
 								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Transaction To"  value="<?php echo @date('d-m-Y', strtotime($transaction_to_date)); ?>" required  data-date-format="dd-mm-yyyy" >

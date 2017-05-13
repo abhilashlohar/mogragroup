@@ -219,7 +219,6 @@ class JournalVouchersController extends AppController
 		}else{
 			$ReceivedFroms_selected='no';
 		}
-        
         $this->set(compact('journalVoucher', 'ledgers','companies','Errorledgers','financial_year','JournalVoucherLedger','receivedFroms','ReceivedFroms_selected'));
         $this->set('_serialize', ['journalVoucher']);
     }

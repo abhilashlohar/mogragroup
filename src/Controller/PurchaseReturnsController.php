@@ -241,10 +241,13 @@ class PurchaseReturnsController extends AppController
             }
         }
        // $invoiceBookings = $this->PurchaseReturns->InvoiceBookings->find('list', ['limit' => 200]);
+		$ledger_account_details = $this->PurchaseReturns->LedgerAccounts->get($invoiceBooking->purchase_ledger_account);
+		$ledger_account_vat = $this->PurchaseReturns->LedgerAccounts->get($invoiceBooking->ledger_account_for_vat);
+		//pr($ledger_account_details->name); exit;
 		$Em = new FinancialYearsController;
 	    $financial_year_data = $Em->checkFinancialYear($invoiceBooking->created_on);
         $companies = $this->PurchaseReturns->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('purchaseReturn', 'invoiceBooking', 'companies','financial_year_data','v_LedgerAccount'));
+        $this->set(compact('purchaseReturn', 'invoiceBooking', 'companies','financial_year_data','v_LedgerAccount','ledger_account_details','ledger_account_vat'));
         $this->set('_serialize', ['purchaseReturn']);
     }
 
@@ -464,11 +467,13 @@ $ref_rows=$this->request->data['ref_rows'];
                 $this->Flash->error(__('The purchase return could not be saved. Please, try again.'));
             }
         }
+		$ledger_account_details = $this->PurchaseReturns->LedgerAccounts->get($invoiceBooking->purchase_ledger_account);
+		$ledger_account_vat = $this->PurchaseReturns->LedgerAccounts->get($invoiceBooking->ledger_account_for_vat);
 		$Em = new FinancialYearsController;
 	    $financial_year_data = $Em->checkFinancialYear($invoiceBooking->created_on);			
         $invoiceBookings = $this->PurchaseReturns->InvoiceBookings->find('list', ['limit' => 200]);
         $companies = $this->PurchaseReturns->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('purchaseReturn', 'invoiceBookings', 'companies','invoiceBooking','v_LedgerAccount','financial_year_data','ReferenceDetails'));
+        $this->set(compact('purchaseReturn', 'invoiceBookings', 'companies','invoiceBooking','v_LedgerAccount','financial_year_data','ReferenceDetails','ledger_account_details','ledger_account_vat'));
         $this->set('_serialize', ['purchaseReturn']);
     }
 

@@ -71,6 +71,41 @@ $this->Form->templates([
 									</div>
 								</div>
 				</div><br/>
+					<div class="row">
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">Supplier Invoice Date. <span class="required" aria-required="true">*</span></label><br/>
+							<?php echo @date("d-m-Y",strtotime($invoiceBooking->supplier_date)); ?>
+							
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">Invoice No. <span class="required" aria-required="true">*</span></label><br/>
+							<?php echo @$invoiceBooking->ib1; ?>/<?php echo @$invoiceBooking->ib3; ?>/<?php echo substr($s_year_from, -2).'-'.substr($s_year_to, -2); ?>
+							<br/>
+							<? ?>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">Purchase Account <span class="required" aria-required="true">*</span></label><br/>
+							<?php echo $ledger_account_details->name; ?>
+							<br/>
+							<? ?>
+						</div>
+					</div>
+					<?php if($ledger_account_details->id != 35) {?>
+					<div class="col-md-3">
+						<div class="form-group" >
+							<label class="control-label">Ledger Account for VAT<span class="required" aria-required="true">*</span></label><br/>
+							<?php echo $ledger_account_vat->name; ?>
+							<br/>
+							<? ?>
+						</div>
+					</div>
+					<?php } ?>
+				</div>
 			<div style="overflow: auto;">
 			<input type="text"  name="checked_row_length" id="checked_row_length" style="height: 0px;padding: 0;border: none;" value="" />
 				<table class="table tableitm" id="main_tb">

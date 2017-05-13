@@ -89,21 +89,22 @@ $this->Form->templates([
 					</div>
 					<div class="col-md-3">
 						<div class="form-group">
-							<label class="control-label">Purchase Account <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('purchase_ledger_account', ['options' => $ledger_account_details,'label' => false,'class' => 'form-control input-sm']); ?>
-							<?php echo $this->Form->input('cst_vat', ['label' => false,'type' => 'hidden']); ?>
+							<label class="control-label">Purchase Account <span class="required" aria-required="true">*</span></label><br/>
+							<?php echo $ledger_account_details->name; ?>
 							<br/>
 							<? ?>
 						</div>
 					</div>
+					<?php if($ledger_account_details->id != 35) {?>
 					<div class="col-md-3">
-						<div class="form-group" id="ledger_account_for_vat">
-							<label class="control-label">Ledger Account for VAT<span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('ledger_account_for_vat', ['options' => $ledger_account_vat,'label' => false,'class' => 'form-control input-sm']); ?>
+						<div class="form-group" >
+							<label class="control-label">Ledger Account for VAT<span class="required" aria-required="true">*</span></label><br/>
+							<?php echo $ledger_account_vat->name; ?>
 							<br/>
 							<? ?>
 						</div>
 					</div>
+					<?php } ?>
 				</div>
 			<div style="overflow: auto;">
 			<input type="text"  name="checked_row_length" id="checked_row_length" style="height: 0px;padding: 0;border: none;" value="" />

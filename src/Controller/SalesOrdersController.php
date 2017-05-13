@@ -251,7 +251,8 @@ class SalesOrdersController extends AppController
        	  $chkdate = 'Found';
        }
 
-
+			
+				
 
 		$quotation_id=@(int)$this->request->query('quotation');
 		
@@ -311,7 +312,6 @@ class SalesOrdersController extends AppController
 			
 			//pr($salesOrder); exit;
             if ($this->SalesOrders->save($salesOrder)) {
-				
 				$status_close=$this->request->query('status');
 		
 				if(!empty($status_close)){

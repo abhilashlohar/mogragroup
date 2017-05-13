@@ -93,7 +93,10 @@ class ContraVouchersController extends AppController
         
         if ($this->request->is('post')) {
             $contravoucher = $this->ContraVouchers->patchEntity($contravoucher, $this->request->data);
-            $contravoucher->company_id=$st_company_id;
+            
+
+			
+			$contravoucher->company_id=$st_company_id;
             //Voucher Number Increment
             $last_voucher_no=$this->ContraVouchers->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
             if($last_voucher_no){

@@ -639,6 +639,8 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
+			$('#add_submit').prop('disabled', true);
+			$('#add_submit').text('Submitting.....');
 			put_code_description();
 			success3.show();
 			error3.hide();

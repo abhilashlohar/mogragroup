@@ -391,7 +391,7 @@ if(!empty($copy))
 					<?php if($chkdate == 'Not Found'){  ?>
 					<label class="btn btn-danger"> You are not in Current Financial Year </label>
 				<?php } else { ?>
-					<button type="submit" class="btn btn-primary" >ADD SALES ORDER</button>
+					<button type="submit" class="btn btn-primary" id='submitbtn' >ADD SALES ORDER</button>
 				<?php } ?>	
 					</div>
 			</div>
@@ -617,6 +617,8 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
+			$('#submitbtn').prop('disabled', true);
+			$('#submitbtn').text('Submitting.....');
 			put_code_description();
 			success3.show();
 			error3.hide();

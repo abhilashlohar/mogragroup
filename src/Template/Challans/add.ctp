@@ -211,7 +211,7 @@
 					<?php if($chkdate == 'Not Found'){  ?>
 					<label class="btn btn-danger"> You are not in Current Financial Year </label>
 				<?php } else { ?>
-					<button type="submit" class="btn btn-primary" >GENERATE CHALLAN</button>
+					<button type="submit" class="btn btn-primary" id='submitbtn' >GENERATE CHALLAN</button>
 				<?php } ?>	
 					
 				</div>
@@ -406,7 +406,9 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
-			q="ok";
+			$('#submitbtn').prop('disabled', true);
+			$('#submitbtn').text('Submitting.....');		
+		q="ok";
 			$("#main_tb tbody tr.tr1").each(function(){
 				var it=$(this).find("td:nth-child(2) select").val();
 				var w=$(this).find("td:nth-child(3) input").val();

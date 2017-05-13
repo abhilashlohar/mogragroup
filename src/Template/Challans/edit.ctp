@@ -224,7 +224,7 @@
 		<div class="form-actions">
 			<div class="row">
 				<div class="col-md-offset-3 col-md-9">
-					<button type="submit" class="btn btn-primary" >EDIT CHALLAN</button>
+					<button type="submit" class="btn btn-primary" id='submitbtn' >EDIT CHALLAN</button>
 				</div>
 			</div>
 		</div>
@@ -394,6 +394,8 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
+			$('#submitbtn').prop('disabled', true);
+			$('#submitbtn').text('Submitting.....');
 			q="ok";
 			$("#main_tb tbody tr.tr1").each(function(){
 				var it=$(this).find("td:nth-child(2) select").val();

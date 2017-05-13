@@ -160,7 +160,7 @@
 			</div>
 		
 			<div class="form-actions">
-				<button type="submit" class="btn btn-primary">EDIT VENDOR</button>
+				<button type="submit" class="btn btn-primary" id='submitbtn'>EDIT VENDOR</button>
 			</div>
 		</div>
 		<?= $this->Form->end() ?>
@@ -269,7 +269,10 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
-			q="ok";
+
+			$('#submitbtn').prop('disabled', true);
+			$('#submitbtn').text('Submitting.....');
+				q="ok";
 			$("#main_tb tbody tr").each(function(){
 				var t=$(this).find("td:nth-child(2) input").val();
 				var w=$(this).find("td:nth-child(3) input").val();

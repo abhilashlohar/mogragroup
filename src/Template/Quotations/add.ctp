@@ -281,7 +281,7 @@ if(!empty($revision))
 					<?php if($chkdate == 'Not Found'){  ?>
 					<label class="btn btn-danger"> You are not in Current Financial Year </label>
 				<?php } else { ?>
-					<button type="submit" class="btn btn-primary" >GENERATE QUOTATION</button>
+					<button type="submit" class="btn btn-primary" id='submitbtn'>GENERATE QUOTATION</button>
 				<?php } ?>	
 				</div>
 			</div>
@@ -494,6 +494,8 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
+			$('#submitbtn').prop('disabled', true);
+			$('#submitbtn').text('Submitting.....');
 			put_code_description();
 			success3.show();
 			error3.hide();

@@ -151,7 +151,7 @@
 			</div>
 		
 			<div class="form-actions">
-				<button type="submit" class="btn btn-primary">EDIT JOB CARD</button>
+				<button type="submit" class="btn btn-primary" id='submitbtn'>EDIT JOB CARD</button>
 			</div>
 		<?= $this->Form->end() ?>
 	</div>
@@ -256,6 +256,8 @@ var form3 = $('#form_sample_3');
 		},
 
 		submitHandler: function (form) {
+			$('#submitbtn').prop('disabled', true);
+			$('#submitbtn').text('Submitting.....');
 			success3.show();
 			error3.hide();
 			form[0].submit(); // submit the form

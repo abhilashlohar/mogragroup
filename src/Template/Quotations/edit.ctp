@@ -242,7 +242,7 @@
 		<div class="form-actions">
 			<div class="row">
 				<div class="col-md-offset-3 col-md-9">
-					<button type="submit" class="btn btn-primary" >UPDATE QUOTATION</button>
+					<button type="submit" id='submitbtn' class="btn btn-primary" >UPDATE QUOTATION</button>
 				</div>
 			</div>
 		</div>
@@ -448,6 +448,8 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
+			$('#submitbtn').prop('disabled', true);
+			$('#submitbtn').text('Submitting.....');
 			put_code_description()
 			success3.show();
 			error3.hide();

@@ -633,8 +633,11 @@ $(document).ready(function() {
 			label
 				.closest('.form-group').removeClass('has-error'); // set success class to the control group
 		},
-
+	
 		submitHandler: function (form) {
+			$('#add_submit').prop('disabled', true);
+			$('#add_submit').text('Submitting.....');
+		
 			put_code_description();
 			success3.show();
 			error3.hide();

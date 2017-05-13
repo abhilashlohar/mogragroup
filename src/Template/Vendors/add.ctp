@@ -173,7 +173,7 @@
 			</div>
 		
 			<div class="form-actions">
-				<button type="submit" class="btn btn-primary">ADD VENDOR</button>
+				<button type="submit" class="btn btn-primary" id='submitbtn'>ADD VENDOR</button>
 			</div>
 		</div>
 		<?= $this->Form->end() ?>
@@ -282,6 +282,8 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
+			$('#submitbtn').prop('disabled', true);
+			$('#submitbtn').text('Submitting.....');
 			q="ok";
 			$("#main_tb tbody tr").each(function(){
 				var t=$(this).find("td:nth-child(2) input").val();

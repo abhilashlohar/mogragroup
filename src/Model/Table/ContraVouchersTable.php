@@ -131,15 +131,6 @@ class ContraVouchersTable extends Table
             ->notEmpty('created_on');
 
         $validator
-            ->requirePresence('payment_mode', 'create')
-            ->notEmpty('payment_mode')
-            ->date('transaction_date')
-            ->requirePresence('transaction_date', 'create')
-            ->notEmpty('transaction_date');
-
-
-
-        $validator
             ->requirePresence('cheque_no', 'create')
             ->notEmpty('cheque_no');
 

@@ -91,10 +91,10 @@
 							<td><?php echo date("d-m-Y",strtotime($invoice->date_created)); ?></td>
 							<td><?= h($invoice->total_after_pnf) ?></td>
 							<td class="actions">
-								<?php if(in_array(23,$allowed_pages)){ ?>
+								<?php if(in_array(23,$allowed_pages) and $sales_return!="true"){ ?>
 								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $invoice->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>
 								<?php } ?>
-								<?php if($invoice->status !='Cancel' and $inventory_voucher!="true" and in_array(8,$allowed_pages)){
+								<?php if($invoice->status !='Cancel' and $sales_return!="true" and $inventory_voucher!="true" and in_array(8,$allowed_pages)){
 									
 								if(!in_array(date("m-Y",strtotime($invoice->date_created)),$closed_month))
 								 { 

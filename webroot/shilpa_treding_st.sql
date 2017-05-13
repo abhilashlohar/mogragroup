@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 12, 2017 at 08:39 AM
+-- Generation Time: May 13, 2017 at 11:11 AM
 -- Server version: 10.1.19-MariaDB
 -- PHP Version: 5.6.28
 
@@ -57,7 +57,7 @@ INSERT INTO `sale_taxes` (`id`, `tax_figure`, `quote_description`, `invoice_desc
 --
 
 CREATE TABLE `sale_tax_companies` (
-  `sale_taxe_id` int(11) NOT NULL,
+  `sale_tax_id` int(11) NOT NULL,
   `company_id` int(11) NOT NULL,
   `freeze` int(10) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -66,7 +66,7 @@ CREATE TABLE `sale_tax_companies` (
 -- Dumping data for table `sale_tax_companies`
 --
 
-INSERT INTO `sale_tax_companies` (`sale_taxe_id`, `company_id`, `freeze`) VALUES
+INSERT INTO `sale_tax_companies` (`sale_tax_id`, `company_id`, `freeze`) VALUES
 (1, 25, 0),
 (1, 26, 0),
 (2, 25, 0),
@@ -93,7 +93,7 @@ ALTER TABLE `sale_taxes`
 -- Indexes for table `sale_tax_companies`
 --
 ALTER TABLE `sale_tax_companies`
-  ADD PRIMARY KEY (`sale_taxe_id`,`company_id`),
+  ADD PRIMARY KEY (`sale_tax_id`,`company_id`),
   ADD KEY `company_key` (`company_id`);
 
 --

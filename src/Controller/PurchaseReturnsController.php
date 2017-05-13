@@ -67,7 +67,7 @@ class PurchaseReturnsController extends AppController
 		$v_LedgerAccount=$this->PurchaseReturns->LedgerAccounts->find()->where(['company_id'=>$st_company_id,'source_model'=>'Vendors','source_id'=>$invoiceBooking->vendor_id])->first();
 		
 		 if ($this->request->is('post')) {
-			$ref_rows=$this->request->data['ref_rows'];
+			$ref_rows=@$this->request->data['ref_rows'];
 			$purchaseReturn = $this->PurchaseReturns->patchEntity($purchaseReturn, $this->request->data);
 			$purchaseReturn->company_id=$st_company_id;
 			$purchaseReturn->created_on= date("Y-m-d");
@@ -275,7 +275,7 @@ class PurchaseReturnsController extends AppController
 		
 		$purchase_return_id=$invoiceBooking->purchase_return_id;
 		$ReferenceDetails=$this->PurchaseReturns->ReferenceDetails->find()->where(['ledger_account_id'=>$v_LedgerAccount->id,'purchase_return_id'=>$purchase_return_id]);
-
+//pr($purchase_return_id); exit;
 		$purchaseReturn = $this->PurchaseReturns->get($purchase_return_id, [
             'contain' => ['PurchaseReturnRows']
         ]);
@@ -283,8 +283,7 @@ class PurchaseReturnsController extends AppController
 		//pr($ReferenceDetails->toArray()); exit;
         if ($this->request->is(['patch', 'post', 'put'])) {
             $purchaseReturn = $this->PurchaseReturns->patchEntity($purchaseReturn, $this->request->data);
-//pr($this->request->data); exit;
-$ref_rows=$this->request->data['ref_rows'];
+			$ref_rows=@$this->request->data['ref_rows'];
 
             if ($this->PurchaseReturns->save($purchaseReturn)) {
 				$this->PurchaseReturns->Ledgers->deleteAll(['voucher_id' => $purchaseReturn->id, 'voucher_source' => 'Purchase Return']);

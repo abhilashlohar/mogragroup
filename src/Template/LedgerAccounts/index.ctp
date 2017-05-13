@@ -68,7 +68,7 @@
 								<th>Account First Subgroup </th>
 								<th>Account Second Subgroup </th>	
 								<th>Ledger Account </th>	
-								<th width="80">Actions</th>
+								<th width="120">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -107,7 +107,9 @@
 											'class' => 'btn btn-xs btn-danger',
 											'confirm' => __('Are you sure ?', $ledgerAccount->id)
 										]
-									) ?></td>
+									) ?>
+							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'EditCompany', $ledgerAccount->id],array('escape'=>false,'class'=>'btn btn-xs green tooltips','data-original-title'=>'Add/Remove in other companies, Freeze/Unfreeze, Serial Number Enable/Disable')); ?>
+							</td>
 							</tr>
 							<?php endforeach; ?>
 						</tbody>

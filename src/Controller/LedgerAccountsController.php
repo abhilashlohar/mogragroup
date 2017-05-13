@@ -239,5 +239,31 @@ class LedgerAccountsController extends AppController
 		echo $Ledger->bill_to_bill_account;
 		exit;
 	}
+	public function EditCompany($ledgerAccount_id=null)
+    {
+		$this->viewBuilder()->layout('index_layout');	
+		$Companies = $this->LedgerAccounts->Companies->find();
+		$Company_array=[];
+		$Company_array1=[];
+		$Company_array2=[];
+		foreach($Companies as $Company){
+			$Company_exist= $this->LedgerAccounts->exists(['id' => $ledgerAccount_id,'company_id'=>$Company->id]);
+
+			if($Company_exist){
+				$saletax_data= $this->LedgerAccounts->find()->where(['id' => $ledgerAccount_id,'company_id'=>$Company->id])->first();
+//pr($saletax_data);
+				$Company_array[$Company->id]='Yes';
+				$Company_array1[$Company->id]=$Company->name;
+				
+			}else{
+				$Company_array[$Company->id]='No';
+				$Company_array1[$Company->id]=$Company->name;
+			}
+
+		} //exit;
+		$saletax_data= $this->LedgerAccounts->get($ledgerAccount_id);
+		$this->set(compact('saletax_data','Companies','customer_Company','Company_array','saletax_id','Company_array1','Company_array2'));
+
+	}
 	
 }

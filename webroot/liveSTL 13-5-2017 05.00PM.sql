@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: May 13, 2017 at 10:54 AM
+-- Generation Time: May 13, 2017 at 11:32 AM
 -- Server version: 5.6.32-78.0-log
 -- PHP Version: 5.4.31
 
@@ -7259,6 +7259,198 @@ CREATE TABLE IF NOT EXISTS `material_indent_rows` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `nppayments`
+--
+
+CREATE TABLE IF NOT EXISTS `nppayments` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `voucher_no` int(10) NOT NULL,
+  `bank_cash_id` int(10) NOT NULL,
+  `created_by` int(10) NOT NULL,
+  `created_on` date NOT NULL,
+  `payment_mode` varchar(50) NOT NULL,
+  `company_id` int(10) NOT NULL,
+  `transaction_date` date NOT NULL,
+  `edited_by` int(10) NOT NULL,
+  `edited_on` date NOT NULL,
+  `cheque_no` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=62 ;
+
+--
+-- Dumping data for table `nppayments`
+--
+
+INSERT INTO `nppayments` (`id`, `voucher_no`, `bank_cash_id`, `created_by`, `created_on`, `payment_mode`, `company_id`, `transaction_date`, `edited_by`, `edited_on`, `cheque_no`) VALUES
+(1, 1, 145, 19, '2017-04-26', 'NEFT/RTGS', 25, '2017-04-21', 0, '0000-00-00', ''),
+(2, 2, 145, 19, '2017-04-26', 'NEFT/RTGS', 25, '2017-04-21', 19, '2017-04-29', ''),
+(3, 3, 145, 19, '2017-04-26', 'NEFT/RTGS', 25, '2017-04-21', 0, '0000-00-00', ''),
+(4, 4, 145, 19, '2017-04-26', 'NEFT/RTGS', 25, '2017-04-21', 0, '0000-00-00', ''),
+(5, 5, 145, 19, '2017-04-26', 'NEFT/RTGS', 25, '2017-04-21', 0, '0000-00-00', ''),
+(6, 6, 145, 19, '2017-04-27', 'NEFT/RTGS', 25, '2017-04-03', 0, '0000-00-00', ''),
+(7, 7, 145, 19, '2017-04-27', 'NEFT/RTGS', 25, '2017-04-05', 0, '0000-00-00', ''),
+(8, 8, 145, 19, '2017-04-27', 'NEFT/RTGS', 25, '2017-04-21', 16, '2017-04-29', '054658'),
+(9, 9, 146, 19, '2017-04-27', 'Cheque', 25, '2017-04-26', 19, '2017-04-28', '000036'),
+(10, 10, 146, 19, '2017-04-27', 'Cheque', 25, '2017-04-27', 19, '2017-04-28', '000035'),
+(11, 11, 146, 19, '2017-04-27', 'Cheque', 25, '2017-04-27', 19, '2017-04-28', '000038'),
+(12, 12, 146, 19, '2017-04-27', 'NEFT/RTGS', 25, '2017-04-27', 19, '2017-04-28', ''),
+(13, 13, 142, 19, '2017-04-27', 'NEFT/RTGS', 25, '2017-04-08', 19, '2017-04-28', ''),
+(14, 14, 146, 19, '2017-04-27', 'Cheque', 25, '2017-05-01', 19, '2017-05-01', '000040'),
+(15, 15, 142, 19, '2017-04-27', 'NEFT/RTGS', 25, '2017-04-11', 19, '2017-04-28', ''),
+(16, 16, 145, 19, '2017-04-27', 'NEFT/RTGS', 25, '2017-04-07', 19, '2017-04-28', ''),
+(17, 17, 145, 19, '2017-04-27', 'NEFT/RTGS', 25, '2017-04-07', 19, '2017-04-28', ''),
+(18, 18, 145, 19, '2017-04-27', 'NEFT/RTGS', 25, '2017-04-07', 19, '2017-04-28', ''),
+(19, 19, 145, 19, '2017-04-27', 'NEFT/RTGS', 25, '2017-04-07', 19, '2017-04-28', ''),
+(20, 20, 145, 16, '2017-04-28', 'NEFT/RTGS', 25, '2017-04-07', 19, '2017-04-28', ''),
+(21, 21, 142, 16, '2017-04-28', 'NEFT/RTGS', 25, '2017-04-07', 19, '2017-04-28', ''),
+(22, 22, 142, 16, '2017-04-28', 'NEFT/RTGS', 25, '2017-04-07', 19, '2017-04-28', ''),
+(23, 1, 352, 16, '2017-04-28', 'NEFT/RTGS', 27, '2017-04-07', 0, '0000-00-00', ''),
+(24, 23, 145, 16, '2017-04-28', 'NEFT/RTGS', 25, '2017-04-07', 0, '0000-00-00', ''),
+(25, 24, 146, 19, '2017-04-28', 'Cheque', 25, '2017-04-14', 0, '0000-00-00', '000032'),
+(26, 25, 146, 19, '2017-04-28', 'NEFT/RTGS', 25, '2017-04-14', 0, '0000-00-00', ''),
+(27, 2, 352, 19, '2017-04-28', 'Cheque', 27, '2017-04-24', 0, '0000-00-00', '393509'),
+(28, 26, 146, 19, '2017-04-28', 'Cheque', 25, '2017-04-28', 16, '2017-04-28', '000039'),
+(29, 27, 146, 19, '2017-04-28', 'NEFT/RTGS', 25, '2017-04-07', 0, '0000-00-00', ''),
+(30, 28, 146, 19, '2017-04-28', 'NEFT/RTGS', 25, '2017-04-07', 0, '0000-00-00', ''),
+(31, 3, 352, 16, '2017-04-28', 'NEFT/RTGS', 27, '2017-04-07', 16, '2017-04-28', ''),
+(32, 4, 352, 16, '2017-04-28', 'NEFT/RTGS', 27, '2017-04-07', 0, '0000-00-00', ''),
+(33, 5, 352, 16, '2017-04-28', 'NEFT/RTGS', 27, '2017-04-07', 0, '0000-00-00', ''),
+(34, 29, 142, 19, '2017-05-01', 'Cheque', 25, '2017-04-08', 0, '0000-00-00', '393552'),
+(35, 6, 352, 19, '2017-05-01', 'Cheque', 27, '2017-04-08', 0, '0000-00-00', '393508'),
+(36, 7, 352, 19, '2017-05-01', 'Cheque', 27, '2017-05-01', 19, '2017-05-04', '393512'),
+(37, 30, 146, 19, '2017-05-01', 'Cheque', 25, '2017-05-01', 0, '0000-00-00', '000041'),
+(38, 31, 146, 19, '2017-05-02', 'NEFT/RTGS', 25, '1970-01-01', 0, '0000-00-00', ''),
+(39, 32, 142, 19, '2017-05-02', 'NEFT/RTGS', 25, '2017-04-17', 0, '0000-00-00', ''),
+(40, 33, 142, 19, '2017-05-02', 'NEFT/RTGS', 25, '2017-05-29', 0, '0000-00-00', ''),
+(41, 8, 352, 19, '2017-05-02', 'Cheque', 27, '2017-05-02', 19, '2017-05-04', '393510'),
+(42, 34, 146, 19, '2017-05-02', 'NEFT/RTGS', 25, '2017-04-30', 0, '0000-00-00', ''),
+(43, 35, 146, 19, '2017-05-03', 'NEFT/RTGS', 25, '2017-04-17', 0, '0000-00-00', ''),
+(44, 36, 146, 19, '2017-05-03', 'NEFT/RTGS', 25, '2017-04-07', 0, '0000-00-00', ''),
+(45, 37, 146, 19, '2017-05-03', 'NEFT/RTGS', 25, '2017-05-03', 16, '2017-05-05', ''),
+(46, 38, 146, 19, '2017-05-03', 'NEFT/RTGS', 25, '2017-05-03', 0, '0000-00-00', ''),
+(47, 39, 146, 19, '2017-05-03', 'NEFT/RTGS', 25, '2017-05-03', 0, '0000-00-00', ''),
+(48, 40, 146, 19, '2017-05-03', 'NEFT/RTGS', 25, '2017-05-03', 0, '0000-00-00', ''),
+(49, 41, 146, 19, '2017-05-03', 'NEFT/RTGS', 25, '2017-05-03', 0, '0000-00-00', ''),
+(50, 42, 146, 16, '2017-05-04', 'NEFT/RTGS', 25, '2017-05-04', 0, '0000-00-00', ''),
+(51, 43, 146, 16, '2017-05-04', 'NEFT/RTGS', 25, '2017-05-04', 0, '0000-00-00', ''),
+(52, 1, 203, 19, '2017-05-04', 'Cheque', 26, '2017-05-04', 0, '0000-00-00', '128351'),
+(53, 44, 146, 19, '2017-05-06', 'Cheque', 25, '2017-05-06', 0, '0000-00-00', '000042'),
+(54, 45, 142, 16, '2017-05-09', 'Cheque', 25, '2017-05-09', 0, '0000-00-00', 'sdf456'),
+(55, 46, 142, 16, '2017-05-09', 'Cheque', 25, '2017-05-09', 0, '0000-00-00', '34324'),
+(56, 47, 142, 16, '2017-05-09', 'Cheque', 25, '2017-05-09', 0, '0000-00-00', '34324'),
+(57, 48, 142, 16, '2017-05-09', 'Cheque', 25, '2017-05-09', 16, '2017-05-09', '34324'),
+(58, 49, 142, 16, '2017-05-09', 'Cheque', 25, '2017-05-09', 16, '2017-05-09', '13456'),
+(59, 50, 142, 16, '2017-05-09', 'Cheque', 25, '2017-05-09', 16, '2017-05-11', '2312'),
+(60, 51, 142, 16, '2017-05-11', 'Cheque', 25, '1970-01-01', 0, '0000-00-00', '34324'),
+(61, 52, 142, 16, '2017-05-11', 'Cheque', 25, '1970-01-01', 16, '2017-05-11', '34324');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `nppayment_rows`
+--
+
+CREATE TABLE IF NOT EXISTS `nppayment_rows` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `nppayment_id` int(10) NOT NULL,
+  `received_from_id` int(10) NOT NULL,
+  `amount` decimal(20,5) NOT NULL,
+  `cr_dr` varchar(5) NOT NULL,
+  `narration` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=135 ;
+
+--
+-- Dumping data for table `nppayment_rows`
+--
+
+INSERT INTO `nppayment_rows` (`id`, `nppayment_id`, `received_from_id`, `amount`, `cr_dr`, `narration`) VALUES
+(5, 5, 133, '29.00000', 'Dr', 'Charges for Neft Customer'),
+(6, 6, 133, '63.00000', 'Dr', 'Cgarges for RTGS custe.payment'),
+(7, 7, 133, '29.00000', 'Dr', 'Charges for nsft cust.payment'),
+(38, 23, 579, '20000.00000', 'Dr', 'March sal to Gopal Khandelwal'),
+(39, 24, 568, '15013.00000', 'Dr', 'March sal Reena Khandelwal'),
+(40, 24, 135, '400.00000', 'Cr', 'Fine due to absence without leave RK in march'),
+(41, 22, 568, '8230.00000', 'Dr', 'March sal to UM'),
+(42, 22, 486, '1580.00000', 'Cr', 'Cash adv given by PM to UM'),
+(43, 22, 32, '3000.00000', 'Cr', 'Loan installement deducted for UM'),
+(44, 21, 568, '12452.00000', 'Dr', 'March sal to JS'),
+(45, 21, 22, '3280.00000', 'Cr', 'Advance deducted for JS'),
+(46, 20, 568, '17000.00000', 'Dr', 'Salary to Mukesh Jain for March 2017'),
+(47, 20, 465, '1547.00000', 'Dr', 'Advance amount paid to MJ '),
+(48, 19, 568, '12247.00000', 'Dr', 'Salary for the month of March 2017Jitendra singh jhala'),
+(49, 19, 31, '80.00000', 'Cr', 'Food Bill March.2017'),
+(50, 18, 568, '17266.00000', 'Dr', 'Salary for the month of march 2017 Bhopalsingh jhala'),
+(51, 18, 46, '325.00000', 'Cr', 'Mobile bill'),
+(52, 17, 568, '17500.00000', 'Dr', 'Salary for the monyj of March 2017 Gersingh'),
+(53, 16, 568, '8300.00000', 'Dr', 'Salary for the month of March.2017 Lehri lal Gameti'),
+(54, 15, 568, '10000.00000', 'Dr', 'Salary for the month of March.2017 Vikram singh Rao'),
+(58, 13, 568, '12274.00000', 'Dr', 'Salary for the month of March.2017 Jayanti jain'),
+(59, 13, 547, '120.00000', 'Cr', 'Food bill March.2017'),
+(60, 12, 569, '7966.00000', 'Dr', 'Neft Inv.No.115 Dt.26.04.2017'),
+(61, 11, 476, '174534.75000', 'Dr', 'Ch.No.000038 dt.27.04.2017'),
+(62, 10, 114, '16626.00000', 'Dr', 'Ch.000035 dated 24.4.17 to AVVNL for the month of  April 2017 '),
+(63, 9, 523, '3190.00000', 'Dr', 'Ch.No.0036 issued to  Ing Vysa Bank against alloy steel Inv.No.29 dt.7.04.17'),
+(65, 25, 119, '140.00000', 'Dr', 'Ch.000032 dt.14.4.17 issued to Amrapali Enterprises Inv.no.4594 dt.7.4.17'),
+(66, 26, 478, '6480.00000', 'Dr', 'Neft against proforma invoice no.7093 dt.11.4.17 purchase order no.STL/po-414 st.27.3.17'),
+(67, 27, 324, '4697.00000', 'Dr', 'Ch.393509 dt.24.4.2017 issued to AVVNL for the month of April.17'),
+(70, 29, 568, '17000.00000', 'Dr', 'Salary for the month of March.2017 Anjana Jain'),
+(71, 30, 568, '17000.00000', 'Dr', 'Salary for the month of March.2017 Snigdha Bhattacharya'),
+(72, 28, 117, '1403.00000', 'Dr', 'ch.000039 issued from Kotak Bank aginst Jeet Computer & Stationery Inv.No.2190 dt.12.04.17  for RIM 10 qty @ 133 Rs'),
+(75, 32, 579, '10710.00000', 'Dr', 'March sal mufazzal hussain'),
+(76, 33, 579, '18300.00000', 'Dr', 'March sal for ajita chopra'),
+(77, 33, 342, '4.60000', 'Dr', 'bank charges for NEFT'),
+(78, 31, 579, '10500.00000', 'Dr', 'March sal to Rajendra mehta'),
+(79, 31, 342, '4.60000', 'Dr', 'Misc office exp for rajendra mehta'),
+(80, 8, 75, '1700000.00000', 'Dr', 'Neft AM'),
+(83, 34, 568, '5000.00000', 'Dr', 'CH.393552 Salary for the month of march 2017 Narayani bai'),
+(84, 35, 579, '7000.00000', 'Dr', 'Ch.393508 salary for the month of March.2017 Surendra singh'),
+(86, 14, 119, '4500.00000', 'Dr', 'Neft issued Applied Electronics & Electricals  against inv.no.23 dt.10.04.17  12volt 26 AH Battery Amron for UPS at Madri Office\r\n'),
+(88, 37, 106, '1500.00000', 'Dr', 'Ch.000041 issued Kotak Bank Gati Kintetsu, Parle Biscuit Inv.STL/IN-043/BE-3353/17-18'),
+(89, 38, 153, '9200.00000', 'Dr', 'Neft issued to Kotak bank against B.T.Electronics,Inv.\r\nno.216 dt.6.4.17,videcon VA 163 BBR 110217860188003585 Qty.1,'),
+(90, 39, 595, '100000.00000', 'Dr', 'Transfer STL-SML'),
+(91, 40, 596, '15000.00000', 'Dr', 'Transfer STL-FMSL'),
+(93, 42, 138, '282.00000', 'Dr', 'Int.Dt.1.4.17-30.4.17'),
+(94, 43, 568, '5645.00000', 'Dr', 'Neft salary for the month of march.2017 Mr.Dilip (Suvidha Service)'),
+(95, 44, 121, '165000.00000', 'Dr', 'Neft salary for the month of March.2017 AM'),
+(98, 46, 477, '30878.00000', 'Dr', 'Neft issued Kotak Bank Against Inv.no. R 2223 dt.31.3.17'),
+(99, 47, 474, '137910.00000', 'Dr', 'Neft Issued Kotak Bank Against Inv.No.105988,106025,106047,106110,106115'),
+(100, 48, 481, '9563.00000', 'Dr', 'Neft Issued Kotak Bank Against Inv.No.T/157'),
+(101, 49, 475, '15342.00000', 'Dr', 'Neft issued Kotak Bank Against Inv.No.938 dt.24.3.2017'),
+(102, 50, 493, '32778.00000', 'Dr', 'NEFT for due amount'),
+(103, 51, 599, '9639.00000', 'Dr', 'NEFT agst due payment'),
+(106, 41, 360, '9200.00000', 'Dr', 'Neft issued to SBBJ Bank against B.T.Electronics Inv.No.216 dt.6.4.17 Videocon VA 163 BBR 110217860188003585'),
+(107, 36, 591, '6000.00000', 'Dr', 'Neft SBBJ Mateshwari Electric Works Bill No.1990 dt.6.4.17,20 HP 2800 RPM 3Fhase oil Motor Rewinding,5HP Starter Rep. Office'),
+(109, 52, 195, '1494.00000', 'Dr', 'Ch.128351 issued to SBBJ against Milk Bill for the month of April 2017'),
+(110, 45, 479, '136168.00000', 'Dr', 'Neft issued Kotak Bank Inv.No.801 dt.4.3.17,Sa-298 dt.4.3.17\r\nDiscount STL/PO-365/BE-3300 against Reliant Drilling'),
+(111, 53, 134, '4266.00000', 'Dr', 'Ch.000042 issued Kotak Bank against Dharmraj dairy & Gen.Stores Goverdhanlal Jat Milk Bill'),
+(112, 1, 23, '10.00000', 'Dr', 'qqqq'),
+(113, 1, 25, '500.00000', 'Dr', 'sss'),
+(114, 2, 22, '45.00000', 'Dr', 'dxfxdf'),
+(115, 2, 23, '5.00000', 'Dr', 'dt'),
+(116, 3, 22, '45.00000', 'Dr', 'dxfxdf'),
+(117, 3, 23, '5.00000', 'Dr', 'dt'),
+(118, 4, 22, '45.00000', 'Dr', 'dxfxdf'),
+(119, 4, 23, '5.00000', 'Dr', 'dt'),
+(120, 54, 480, '500.00000', 'Dr', 'dfdf'),
+(121, 54, 22, '4.00000', 'Cr', 'fff'),
+(122, 55, 599, '11.00000', 'Dr', 'adfadfad'),
+(123, 56, 599, '11.00000', 'Dr', 'adfadfad'),
+(124, 57, 599, '11.00000', 'Dr', 'adfadfad'),
+(125, 57, 599, '11.00000', 'Dr', 'adfadfad'),
+(126, 58, 481, '100.00000', 'Dr', 'dd'),
+(127, 58, 481, '100.00000', 'Dr', 'dd'),
+(128, 58, 481, '100.00000', 'Dr', 'dd'),
+(129, 58, 481, '100.00000', 'Dr', 'dd'),
+(130, 58, 481, '100.00000', 'Dr', 'dd'),
+(131, 59, 599, '11.00000', 'Dr', 'sfadfad'),
+(132, 59, 599, '111.00000', 'Dr', 'sfadfad'),
+(133, 60, 493, '11.00000', 'Dr', 'dfdf'),
+(134, 61, 493, '11.00000', 'Dr', 'dfdf');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `pages`
 --
 
@@ -10811,9 +11003,9 @@ INSERT INTO `vouchers_references` (`id`, `voucher_entity`, `description`, `compa
 (2, 'PaymentVoucher -> Cash/Bank', 'payment', 25, 'Payment Voucher', 'Cash/Bank'),
 (3, 'Receipt Voucher -> Received From', 'receipt voucher ', 25, 'Receipt Voucher', 'Received From'),
 (4, 'Receipt Voucher -> Cash/Bank', 'bnvnb', 25, 'Receipt Voucher', 'Cash/Bank'),
-(5, 'Petty Cash Receipt -> Received From', 'bnvnb', 25, 'Petty Cash Receipt', 'Received From'),
-(6, 'Petty Cash Receipt -> Cash/Bank', 'bnvnb', 25, 'Petty Cash Receipt', 'Cash/Bank'),
-(7, 'Contra Voucher -> Received From', 'bnvnb', 25, 'Contra Voucher', 'Received From'),
+(5, 'Petty Cash Payment -> Received From', 'bnvnb', 25, 'Petty Cash Payment', 'Paid To'),
+(6, 'Petty Cash Payment -> Cash/Bank', 'bnvnb', 25, 'Petty Cash Payment', 'Cash/Bank'),
+(7, 'Contra Voucher -> Paid To', 'bnvnb', 25, 'Contra Voucher', 'Paid To'),
 (8, 'Contra Voucher -> Cash/Bank', 'bnvnb', 25, 'Contra Voucher', 'Cash/Bank'),
 (9, 'Journal Voucher -> Ledger', 'bnvnb', 25, 'Journal Voucher', 'Ledger'),
 (10, 'Debit Notes -> Sales Account', 'bnvnb', 25, 'Debit Notes', 'Sales Account'),
@@ -10824,9 +11016,9 @@ INSERT INTO `vouchers_references` (`id`, `voucher_entity`, `description`, `compa
 (15, 'PaymentVoucher -> Cash/Bank', 'payment', 26, 'Payment Voucher', 'Cash/Bank'),
 (16, 'Receipt Voucher -> Received From', 'receipt voucher ', 26, 'Receipt Voucher', 'Received From'),
 (17, 'Receipt Voucher -> Cash/Bank', 'bnvnb', 26, 'Receipt Voucher', 'Cash/Bank'),
-(18, 'Petty Cash Receipt -> Received From', 'bnvnb', 26, 'Petty Cash Receipt', 'Received From'),
-(19, 'Petty Cash Receipt -> Cash/Bank', 'bnvnb', 26, 'Petty Cash Receipt', 'Cash/Bank'),
-(20, 'Contra Voucher -> Received From', 'bnvnb', 26, 'Contra Voucher', 'Received From'),
+(18, 'Petty Cash Payment -> Received From', 'bnvnb', 26, 'Petty Cash Payment', 'Paid To'),
+(19, 'Petty Cash Payment -> Cash/Bank', 'bnvnb', 26, 'Petty Cash Payment', 'Cash/Bank'),
+(20, 'Contra Voucher -> Paid To', 'bnvnb', 26, 'Contra Voucher', 'Paid To'),
 (21, 'Contra Voucher -> Cash/Bank', 'bnvnb', 26, 'Contra Voucher', 'Cash/Bank'),
 (22, 'Journal Voucher -> Ledger', 'bnvnb', 26, 'Journal Voucher', 'Ledger'),
 (23, 'Debit Notes -> Sales Account', 'bnvnb', 26, 'Debit Notes', 'Sales Account'),
@@ -10837,9 +11029,9 @@ INSERT INTO `vouchers_references` (`id`, `voucher_entity`, `description`, `compa
 (28, 'PaymentVoucher -> Cash/Bank', 'payment', 27, 'Payment Voucher', 'Cash/Bank'),
 (29, 'Receipt Voucher -> Received From', 'receipt voucher ', 27, 'Receipt Voucher', 'Received From'),
 (30, 'Receipt Voucher -> Cash/Bank', 'Receipt', 27, 'Receipt Voucher', 'Cash/Bank'),
-(31, 'Petty Cash Receipt -> Received From', 'bnvnb', 27, 'Petty Cash Receipt', 'Received From'),
-(32, 'Petty Cash Receipt -> Cash/Bank', 'bnvnb', 27, 'Petty Cash Receipt', 'Cash/Bank'),
-(33, 'Contra Voucher -> Received From', 'bnvnb', 27, 'Contra Voucher', 'Received From'),
+(31, 'Petty Cash Payment -> Received From', 'bnvnb', 27, 'Petty Cash Payment', 'Paid To'),
+(32, 'Petty Cash Payment -> Cash/Bank', 'bnvnb', 27, 'Petty Cash Payment', 'Cash/Bank'),
+(33, 'Contra Voucher -> Paid To', 'bnvnb', 27, 'Contra Voucher', 'Paid To'),
 (34, 'Contra Voucher -> Cash/Bank', 'bnvnb', 27, 'Contra Voucher', 'Cash/Bank'),
 (35, 'Journal Voucher -> Ledger', 'bnvnb', 27, 'Journal Voucher', 'Ledger'),
 (36, 'Debit Notes -> Sales Account', 'bnvnb', 27, 'Debit Notes', 'Sales Account'),
@@ -11147,8 +11339,18 @@ INSERT INTO `voucher_ledger_accounts` (`vouchers_reference_id`, `ledger_account_
 (7, 142),
 (7, 145),
 (7, 146),
+(7, 451),
+(7, 452),
 (7, 453),
 (7, 454),
+(7, 622),
+(8, 142),
+(8, 145),
+(8, 451),
+(8, 452),
+(8, 453),
+(8, 454),
+(8, 622),
 (9, 22),
 (9, 23),
 (9, 25),

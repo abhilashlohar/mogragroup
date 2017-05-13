@@ -53,7 +53,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 				<td><a class="btn btn-xs btn-default addrow" href="#" role="button"><i class="fa fa-plus"></i> Add row</a></td>
 				<td id="receipt_amount_dr" width="8%"><label>Total Dr</label><?php echo $this->Form->input('debitamount', ['type' => 'text','style'=>'width:65%;','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
 				<td id="receipt_amount_cr" width="20%"><label>Total Cr</label><?php echo $this->Form->input('creditamount', ['type' => 'text','style'=>'width:50%;','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
-				<td><button type="submit" class="btn btn-primary" >CREATE JOURNAL VOUCHER</button></td>
+				<td><button type="submit" class="btn btn-primary" id='submitbtn'>CREATE JOURNAL VOUCHER</button></td>
 				
 			</tfoot>
 		</table>
@@ -160,6 +160,8 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
+			$('#submitbtn').prop('disabled', true);
+			$('#submitbtn').text('Submitting.....');
 			success3.show();
 			error3.hide();
 			form[0].submit(); // submit the form

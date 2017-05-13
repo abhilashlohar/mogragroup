@@ -508,7 +508,9 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
-			var amount=parseFloat($('input[name="amount"]').val());
+			$('#add_submit').prop('disabled', true);
+			$('#add_submit').text('Submitting.....');
+		var amount=parseFloat($('input[name="amount"]').val());
 		
 				var debit=0;
 				$("[name^=debit]").each(function () {

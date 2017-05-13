@@ -132,7 +132,7 @@
 							<?php if($chkdate == 'Not Found'){  ?>
 					<label class="btn btn-danger"> You are not in Current Financial Year </label>
 				<?php } else { ?>
-					<button type="submit" class="btn btn-primary">ADD GRN</button>
+					<button type="submit" class="btn btn-primary" id='submitbtn'>ADD GRN</button>
 				<?php } ?>	
 						
 					</div>
@@ -212,7 +212,9 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
-			var check_d=0;
+			$('#submitbtn').prop('disabled', true);
+			$('#submitbtn').text('Submitting.....');
+		var check_d=0;
 				$(".rename_check").each(function () {
 					if($(this).prop('checked'))
 					{

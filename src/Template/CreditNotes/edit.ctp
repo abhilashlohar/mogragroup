@@ -85,7 +85,7 @@
 			</div>
 		
 			<div class="form-actions">
-				<button type="submit" class="btn btn-primary">UPDATE CREDIT NOTE</button>
+				<button type="submit" class="btn btn-primary" id='submitbtn'>UPDATE CREDIT NOTE</button>
 			</div>
 		</div>
 		<?= $this->Form->end() ?>
@@ -150,6 +150,8 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
+			$('#submitbtn').prop('disabled', true);
+			$('#submitbtn').text('Submitting.....');
 			q="ok";
 			$("#main_tb tbody tr").each(function(){
 				var t=$(this).find("td:nth-child(2) input").val();

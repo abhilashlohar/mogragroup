@@ -132,7 +132,7 @@
 			<div class="form-actions">
 				<div class="row">
 					<div class="col-md-offset-3 col-md-9">
-						<button type="submit" class="btn btn-primary">EDIT GRN</button>
+						<button type="submit" class="btn btn-primary" id='submitbtn'>EDIT GRN</button>
 					</div>
 				</div>
 			</div>
@@ -209,7 +209,8 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
-			
+			$('#submitbtn').prop('disabled', true);
+			$('#submitbtn').text('Submitting.....');			
 			success1.show();
 			error1.hide();
 			form[0].submit(); // submit the form

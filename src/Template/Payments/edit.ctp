@@ -150,7 +150,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 				<td><a class="btn btn-xs btn-default addrow" href="#" role="button"><i class="fa fa-plus"></i> Add row</a></td>
 				<td id="receipt_amount" style="font-size: 14px;font-weight: bold;"></td>
 				<td></td>
-				<td><button type="submit" class="btn btn-primary" >EDIT PAYMENT VOUCHER</button></td>
+				<td><button type="submit" class="btn btn-primary" id='submitbtn'>EDIT PAYMENT VOUCHER</button></td>
 				<td></td>
 			</tfoot>
 		</table>
@@ -244,6 +244,8 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
+			$('#submitbtn').prop('disabled', true);
+			$('#submitbtn').text('Submitting.....');
 			success3.show();
 			error3.hide();
 			form[0].submit(); // submit the form

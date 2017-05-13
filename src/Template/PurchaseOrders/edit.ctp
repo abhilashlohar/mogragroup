@@ -255,7 +255,7 @@
 					</div>
 				</div>
 			<div class="form-actions">
-				 <button type="submit" class="btn blue-hoki">Update Purchase Order</button>
+				 <button type="submit" class="btn blue-hoki" id='submitbtn'>Update Purchase Order</button>
 			</div>
 		<?= $this->Form->end() ?>
 		<!-- END FORM-->
@@ -378,10 +378,12 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
+			$('#submitbtn').prop('disabled', true);
+			$('#submitbtn').text('Submitting.....');
 			put_code_description();
 			success3.show();
-				error3.hide();
-				form[0].submit(); // submit the form
+			error3.hide();
+			form[0].submit(); // submit the form
 		}
 
 	});

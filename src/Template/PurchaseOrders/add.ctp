@@ -249,7 +249,7 @@ With reference to your price list we are pleased to place an order for the follo
 					<?php if($chkdate == 'Not Found'){  ?>
 					<label class="btn btn-danger"> You are not in Current Financial Year </label>
 				<?php } else { ?>
-					<button type="submit" class="btn blue-hoki">Add Purchase Order</button>
+					<button type="submit" class="btn blue-hoki" id='submitbtn'>Add Purchase Order</button>
 				<?php } ?>	
 				 
 			</div>
@@ -383,8 +383,10 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
-			put_code_description();
-			success3.show();
+			$('#submitbtn').prop('disabled', true);
+			$('#submitbtn').text('Submitting.....');
+				put_code_description();
+				success3.show();
 				error3.hide();
 				form[0].submit(); // submit the form
 		}

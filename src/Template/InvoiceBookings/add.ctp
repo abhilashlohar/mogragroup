@@ -286,7 +286,7 @@ foreach($grn->purchase_order->purchase_order_rows as $purchase_order_row){
 				<?php } else { ?>
 					<?= $this->Form->button(__('BOOK INVOICE'),['class'=>'btn btn-primary','id'=>'add_submit','type'=>'Submit']) ?>
 				<?php } ?>	
-								
+				
 						</div>
 				</div>
 		</div>
@@ -575,6 +575,8 @@ $(document).ready(function() {
 		
 
 		submitHandler: function (form) {
+			$('#add_submit').prop('disabled', true);
+			$('#add_submit').text('Submitting.....');
 			success3.show();
 			error3.hide();
 			form[0].submit();

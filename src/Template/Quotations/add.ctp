@@ -269,10 +269,7 @@ if(!empty($revision))
 			</div>
 			<br/>
 			
-			<ol id="sortable">
-			
-			  
-			</ol>
+			<ol id="sortable"></ol>
 			
 		</div>
 		<div class="form-actions">

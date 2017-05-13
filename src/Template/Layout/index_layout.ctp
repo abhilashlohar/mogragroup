@@ -16,6 +16,7 @@
 <?php echo $this->Html->script('/assets/global/plugins/pace/pace.min.js'); ?>
 <?php echo $this->Html->css('/assets/global/plugins/pace/themes/pace-theme-flash.css'); ?>
 <?php //echo $this->Html->css('/assets/global/css/print.css'); ?>
+<?php echo $this->Html->css('http://simplelineicons.com/css/simple-line-icons.css'); ?>
 <?php echo $this->Html->css('/assets/global/plugins/font-awesome/css/font-awesome.min.css'); ?>
 <?php echo $this->Html->css('/assets/global/plugins/simple-line-icons/simple-line-icons.min.css'); ?>
 <?php echo $this->Html->css('/assets/global/plugins/bootstrap/css/bootstrap.min.css'); ?>

@@ -312,7 +312,7 @@ class SaleReturnsController extends AppController
         
         if ($this->request->is(['patch', 'post', 'put'])) {
             $saleReturn = $this->SaleReturns->patchEntity($saleReturn, $this->request->data);
-			$ref_rows=$this->request->data['ref_rows'];
+			$ref_rows=@$this->request->data['ref_rows'];
             $saleReturn = $this->SaleReturns->patchEntity($saleReturn, $this->request->data);
 			foreach($saleReturn->sale_return_rows as $sale_return_row){   
 				if($sale_return_row->item_serial_numbers){

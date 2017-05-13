@@ -43,10 +43,11 @@
 			<div class="col-md-2">
 				<div class="form-group">
 					<label class="control-label">Old Quantity <span class="required" aria-required="true">*</span></label>
-					<?php echo $this->Form->input('quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm','readonly','placeholder'=>'Quantity']); ?>
+					<?php 
+					echo $this->Form->input('quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Quantity']); ?>
 				</div>
 			</div>
-			<div class="col-md-2">
+			<div class="col-md-2" id="hide_quantity">
 				<div class="form-group">
 					<label class="control-label">New Quantity <span class="required" aria-required="true">*</span></label>
 					<?php echo $this->Form->input('new_quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm','value' => 0,'placeholder'=>'New Quantity']); ?>
@@ -263,7 +264,31 @@ $(document).ready(function() {
 	
     });
 	
+	
 	show_table();
+	
+	var serial_numbers=$('input[name=serial_number_enable]:checked').val(); 
+	if(serial_numbers == '1'){
+			$('input[name="quantity"]').attr('readonly','readonly');
+			$('#hide_quantity').show();
+		}else{
+			$('input[name="quantity"]').removeAttr('readonly');
+			$('#hide_quantity').hide();
+			$('input[name="new_quantity"]').val(0);
+			
+		}
+		
+		$('input[name=serial_number_enable]').on("click",function() {
+			var serial_numbers=$('input[name=serial_number_enable]:checked').val(); 
+				if(serial_numbers == '1'){
+						$('input[name="quantity"]').attr('readonly','readonly');
+						$('#hide_quantity').show();
+				}else{
+						$('input[name="quantity"]').removeAttr('readonly');
+						$('#hide_quantity').hide();
+						$('input[name="new_quantity"]').val(0);
+				}
+		});
 	
 	function show_table(){
 		var serial_numbers=$('input[name=serial_number_enable]:checked').val(); 
@@ -302,6 +327,7 @@ $(document).ready(function() {
 			$('#show_data').css("display", "block");
 		}
 		else if(serial_number=='0'){ 
+		$("#quantity").removeAttr('readonly');
 			$('#itm_srl_num').html('');
 			$('#show_data').css("display", "none");
 			

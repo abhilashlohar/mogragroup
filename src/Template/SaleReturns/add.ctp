@@ -89,24 +89,27 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 						</div>
 					</div>
 					<br/><br/>
-					<div class="form-group">
-						<label class="col-md-3 control-label">Salesman  <span class="required" aria-required="true">*</span></label>
-						<div class="col-md-9">
-							<?php echo @$invoice->employee->name; ?>
-						</div>
-					</div><br/>
-					<div class="form-group">
-						<label class="col-md-3 control-label">Carrier <span class="required" aria-required="true">*</span></label>
-						<div class="col-md-9">
-							<?php echo $Transporter->transporter_name; ?>
-						</div>
-					</div>
+					
 				</div>
 				</div><br/>
 				<div class="row">
-				<div class="col-md-6">
-				
-				</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="col-md-3 control-label">Salesman  <span class="required" aria-required="true">*</span></label>
+							<div class="col-md-9">
+								<?php echo @$invoice->employee->name; ?>
+							</div>
+						</div></div>
+						<div class="col-md-6">
+						<div class="form-group">
+							<label class="col-md-3 control-label">Carrier <span class="required" aria-required="true">*</span></label>
+							<div class="col-md-9">
+								<?php echo $Transporter->transporter_name; ?>
+							</div>
+						</div>
+						</div>
+				</div><br/>
+			<div class="row">
 				<div class="col-md-6">
 					<div class="form-group">
 						<label class="col-md-3  control-label">Delivery Description <span class="required" aria-required="true">*</span></label>
@@ -115,19 +118,20 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 						</div>
 					</div>
 				</div>
-				
-			</div><br/>
-				
-			</div><br/>
-			<div class="row">
 				<div class="col-md-6">
-				<div class="form-group">
+					<div class="form-group">
 						<label class="col-md-3 control-label">Customer PO NO  <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-9">
 							<?php echo $invoice->customer_po_no; ?>
 						</div>
 					</div>
 				</div>
+				
+			</div><br/>
+				
+			</div><br/>
+			<div class="row">
+				
 				<div class="col-md-6">
 					<div class="form-group">
 						<label class="col-md-3 control-label">PO DATE  <span class="required" aria-required="true">*</span></label>

@@ -66,7 +66,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 							<?php echo @$invoice->in3; ?>
 						</div>
 						<div class="col-md-3">
-							<?php echo $this->Form->input('in4', ['label' => false,'class' => 'form-control input-sm','readonly']); ?>
+							<?php echo $this->Form->input('in4', ['label' => false,'class' => 'form-control input-sm','readonly','value' => @$invoice->in4]); ?>
 						</div>
 					</div>
 				</div>

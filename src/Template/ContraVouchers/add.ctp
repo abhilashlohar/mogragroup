@@ -89,8 +89,6 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
             </tfoot>
         </table>
         </div>
-        
-    
     <?= $this->Form->end() ?>
     </div>
 </div>

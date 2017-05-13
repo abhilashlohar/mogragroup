@@ -21,7 +21,7 @@
 				<?php $i=0; foreach ($Company_array as $key=>$Company_array){ $i++;
 				$c_namrr=$Company_array1[$key];
 				$ledger_id=$Company_array2[$key];
-pr($ledger_id);
+//pr($ledger_id);
 				?>
 					<tr>
 						<td><?= h($i) ?></td>
@@ -29,7 +29,7 @@ pr($ledger_id);
 						<td class="actions">
 						 	<?php if($Company_array =='Yes') { ?>
 							 <?= $this->Form->postLink('Added ',
-								['action' => 'CheckCompany',$ledgerAccount_id, $key],
+								['action' => 'CheckCompany',$ledger_id, $key,],
 								[
 									'escape' => false,
 									'class'=>' blue tooltips','data-original-title'=>'Click To Remove'

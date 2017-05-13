@@ -772,12 +772,12 @@ $(document).ready(function() {
 	function copy_term_condition_to_textarea(){ 
 		$('#terms_conditions').html("");
 		var inc=0;
-		var tc_li = [];
+		var tc_li = '';
 		$("#sortable li").each(function(){
 			var tc=$(this).text();
 			++inc; 
 			//$('#terms_conditions').append('<p>'+tc+'</p>');
-			 tc_li = '<li>'+tc+'</li>';
+			 tc_li += '<li>'+tc+'</li>';
 		});
 		$('#terms_conditions').append('<ol>'+ tc_li  +'</ol>');
 		

@@ -2,7 +2,7 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">EDIT COMPANY FOR : "<?php echo $saletax_data->tax_figure ?>"</span>
+			<span class="caption-subject font-blue-steel uppercase">EDIT COMPANY FOR : "<?php echo $LedgerAccount_data->name ?>"</span>
 		</div>
 	</div>
 	<div class="portlet-body" >
@@ -15,14 +15,13 @@
 						<th width="15%">Sr. No.</th>
 						<th width="20%">Company Name</th>
 						<th width="10%">Action</th>
-						<th width="10%">Freeze</th>
-
-						
 					</tr>
 				</thead>
 				<tbody>
 				<?php $i=0; foreach ($Company_array as $key=>$Company_array){ $i++;
 				$c_namrr=$Company_array1[$key];
+				$ledger_id=$Company_array2[$key];
+pr($ledger_id);
 				?>
 					<tr>
 						<td><?= h($i) ?></td>
@@ -30,7 +29,7 @@
 						<td class="actions">
 						 	<?php if($Company_array =='Yes') { ?>
 							 <?= $this->Form->postLink('Added ',
-								['action' => 'CheckCompany', $key,$ledgerAccount_id],
+								['action' => 'CheckCompany',$ledgerAccount_id, $key],
 								[
 									'escape' => false,
 									'class'=>' blue tooltips','data-original-title'=>'Click To Remove'
@@ -39,7 +38,7 @@
 							) ?>
 							<?php  } else { ?>
 							<?= $this->Form->postLink(' Removed ',
-								['action' => 'AddCompany', $key,$ledgerAccount_id],
+								['action' => 'AddCompany',$ledgerAccount_id, $key],
 								[
 									'escape' => false,
 									'class'=>' blue tooltips','data-original-title'=>'Click To Add'

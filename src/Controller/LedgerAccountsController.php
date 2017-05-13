@@ -244,27 +244,81 @@ class LedgerAccountsController extends AppController
 		$this->viewBuilder()->layout('index_layout');	
 		$Companies = $this->LedgerAccounts->Companies->find();
 		$LedgerAccount_data= $this->LedgerAccounts->get($ledgerAccount_id);
-pr($LedgerAccount_data); exit;
+//pr($LedgerAccount_data->name); exit;
 		$Company_array=[];
 		$Company_array1=[];
 		$Company_array2=[];
 		foreach($Companies as $Company){
-			$Company_exist= $this->LedgerAccounts->exists(['id' => $ledgerAccount_id,'company_id'=>$Company->id]);
+			$Company_exist= $this->LedgerAccounts->exists(['name' => $LedgerAccount_data->name,'company_id'=>$Company->id]);
 			if($Company_exist){
-				$saletax_data= $this->LedgerAccounts->find()->where(['id' => $ledgerAccount_id,'company_id'=>$Company->id])->first();
+				$LedgerAccount= $this->LedgerAccounts->find()->where(['name' => $LedgerAccount_data->name,'company_id'=>$Company->id])->first();
 
 				$Company_array[$Company->id]='Yes';
 				$Company_array1[$Company->id]=$Company->name;
+				$Company_array2[$Company->id]=$LedgerAccount->id;
 				
 			}else{
 				$Company_array[$Company->id]='No';
 				$Company_array1[$Company->id]=$Company->name;
+				$Company_array2[$Company->id]='';
 			}
 
 		}
 		
-		$this->set(compact('saletax_data','Companies','customer_Company','Company_array','ledgerAccount_id','Company_array1','Company_array2'));
+		$this->set(compact('saletax_data','Companies','customer_Company','Company_array','ledgerAccount_id','Company_array1','Company_array2','LedgerAccount_data'));
 
+	}
+	
+public function AddCompany($ledgerAccount_id=null,$key=null)
+    { //pr($Ledger_details->tax_figure);exit;
+		$this->viewBuilder()->layout('index_layout');	
+		$Ledger_details= $this->LedgerAccounts->get($ledgerAccount_id);
+//pr($Ledger_details->name);exit;
+		$ledgerAccount = $this->LedgerAccounts->newEntity();
+		$ledgerAccount->account_second_subgroup_id = $Ledger_details->account_second_subgroup_id;
+		$ledgerAccount->name = $Ledger_details->name;
+		$ledgerAccount->source_model = 'Ledger Account';
+		$ledgerAccount->source_id = 0;
+		$ledgerAccount->company_id = $key;
+		$this->LedgerAccounts->save($ledgerAccount);
+
+		return $this->redirect(['action' => 'EditCompany/'.$ledgerAccount_id]);
+	}
+public function CheckCompany($ledgerAccount_id=null,$key=null)
+    {
+		$this->viewBuilder()->layout('index_layout');	
+		 $this->request->allowMethod(['post', 'delete']);
+		$employees_ledger= $this->SaleTaxes->LedgerAccounts->find()->where(['source_model' => 'SaleTaxes','source_id'=>$saletax_id,'company_id'=>$company_id])->first();
+		$ledgerexist = $this->SaleTaxes->Ledgers->exists(['ledger_account_id' => $employees_ledger->id]);
+		
+		if(!$ledgerexist){
+			$customer_Company_dlt= $this->SaleTaxes->SaleTaxCompanies->find()->where(['SaleTaxCompanies.sale_taxe_id'=>$saletax_id,'company_id'=>$company_id])->first();
+
+			$customer_ledger_dlt= $this->SaleTaxes->LedgerAccounts->find()->where(['source_model' => 'SaleTaxes','source_id'=>$saletax_id,'company_id'=>$company_id])->first();
+
+			$VoucherLedgerAccountsexist = $this->SaleTaxes->VoucherLedgerAccounts->exists(['ledger_account_id' => $employees_ledger->id]);
+
+			if($VoucherLedgerAccountsexist){
+				$Voucherref = $this->SaleTaxes->VouchersReferences->find()->contain(['VoucherLedgerAccounts'])->where(['VouchersReferences.company_id'=>$company_id]);
+				foreach($Voucherref as $Voucherref){
+					foreach($Voucherref->voucher_ledger_accounts as $voucher_ledger_account){
+							if($voucher_ledger_account->ledger_account_id==$employees_ledger->id){
+								$this->SaleTaxes->VoucherLedgerAccounts->delete($voucher_ledger_account);
+							}
+					}
+					
+				}
+				
+			}
+
+			$this->SaleTaxes->SaleTaxCompanies->delete($customer_Company_dlt);
+			$this->SaleTaxes->LedgerAccounts->delete($customer_ledger_dlt);
+			return $this->redirect(['action' => 'EditCompany/'.$saletax_id]);
+				
+		}else{
+			$this->Flash->error(__('Company Can not Deleted'));
+			return $this->redirect(['action' => 'EditCompany/'.$saletax_id]);
+		}
 	}
 	
 }

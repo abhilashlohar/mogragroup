@@ -19,7 +19,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
     <div class="portlet-title">
         <div class="caption" >
             <i class="icon-globe font-blue-steel"></i>
-            <span class="caption-subject font-blue-steel uppercase">Edit Payment</span>
+            <span class="caption-subject font-blue-steel uppercase">Edit Contra Voucher</span>
         </div>
     </div>
     <div class="portlet-body form">
@@ -153,7 +153,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
                 <td><a class="btn btn-xs btn-default addrow" href="#" role="button"><i class="fa fa-plus"></i> Add row</a></td>
                 <td id="receipt_amount" style="font-size: 14px;font-weight: bold;"></td>
                 <td></td>
-                <td><button type="submit" class="btn btn-primary" id='submitbtn' >EDIT PAYMENT VOUCHER</button></td>
+                <td><button type="submit" class="btn btn-primary" id='submitbtn' >EDIT CONTRA VOUCHER</button></td>
                 <td></td>
             </tfoot>
         </table>

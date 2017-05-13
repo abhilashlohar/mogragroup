@@ -772,17 +772,21 @@ $(document).ready(function() {
 	function copy_term_condition_to_textarea(){ 
 		$('#terms_conditions').html("");
 		var inc=0;
+		var tc_li = [];
 		$("#sortable li").each(function(){
 			var tc=$(this).text();
 			++inc; 
 			//$('#terms_conditions').append('<p>'+tc+'</p>');
-			$('#terms_conditions').append(tc+'<br/>');
+			 tc_li = '<li>'+tc+'</li>';
 		});
+		$('#terms_conditions').append('<ol>'+ tc_li  +'</ol>');
+		
 		var terms_conditions=$("#terms_conditions").html();
 		$('#terms_conditions_box').closest('#t_c_box').find('div[class="note-editable"]').html(terms_conditions);
 		
 		$("#sortable li").remove();
 		var code=$('#terms_conditions_box').code();
+		CKEDITOR.instances.editor1.execCommand( 'numberedlist' );
 		$('textarea[name="terms_conditions"]').val(code);
 	}
 	

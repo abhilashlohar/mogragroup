@@ -72,12 +72,9 @@
 					if($SerialNumberEnable[0]->serial_number_enable == '1' && $ItemLedger->quantity > 0){
 						echo $this->Form->radio('serial_number_enable',[['value' => '1', 'text' => 'Yes', 'checked']]); 
 					}
-					
-					
 					if($SerialNumberEnable[0]->serial_number_enable == '1' && $ItemLedger->quantity == 0 ){
 						echo $this->Form->radio('serial_number_enable',[['value' => '1', 'text' => 'Yes', 'checked'],['value' => '0', 'text' => 'No']]); 
 					}
-					
 					if($SerialNumberEnable[0]->serial_number_enable == '0'){
 					echo $this->Form->radio('serial_number_enable',[['value' => '1', 'text' => 'Yes'],['value' => '0', 'text' => 'No', 'checked']]); 	
 					}

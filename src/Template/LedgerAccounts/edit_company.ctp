@@ -48,27 +48,7 @@
 							) ?>
 							<?php }  ?>
 						</td>
-						<td class="actions">
-						 	<?php if($bill_to_bill =='No' && $Company_array=='Yes') { ?>
-							 <?= $this->Form->postLink('Unfreezed ',
-								['action' => 'SaleTaxFreeze', $key,$saletax_id,$bill_to_bill="1"],
-								[
-									'escape' => false,
-									'class'=>' blue tooltips','data-original-title'=>'Click To Freeze'
-									
-								]
-							) ?>
-							<?php  } else if($Company_array=='Yes')  { ?>
-							<?= $this->Form->postLink(' Freezed ',
-								['action' => 'SaleTaxFreeze', $key,$saletax_id,$bill_to_bill="0"],
-								[
-									'escape' => false,
-									'class'=>' blue tooltips','data-original-title'=>'Click To Unfreeze'
-									
-								]
-							) ?>
-							<?php }  ?>
-						</td>
+						
 					</tr>
 				<?php  } ?>
 				</tbody>

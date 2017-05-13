@@ -364,7 +364,8 @@ class ItemsController extends AppController
 		$ItemLedger=$this->Items->ItemLedgers->find()->where(['item_id'=>$item_id,'source_model'=>'Items'])->first();
 		
 		$ItemSerialNumber = $this->Items->ItemSerialNumbers->get($id);
-		if($ItemSerialNumber->status='In'){
+		
+		if($ItemSerialNumber->status=='In'){
 			$query = $this->Items->ItemLedgers->query();
 			$query->update()
 				->set(['quantity' => $ItemLedger->quantity-1])
@@ -373,9 +374,9 @@ class ItemsController extends AppController
 						
 			$this->Items->ItemSerialNumbers->delete($ItemSerialNumber);
 			$this->Flash->success(__('The Serial Number has been deleted.'));
-		}else{
+		}else{ 
 			if($ItemSerialNumber->invoice_id != 0){
-				$this->Flash->error(__('The Serial Number could not be deleted.These item out from invoice number'.$itemserialnumberdata->invoice_id));
+				$this->Flash->error(__('The Serial Number could not be deleted. These item out from invoice number: '.$ItemSerialNumber->invoice_id));
 			}
 		}
 		

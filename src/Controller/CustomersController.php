@@ -2,6 +2,8 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\I18n\Time;
+use Cake\I18n\Date;
 
 /**
  * Customers Controller
@@ -241,13 +243,43 @@ class CustomersController extends AppController
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		//$customers = $this->paginate($this->Customers->find());
+		$LedgerAccounts =$this->Customers->LedgerAccounts->find()
+			->where(['LedgerAccounts.company_id'=>$st_company_id,'source_model'=>'Customers']);
+		//pr($LedgerAccounts->toArray());exit;
+		$custmer_payment = [];
 		
-		$LedgerAccounts = $this->paginate($this->Customers->LedgerAccounts->find()
-			->where(['LedgerAccounts.company_id'=>$st_company_id,'source_model'=>'Customers']));
-        $ReferenceDetails = $this->Customers->ReferenceDetails->find()->toArray();
-		//pr($customers->toArray()); exit;
-
-        $this->set(compact('LedgerAccounts','ReferenceDetails'));
+        
+		foreach ($LedgerAccounts as $LedgerAccount){
+		$Customers = $this->Customers->find()->where(['id'=>$LedgerAccount->source_id])->first();
+		$custmer_payment[$LedgerAccount->id] = $Customers->payment_terms;
+		$custmer_name[$LedgerAccount->id] = $Customers->customer_name;
+		$custmer_alise[$LedgerAccount->id] = $Customers->alias;
+		}
+		$over_due_report = [];
+		foreach ($custmer_payment as $key=>$custmer_payment){
+			$total_debit=0;$total_credit=0;$due=0;
+			$now=Date::now();
+			$over_date=$now->subDays($custmer_payment);
+			$custmer_ledgers =$this->Customers->Ledgers->find()->where(['ledger_account_id'=>$key])->toArray();
+			 foreach($custmer_ledgers as $custmer_ledger){
+					if($custmer_ledger->transaction_date<=$over_date){
+						if($custmer_ledger->debit==0){
+							$total_credit=$total_credit+$custmer_ledger->credit;
+						}else{
+							$total_debit=$total_debit+$custmer_ledger->debit;
+						}
+					}
+				}
+				$due=$total_debit-$total_credit; //pr($due); exit;
+				$Customers_name =$custmer_name[$key];
+//pr($Customers_name);
+				$over_due_report[$key]=$due;	
+			}
+//pr($over_due_report);
+		//exit;
+		
+        $customers = $this->paginate($this->Customers->Ledgers->find()->where(['ledger_account_id'=>$key]));
+        $this->set(compact('LedgerAccounts','Ledgers','over_due_report','custmer_name','custmer_alise'));
         $this->set('_serialize', ['customers']);
     }
 	

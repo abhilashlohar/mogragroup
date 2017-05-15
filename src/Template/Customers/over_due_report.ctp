@@ -18,32 +18,16 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php foreach ($LedgerAccounts as $LedgerAccount){ 
-					//pr($customer->id); exit;
-					$due=0;
-					$total_credit=0;
-					$total_debit=0;
-						foreach($ReferenceDetails as $ReferenceDetail){
-							//pr($ReferenceDetail->ledger_account_id); 
-							if($ReferenceDetail->ledger_account_id==$LedgerAccount->id){
-								if($ReferenceDetail->credit==0){
-								$total_debit+=$ReferenceDetail->debit;
-								}else{
-								$total_credit+=$ReferenceDetail->credit;
-								}
-							
-						}
-						$due=$total_credit-$total_debit;
-						} ?>
+					<?php foreach ($over_due_report as $key=>$over_due_reports){ 
+						if($over_due_reports>0){
+					?>
 					<tr>
 						<td><?= h(++$page_no) ?></td>
-						<td><?= h($LedgerAccount->name) ?></td>
-						<td>
-						<?=$this->Number->format($due,[ 'places' => 2]);
-						 ?>
-						</td>
+						<td><?php echo $custmer_name[$key]."(". $custmer_alise[$key].")"?></td>
+						<td><?= h($over_due_reports) ?></td>
+						
 					</tr>
-					<?php } ?>
+					<?php }} ?>
 				</tbody>
 			</table>
 		</div>

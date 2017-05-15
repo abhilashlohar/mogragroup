@@ -283,6 +283,7 @@ public function AddCompany($ledgerAccount_id=null,$key=null)
 		$ledgerAccount->source_model = 'Ledger Account';
 		$ledgerAccount->source_id = 0;
 		$ledgerAccount->company_id = $key;
+		$ledgerAccount->auto_inc=$Ledger_details->auto_inc;
 		$this->LedgerAccounts->save($ledgerAccount);
 
 		return $this->redirect(['action' => 'EditCompany/'.$ledgerAccount_id]);

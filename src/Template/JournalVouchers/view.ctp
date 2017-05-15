@@ -10,6 +10,10 @@
 p{
 margin-bottom: 0;
 }
+
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    padding: 5px !important;
+}
 </style>
 <style type="text/css" media="print">
 @page {
@@ -19,7 +23,7 @@ margin-bottom: 0;
 </style>
 <a class="btn  blue hidden-print margin-bottom-5 pull-right" onclick="javascript:window.print();">Print <i class="fa fa-print"></i></a>
 
-<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 65%;font-size: 14px;" class="maindiv">	
+<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 65%;font-size: 12px;" class="maindiv">	
 
 <table width="100%" class="divHeader">
 			<tr>
@@ -57,7 +61,7 @@ margin-bottom: 0;
 			<td width="50%" valign="top" align="right">
 				<table>
 					<tr>
-						<td>Date.</td>
+						<td>Transaction Date.</td>
 						<td width="20" align="center">:</td>
 						<td><?= h(date("d-m-Y",strtotime($journalVoucher->transaction_date))) ?></td>
 					</tr>
@@ -65,21 +69,36 @@ margin-bottom: 0;
 			</td>
 		</tr>
 	</table>
+	<table width="100%">
+		<tr>
+			<td width="50%" valign="top" align="right"></td>
+			<td width="50%" valign="top" align="right">
+				<table>
+					<tr>
+						<td>Created On Date.</td>
+						<td width="20" align="center">:</td>
+						<td><?= h(date("d-m-Y",strtotime($journalVoucher->created_on))) ?></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	<br/>
 	
 	<div style="height:3px;" class="hdrmargin"></div>
-	<table class="table" style="font-size:12px">
+	<table width="100%" class="table" style="font-size:12px">
 		<thead>
 			<tr>
-				<th>Ledger A/c</th>
-				<th style="text-align: right;">Dr</th>
-				<th style="text-align: right;">Cr</th>
+				<th><?= __('Ledger A/C') ?></th>
+				<th><?= __('Dr') ?></th>
+				<th><?= __('Cr') ?></th>
 			</tr>
 		</thead>
-		<tfoot>
+		
 			<?php $sr=0; $dr=0; $cr=0; foreach ($journalVoucher->journal_voucher_rows as $journal_voucher_row): $sr++; ?>
 			<tr>
 				<td><?= h($journal_voucher_row->ReceivedFrom->name) ?></td>
-				<td style="text-align: right;">
+				<td>
 				<?php if($journal_voucher_row->cr_dr=="Dr")
 					{ 
 					
@@ -87,7 +106,7 @@ margin-bottom: 0;
 					echo $journal_voucher_row->amount ;
 					}else{ echo "-";} ?>
 				</td>
-				<td style="text-align: right;">
+				<td>
 				<?php if($journal_voucher_row->cr_dr=="Cr")
 					{
 					
@@ -100,18 +119,19 @@ margin-bottom: 0;
 			<tr>
 			<td align="right"><b>Total</b></td>
 			
-			<td style="text-align: right;"> <?php echo $dr;?></td>
-			<td style="text-align: right;"> <?php echo $cr;?></td>
+			<td > <?php echo $dr;?></td>
+			<td > <?php echo $cr;?></td>
 			</tr>
-		</tfoot>
+		
 	</table>
+	<div style="border:solid 1px ;"></div>
 	<table width="100%" class="divFooter">
 		<tr>
 			<td></td>
-			<td align="right">
-				<table>
+			<td align="right" valign="top" width="35%">
+				<table style="margin-top:3px;">
 					<tr>
-						<td align="center">
+						<td width="15%" align="center">
 						For <?= h($journalVoucher->company->name) ?>
 							<br/>
 					 <?php 

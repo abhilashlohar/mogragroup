@@ -63,19 +63,18 @@ margin-bottom: 0;
 	</table>
 	
 	<table width="100%">
-	<tr>
-	<td width="50%" valign="top" align="right"></td>
-	<td width="50%" valign="top" align="right">
-			
-			<table>
+		<tr>
+			<td width="50%" valign="top" align="right"></td>
+			<td width="50%" valign="top" align="right">
+				<table>
 					<tr>
-						<td>Created Date.</td>
+						<td>Created On Date.</td>
 						<td width="20" align="center">:</td>
 						<td><?= h(date("d-m-Y",strtotime($payment->created_on))) ?></td>
 					</tr>
 				</table>
 			</td>
-	</tr>
+		</tr>
 	</table>
 	
 	

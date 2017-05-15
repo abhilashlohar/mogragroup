@@ -284,35 +284,16 @@ public function AddCompany($ledgerAccount_id=null,$key=null)
 
 		return $this->redirect(['action' => 'EditCompany/'.$ledgerAccount_id]);
 	}
-public function CheckCompany($ledgerAccount_id=null,$key=null)
-    {
+public function CheckCompany($ledger_id=null,$company_id=null)
+    { //pr($key);exit;
 		$this->viewBuilder()->layout('index_layout');	
 		 $this->request->allowMethod(['post', 'delete']);
-		$employees_ledger= $this->SaleTaxes->LedgerAccounts->find()->where(['source_model' => 'SaleTaxes','source_id'=>$saletax_id,'company_id'=>$company_id])->first();
-		$ledgerexist = $this->SaleTaxes->Ledgers->exists(['ledger_account_id' => $employees_ledger->id]);
+		$employees_ledger= $this->LedgerAccounts->find()->where(['source_model' => 'Ledger Account','company_id'=>$company_id,'id'=>$ledger_id])->first();
+		$ledgerexist = $this->LedgerAccounts->Ledgers->exists(['ledger_account_id' => $ledger_id]);
 		
 		if(!$ledgerexist){
-			$customer_Company_dlt= $this->SaleTaxes->SaleTaxCompanies->find()->where(['SaleTaxCompanies.sale_taxe_id'=>$saletax_id,'company_id'=>$company_id])->first();
-
-			$customer_ledger_dlt= $this->SaleTaxes->LedgerAccounts->find()->where(['source_model' => 'SaleTaxes','source_id'=>$saletax_id,'company_id'=>$company_id])->first();
-
-			$VoucherLedgerAccountsexist = $this->SaleTaxes->VoucherLedgerAccounts->exists(['ledger_account_id' => $employees_ledger->id]);
-
-			if($VoucherLedgerAccountsexist){
-				$Voucherref = $this->SaleTaxes->VouchersReferences->find()->contain(['VoucherLedgerAccounts'])->where(['VouchersReferences.company_id'=>$company_id]);
-				foreach($Voucherref as $Voucherref){
-					foreach($Voucherref->voucher_ledger_accounts as $voucher_ledger_account){
-							if($voucher_ledger_account->ledger_account_id==$employees_ledger->id){
-								$this->SaleTaxes->VoucherLedgerAccounts->delete($voucher_ledger_account);
-							}
-					}
-					
-				}
-				
-			}
-
-			$this->SaleTaxes->SaleTaxCompanies->delete($customer_Company_dlt);
-			$this->SaleTaxes->LedgerAccounts->delete($customer_ledger_dlt);
+			$ledger_dlt= $this->LedgerAccounts->find()->where(['source_model' => 'SaleTaxes','source_id'=>$saletax_id,'company_id'=>$company_id])->first();
+			$this->LedgerAccounts->delete($ledger_dlt);
 			return $this->redirect(['action' => 'EditCompany/'.$saletax_id]);
 				
 		}else{

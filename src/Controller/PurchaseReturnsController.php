@@ -24,7 +24,7 @@ class PurchaseReturnsController extends AppController
         $this->paginate = [
             'contain' => ['InvoiceBookings', 'Companies']
         ];
-        $purchaseReturns = $this->paginate($this->PurchaseReturns);
+        $purchaseReturns = $this->paginate($this->PurchaseReturns->find()->order(['PurchaseReturns.id' => 'DESC']));
 
         $this->set(compact('purchaseReturns'));
         $this->set('_serialize', ['purchaseReturns']);
@@ -266,7 +266,7 @@ class PurchaseReturnsController extends AppController
 		$st_company_id = $session->read('st_company_id');
 		$s_employee_id=$this->viewVars['s_employee_id'];
         $purchaseReturn = $this->PurchaseReturns->newEntity();
-		$invoice_booking_id=@(int)$this->request->query('invoiceBooking');
+		$invoice_booking_id=@(int)$this->request->query('invoice-booking');
 		$invoiceBooking = $this->PurchaseReturns->InvoiceBookings->get($invoice_booking_id, [
             'contain' => ['InvoiceBookingRows' => ['Items'],'Grns'=>['Companies','Vendors','GrnRows'=>['Items'],'PurchaseOrders'=>['PurchaseOrderRows']]]
         ]);

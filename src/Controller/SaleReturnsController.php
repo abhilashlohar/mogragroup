@@ -86,6 +86,7 @@ class SaleReturnsController extends AppController
 			}
 			
 			$saleReturn->company_id=$invoice->company_id;
+			$saleReturn->invoice_id=$invoice->id;
 			$saleReturn->date_created=date("Y-m-d");
 			$saleReturn->sr1=$invoice->in1;
 			$last_sr_no=$this->SaleReturns->find()->select(['sr2'])->where(['company_id' => $st_company_id])->order(['sr2' => 'DESC'])->first();
@@ -322,6 +323,7 @@ class SaleReturnsController extends AppController
 					
 			}
 			$saleReturn->date_created=date("Y-m-d");
+			$saleReturn->invoice_id=$invoice->id;
 
         if ($this->SaleReturns->save($saleReturn)) {
 				$this->SaleReturns->Ledgers->deleteAll(['voucher_id' => $saleReturn->id, 'voucher_source' => 'Sale Return']);
@@ -433,8 +435,11 @@ class SaleReturnsController extends AppController
 						$itemLedger->quantity = $saleReturn->sale_return_rows[$i]['quantity'];
 						$itemLedger->source_model = 'Sale Return';
 						$itemLedger->source_id = $saleReturn->id;
-						$itemLedger->in_out = 'In';
-						$itemLedger->rate = $item_detail->rate;
+						$itemLedger->in_out = 'In';if(!$item_detail){
+							$itemLedger->rate = 0;
+						}else{
+							$itemLedger->rate = $item_detail->rate;
+						}
 						$itemLedger->company_id = $invoice->company_id;
 						$itemLedger->processed_on = date("Y-m-d");
 						$this->SaleReturns->ItemLedgers->save($itemLedger);

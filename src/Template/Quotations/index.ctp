@@ -166,8 +166,11 @@ if(!empty($status)){
 								</div>
 								 <?php } } ?>
 								
-								<?php if($pull_request=="true"){
+								<?php if($pull_request=="true" && $close_status != "close"){
 									echo $this->Html->link('<i class="fa fa-repeat"></i>  Convert Into Sales Order','/Sales-Orders/Add?quotation='.$quotation->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+								}elseif($close_status == "close"){
+									echo $this->Html->link('<i class="fa fa-repeat"></i>  Convert Into Sales Order','/Sales-Orders/Add?quotation='.$quotation->id.'&&'.'status='.'close',array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+									
 								} ?>
 								
 								<?php 

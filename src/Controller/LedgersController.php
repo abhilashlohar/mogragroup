@@ -300,8 +300,9 @@ class LedgersController extends AppController
 		->where(['ledger_account_id'=>$ledger_account_id])
 		->where(function($exp) use($transaction_from_date,$transaction_to_date) {
 			return $exp->between('transaction_date', $transaction_from_date, $transaction_to_date, 'date');
-		})->toArray();
+		})->order(['transaction_date'=>'ASC']);
 
+		
 		
 		$query = $this->Ledgers->find();
 		$total_balance=$query->select(['total_debit' => $query->func()->sum('debit'),'total_credit' => $query->func()->sum('credit')])->where(['Ledgers.ledger_account_id' => $ledger_account_id,'Ledgers.transaction_date <'=>$transaction_from_date])->toArray();

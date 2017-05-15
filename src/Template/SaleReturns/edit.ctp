@@ -364,7 +364,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 		<div class="form-actions">
 			<div class="row">
 				<div class="col-md-offset-3 col-md-9">
-					<?= $this->Form->button(__('SALE RETURN'),['class'=>'btn btn-primary','id'=>'add_submit','type'=>'Submit']) ?>
+					<?= $this->Form->button(__('SALE RETURN'),['class'=>'btn btn-primary','type'=>'Submit']) ?>
 				</div>
 			</div>
 		</div>

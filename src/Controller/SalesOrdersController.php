@@ -251,9 +251,12 @@ class SalesOrdersController extends AppController
        	  $chkdate = 'Found';
        }
 
-
+			
+				
 
 		$quotation_id=@(int)$this->request->query('quotation');
+		
+		
 		$quotation=array(); 
 		$process_status='New';
 		if(!empty($quotation_id)){
@@ -309,19 +312,17 @@ class SalesOrdersController extends AppController
 			
 			//pr($salesOrder); exit;
             if ($this->SalesOrders->save($salesOrder)) {
-				
-
-				if(!empty($quotation_id)){
-					$quotation->status='Converted Into Sales Order';
-					$query = $this->SalesOrders->Quotations->query();
+				$status_close=$this->request->query('status');
+		
+				if(!empty($status_close)){
+				$query = $this->SalesOrders->Quotations->query();
 					$query->update()
-						->set(['status' => 'Converted Into Sales Order'])
+						->set(['status' => 'Closed'])
 						->where(['id' => $quotation_id])
 						->execute();
-						
 				}
 				
-                $this->Flash->success(__('The sales order has been saved.'));
+				$this->Flash->success(__('The sales order has been saved.'));
 				return $this->redirect(['action' => 'confirm/'.$salesOrder->id]);
 
             } else {

@@ -21,10 +21,33 @@ class PurchaseReturnsController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
+		
+		$where = [];
+		
+		$vouch_no = $this->request->query('vouch_no');
+		$From    = $this->request->query('From');
+		$To    = $this->request->query('To');
+		
+		$this->set(compact('vouch_no','From','To'));
+		
+		if(!empty($vouch_no)){
+			$where['PurchaseReturns.voucher_no Like']=$vouch_no;
+		}
+		
+		if(!empty($From)){
+			$From=date("Y-m-d",strtotime($this->request->query('From')));
+			$where['PurchaseReturns.created_on >=']=$From;
+		}
+		if(!empty($To)){
+			$To=date("Y-m-d",strtotime($this->request->query('To')));
+			$where['PurchaseReturns.created_on <=']=$To;
+		}
+		
+		
         $this->paginate = [
             'contain' => ['InvoiceBookings', 'Companies']
         ];
-        $purchaseReturns = $this->paginate($this->PurchaseReturns->find()->order(['PurchaseReturns.id' => 'DESC']));
+        $purchaseReturns = $this->paginate($this->PurchaseReturns->find()->where($where)->order(['PurchaseReturns.id' => 'DESC']));
 
         $this->set(compact('purchaseReturns'));
         $this->set('_serialize', ['purchaseReturns']);

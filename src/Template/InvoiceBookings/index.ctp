@@ -13,39 +13,32 @@
 					<tbody>
 						<tr>
 							<td>
-								
-										<div class="input-group" style="" id="pnf_text">
-											<span class="input-group-addon">IB-No</span><input type="text" name="book_no" class="form-control input-sm" placeholder="Invoice Booking No" value="<?php echo @$book_no; ?>">
-										</div>
-									</td>
-									<td>
-										<input type="text" name="file" class="form-control input-sm" placeholder="IB File" value="<?php echo @$file; ?>">
-									</td>
-									<td>
-										<div class="input-group" style="" id="pnf_text">
-											<span class="input-group-addon">Grn-No</span><input type="text" name="grn_no" class="form-control input-sm" placeholder="Grn No" value="<?php echo @$grn_no; ?>">
-										</div>
-									</td>
-								
-							<td>
-											<input type="text" name="file_grn_no" class="form-control input-sm" placeholder="Grn File" value="<?php echo @$file_grn_no; ?>">
-										
-									</td>
-									<td>
-										<div class="input-group" style="" id="pnf_text">
-											<span class="input-group-addon">IN</span><input type="text" name="in_no" class="form-control input-sm" placeholder="Invoice No" value="<?php echo @$in_no; ?>">
-										</div>
-									</td>
-							
-							<td>
-							
-										<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Date From" value="<?php echo @$From; ?>" data-date-format="dd-mm-yyyy" >
-									</td>
-									<td>
-										<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Date To" value="<?php echo @$To; ?>" data-date-format="dd-mm-yyyy" >
-									
+								<div class="input-group" style="" id="pnf_text">
+									<span class="input-group-addon">IB-No</span><input type="text" name="book_no" class="form-control input-sm" placeholder="Invoice Booking No" value="<?php echo @$book_no; ?>">
+								</div>
 							</td>
-							
+							<td>
+								<input type="text" name="file" class="form-control input-sm" placeholder="IB File" value="<?php echo @$file; ?>">
+							</td>
+							<td>
+								<div class="input-group" style="" id="pnf_text">
+									<span class="input-group-addon">Grn-No</span><input type="text" name="grn_no" class="form-control input-sm" placeholder="Grn No" value="<?php echo @$grn_no; ?>">
+								</div>
+							</td>
+							<td>
+								<input type="text" name="file_grn_no" class="form-control input-sm" placeholder="Grn File" value="<?php echo @$file_grn_no; ?>">
+							</td>
+							<td>
+								<div class="input-group" style="" id="pnf_text">
+									<span class="input-group-addon">IN</span><input type="text" name="in_no" class="form-control input-sm" placeholder="Invoice No" value="<?php echo @$in_no; ?>">
+								</div>
+							</td>
+							<td>
+								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Date From" value="<?php echo @$From; ?>" data-date-format="dd-mm-yyyy" >
+							</td>
+							<td>
+								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Date To" value="<?php echo @$To; ?>" data-date-format="dd-mm-yyyy" >
+							</td>
 							<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
 						</tr>
 					</tbody>
@@ -56,12 +49,12 @@
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
 						<tr>
-							<th>Sr. No.</th>
-							<th>Invoice Booking No.</th>
-							<th>GRN No.</th>
-							<th>Invoice No.</th>
-							<th>Invoice Booked On</th>
-							<th>Actions</th>
+							<th width="5%">Sr. No.</th>
+							<th width="15%">Invoice Booking No.</th>
+							<th width="15%">GRN No.</th>
+							<th width="10%">Invoice No.</th>
+							<th width="10%">Invoice Booked On</th>
+							<th width="15%">Actions</th>
 						</tr>
 					</thead>
 					<tbody>

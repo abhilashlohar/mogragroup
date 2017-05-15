@@ -25,9 +25,12 @@ class LedgerAccountsController extends AppController
 		
         if ($this->request->is('post')) {
             $ledgerAccount = $this->LedgerAccounts->patchEntity($ledgerAccount, $this->request->data);
+			$last_ledger_no=$this->LedgerAccounts->find()->select(['auto_inc'])->order(['auto_inc' => 'DESC'])->first();
+			$auto_inc=$last_ledger_no->auto_inc+1;
+			
 			foreach($ledgerAccount->companies['_ids'] as $company_id){
 				$query = $this->LedgerAccounts->query();
-				$query->insert(['account_second_subgroup_id', 'name', 'alias', 'source_model', 'source_id', 'bill_to_bill_account', 'company_id'])
+				$query->insert(['account_second_subgroup_id', 'name', 'alias', 'source_model', 'source_id', 'bill_to_bill_account','auto_inc', 'company_id'])
 						->values([
 							'account_second_subgroup_id' => $ledgerAccount->account_second_subgroup_id,
 							'name' => $ledgerAccount->name,
@@ -35,6 +38,7 @@ class LedgerAccountsController extends AppController
 							'source_model' => 'Ledger Account',
 							'source_id' => 0,
 							'bill_to_bill_account' => '',
+							'auto_inc' => $auto_inc,
 							'company_id' => $company_id,
 						]);
 				$query->execute();
@@ -270,10 +274,9 @@ class LedgerAccountsController extends AppController
 	}
 	
 public function AddCompany($ledgerAccount_id=null,$key=null)
-    { //pr($Ledger_details->tax_figure);exit;
+    { 
 		$this->viewBuilder()->layout('index_layout');	
 		$Ledger_details= $this->LedgerAccounts->get($ledgerAccount_id);
-//pr($Ledger_details->name);exit;
 		$ledgerAccount = $this->LedgerAccounts->newEntity();
 		$ledgerAccount->account_second_subgroup_id = $Ledger_details->account_second_subgroup_id;
 		$ledgerAccount->name = $Ledger_details->name;
@@ -288,17 +291,28 @@ public function CheckCompany($ledger_id=null,$company_id=null)
     { //pr($key);exit;
 		$this->viewBuilder()->layout('index_layout');	
 		 $this->request->allowMethod(['post', 'delete']);
-		$employees_ledger= $this->LedgerAccounts->find()->where(['source_model' => 'Ledger Account','company_id'=>$company_id,'id'=>$ledger_id])->first();
+		//pr($employees_ledger->auto_inc); exit;
 		$ledgerexist = $this->LedgerAccounts->Ledgers->exists(['ledger_account_id' => $ledger_id]);
 		
 		if(!$ledgerexist){
-			$ledger_dlt= $this->LedgerAccounts->find()->where(['source_model' => 'SaleTaxes','source_id'=>$saletax_id,'company_id'=>$company_id])->first();
+			$ledger_dlt= $this->LedgerAccounts->find()->where(['company_id'=>$company_id,'id'=>$ledger_id])->first();
+			//pr($ledger_dlt);exit;
+			$auto_inc=$ledger_dlt->auto_inc; 
 			$this->LedgerAccounts->delete($ledger_dlt);
-			return $this->redirect(['action' => 'EditCompany/'.$saletax_id]);
+			$auto_inc_exist= $this->LedgerAccounts->exists(['auto_inc' => $auto_inc]);
+			
+			if(!$auto_inc_exist){
+				$this->Flash->success(__('The ledger account has been deleted.'));
+				return $this->redirect(['action' => 'index']);}
+			else{
+				$page_redirect= $this->LedgerAccounts->find()->where(['auto_inc'=>$auto_inc])->first();
+				$this->Flash->success(__('The ledger account has been deleted.'));
+				return $this->redirect(['action' => 'EditCompany/'.$page_redirect->id]);
+			}
 				
 		}else{
 			$this->Flash->error(__('Company Can not Deleted'));
-			return $this->redirect(['action' => 'EditCompany/'.$saletax_id]);
+			return $this->redirect(['action' => 'EditCompany/'.$ledger_id]);
 		}
 	}
 	

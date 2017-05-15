@@ -125,18 +125,15 @@ class ChallansController extends AppController
 		$st_company_id = $session->read('st_company_id');
 		$Company = $this->Challans->Companies->get($st_company_id);
 		$challan = $this->Challans->newEntity();
-       
+		$st_year_id = $session->read('st_year_id');
+		$SessionCheckDate = $this->FinancialYears->get($st_year_id);
+		$fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
+		$todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
+		$tody1 = date("Y-m-d");
 
-		  $st_year_id = $session->read('st_year_id');
-
-       $SessionCheckDate = $this->FinancialYears->get($st_year_id);
-       $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
-       $todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
-       $tody1 = date("Y-m-d");
-
-       $fromdate = strtotime($fromdate1);
-       $todate = strtotime($todate1); 
-       $tody = strtotime($tody1);
+		$fromdate = strtotime($fromdate1);
+		$todate = strtotime($todate1); 
+		$tody = strtotime($tody1);
 
       if($fromdate >= $tody || $todate <= $tody)
        {
@@ -187,7 +184,7 @@ class ChallansController extends AppController
                 $this->Flash->success(__('The challan has been saved.'));
 
                   return $this->redirect(['action' => 'confirm/'.$challan->id]);
-            } else { pr($challan); exit;
+            } else { 
 				
                 $this->Flash->error(__('The challan could not be saved. Please, try again.'));
             }
@@ -382,6 +379,25 @@ class ChallansController extends AppController
 			$Invoices=$this->Challans->InvoiceBookings->get($in_id, ['contain' => ['InvoiceBookingRows' => ['Items']]]);
 		}
 		$this->set(compact('Invoices', 'source_model'));
+		
+	}
+	public function customerInvoice($in_id=null,$source_model=null)
+	{
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		$this->viewBuilder()->layout('');
+		$Invoices=$this->Challans->Invoices->find()->where(['customer_id'=>$in_id,'company_id'=>$st_company_id]);
+	//pr($Invoices->toArray());
+		$this->set(compact('Invoices', 'source_model'));
+		
+	}	
+	public function vendorInvoicebooking($in_id=null,$source_model=null)
+	{
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		$this->viewBuilder()->layout('');
+		$invoice_bookings=$this->Challans->InvoiceBookings->find()->where(['vendor_id'=>$in_id,'company_id'=>$st_company_id]);
+		$this->set(compact('invoice_bookings', 'source_model'));
 		
 	}
 }

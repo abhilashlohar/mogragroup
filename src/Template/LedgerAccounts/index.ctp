@@ -54,7 +54,38 @@
 	<div class="portlet-body form">
 		<!-- BEGIN FORM-->
 		<br/>
-		<input type="text" class="form-control input-sm " placeholder="Search..." id="search2"  style="width: 20%;" >
+		<div class="row ">
+		<div class="col-md-12">
+			<div class="form-body">
+				<div class="form-group">
+					<div class="col-md-6">
+						<input type="text" class="form-control input-sm " placeholder="Search..." id="search2"  style="width: 20%;" >
+					</div>
+					<div class="col-md-5">
+						<form method="GET" >
+							<table class=" table-condensed">
+								<tbody>
+									<tr>
+										<td>
+										<?php 
+											$options=[];
+											$options=[['text'=>'All Compaines Ledger','value'=>'all'],['text'=>$Current_company->name,'value'=>$Current_company->id]];
+											?>
+											<?php 
+											echo $this->Form->input('company_data', ['options' => $options,'empty' => "------------Select--------------",'label' => false,'class' => 'form-control input-sm select2me ','id'=>'search', 'required','value'=>$company_data]); ?>
+										</td>
+										<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+									</tr>
+								</tbody>
+							</table>
+						</form>
+					</div>
+				</div>
+			</div>
+		<?= $this->Form->end() ?>
+		</div>
+		<!-- END FORM-->
+		</div>
 		<div class="row ">
 			<div class="col-md-12">
 				<div class="table-scrollable">

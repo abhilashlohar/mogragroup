@@ -678,7 +678,39 @@ $(document).ready(function() {
 		$('textarea[name=vendor_address]').val('');
 		//$('select[name=invoice_booking_id]').val('').select2();
     }
+	
+	$('select[name="customer_id"]').on("change",function() {
+		var in_id=$(this).val();
+		customerInvoice(in_id,'Customers');
+	});
+	function customerInvoice(in_id,source_model){
+		var url = "<?php echo $this->Url->build(['controller'=>'Challans','action'=>'customerInvoice']);?>";
+		url=url+'/'+in_id+'/'+source_model,
+        $.ajax({
+			url: url,
+			type: 'GET',
+		}).done(function(response) { 
+			$('#invoice_div').html(response);
+			
+		});
 		
+	}
+	$('select[name="vendor_id"]').on("change",function() {
+		var in_id=$(this).val(); 
+		invoice_bookings(in_id,'Vendors');
+	});
+	function invoice_bookings(in_id,source_model){
+		var url = "<?php echo $this->Url->build(['controller'=>'Challans','action'=>'vendorInvoicebooking']);?>";
+		url=url+'/'+in_id+'/'+source_model,
+        $.ajax({
+			url: url,
+			type: 'GET',
+		}).done(function(response) { 
+			$('#invoice_booking_div').html(response);
+			
+		});
+		
+	}	
 		
 	$('select[name="invoice_id"]').on("change",function() {
 		var in_id=$(this).val();

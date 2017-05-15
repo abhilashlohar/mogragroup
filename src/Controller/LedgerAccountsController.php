@@ -22,7 +22,8 @@ class LedgerAccountsController extends AppController
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		$ledgerAccount = $this->LedgerAccounts->newEntity();
-		
+		$company_data=$this->request->query('company_data');
+		//pr($company_data); exit;
         if ($this->request->is('post')) {
             $ledgerAccount = $this->LedgerAccounts->patchEntity($ledgerAccount, $this->request->data);
 			$last_ledger_no=$this->LedgerAccounts->find()->select(['auto_inc'])->order(['auto_inc' => 'DESC'])->first();
@@ -51,11 +52,17 @@ class LedgerAccountsController extends AppController
         $this->set(compact('ledgerAccount', 'accountSecondSubgroups'));
         $this->set('_serialize', ['ledgerAccount']);
 		
-		$ledgerAccounts = $this->LedgerAccounts->find()->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups'=>['AccountCategories']]]])->where(['LedgerAccounts.company_id'=>$st_company_id]);
+		if($company_data=='all'){
+			$ledgerAccounts = $this->LedgerAccounts->find()->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups'=>['AccountCategories']]]]);
+		}else{
+			$ledgerAccounts = $this->LedgerAccounts->find()->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups'=>['AccountCategories']]]])->where(['LedgerAccounts.company_id'=>$st_company_id]);
+		}
+		
 		
 		$Companies = $this->LedgerAccounts->Companies->find('list');
-		
-		$this->set(compact('ledgerAccounts', 'Companies'));
+		$Current_company = $this->LedgerAccounts->Companies->find()->where(['id'=>$st_company_id])->first();
+		//pr
+		$this->set(compact('ledgerAccounts', 'Companies','Current_company','company_data'));
         $this->set('_serialize', ['ledgerAccounts']);
     }
 

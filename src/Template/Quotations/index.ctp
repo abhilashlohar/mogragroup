@@ -97,7 +97,9 @@ if(!empty($status)){
 					</tbody>
 				</table>
 				</form>
-				<?php $page_no=$this->Paginator->current('Quotations'); $page_no=($page_no-1)*20; ?>
+				<?php $page_no=$this->Paginator->current('Quotations'); $page_no=($page_no-1)*20; 
+					
+				?>
 				<table class="table table-bordered table-striped">
 					<thead>
 						<tr>

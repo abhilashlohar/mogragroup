@@ -79,6 +79,8 @@ class QuotationsController extends AppController
 		
         $quotations = $this->paginate($this->Quotations->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Quotations.id' => 'DESC']));
 		
+		
+		
 		$subquery=$this->Quotations->find();
 		$subquery->select(['max_id' => $subquery->func()->max('id')])->group('quotation_id');
 		$max_ids=[];

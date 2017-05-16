@@ -71,12 +71,12 @@
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
 						<tr>
-							<th>Sr. No.</th>
-							<th>Invoice No.</th>
-							<th>Customer</th>
-							<th>Date</th>
-							<th>Total</th>
-							<th>Actions</th>
+							<th width="5%">Sr. No.</th>
+							<th width="10%">Invoice No.</th>
+							<th width="10%">Customer</th>
+							<th width="10%">Date</th>
+							<th width="10%">Total</th>
+							<th width="10%">Actions</th>
 						</tr>
 					</thead>
 					<tbody>

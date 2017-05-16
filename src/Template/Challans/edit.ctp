@@ -667,10 +667,7 @@ $(document).ready(function() {
 		$('#invoice_div').hide('fast');
 		//$('select[name=invoice_id]').val('').select2();
 		$('#invoice_booking_div').show('fast');
-		var in_id=$('select[name="vendor_id"]').val();
-		$.when(invoice_bookings(in_id,'Vendors')).then(itemsAsInvoice(in_id,'Invoice_Booking'));
-		//invoice_bookings(in_id,'Vendors');
-		//itemsAsInvoice(in_id,'Invoice_Booking');
+		
 		
     }
 	else{

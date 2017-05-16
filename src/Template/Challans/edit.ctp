@@ -667,6 +667,9 @@ $(document).ready(function() {
 		$('#invoice_div').hide('fast');
 		//$('select[name=invoice_id]').val('').select2();
 		$('#invoice_booking_div').show('fast');
+		var in_id=$('select[name="vendor_id"]').val(); alert(in_id);
+		invoice_bookings(in_id,'Vendors');
+		
     }
 	else{
 		$('#customer_div').show('fast');    
@@ -678,6 +681,8 @@ $(document).ready(function() {
 		$('textarea[name=vendor_address]').val('');
 		//$('select[name=invoice_booking_id]').val('').select2();
     }
+	
+	//$('select[name="customer_id"]').val();
 	
 	$('select[name="customer_id"]').on("change",function() {
 		var in_id=$(this).val();
@@ -700,8 +705,9 @@ $(document).ready(function() {
 		invoice_bookings(in_id,'Vendors');
 	});
 	function invoice_bookings(in_id,source_model){
-		var url = "<?php echo $this->Url->build(['controller'=>'Challans','action'=>'vendorInvoicebooking']);?>";
-		url=url+'/'+in_id+'/'+source_model,
+		var url = "<?php echo $this->Url->build(['controller'=>'Challans','action'=>'vendorInvoicebookingEdit']);?>";
+		url=url+'/'+in_id+'/'+source_model+'/'+<?php echo $id?>,
+		alert(url);
         $.ajax({
 			url: url,
 			type: 'GET',
@@ -712,12 +718,12 @@ $(document).ready(function() {
 		
 	}	
 		
-	$('select[name="invoice_id"]').on("change",function() {
+	$('select[name="invoice_id"]').live("change",function() {
 		var in_id=$(this).val();
 		itemsAsInvoice(in_id,'Invoices');
 	});
 	
-	$('select[name="invoice_booking_id"]').on("change",function() {
+	$('select[name="invoice_booking_id"]').live("change",function() {
 		var in_id=$(this).val();
 		itemsAsInvoice(in_id,'Invoice_Booking');
 	});

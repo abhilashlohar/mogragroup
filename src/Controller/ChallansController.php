@@ -227,7 +227,7 @@ class ChallansController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		$s_employee_id=$this->viewVars['s_employee_id'];
-
+		
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		
@@ -318,7 +318,7 @@ class ChallansController extends AppController
 			'keyField' => function ($row) {
 				return $row['file1'] . '-' . $row['file2'];
 			}]);
-        $this->set(compact('challan', 'customers', 'Company', 'invoices', 'transporters','items','vendors','filenames','invoice_bookings'));
+        $this->set(compact('challan', 'customers', 'Company', 'invoices', 'transporters','items','vendors','filenames','invoice_bookings','id'));
 	
         $this->set('_serialize', ['challan']);
     }
@@ -398,6 +398,15 @@ class ChallansController extends AppController
 		$this->viewBuilder()->layout('');
 		$invoice_bookings=$this->Challans->InvoiceBookings->find()->where(['vendor_id'=>$in_id,'company_id'=>$st_company_id]);
 		$this->set(compact('invoice_bookings', 'source_model'));
+		
+	}
+	public function vendorInvoicebookingEdit($in_id=null,$source_model=null,$ib_id=null)
+	{
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		$this->viewBuilder()->layout('');
+		$invoice_bookings=$this->Challans->InvoiceBookings->find()->where(['vendor_id'=>$in_id,'company_id'=>$st_company_id]);
+		$this->set(compact('invoice_bookings', 'source_model','ib_id'));
 		
 	}
 }

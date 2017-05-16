@@ -34,11 +34,11 @@
 		<table class="table table-bordered table-striped" >
 			<thead>
 				<tr>
-					<th width="5%">Sr. No.</th>
+					<th>Sr. No.</th>
 					<th>Date</th>
 					<th>Item</th>
 					<th>Quantity</th>
-					<th width="6%">Rate</th>
+					<th>Rate</th>
 					<th>Amout</th>
 					<th>Serial Number Enable</th>
 					<th>Action</th>
@@ -62,7 +62,15 @@
 								'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'
 							]
 						) ?>
-			
+					<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
+							['action' => 'DeleteItemOpeningBalance', $ItemLedger->id], 
+							[
+								'escape' => false,
+								'class'=>'btn btn-xs red tooltips','data-original-title'=>'Delete',
+								
+								'confirm' => __('Are you sure ?', $ItemLedger->id)
+							]
+						) ?>
 					</td>
 				</tr>
 			<?php } ?>

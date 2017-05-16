@@ -66,23 +66,12 @@
 					echo $this->Form->input('value', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Value']); ?>
 				</div>
 			</div>
-			<div class="col-md-3">
-				<label class="control-label">serial_number_enable</label>
-				<div class="checkbox-list">
-					<?php  
-					if($SerialNumberEnable[0]->serial_number_enable == '1' && $ItemLedger->quantity > 0){
-						echo $this->Form->radio('serial_number_enable',[['value' => '1', 'text' => 'Yes', 'checked']]); 
-					}
-					if($SerialNumberEnable[0]->serial_number_enable == '1' && $ItemLedger->quantity == 0 ){
-						echo $this->Form->radio('serial_number_enable',[['value' => '1', 'text' => 'Yes', 'checked'],['value' => '0', 'text' => 'No']]); 
-					}
-					if($SerialNumberEnable[0]->serial_number_enable == '0'){
-					echo $this->Form->radio('serial_number_enable',[['value' => '1', 'text' => 'Yes'],['value' => '0', 'text' => 'No', 'checked']]); 	
-					}
-					?>
-					
-				</div>
+			<div class="col-md-1"  >
+			
+				<?php 
+					echo $this->Form->input('serial_number_enable', ['type'=>'hidden','label' => false,'class' => 'form-control input-sm','placeholder'=>'Value','value'=>$SerialNumberEnable[0]->serial_number_enable]); ?>
 			</div>
+		
 		</div>
 		
 		<div class="row" >
@@ -125,6 +114,11 @@
 		
 		
 		<button type="submit" class="btn blue-hoki">Submit</button>
+		<!--<?= $this->Html->link(
+				'Delete',
+				'/Items/Delete-Opening-Balance',
+				['class' => 'btn btn-danger']
+			); ?>-->
 	<?= $this->Form->end() ?>
 	</div>
 </div>
@@ -224,10 +218,17 @@ $(document).ready(function() {
 	}	
 	
 	calculate_value();
-	
-	$('input[name="new_quantity"],input[name="rate"]').die().live("blur",function() { 
+	var serial_number_enable='<?php echo $SerialNumberEnable[0]->serial_number_enable;?>';
+	if(serial_number_enable==1){
+		$('input[name="new_quantity"],input[name="rate"]').die().live("blur",function() { 
 		calculate_value();
     });
+	}else{
+		$('input[name="quantity"],input[name="rate"]').die().live("blur",function() { 
+		calculate_value();
+    });
+	}
+	
 	
 	$('input[name="value"]').die().live("blur",function() { 
 		var quantity=parseFloat($('input[name="quantity"]').val());
@@ -251,6 +252,51 @@ $(document).ready(function() {
 	});
 	
 	
+	$('select[name="Item_id"]').on("change",function() {
+	
+	$('#itm_srl_num').hide();
+
+		var Item_id=$('select[name="Item_id"] option:selected').val();
+		var url="<?php echo $this->Url->build(['controller'=>'Items','action'=>'check_serial']); ?>";
+		url=url+'/'+Item_id,
+		$.ajax({
+			url: url,
+		}).done(function(response) { 
+			$('#itm_srl_num_enable').html(response);
+			$('input[name="quantity"]').val(0);
+			
+		});
+	});
+	
+	$('input[name="quantity"]').on("keyup",function() {
+		add_sr_textbox(); 
+	});	
+   function add_sr_textbox(){
+	   $('#itm_srl_num').show();
+	   var serial_number=$('input[name=serial_number_enable]').val(); 
+	   //alert(serial_number);
+	   var quantity=$('input[name="quantity"]').val();
+	  
+		if(serial_number=='1'){ 
+			var p=1;  //alert(quantity);	
+			var r=0;
+			$('#itm_srl_num').find('input.sr_no').remove();
+			$('#itm_srl_num').find('span.help-block-error').remove();
+			for (i = 0; i < quantity; i++) {
+			$('#itm_srl_num').append('<input type="text" class="sr_no" name="serial_numbers['+r+'][]" placeholder="'+p+' serial number" id="sr_no'+r+'" />');
+			
+			$('#itm_srl_num').find('input#sr_no'+r).rules('add', {required: true});
+			p++;
+			r++;
+			}
+		}
+		else{ 
+			$('#itm_srl_num').html('');
+			
+		}
+	   
+   }
+	
 		
   
    $('input[name="quantity"]').die().live("keyup",function() {
@@ -267,7 +313,8 @@ $(document).ready(function() {
 	
 	show_table();
 	
-	var serial_numbers=$('input[name=serial_number_enable]:checked').val(); 
+	var serial_numbers='<?php echo $SerialNumberEnable[0]->serial_number_enable; ?>';
+	//alert(serial_numbers);
 	if(serial_numbers == '1'){
 			$('input[name="quantity"]').attr('readonly','readonly');
 			$('#hide_quantity').show();
@@ -278,20 +325,8 @@ $(document).ready(function() {
 			
 		}
 		
-		$('input[name=serial_number_enable]').on("click",function() {
-			var serial_numbers=$('input[name=serial_number_enable]:checked').val(); 
-				if(serial_numbers == '1'){
-						$('input[name="quantity"]').attr('readonly','readonly');
-						$('#hide_quantity').show();
-				}else{
-						$('input[name="quantity"]').removeAttr('readonly');
-						$('#hide_quantity').hide();
-						$('input[name="new_quantity"]').val(0);
-				}
-		});
-	
 	function show_table(){
-		var serial_numbers=$('input[name=serial_number_enable]:checked').val(); 
+		var serial_numbers='<?php echo $SerialNumberEnable[0]->serial_number_enable;?>';
 		if(serial_numbers == '1'){
 			$('#show_data').css("display", "block");
 		}else{
@@ -300,8 +335,9 @@ $(document).ready(function() {
 	}
 	
 	 function add_sr_textbox(){
-	   var serial_number=$('input[name=serial_number_enable]:checked').val(); 
+	   //var serial_number=$('input[name=serial_number_enable]:checked').val(); 
 	   var itemserial_number_status = '<?php echo $SerialNumberEnable[0]->serial_number_enable;?>';
+	  // alert(itemserial_number_status);
 		if(itemserial_number_status == '1'){
 				var tq=parseInt($('input[name="new_quantity"]').val());
 		}else{
@@ -311,7 +347,7 @@ $(document).ready(function() {
 		}
 	   
 	   
-		if(serial_number=='1'){ 
+		if(itemserial_number_status=='1'){ 
 			var p=1;
 			var r=0;
 			$('#itm_srl_num').find('input.sr_no').remove();
@@ -344,39 +380,7 @@ $(document).ready(function() {
 				add_sr_textbox();
 			}
    }
-	
-	function update_sr_textbox(){
-		var r=0;
-		var serial_number=$('input[name=serial_number_enable]:checked').val(); 
-		var quantity=$('input[name="quantity"]').val();
-		var l=$('#itm_srl_num').find('input').length;
-		
-		if(serial_number=='1'){ 
-			
-					if(quantity < l){
-				
-						for(i=l;i>=quantity;i--){ 
-						
-						$('input[ids="sr_no['+i+']"]').remove();
-						//$('botmdiv['+i+']').remove();
-						}
-					}
-					//
-					if(quantity > l){
-						//l=l+1;
-						for(i=l;i<quantity;i++){
-						$('#itm_srl_num').append('<div style="margin-bottom:6px;" class="botmdiv['+i+']"><input type="text" class="sr_no" name="serial_numbers['+i+'][]" ids="sr_no['+i+']" id="sr_no'+l+'"/></div>');
-						
-						$('#itm_srl_num').find('input#sr_no'+l).rules('add', {required: true});
-						l++;
-						}
-					}
-				}
-				
-		else{
-				$('#itm_srl_num').find('input.sr_no').remove();
-		}
-	}
+
 	
    
 });

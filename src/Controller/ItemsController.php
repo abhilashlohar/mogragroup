@@ -194,6 +194,18 @@ class ItemsController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 	
+	public function checkSerial($item_id = null){
+		$this->viewBuilder()->layout('');
+		
+		//pr($item_id);exit;
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		$ItemCompanies = $this->Items->ItemCompanies->find()->where(['company_id'=>$st_company_id,'item_id'=>$item_id])->first();
+		//pr($ItemCompanies);
+		$this->set(compact('ItemCompanies'));
+		
+	}
+	
 	public function openingBalance(){
 		$this->viewBuilder()->layout('index_layout');
 		$session = $this->request->session();
@@ -208,6 +220,7 @@ class ItemsController extends AppController
 		});
 		
 		if ($this->request->is('post')) {
+			
 			$item_id=$this->request->data['Item_id'];
 		
 			$ItemLedgersexists = $this->Items->ItemLedgers->exists(['source_model'=>'Items','item_id' => $item_id,'company_id'=>$st_company_id]);
@@ -227,14 +240,8 @@ class ItemsController extends AppController
 			$ItemLedger->left_item_id = 0;
 			$ItemLedger->processed_on = date('Y-m-d',strtotime($this->request->data['date']));
 			$this->Items->ItemLedgers->save($ItemLedger);
-			
+			//pr($this->request->data['serial_number_enable']);exit;
 			if($this->request->data['serial_number_enable']==1){
-				$query = $this->Items->ItemCompanies->query();
-				$query->update()
-					->set(['serial_number_enable' => 1])
-					->where(['item_id' => $this->request->data['Item_id'],'company_id'=>$st_company_id])
-					->execute();
-					
 				foreach($this->request->data['serial_numbers'] as $serial_number){
 					$ItemSerialNumber = $this->Items->ItemSerialNumbers->newEntity();
 					$ItemSerialNumber->item_id = $this->request->data['Item_id'];
@@ -250,7 +257,7 @@ class ItemsController extends AppController
 			return $this->redirect(['action' => 'Opening-Balance']);
 		}
 		
-		$this->set(compact('Items','ItemLedger','financial_year'));
+		$this->set(compact('Items','ItemLedger','financial_year','ItemCompanies'));
 		$this->set('_serialize', ['ItemLedger']);
 	}
 	
@@ -288,12 +295,14 @@ class ItemsController extends AppController
 		$Items = $this->Items->find()->where(['id'=>$ItemLedger->item_id])->first();
 		$SerialNumberEnable = $this->Items->ItemCompanies->find()->where(['item_id'=>$ItemLedger->item_id
 		,'company_id'=>$st_company_id])->toArray();
+		//pr($SerialNumberEnable); exit;
 		$ItemSerialNumbers = $this->Items->ItemSerialNumbers->find()->where(['item_id'=>$ItemLedger->item_id
 		,'company_id'=>$st_company_id,'grn_id'=>0])->toArray();
 		
 		
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$item_id=$this->request->data['item_id'];
+			//pr($this->request->data); exit;
 			$serial_number_enable=$this->request->data['serial_number_enable'];
 			$oldquantity = $this->request->data['quantity'];
 			$newquantity = $this->request->data['new_quantity'];
@@ -306,7 +315,8 @@ class ItemsController extends AppController
 			$ItemLedger->quantity=$totalquantity;
 			$ItemLedger->rate=$this->request->data['rate'];
 			
-			
+			$rows=@$this->request->data['serial_numbers'];
+			if($rows>0){
 			if($serial_number_enable == '1'){
 			foreach($this->request->data['serial_numbers'] as $serial_number){
 					$ItemSerialNumber = $this->Items->ItemSerialNumbers->newEntity();
@@ -318,19 +328,13 @@ class ItemsController extends AppController
 					$this->Items->ItemSerialNumbers->save($ItemSerialNumber);
 				}
 			}	
-		
-		$query = $this->Items->ItemCompanies->query();
-					$query->update()
-						->set(['serial_number_enable' =>$serial_number_enable])
-						->where(['item_id' => $item_id,'company_id'=>$st_company_id])
-						->execute();
+		}
 			$this->Items->ItemLedgers->save($ItemLedger);
 			
 			
 			$this->Flash->success(__('Item Opening Balance has been saved.'));
 			return $this->redirect(['action' => 'EditItemOpeningBalance/'.$id]);
 		}
-		
 		
 		
 		$this->set(compact('Items','ItemLedger','financial_year','ItemSerialNumbers',
@@ -355,6 +359,7 @@ class ItemsController extends AppController
 		}
         return $this->redirect(['action' => 'openingBalanceView']);
     }
+	
 	
 	
 	public function DeleteSerialNumbers($id=null,$item_id=null){

@@ -71,6 +71,8 @@ class CustomersController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
+        $VouchersReferences = $this->Customers->VouchersReferences->find()->toArray();
+		
         $customer = $this->Customers->newEntity();
         if ($this->request->is('post')) {
             $customer = $this->Customers->patchEntity($customer, $this->request->data);
@@ -90,6 +92,11 @@ class CustomersController extends AppController
 				$ledgerAccount->source_id = $customer->id;
 				$ledgerAccount->company_id = $data->id;
 				$this->Customers->LedgerAccounts->save($ledgerAccount);
+				$VouchersReferences = $this->Customers->VouchersReferences->find()->where(['company_id'=>$data->id,'voucher_entity'=>'Receipt Voucher -> Received From'])->first();
+				$voucherLedgerAccount = $this->Customers->VoucherLedgerAccounts->newEntity();
+				$voucherLedgerAccount->vouchers_reference_id =$VouchersReferences->id;
+				$voucherLedgerAccount->ledger_account_id =$ledgerAccount->id;
+				$this->Customers->VoucherLedgerAccounts->save($voucherLedgerAccount);
 				}
 				$this->Flash->success(__('The Customer has been saved.'));
 					return $this->redirect(['action' => 'index']);

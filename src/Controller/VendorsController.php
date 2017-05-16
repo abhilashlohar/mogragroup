@@ -83,6 +83,11 @@ class VendorsController extends AppController
 					$ledgerAccount->source_id = $vendor->id;
 					$ledgerAccount->company_id = $data->id;
 					$this->Vendors->LedgerAccounts->save($ledgerAccount);
+					$VouchersReferences = $this->Vendors->VouchersReferences->find()->where(['company_id'=>$data->id,'voucher_entity'=>'PaymentVoucher -> Paid To'])->first();
+					$voucherLedgerAccount = $this->Vendors->VoucherLedgerAccounts->newEntity();
+					$voucherLedgerAccount->vouchers_reference_id =$VouchersReferences->id;
+					$voucherLedgerAccount->ledger_account_id =$ledgerAccount->id;
+					$this->Vendors->VoucherLedgerAccounts->save($voucherLedgerAccount);
 				} 
 				$this->Flash->success(__('The Vendor has been saved.'));
 					return $this->redirect(['action' => 'index']);

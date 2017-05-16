@@ -99,6 +99,19 @@ class EmployeesController extends AppController
                     $ledgerAccount->source_id = $employee->id;
                     $ledgerAccount->company_id = $data->id;
                     $this->Employees->LedgerAccounts->save($ledgerAccount);
+					//
+					$VouchersReferences = $this->Employees->VouchersReferences->find()->where(['company_id'=>$data->id,'voucher_entity'=>'PaymentVoucher -> Paid To'])->first();
+					$voucherLedgerAccount = $this->Employees->VoucherLedgerAccounts->newEntity();
+					$voucherLedgerAccount->vouchers_reference_id =$VouchersReferences->id;
+					$voucherLedgerAccount->ledger_account_id =$ledgerAccount->id;
+					$this->Employees->VoucherLedgerAccounts->save($voucherLedgerAccount);
+					//
+					$VouchersReferences = $this->Employees->VouchersReferences->find()->where(['company_id'=>$data->id,'voucher_entity'=>'Receipt Voucher -> Received From'])->first();
+				$voucherLedgerAccount = $this->Employees->VoucherLedgerAccounts->newEntity();
+				$voucherLedgerAccount->vouchers_reference_id =$VouchersReferences->id;
+				$voucherLedgerAccount->ledger_account_id =$ledgerAccount->id;
+				$this->Employees->VoucherLedgerAccounts->save($voucherLedgerAccount);
+				
                 }
 
 

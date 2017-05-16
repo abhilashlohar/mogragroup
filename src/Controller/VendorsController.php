@@ -2,6 +2,8 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\I18n\Time;
+use Cake\I18n\Date;
 
 /**
  * Vendors Controller
@@ -260,4 +262,47 @@ class VendorsController extends AppController
 			
 		return $this->redirect(['action' => 'EditCompany/'.$vendor_id]);
 	}
+	
+	public function OverDueReport()
+    {
+		$this->viewBuilder()->layout('index_layout');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		$LedgerAccounts =$this->Vendors->LedgerAccounts->find()
+			->where(['LedgerAccounts.company_id'=>$st_company_id,'source_model'=>'Vendors']);
+			
+		$vendor_payment = [];
+		
+        
+		foreach ($LedgerAccounts as $LedgerAccount){
+		$Vendors = $this->Vendors->find()->where(['id'=>$LedgerAccount->source_id])->first();
+		$vendor_payment[$LedgerAccount->id] = $Vendors->payment_terms;
+		$company_name[$LedgerAccount->id] = $Vendors->company_name;
+		
+		}
+		$over_due_report = [];
+		foreach ($vendor_payment as $key=>$vendor_payment){
+			$total_debit=0;$total_credit=0;$due=0;
+			$now=Date::now();
+			$over_date=$now->subDays($vendor_payment);
+			$vendor_ledgers =$this->Vendors->Ledgers->find()->where(['ledger_account_id'=>$key])->toArray();
+			 foreach($vendor_ledgers as $vendor_ledgers){
+					if($vendor_ledgers->transaction_date<=$over_date){
+						if($vendor_ledgers->debit==0){
+							$total_credit=$total_credit+$vendor_ledgers->credit;
+						}else{
+							$total_debit=$total_debit+$vendor_ledgers->debit;
+						}
+					}
+				}
+				$due=$total_credit-$total_debit; //pr($due); exit;
+				$Company_name =$company_name[$key];
+				$over_due_report[$key]=$due;	
+			}
+
+        $Vendors = $this->paginate($this->Vendors->Ledgers->find()->where(['ledger_account_id'=>$key]));
+		
+        $this->set(compact('LedgerAccounts','Ledgers','over_due_report','company_name'));
+        $this->set('_serialize', ['Vendors']);
+    }
 }

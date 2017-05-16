@@ -272,13 +272,11 @@ class CustomersController extends AppController
 				}
 				$due=$total_debit-$total_credit; //pr($due); exit;
 				$Customers_name =$custmer_name[$key];
-//pr($Customers_name);
 				$over_due_report[$key]=$due;	
 			}
-//pr($over_due_report);
-		//exit;
-		
+
         $customers = $this->paginate($this->Customers->Ledgers->find()->where(['ledger_account_id'=>$key]));
+		
         $this->set(compact('LedgerAccounts','Ledgers','over_due_report','custmer_name','custmer_alise'));
         $this->set('_serialize', ['customers']);
     }

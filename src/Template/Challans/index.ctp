@@ -20,7 +20,7 @@
 			); ?>
 			</div>
 		</div>
-	</div>
+
 	<div class="portlet-body">
 		<div class="row">
 			<div class="col-md-12">
@@ -29,30 +29,25 @@
 					<tbody>
 						<tr>
 							<td>
-								<div class="row">
-									<div class="col-md-6">
-										<div class="input-group" style="" id="pnf_text">
-											<span class="input-group-addon">CH-</span><input type="text" name="ch2" class="form-control input-sm" placeholder="Challan No" value="<?php echo @$ch2; ?>">
-										</div>
-									</div>
-									<div class="col-md-4">
-										<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
-									</div>
+								<div class="input-group" style="" id="pnf_text">
+									<span class="input-group-addon">CH-</span><input type="text" name="ch2" class="form-control input-sm" placeholder="Challan No" value="<?php echo @$ch2; ?>">
 								</div>
 							</td>
-							<td><input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>"></td>
 							<td>
-								<div class="row">
-									<div class="col-md-6">
-										<input type="text" name="From" class="form-control input-sm date-picker" placeholder="From" value="<?php echo @$From; ?>"  data-date-format="dd-mm-yyyy" >
-									</div>
-									<div class="col-md-6">
-										<input type="text" name="To" class="form-control input-sm date-picker" placeholder="To" value="<?php echo @$To; ?>"  data-date-format="dd-mm-yyyy" >
-									</div>
-								</div>
+								<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
 							</td>
-							
-							<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+							<td>
+								<input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>">
+							</td>
+							<td>
+								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="From" value="<?php echo @$From; ?>"  data-date-format="dd-mm-yyyy" >
+							</td>		
+							<td>		
+								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="To" value="<?php echo @$To; ?>"  data-date-format="dd-mm-yyyy" >
+							</td>
+							<td>
+								<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button>
+							</td>
 						</tr>
 					</tbody>
 				</table>
@@ -101,6 +96,9 @@
             <?php endforeach; ?>
         </tbody>
 				</table>
+				</div>
+			</div>
+		</div>
 				<div class="paginator">
 					<ul class="pagination">
 						<?= $this->Paginator->prev('< ' . __('previous')) ?>
@@ -111,6 +109,5 @@
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
+	
 

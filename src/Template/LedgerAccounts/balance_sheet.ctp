@@ -23,23 +23,18 @@
 						<table class="table table-condensed table-hover">
 							<tbody>
 							<?php $Total_Liablities=0; $Total_lib_Dr=0; $Total_lib_Cr=0;
-							foreach($Ledgers_Liablities as $Ledger){ 
-							$Total_Liablities+=$Ledger->total_debit-$Ledger->total_credit; ?>
+							foreach($liablitie_groups as $liablitie_group){ 
+							$Total_Liablities=$liablitie_group['debit']-$liablitie_group['credit']; ?>
 								<tr>
-									<td>
-									<?php if(!empty(h($Ledger->ledger_account->alias))){ ?><?= h($Ledger->ledger_account->name) ?> (<?= h($Ledger->ledger_account->alias) ?>)<?php }
-									else{ ?><?= h($Ledger->ledger_account->name) ?><?php } ?>
+									<td><?= h($liablitie_group['name']) ?></td>
+									<td style="text-align:right;">
+										<?= h(abs($Total_Liablities)) ?>
+										<?php if($Total_Liablities>=0){
+											echo 'Dr';
+										}else{
+											echo 'Cr';
+										} ?>
 									</td>
-									<?php if($Ledger->total_debit>$Ledger->total_credit){?>
-										<td style=" text-align: right; "><?= h($Ledger->total_debit-$Ledger->total_credit); echo " Dr" ;
-										$Total_lib_Dr+=$Ledger->total_debit-$Ledger->total_credit; 
-										?></td>
-									<?php } else { ?>
-											
-										<td style=" text-align: right; "><?= h(abs($Ledger->total_debit-$Ledger->total_credit)); echo " Cr" ;
-										$Total_lib_Cr+=$Ledger->total_debit-$Ledger->total_credit; 
-										?></td>
-									<?php } ?>
 								</tr>
 							<?php } ?>
 								<?php $Total_lib_Dr= abs($Total_lib_Dr);  $Total_lib_Cr= abs($Total_lib_Cr); ?>

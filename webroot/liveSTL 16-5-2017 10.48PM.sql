@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: May 15, 2017 at 06:05 AM
+-- Generation Time: May 16, 2017 at 05:17 AM
 -- Server version: 5.6.32-78.0-log
 -- PHP Version: 5.4.31
 
@@ -355,14 +355,15 @@ CREATE TABLE IF NOT EXISTS `contra_vouchers` (
   `edited_on` date NOT NULL,
   `cheque_no` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `contra_vouchers`
 --
 
 INSERT INTO `contra_vouchers` (`id`, `voucher_no`, `bank_cash_id`, `created_by`, `created_on`, `payment_mode`, `company_id`, `transaction_date`, `edited_by`, `edited_on`, `cheque_no`) VALUES
-(1, 1, 142, 16, '2017-05-15', 'Cheque', 25, '2017-04-14', 0, '0000-00-00', '00000');
+(1, 1, 142, 16, '2017-05-15', 'NEFT/RTGS', 25, '2017-04-14', 19, '2017-05-15', '00000'),
+(2, 2, 142, 19, '2017-05-15', 'Cheque', 25, '2017-04-24', 0, '0000-00-00', '000000');
 
 -- --------------------------------------------------------
 
@@ -378,14 +379,15 @@ CREATE TABLE IF NOT EXISTS `contra_voucher_rows` (
   `cr_dr` varchar(5) NOT NULL,
   `narration` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `contra_voucher_rows`
 --
 
 INSERT INTO `contra_voucher_rows` (`id`, `contra_voucher_id`, `received_from_id`, `amount`, `cr_dr`, `narration`) VALUES
-(1, 1, 622, '5000.00000', 'Dr', 'petty cash payment to jayanti jain');
+(1, 1, 622, '5000.00000', 'Dr', 'petty cash payment to jayanti jain'),
+(2, 2, 622, '4015.00000', 'Dr', 'Petty cash paymet jayanti jain');
 
 -- --------------------------------------------------------
 
@@ -1523,7 +1525,7 @@ CREATE TABLE IF NOT EXISTS `filenames` (
   `customer_id` int(10) NOT NULL,
   `file2` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=193 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=194 ;
 
 --
 -- Dumping data for table `filenames`
@@ -1708,7 +1710,8 @@ INSERT INTO `filenames` (`id`, `file1`, `customer_id`, `file2`) VALUES
 (189, 'BE', 64, 3229),
 (190, 'BE', 110, 3289),
 (191, 'DC', 95, 29),
-(192, 'BE', 8, 3390);
+(192, 'BE', 8, 3390),
+(193, 'BE', 65, 2772);
 
 -- --------------------------------------------------------
 
@@ -1810,7 +1813,7 @@ CREATE TABLE IF NOT EXISTS `grns` (
   `created_by` int(10) NOT NULL,
   `road_permit_no` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=44 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=51 ;
 
 --
 -- Dumping data for table `grns`
@@ -1858,7 +1861,12 @@ INSERT INTO `grns` (`id`, `vendor_id`, `date_created`, `purchase_order_id`, `com
 (40, 7, '2017-05-09', 80, 25, 'STL', 38, 'BE-3240', '17-18', 'Invoice-Booked', 13, 'NO'),
 (41, 3, '2017-05-12', 14, 25, 'STL', 39, 'BE-3291', '17-18', 'Pending', 13, 'NO'),
 (42, 9, '2017-05-12', 97, 25, 'STL', 40, 'BE-3372', '17-18', 'Invoice-Booked', 13, 'NA'),
-(43, 1, '2017-05-12', 40, 25, 'STL', 41, 'BE-3349', '17-18', 'Invoice-Booked', 16, 'WW');
+(43, 1, '2017-05-12', 40, 25, 'STL', 41, 'BE-3349', '17-18', 'Invoice-Booked', 16, 'WW'),
+(44, 1, '2017-05-15', 35, 25, 'STL', 42, 'BE-3370', '17-18', 'Pending', 13, 'E47A120517290065'),
+(45, 1, '2017-05-15', 65, 25, 'STL', 43, 'BE-2932', '17-18', 'Pending', 13, 'E47A090517254844'),
+(46, 6, '2017-05-15', 51, 25, 'STL', 44, 'BE-3369', '16-17', 'Pending', 13, 'E47A260417090787'),
+(49, 1, '2017-05-15', 36, 25, 'STL', 45, 'BE-3080', '17-18', 'Pending', 13, 'E49A120517290065'),
+(50, 9, '2017-05-15', 82, 25, 'STL', 46, 'BE-2523', '17-18', 'Pending', 13, 'NIL');
 
 -- --------------------------------------------------------
 
@@ -1873,7 +1881,7 @@ CREATE TABLE IF NOT EXISTS `grn_rows` (
   `quantity` int(5) NOT NULL,
   `description` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=112 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=150 ;
 
 --
 -- Dumping data for table `grn_rows`
@@ -1958,7 +1966,24 @@ INSERT INTO `grn_rows` (`id`, `grn_id`, `item_id`, `quantity`, `description`) VA
 (108, 40, 935, 1, ''),
 (109, 41, 605, 1, ''),
 (110, 42, 1332, 2, ''),
-(111, 43, 1168, 1, '');
+(111, 43, 1168, 1, ''),
+(112, 44, 732, 1, ''),
+(113, 45, 795, 1, ''),
+(114, 45, 1179, 1, ''),
+(115, 45, 1180, 1, ''),
+(116, 45, 820, 1, ''),
+(117, 45, 1181, 1, ''),
+(118, 45, 765, 4, ''),
+(119, 45, 773, 2, ''),
+(120, 45, 771, 3, ''),
+(133, 46, 1096, 1, ''),
+(134, 46, 1097, 1, ''),
+(135, 46, 1099, 1, ''),
+(136, 46, 1100, 1, ''),
+(146, 49, 703, 2, ''),
+(147, 50, 1232, 1, ''),
+(148, 50, 953, 1, ''),
+(149, 50, 1221, 1, '');
 
 -- --------------------------------------------------------
 
@@ -2050,7 +2075,7 @@ CREATE TABLE IF NOT EXISTS `invoices` (
   `sale_return_status` varchar(5) NOT NULL DEFAULT 'No',
   `sale_return_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=66 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=67 ;
 
 --
 -- Dumping data for table `invoices`
@@ -2121,7 +2146,8 @@ INSERT INTO `invoices` (`id`, `temp_limit`, `customer_id`, `customer_address`, `
 (62, '0.00', 110, '(Khushkhera Cement Grinding Project)\r\nPlot No. SP3-II, A-1, \r\nRIICO Industrial Area\r\nBhiwadi, Taluka-Tijara,\r\nKhushkhera-301707\r\nDistt: Alwar (Raj.)', '-', NULL, 1, '1500.00', '0.00', 0, '0.00', '1500.00', '14.50', 1, '217.50', '0.00', '', '0.00', '', '1717.50', '1717.50', '2017-05-06', 25, 'Pulled From Sales-Order', 112, 'STL', 53, '17-18', 'BE-3031', '430784', '2017-05-04', 'Direct for payment within 30 days', 11, 8, 6, '0.00', '0.00', '', '', '', 'Pending', '', 106, 37, 487, '16px', 'Freight "PAID" basis', 'No', 'No', 0),
 (63, '0.00', 142, 'NEAR BABA KHETANATH DHARMKANTA\r\nOPP. HERO MOTOCORPS ,NEEMRANA, ALWAR\r\nRAJASTHAN - 301705\r\n', '-', NULL, 1, '7400.00', '0.00', 0, '0.00', '7400.00', '14.50', 1, '1073.00', '0.00', '', '0.00', '', '8473.00', '8473.00', '2017-05-06', 27, 'Pulled From Sales-Order', 90, 'FMSL', 10, '17-18', 'BE-3387', 'Your Email confirmation by Mr. Ankit ji', '2017-05-05', 'Payment received by NEFT', 15, 8, 6, '0.00', '0.00', '', '', '', 'Pending', '', 317, 311, 0, '16px', '"FREIGHT PAID DOOR DELIVERY" Basis.', 'No', 'No', 0),
 (64, '0.00', 31, '( A Unit of Shree Cement Ltd )\r\nJind Road\r\nKhukhrana,Assan Kalan\r\nPanipat Haryana-132103', '305-500472 dated 04.05.2017', NULL, 1, '29614.00', '0.00', 0, '0.00', '29614.00', '0.00', 3, '0.00', '2034.00', 'Add: Reimbursement of Excise duty, so paid vide Invoice No. 64 dt. 25.04.2017 of M/s Darling Pumps Pvt. Ltd., \r\nAdd: Reimbursement of CST so paid Invoice No. 64 dt. 25.04.2017 against ''C'' Form (Rs.1503/- + Rs.531/-=2034/-)', '0.00', 'Note : C & E1 Transaction and Kindly Issue ''C'' Form, Material directly despatched from Indore.', '29614.00', '29614.00', '2017-05-09', 25, 'Pulled From Sales-Order', 114, 'STL', 54, '17-18', 'BE-3240', '428131', '2017-04-19', 'Direct for payment within 30 days', 11, 8, 1, '20.00', '6895.00', '', '', '', 'Pending', '', 106, 37, 489, '16px', 'Freight "PAID" basis', 'No', 'No', 0),
-(65, '0.00', 111, '(A unit of Rajasthan Cooperative Dairy Federation Limited)\r\nNadbai, \r\nBhratpur 321602 (Raj.)\r\n', '-', NULL, 1, '54580.00', '2183.20', 1, '4.00', '56763.20', '14.50', 1, '8230.66', '0.00', '', '0.00', '', '64993.86', '64993.86', '2017-05-12', 25, 'Pulled From Sales-Order', 79, 'STL', 55, '17-18', 'BE-3291', 'RCDF/CFP/NAD/F.( )/2016/3724', '2017-01-06', 'Direct for payment within 07 days after receipt of material', 15, 8, 1, '0.00', '0.00', '', '', '', 'Pending', '', 106, 37, 487, '16px', 'Freight "TO-PAY" basis', 'Yes', 'No', 0);
+(65, '0.00', 111, '(A unit of Rajasthan Cooperative Dairy Federation Limited)\r\nNadbai, \r\nBhratpur 321602 (Raj.)\r\n', '363-116368 dt. 13.05.2017', NULL, 1, '54580.00', '2183.20', 1, '4.00', '56763.20', '14.50', 1, '8230.66', '0.00', '', '0.00', '', '64993.86', '64993.86', '2017-05-12', 25, 'Pulled From Sales-Order', 79, 'STL', 55, '17-18', 'BE-3291', 'RCDF/CFP/NAD/F.( )/2016/3724', '2017-01-06', 'Direct for payment within 07 days after receipt of material', 15, 8, 1, '0.00', '0.00', '', '', '', 'Pending', '', 106, 37, 487, '16px', 'Freight "TO-PAY" basis', 'Yes', 'No', 0),
+(66, '0.00', 40, 'Pali-Marwar-306401\r\nRajastahn', '-', NULL, 1, '58868.50', '0.00', 0, '0.00', '58868.50', '5.50', 2, '3237.77', '4756.00', 'Add: Reimbursement of Excise duty, so paid vide Invoice No. 100842 dt. 11.05.2017 of M/s SPX Flow Technology (India) Private Limited, Ahmedabad', '0.00', '', '62106.27', '62106.27', '2017-05-15', 25, 'Pulled From Sales-Order', 1, 'STL', 56, '17-18', 'BE-3370', '4600015892', '2017-03-21', 'Direct for payment within 15 days', 4, 8, 2, '7.50', '4387.50', '', '', '', 'Pending', '', 106, 37, 488, '16px', 'Freight "PAID" Basis', 'No', 'No', 0);
 
 -- --------------------------------------------------------
 
@@ -2290,7 +2316,7 @@ CREATE TABLE IF NOT EXISTS `invoice_rows` (
   `inventory_voucher_applicable` varchar(10) NOT NULL,
   `sale_return_quantity` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=380 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=382 ;
 
 --
 -- Dumping data for table `invoice_rows`
@@ -2421,9 +2447,10 @@ INSERT INTO `invoice_rows` (`id`, `invoice_id`, `item_id`, `description`, `quant
 (372, 30, 762, '<p>Your item code : 0310</p><p><span style="font-weight: bold; text-decoration-line: underline;">Spares for "JOHNSON" Pump</span></p><p>Name of Spares : Valve Assembly&nbsp;</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; For Pump Model KGEN 11-3 G1<br>&nbsp;</p>', 5, '540.00', '2700.00', 0, 'Pending', '', '', 0),
 (374, 64, 935, '<p><span style="font-weight: bold;">Your item code&nbsp;&nbsp; &nbsp; :&nbsp; &nbsp; PUMPOTHR0371</span></p><p><span style="font-weight: bold; text-decoration: underline;">"DARLING" Submersible Pump</span></p><p>Model&nbsp; &nbsp; :&nbsp; &nbsp; LJ 15 LN</p><p>Head&nbsp; &nbsp; :&nbsp; &nbsp; 10 Mtrs.</p><p>Flow&nbsp; &nbsp; :&nbsp; &nbsp; 375 LPM</p><p>with 10 Mtrs. cable&nbsp;</p><p>Sr. No.&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;JE 173569&nbsp;</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>', 1, '34475.00', '34475.00', 0, 'Pending', '85', '', 0),
 (375, 4, 903, '<p>Your item code&nbsp; &nbsp; :&nbsp; &nbsp; 1000004583</p><p>Part No.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp; &nbsp; 1036314</p><p><span style="font-weight: bold; text-decoration: underline;">"ANTICO" Chemical Process Pump Set</span></p><p>Model : &nbsp;NZRP 25 160 (Impeller Dia-170 mm)</p><p>Head : 40 Mtrs.</p><p>Flow &nbsp;:1 00 LPM</p><p>Sealing : Mechanical Seal</p><p>Suc*Dis. : &nbsp;40*25 mm</p><p>with "BBL" 5 HP/2900 RPM Motor, Coupling, Coupling Guard, Fasteners dully assembled on MS BasrFrame</p><p>Pump Sr. No. : &nbsp;NZRPTB17033010</p><p>Motor : N1628962</p>', 1, '44700.00', '44700.00', 0, 'Pending', '', 'Yes', 0),
-(377, 65, 1208, '<p><span style="font-weight: bold; text-decoration: underline;">"TUSHACO" Pump Set</span></p><p>Model&nbsp;&nbsp; &nbsp; :&nbsp; &nbsp; R 20 DG</p><p>Capacity&nbsp; &nbsp; :&nbsp; &nbsp; 480 kg/Minute</p><p>Suc*dis.&nbsp; &nbsp; :&nbsp; &nbsp; 40 mm</p><p>with "BBL" 3 HP/1500 RPM Motor, Coupling L-95, Coulping Guard dully assembled on MS Baseframe</p><p>Pump Sr. No.;&nbsp; &nbsp; 1633030/2300</p><p>Motor Sr. No.:&nbsp;&nbsp;&nbsp;&nbsp;N1702224</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>', 1, '54580.00', '54580.00', 0, 'Pending', '', 'Yes', 0),
 (378, 12, 951, '<p><span style="font-weight: bold; text-decoration: underline;">Spares for "JOHNSON" Pump</span>&nbsp;</p><p>Model&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; CCR 50-200 R6A S2 L6</p><p><span style="font-weight: bold;">Item code&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Part No.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Description</span></p><p>766141589020&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 2650&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Lock Nut&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>', 2, '227.50', '455.00', 0, 'Pending', '', '', 0),
-(379, 12, 953, '<p>766141775030&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 1100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Shaft Sleeve&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>', 2, '3250.00', '6500.00', 0, 'Pending', '', '', 0);
+(379, 12, 953, '<p>766141775030&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 1100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Shaft Sleeve&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>', 2, '3250.00', '6500.00', 0, 'Pending', '', '', 0),
+(380, 66, 930, '<p><span style="font-weight: bold; text-decoration: underline;">"JOHNSON" Pump Set</span></p><p>Pump Model : CCR 40 160 (Impeller Dia-154 mm)</p><p>Head: 30 Meters</p><p>Flow: 30 M3/Hr</p><p><span style="line-height: 1.42857143;">Sealing: Gland Packing</span><br></p><p><span style="line-height: 1.42857143;">Suc*Dis Size: 50 x 32 mm</span><br></p><p><span style="line-height: 1.42857143;">with "REMI" Foot mounted motor, 7.5 HP/2900 rpm</span><br></p><p>&nbsp;Coupling L-95, Coupling Guard MS Base Frame</p><p>Pump Sr. No.: D111123001</p><p>Motor Sr. No. : 16/07/D/1585</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>', 1, '58500.00', '58500.00', 0, 'Pending', '', '', 0),
+(381, 65, 1208, '<p><span style="font-weight: bold; text-decoration: underline;">"TUSHACO" Pump Set</span></p><p>Model&nbsp;&nbsp; &nbsp; :&nbsp; &nbsp; R 20 DG</p><p>Capacity&nbsp; &nbsp; :&nbsp; &nbsp; 480 kg/Minute</p><p>Suc*dis.&nbsp; &nbsp; :&nbsp; &nbsp; 40 mm</p><p>with "BBL" 3 HP/1500 RPM Motor, Coupling L-95, Coulping Guard dully assembled on MS Baseframe</p><p>Pump Sr. No.;&nbsp; &nbsp; 1633030/2300</p><p>Motor Sr. No.:&nbsp;&nbsp;&nbsp;&nbsp;N1702224</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>', 1, '54580.00', '54580.00', 0, 'Pending', '', '', 0);
 
 -- --------------------------------------------------------
 
@@ -2649,7 +2676,7 @@ INSERT INTO `items` (`id`, `name`, `alias`, `item_category_id`, `item_group_id`,
 (750, 'Oil Seal KGEN 11 3 To 11 4', 'Oil Seal KGEN 11 3 To 11 4', 6, 16, '11', 1, 7, '16.00000000', '112.00000000', 0, 0, 'Purchessed', 1, 1, '16.00', '1.10'),
 (751, 'Oil Seal KGEN 12 5 To 16 6', 'Oil Seal KGEN 12 5 To 16 6', 6, 16, '11', 1, 12, '22.00000000', '264.00000000', 0, 0, 'Purchessed', 1, 1, '22.00', '1.10'),
 (752, 'Intermediate Cover KGEN 11 3 To 11 4', 'Intermediate Cover KGEN 11 3 To 11 4', 6, 16, '11', 1, 6, '348.58333333', '2091.50000000', 0, 0, 'Purchessed', 1, 1, '348.58', '1.10'),
-(753, 'Intermediate Cover KGEN 12 5 To 16 6', 'Intermediate Cover KGEN 12 5 To 16 6', 6, 16, '11', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 3, 3, '0.00', '0.00'),
+(753, 'Intermediate Cover KGEN 12 5 To 16 6', 'Intermediate Cover KGEN 12 5 To 16 6', 6, 16, '11', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (754, 'Intermediate Cover KGEN 25n 10', 'Intermediate Cover KGEN 25n 10', 6, 16, '11', 1, 1, '1806.00000000', '1806.00000000', 0, 0, 'Purchessed', 1, 1, '1806.00', '1.10'),
 (755, 'Mechanical Seal KGEN 11 3 To 11 4', 'Mechanical Seal KGEN 11 3 To 11 4', 6, 16, '11', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (756, 'Mechanical Seal KGEN 12 5 To 16 6', 'Mechanical Seal KGEN 12 5 To 16 6', 6, 16, '11', 1, 2, '721.57000000', '1443.00000000', 0, 0, 'Purchessed', 10, 10, '721.57', '1.10'),
@@ -2716,14 +2743,14 @@ INSERT INTO `items` (`id`, `name`, `alias`, `item_category_id`, `item_group_id`,
 (817, 'CI Impeller CN 125 250', 'CI Impeller CN 125 250', 6, 16, '13', 1, 1, '6149.07000000', '6149.00000000', 0, 0, 'Purchessed', 1, 1, '6149.07', '1.10'),
 (818, 'CI Impeller CN 40 160', 'CI Impeller CN 40 160', 6, 16, '13', 1, 3, '2294.03333333', '6882.10000000', 0, 0, 'Purchessed', 1, 1, '2294.03', '1.10'),
 (819, 'CI Impeller CN 40 200', 'CI Impeller CN 40 200', 6, 16, '13', 1, 1, '2331.50000000', '2331.50000000', 0, 0, 'Purchessed', 1, 1, '2331.50', '1.10'),
-(820, 'CI Impeller CN 40C 160 G1', 'CI Impeller CN 40C 160 G1', 6, 16, '13', 1, 1, '2294.04000000', '2294.04000000', 0, 0, 'Purchessed', 1, 1, '2294.04', '1.10'),
+(820, 'CI Impeller CN 40c 160 ', 'CI Impeller CN 40c 160 ', 6, 16, '13', 1, 1, '2294.04000000', '2294.04000000', 0, 0, 'Purchessed', 1, 1, '2294.04', '1.10'),
 (821, 'CI Impeller CN 50 160', 'CI Impeller CN 50 160', 6, 16, '13', 1, 1, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (822, 'CI Impeller CN 50 250', 'CI Impeller CN 50 250', 6, 16, '13', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (823, 'SS Impeller CCR 40 200 R6A', 'SS Impeller CCR 40 200 R6A', 6, 16, '25', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (824, 'SS Impeller CCR 50 160', 'SS Impeller CCR 50 160', 6, 16, '25', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (825, 'SS Impeller CCR 50c 160', 'SS Impeller CCR 50c 160', 6, 16, '25', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (826, 'CS Impeller CCR 40 160', 'CS Impeller CCR 40 160', 6, 16, '25', 1, 1, '3519.00000000', '3519.00000000', 0, 0, 'Purchessed', 1, 1, '3519.00', '1.10'),
-(827, 'Bearing Housing (2100) CCR 50 160', 'Bearing Housing (2100) CCR 50 160', 6, 16, '25', 1, 2, '500.00000000', '1000.00000000', 0, 0, 'Purchessed', 0, 0, '500.00', '1.10'),
+(827, 'Bearing Housing (2100) CCR 32 To 50 160', 'Bearing Housing (2100) CCR 32 To 50 160', 6, 16, '25', 1, 2, '500.00000000', '1000.00000000', 0, 0, 'Purchessed', 0, 0, '500.00', '1.10'),
 (829, 'Bearing Cover For EXP 160 CT', 'Bearing Cover for EXP 160 CT', 6, 17, '16', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (830, 'Deflector For EXP 160 CT', 'Deflector For EXP 160 CT', 6, 17, '16', 1, 2, '98.50000000', '197.00000000', 0, 0, 'Purchessed', 1, 1, '98.50', '1.10'),
 (831, 'Impeller For EXP 160 CT', 'Impeller For EXP 160 CT', 6, 17, '16', 1, 2, '1627.00000000', '3254.00000000', 0, 0, 'Purchessed', 1, 1, '1627.00', '1.10'),
@@ -2821,7 +2848,7 @@ INSERT INTO `items` (`id`, `name`, `alias`, `item_category_id`, `item_group_id`,
 (926, 'WV 03 L/40', 'WV 03 L/40', 1, 4, '52', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (927, 'CCR 32 160  With Motor', 'CCR 32 160  With Motor', 7, 26, '63', 3, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed/Manufactured', 0, 0, '1.00', '1.10'),
 (928, 'CCR 65 125 With Motor', 'CCR 65 125 With Motor', 7, 26, '63', 3, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed/Manufactured', 0, 0, '0.00', '0.00'),
-(929, 'CN 100 400', 'CN 100 400', 1, 1, '1', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
+(929, 'CN 100 400 G1 S2 L3', 'CN 100 400 G1 S2 L3', 1, 1, '1', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (930, 'CCR 40 160 With Motor', 'CCR 40 160 With Motor', 7, 26, '63', 3, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed/Manufactured', 0, 0, '0.00', '0.00'),
 (931, 'S 630', 'S 630', 1, 4, '65', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (932, 'CB 40C 160 G1', 'CB 40C 160 G1', 1, 1, '61', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
@@ -2833,7 +2860,7 @@ INSERT INTO `items` (`id`, `name`, `alias`, `item_category_id`, `item_group_id`,
 (940, 'T3 SFP 20/56 ', 'T3 SFP 20/56 ', 1, 2, '8', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (941, 'CCR 125 315  With Motor', 'CCR 125 315  With Motor', 7, 26, '63', 3, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed/Manufactured', 0, 0, '0.00', '0.00'),
 (942, 'Shaft (2200) CN 40-100 315, 65-200 250, 80-100 200, 100 160', ' Shaft (2200) CN 40-100 315, 65-200 250, 80-10', 6, 16, '13', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed/Manufactured', 0, 0, '0.00', '0.00'),
-(943, 'Bearing Housing CN 80 200', 'Bearing Housing CN 80 200', 6, 16, '13', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
+(943, 'Bearing Housing (2100) CN 80 To 100 200,100 160', 'Bearing Housing (2100) CN 80 To 100 200,100 160', 6, 16, '13', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (944, 'Bronze Impeller CN 80 200', 'Bronze Impeller CN 80 200', 6, 16, '13', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (945, 'CI Impeller CN 100 315', 'CI Impeller CN 100 315', 6, 16, '13', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (946, 'M 3080', 'M 3080', 1, 4, '65', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
@@ -2975,8 +3002,8 @@ INSERT INTO `items` (`id`, `name`, `alias`, `item_category_id`, `item_group_id`,
 (1087, 'Diffuser For J 52', 'Diffuser For J 52', 6, 18, '68', 1, 1, '4656.00000000', '4656.00000000', 0, 0, 'Purchessed', 1, 1, '4656.00', '1.10'),
 (1088, 'Gasket For TGH 58 80 ', 'Gasket For TGH 58 80 ', 6, 16, '77', 1, 2, '183.96000000', '367.92000000', 0, 0, 'Purchessed/Manufactured', 1, 1, '183.96', '1.10'),
 (1089, 'Gland Packing ', 'Gland Packing ', 6, 16, '13', 1, 1, '500.00000000', '500.00000000', 0, 0, 'Purchessed', 1, 1, '500.00', '1.10'),
-(1090, 'Grub Screw For TGH 58 80 (PN 0603)', 'Grub Screw For TGH 58 80 (PN 0603)', 6, 16, '77', 1, 25, '14.94000000', '373.50000000', 0, 0, 'Purchessed', 1, 1, '14.94', '1.10'),
-(1091, 'Grub Screw For TGH 58 80 (PN 703)', 'Grub Screw For TGH 58 80 (PN 703)', 6, 16, '77', 1, 25, '42.02000000', '1050.50000000', 0, 0, 'Purchessed', 1, 1, '42.02', '1.10'),
+(1090, 'Grub Screw (0603) For TGH 58 80 ', 'Grub Screw (0603) For TGH 58 80 ', 6, 16, '77', 1, 25, '14.94000000', '373.50000000', 0, 0, 'Purchessed', 1, 1, '14.94', '1.10'),
+(1091, 'Grub Screw (0703) For TGH 58 80 ', 'Grub Screw (0703) For TGH 58 80 ', 6, 16, '77', 1, 25, '42.02000000', '1050.50000000', 0, 0, 'Purchessed', 1, 1, '42.02', '1.10'),
 (1092, 'Cabin Fan 150-4-DC- 12 Volt', 'Cabin Fan 150-4-DC- 12 Volt', 6, 37, '79', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (1093, 'Idler Bush For TGH 58 80', 'Idler Bush For TGH 58 80', 6, 16, '77', 1, 2, '1440.85000000', '2881.70000000', 0, 0, 'Purchessed', 1, 1, '1440.85', '1.10'),
 (1094, 'Idler For TGH 58 80', 'Idler For TGH 58 80', 6, 16, '77', 1, 1, '19320.32000000', '19320.32000000', 0, 0, 'Purchessed', 1, 1, '19320.32', '1.10'),
@@ -3105,20 +3132,20 @@ INSERT INTO `items` (`id`, `name`, `alias`, `item_category_id`, `item_group_id`,
 (1241, 'Guide Pin (51) HD 2017', 'Guide Pin (51) HD 2017', 6, 19, '70', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (1242, 'Slider Housing (55) HD 2017', 'Slider Housing (55) HD 2017', 6, 19, '70', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (1243, 'Worm Wheel (56) HD 2017', 'Worm Wheel (56) HD 2017', 6, 19, '70', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
-(1244, 'Oil Baffle (2120) CCR 32 To 65-125,32 To 50-160,32 To 50-200', 'Oil Baffle (2120) CCR 32 To 65-125,32 To 50-160,32', 6, 16, '25', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
+(1244, 'Oil Baffle (2120) CCR 32 To 65-125,32 To 50-160,32 To 50-200', 'Oil Baffle (2120) CCR 32 To 65-125,32 To 50-160,32', 6, 16, '25', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed/Manufactured', 0, 0, '0.00', '0.00'),
 (1245, 'Shaft (2200) CCR 65-80 165, 65-100 200,32-80 250, 40-50 315', ' Shaft (2200) CCR 65-80 165, 65-100 200,32-80 ', 6, 16, '25', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed/Manufactured', 0, 0, '0.00', '0.00'),
 (1247, 'Washer (0315) CCR 32-80 250, 100 200', 'Washer (0315) CCR 32-80 250, 100 200', 6, 16, '25', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (1248, 'Coupling Key', 'Coupling Key', 5, 30, '38', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed/Manufactured', 0, 0, '0.00', '0.00'),
-(1249, 'Oil Baffle (2125) CCR 100 200,32-80 250', 'Oil Baffle (2125) CCR', 6, 16, '25', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
+(1249, 'Oil Baffle (2125) CCR 100 200,32-80 250', 'Oil Baffle (2125) CCR', 6, 16, '25', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed/Manufactured', 0, 0, '0.00', '0.00'),
 (1250, 'Dist. Sleeve (2350) CCR 65-80 160, 65-100 200, 32-80 250, 40-50 315', 'Dist. Sleeve (2350) CCR', 6, 16, '25', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed/Manufactured', 0, 0, '0.00', '0.00'),
 (1251, 'Coupling Key (2210) CCR 65-80 160, 65-100 200, 32-80 250, 40-50 315', 'Coupling Key (2210) CCR 65-80 160, 65-100 200, ', 6, 16, '25', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed/Manufactured', 0, 0, '0.00', '0.00'),
 (1252, 'Internal Circlip (2300) CCR 65-80 160, 65-100 200, 32-80 250, 40-50 315', 'Internal Circlip (2300) CCR 65-80 160, 65-100 200,', 6, 16, '25', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (1253, 'Adjusting Ring(2340) CCR 65-80 160, 65-100 200, 32-80 250, 40-50 315', 'Adjusting Ring(2340) CCR ', 6, 16, '25', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed/Manufactured', 0, 0, '0.00', '0.00'),
 (1254, 'Lock Nut (2560) CCR 65-80 160, 65-100 200, 32-80 250, 40-50 315', 'Lock Nut (2560) CCR 65-80 160, 65-100 200, ', 6, 16, '25', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (1255, 'Splash Ring (2220) CCR 65-80 160, 65-100 200, 32-80 250, 40-50 315', 'Splash Ring (2220) CCR 65-80 160, 65-100 200, 32-8', 6, 16, '25', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
-(1256, 'Locking Washer(2570) CCR 65-80 160, 65-100 200, 32-80 250, 40-50 315', 'Locking Washer(2570) CCR', 6, 16, '25', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
-(1257, 'Oil Baffle(2120) CCR 65-80 160, 65-100 200, 32-80 250, 40-50 315', 'Oil Baffle(2120) CCR 65-80 160, 65-100 200, 32', 6, 16, '25', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00');
+(1256, 'Locking Washer(2570) CCR 65-80 160, 65-100 200, 32-80 250, 40-50 315', 'Locking Washer(2570) CCR', 6, 16, '25', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00');
 INSERT INTO `items` (`id`, `name`, `alias`, `item_category_id`, `item_group_id`, `item_sub_group_id`, `unit_id`, `ob_quantity`, `ob_rate`, `ob_value`, `freeze`, `serial_number_enable`, `source`, `minimum_quantity`, `maximum_quantity`, `dynamic_cost`, `minimum_selling_price_factor`) VALUES
+(1257, 'Oil Baffle(2120) CCR 65-80 160, 65-100 200, 32-80 250, 40-50 315', 'Oil Baffle(2120) CCR 65-80 160, 65-100 200, 32', 6, 16, '25', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed/Manufactured', 0, 0, '0.00', '0.00'),
 (1258, 'CI Impeller CB 200 200', 'CI Impeller CB 200 200', 6, 16, '80', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (1259, 'Stub Shaft CB 200 200', 'Stub Shaft CB 200 200', 6, 16, '80', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (1260, 'Stuffing Box CB 32 250 ', 'Stuffing Box CB 32 250 ', 6, 16, '80', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
@@ -3155,7 +3182,7 @@ INSERT INTO `items` (`id`, `name`, `alias`, `item_category_id`, `item_group_id`,
 (1291, 'Impeller J 102 SP', 'Impeller J 102 SP', 6, 18, '83', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (1292, 'Impeller T 1503 H', 'Impeller T 1503 H', 6, 18, '83', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (1293, 'Impeller T 2003 H', 'Impeller T 2003 H', 6, 18, '83', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
-(1294, 'Shaft Sleeve A20 1.125"', 'Shaft Sleeve A20 1.125"', 6, 17, '33', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed/Manufactured', 0, 0, '0.00', '0.00'),
+(1294, 'Shaft Sleeve A20 1.125"', 'Shaft Sleeve A20 1.125"', 6, 17, '33', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (1295, 'Cooling Oil', 'Cooling Oil', 5, 30, '43', 4, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (1296, 'Mechanical Seal Motor 10 HP', 'Mechanical Seal Motor 10 HP', 6, 18, '83', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
 (1297, 'Mechanical Seal Motor 15/20/25 HP', 'Mechanical Seal Motor 15/20/25 HP', 6, 18, '83', 1, 0, '0.00000000', '0.00000000', 0, 0, 'Purchessed', 0, 0, '0.00', '0.00'),
@@ -4862,7 +4889,7 @@ CREATE TABLE IF NOT EXISTS `item_ledgers` (
   `rate_updated` varchar(5) NOT NULL,
   `left_item_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=889 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=926 ;
 
 --
 -- Dumping data for table `item_ledgers`
@@ -4943,7 +4970,6 @@ INSERT INTO `item_ledgers` (`id`, `item_id`, `quantity`, `rate`, `source_model`,
 (225, 1256, NULL, '0.00000', 'Items', 1256, 'In', '2017-04-25', 25, '', 0),
 (227, 1258, NULL, '0.00000', 'Items', 1258, 'In', '2017-04-25', 25, '', 0),
 (228, 1259, NULL, '0.00000', 'Items', 1259, 'In', '2017-04-25', 25, '', 0),
-(246, 943, 2, '4050.00000', 'Items', 943, 'In', '2017-04-01', 27, 'Yes', 0),
 (253, 1263, NULL, '0.00000', 'Items', 1263, 'In', '2017-04-26', 27, '', 0),
 (254, 1264, NULL, '0.00000', 'Items', 1264, 'In', '2017-04-26', 27, '', 0),
 (255, 1265, NULL, '0.00000', 'Items', 1265, 'In', '2017-04-26', 27, '', 0),
@@ -5000,7 +5026,6 @@ INSERT INTO `item_ledgers` (`id`, `item_id`, `quantity`, `rate`, `source_model`,
 (319, 755, 5, '433.50000', 'Items', 755, 'In', '2017-04-01', 27, 'Yes', 0),
 (320, 1295, NULL, '0.00000', 'Items', 1295, 'In', '2017-04-26', 27, '', 0),
 (321, 1295, 11, '823.87000', 'Items', 1295, 'In', '2017-04-01', 27, 'Yes', 0),
-(322, 1294, 1, '969.00000', 'Items', 1294, 'In', '2017-04-01', 27, 'Yes', 0),
 (325, 1298, NULL, '0.00000', 'Items', 1298, 'In', '2017-04-26', 27, '', 0),
 (328, 1298, 3, '2626.87000', 'Items', 1298, 'In', '2017-04-01', 27, 'Yes', 0),
 (329, 1299, NULL, '0.00000', 'Items', 1299, 'In', '2017-04-26', 25, '', 0),
@@ -5059,8 +5084,6 @@ INSERT INTO `item_ledgers` (`id`, `item_id`, `quantity`, `rate`, `source_model`,
 (411, 830, 2, '98.50000', 'Items', 830, 'In', '2017-04-01', 25, 'Yes', 0),
 (412, 1087, 1, '4656.00000', 'Items', 1087, 'In', '2017-04-01', 25, 'Yes', 0),
 (419, 847, 2, '4616.12000', 'Items', 847, 'In', '2017-04-01', 25, 'Yes', 0),
-(420, 1090, 24, '14.94000', 'Items', 1090, 'In', '2017-04-01', 25, 'Yes', 0),
-(421, 1091, 24, '42.02000', 'Items', 1091, 'In', '2017-04-01', 25, 'Yes', 0),
 (423, 648, 1, '17774.00000', 'Items', 648, 'In', '2017-04-01', 25, 'Yes', 0),
 (424, 849, 1, '813.41000', 'Items', 849, 'In', '2017-04-01', 25, 'Yes', 0),
 (425, 1093, 2, '1440.85000', 'Items', 1093, 'In', '2017-04-01', 25, 'Yes', 0),
@@ -5131,7 +5154,6 @@ INSERT INTO `item_ledgers` (`id`, `item_id`, `quantity`, `rate`, `source_model`,
 (536, 1131, 1, '980.00000', 'Items', 1131, 'In', '2017-04-01', 25, 'Yes', 0),
 (537, 675, 4, '2926.00000', 'Items', 675, 'In', '2017-04-01', 25, 'Yes', 0),
 (538, 1173, 2, '1137.00000', 'Items', 1173, 'In', '2017-04-01', 25, 'Yes', 0),
-(539, 827, 2, '500.00000', 'Items', 827, 'In', '2017-04-01', 25, 'Yes', 0),
 (541, 858, 2, '203.07000', 'Items', 858, 'In', '2017-04-01', 25, 'Yes', 0),
 (543, 750, 7, '16.00000', 'Items', 750, 'In', '2017-04-01', 25, 'Yes', 0),
 (544, 751, 12, '22.00000', 'Items', 751, 'In', '2017-04-01', 25, 'Yes', 0),
@@ -5301,7 +5323,6 @@ INSERT INTO `item_ledgers` (`id`, `item_id`, `quantity`, `rate`, `source_model`,
 (851, 903, 1, '47027.76000', 'Invoices', 4, 'Out', '2017-05-11', 25, '', 0),
 (852, 605, 1, '0.00000', 'Grns', 41, 'In', '2017-05-12', 25, '', 0),
 (853, 1332, 2, '8262.00000', 'Grns', 42, 'In', '2017-05-12', 25, 'Yes', 0),
-(855, 1208, 1, '56763.20000', 'Invoices', 65, 'Out', '2017-05-12', 25, '', 0),
 (856, 951, 2, '227.50000', 'Invoices', 12, 'Out', '2017-05-12', 25, '', 0),
 (857, 953, 2, '3250.00000', 'Invoices', 12, 'Out', '2017-05-12', 25, '', 0),
 (858, 1168, 1, '25459.00005', 'Grns', 43, 'In', '2017-05-12', 25, 'Yes', 0),
@@ -5314,7 +5335,6 @@ INSERT INTO `item_ledgers` (`id`, `item_id`, `quantity`, `rate`, `source_model`,
 (865, 775, 6, '510.04833', 'Items', 775, 'In', '2017-04-01', 25, 'Yes', 0),
 (866, 777, 9, '734.27000', 'Items', 777, 'In', '2017-04-01', 25, 'Yes', 0),
 (867, 1376, 5, '1979.40000', 'Items', 1376, 'In', '2017-04-01', 25, 'Yes', 0),
-(868, 753, 4, '428.00000', 'Items', 753, 'In', '2017-04-01', 25, 'Yes', 0),
 (869, 677, 4, '5081.72000', 'Items', 677, 'In', '2017-04-01', 25, 'Yes', 0),
 (870, 679, 18, '5924.43000', 'Items', 679, 'In', '2017-04-01', 25, 'Yes', 0),
 (871, 681, 10, '7498.27000', 'Items', 681, 'In', '2017-04-01', 25, 'Yes', 0),
@@ -5333,7 +5353,29 @@ INSERT INTO `item_ledgers` (`id`, `item_id`, `quantity`, `rate`, `source_model`,
 (885, 706, 1, '9190.00000', 'Items', 706, 'In', '2017-04-01', 25, 'Yes', 0),
 (886, 988, 1, '18710.00000', 'Items', 988, 'In', '2017-04-01', 25, 'Yes', 0),
 (887, 738, 1, '53347.00000', 'Items', 738, 'In', '2017-04-01', 25, 'Yes', 0),
-(888, 820, 1, '0.00000', 'Items', 820, 'In', '2017-05-15', 25, '', 0);
+(889, 827, 2, '0.00000', 'Items', 827, 'In', '2017-05-15', 25, '', 0),
+(890, 732, 1, '0.00000', 'Grns', 44, 'In', '2017-05-15', 25, '', 0),
+(891, 795, 1, '0.00000', 'Grns', 45, 'In', '2017-05-15', 25, '', 0),
+(892, 1179, 1, '0.00000', 'Grns', 45, 'In', '2017-05-15', 25, '', 0),
+(893, 1180, 1, '0.00000', 'Grns', 45, 'In', '2017-05-15', 25, '', 0),
+(894, 820, 1, '0.00000', 'Grns', 45, 'In', '2017-05-15', 25, '', 0),
+(895, 1181, 1, '0.00000', 'Grns', 45, 'In', '2017-05-15', 25, '', 0),
+(896, 765, 4, '0.00000', 'Grns', 45, 'In', '2017-05-15', 25, '', 0),
+(897, 773, 2, '0.00000', 'Grns', 45, 'In', '2017-05-15', 25, '', 0),
+(898, 771, 3, '0.00000', 'Grns', 45, 'In', '2017-05-15', 25, '', 0),
+(899, 1096, 1, '0.00000', 'Grns', 46, 'In', '2017-05-15', 25, '', 0),
+(900, 1097, 1, '0.00000', 'Grns', 46, 'In', '2017-05-15', 25, '', 0),
+(901, 1099, 1, '0.00000', 'Grns', 46, 'In', '2017-05-15', 25, '', 0),
+(902, 1100, 1, '0.00000', 'Grns', 46, 'In', '2017-05-15', 25, '', 0),
+(916, 930, 1, '58868.50000', 'Invoices', 66, 'Out', '2017-05-15', 25, '', 0),
+(917, 1208, 1, '56763.20000', 'Invoices', 65, 'Out', '2017-05-15', 25, '', 0),
+(919, 820, 1, '0.00000', 'Items', 820, 'In', '2017-05-15', 25, '', 0),
+(920, 1090, 25, '0.00000', 'Items', 1090, 'In', '2017-05-15', 25, '', 0),
+(921, 1091, 25, '0.00000', 'Items', 1091, 'In', '2017-05-15', 25, '', 0),
+(922, 703, 2, '0.00000', 'Grns', 49, 'In', '2017-05-15', 25, '', 0),
+(923, 1232, 1, '0.00000', 'Grns', 50, 'In', '2017-05-15', 25, '', 0),
+(924, 953, 1, '0.00000', 'Grns', 50, 'In', '2017-05-15', 25, '', 0),
+(925, 1221, 1, '0.00000', 'Grns', 50, 'In', '2017-05-15', 25, '', 0);
 
 -- --------------------------------------------------------
 
@@ -5353,170 +5395,177 @@ CREATE TABLE IF NOT EXISTS `item_serial_numbers` (
   `in_inventory_voucher_id` int(10) NOT NULL,
   `master_item_id` int(10) NOT NULL,
   `company_id` int(10) NOT NULL,
+  `sale_return_id` int(11) NOT NULL,
+  `purchase_return_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=189 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=200 ;
 
 --
 -- Dumping data for table `item_serial_numbers`
 --
 
-INSERT INTO `item_serial_numbers` (`id`, `item_id`, `serial_no`, `status`, `grn_id`, `invoice_id`, `iv_invoice_id`, `q_item_id`, `in_inventory_voucher_id`, `master_item_id`, `company_id`) VALUES
-(1, 1171, 'C111659003', 'In', 6, 0, 0, 0, 0, 0, 25),
-(2, 1171, 'C111659004', 'In', 6, 0, 0, 0, 0, 0, 25),
-(3, 964, 'C111659005', 'In', 8, 0, 0, 0, 0, 0, 25),
-(4, 964, 'C111659006', 'In', 8, 0, 0, 0, 0, 0, 25),
-(5, 1168, 'C111659010', 'In', 8, 0, 0, 0, 0, 0, 25),
-(6, 1170, 'D111008001', 'In', 9, 0, 0, 0, 0, 0, 25),
-(7, 1170, 'D111008002', 'In', 9, 0, 0, 0, 0, 0, 25),
-(8, 737, 'C111658001', 'In', 10, 0, 0, 0, 0, 0, 25),
-(9, 1169, 'C111657001', 'In', 11, 0, 0, 0, 0, 0, 25),
-(10, 1167, 'C111659007', 'In', 13, 0, 0, 0, 0, 0, 25),
-(11, 931, 'SD 170893', 'Out', 15, 44, 0, 0, 0, 0, 25),
-(12, 931, 'SD 170894', 'Out', 15, 44, 0, 0, 0, 0, 25),
-(13, 931, 'SD 170895', 'Out', 15, 44, 0, 0, 0, 0, 25),
-(14, 931, 'SD 170896', 'Out', 15, 44, 0, 0, 0, 0, 25),
-(15, 931, 'SD 170897', 'Out', 15, 44, 0, 0, 0, 0, 25),
-(16, 931, 'SD 170898', 'Out', 15, 44, 0, 0, 0, 0, 25),
-(17, 730, 'D111086003', 'In', 17, 0, 0, 0, 0, 0, 25),
-(48, 600, '1641727/2080', 'In', 26, 0, 0, 0, 0, 0, 25),
-(49, 600, '1641727/2081', 'In', 26, 0, 0, 0, 0, 0, 25),
-(50, 600, '1641727/2082', 'In', 26, 0, 0, 0, 0, 0, 25),
-(51, 600, '1641727/2083', 'In', 26, 0, 0, 0, 0, 0, 25),
-(52, 600, '1641727/2084', 'In', 26, 0, 0, 0, 0, 0, 25),
-(53, 600, '1641727/2085', 'In', 26, 0, 0, 0, 0, 0, 25),
-(54, 600, '1641727/2086', 'In', 26, 0, 0, 0, 0, 0, 25),
-(55, 600, '1641727/2087', 'In', 26, 0, 0, 0, 0, 0, 25),
-(56, 600, '1641727/2088', 'In', 26, 0, 0, 0, 0, 0, 25),
-(57, 600, '1641727/2089', 'In', 26, 0, 0, 0, 0, 0, 25),
-(58, 600, '1641727/2090', 'Out', 26, 51, 0, 0, 0, 0, 25),
-(59, 600, '1641727/2091', 'In', 26, 0, 0, 0, 0, 0, 25),
-(60, 600, '1641727/2092', 'In', 26, 0, 0, 0, 0, 0, 25),
-(61, 600, '1641727/2093', 'Out', 26, 51, 0, 0, 0, 0, 25),
-(62, 600, '1641727/2094', 'In', 26, 0, 0, 0, 0, 0, 25),
-(63, 600, '1641727/2095', 'In', 26, 0, 0, 0, 0, 0, 25),
-(64, 600, '1641727/2096', 'In', 26, 0, 0, 0, 0, 0, 25),
-(65, 600, '1641727/2097', 'In', 26, 0, 0, 0, 0, 0, 25),
-(66, 600, '1641727/2098', 'Out', 26, 51, 0, 0, 0, 0, 25),
-(67, 600, '1641727/2099', 'Out', 26, 51, 0, 0, 0, 0, 25),
-(68, 1148, '1641727/2100', 'Out', 26, 50, 0, 0, 0, 0, 25),
-(69, 1148, '1641727/2101', 'In', 26, 0, 0, 0, 0, 0, 25),
-(70, 1148, '1641727/2102', 'In', 26, 0, 0, 0, 0, 0, 25),
-(71, 1148, '1641727/2103', 'In', 26, 0, 0, 0, 0, 0, 25),
-(72, 1148, '1641727/2104', 'In', 26, 0, 0, 0, 0, 0, 25),
-(73, 1148, '1641727/2105', 'In', 26, 0, 0, 0, 0, 0, 25),
-(74, 1148, '1641727/2106', 'In', 26, 0, 0, 0, 0, 0, 25),
-(75, 1148, '1641727/2107', 'In', 26, 0, 0, 0, 0, 0, 25),
-(76, 1148, '1641727/2108', 'In', 26, 0, 0, 0, 0, 0, 25),
-(77, 1148, '1641727/2109', 'In', 26, 0, 0, 0, 0, 0, 25),
-(78, 731, 'D111070001', 'In', 25, 0, 0, 0, 0, 0, 25),
-(79, 731, 'D111070002', 'In', 25, 0, 0, 0, 0, 0, 25),
-(80, 589, 'N1655859', 'In', 33, 0, 0, 0, 0, 0, 25),
-(81, 589, 'N1655146', 'In', 33, 0, 0, 0, 0, 0, 25),
-(82, 599, '1638922/2114', 'Out', 35, 57, 0, 0, 0, 0, 25),
-(83, 1143, '1638922/2204', 'Out', 34, 58, 0, 0, 0, 0, 25),
-(84, 989, 'C111270001', 'In', 0, 0, 0, 0, 0, 989, 25),
-(85, 935, 'JE 173569', 'Out', 0, 64, 0, 0, 0, 935, 25),
-(86, 1149, '1553188/3531', 'In', 0, 0, 0, 0, 0, 1149, 25),
-(87, 1149, '1553188/3532', 'In', 0, 0, 0, 0, 0, 1149, 25),
-(88, 566, '14/10/D0696N', 'In', 0, 0, 0, 0, 0, 566, 25),
-(89, 583, 'K1432454', 'In', 0, 0, 0, 0, 0, 583, 25),
-(90, 1144, '13112643508', 'In', 0, 0, 0, 0, 0, 1144, 25),
-(91, 1144, '13112643507', 'In', 0, 0, 0, 0, 0, 1144, 25),
-(92, 575, '16/12D1696', 'In', 0, 0, 0, 0, 0, 575, 25),
-(93, 559, '14/3/D829', 'In', 0, 0, 0, 0, 0, 559, 25),
-(94, 597, 'L1501508', 'In', 0, 0, 0, 0, 0, 597, 25),
-(95, 935, 'JE 173569', 'In', 40, 0, 0, 0, 0, 0, 25),
-(96, 605, '1633030/2300', 'In', 41, 0, 0, 0, 0, 0, 25),
-(97, 1168, 'PC111659010', 'In', 43, 0, 0, 0, 0, 0, 25),
-(98, 694, 'Y111139001', 'In', 0, 0, 0, 0, 0, 694, 25),
-(99, 725, 'B111272040', 'In', 0, 0, 0, 0, 0, 725, 26),
-(100, 677, 'C111152006', 'In', 0, 0, 0, 0, 0, 677, 25),
-(101, 677, 'C111152009', 'In', 0, 0, 0, 0, 0, 677, 25),
-(102, 677, 'C111152004', 'In', 0, 0, 0, 0, 0, 677, 25),
-(103, 677, 'C111152002', 'In', 0, 0, 0, 0, 0, 677, 25),
-(104, 679, 'X111081012', 'In', 0, 0, 0, 0, 0, 679, 25),
-(105, 679, 'B111398014', 'In', 0, 0, 0, 0, 0, 679, 25),
-(106, 679, 'B111388019', 'In', 0, 0, 0, 0, 0, 679, 25),
-(107, 679, 'B111398018', 'In', 0, 0, 0, 0, 0, 679, 25),
-(108, 679, 'B111398017', 'In', 0, 0, 0, 0, 0, 679, 25),
-(109, 679, 'B111398015', 'In', 0, 0, 0, 0, 0, 679, 25),
-(110, 679, 'B111388016', 'In', 0, 0, 0, 0, 0, 679, 25),
-(111, 679, 'B111398013', 'In', 0, 0, 0, 0, 0, 679, 25),
-(112, 679, 'B111388015', 'In', 0, 0, 0, 0, 0, 679, 25),
-(113, 679, 'B111398016', 'In', 0, 0, 0, 0, 0, 679, 25),
-(114, 679, 'B111388017', 'In', 0, 0, 0, 0, 0, 679, 25),
-(115, 679, 'B111389014', 'In', 0, 0, 0, 0, 0, 679, 25),
-(116, 679, 'B111388018', 'In', 0, 0, 0, 0, 0, 679, 25),
-(117, 679, 'B111398019', 'In', 0, 0, 0, 0, 0, 679, 25),
-(118, 679, 'B111388013', 'In', 0, 0, 0, 0, 0, 679, 25),
-(119, 679, 'X111119008', 'In', 0, 0, 0, 0, 0, 679, 25),
-(120, 679, 'Z111332014', 'In', 0, 0, 0, 0, 0, 679, 25),
-(121, 679, 'Z111332020', 'In', 0, 0, 0, 0, 0, 679, 25),
-(122, 681, 'B111388049', 'In', 0, 0, 0, 0, 0, 681, 25),
-(123, 681, 'B111398050', 'In', 0, 0, 0, 0, 0, 681, 25),
-(124, 681, 'B111388034', 'In', 0, 0, 0, 0, 0, 681, 25),
-(125, 681, 'B111388042', 'In', 0, 0, 0, 0, 0, 681, 25),
-(126, 681, 'B111388039', 'In', 0, 0, 0, 0, 0, 681, 25),
-(127, 681, 'B111388033', 'In', 0, 0, 0, 0, 0, 681, 25),
-(128, 681, 'B111388038', 'In', 0, 0, 0, 0, 0, 681, 25),
-(129, 681, 'B111388041', 'In', 0, 0, 0, 0, 0, 681, 25),
-(130, 681, 'B111398049', 'In', 0, 0, 0, 0, 0, 681, 25),
-(131, 681, 'C111629013', 'In', 0, 0, 0, 0, 0, 681, 25),
-(132, 682, 'B111398046', 'In', 0, 0, 0, 0, 0, 682, 25),
-(133, 682, 'B111388046', 'In', 0, 0, 0, 0, 0, 682, 25),
-(134, 682, 'B111388044', 'In', 0, 0, 0, 0, 0, 682, 25),
-(135, 682, 'B111388045', 'In', 0, 0, 0, 0, 0, 682, 25),
-(136, 686, 'B111388057', 'In', 0, 0, 0, 0, 0, 686, 25),
-(137, 686, 'B111388058', 'In', 0, 0, 0, 0, 0, 686, 25),
-(138, 686, 'B111070044', 'In', 0, 0, 0, 0, 0, 686, 25),
-(139, 686, 'B111070037', 'In', 0, 0, 0, 0, 0, 686, 25),
-(140, 686, 'A111109036', 'In', 0, 0, 0, 0, 0, 686, 25),
-(141, 686, 'B111388055', 'In', 0, 0, 0, 0, 0, 686, 25),
-(142, 686, 'B111388056', 'In', 0, 0, 0, 0, 0, 686, 25),
-(143, 686, 'B111388054', 'In', 0, 0, 0, 0, 0, 686, 25),
-(144, 686, 'B111070036', 'In', 0, 0, 0, 0, 0, 686, 25),
-(145, 1377, 'Y111293009', 'In', 0, 0, 0, 0, 0, 1377, 25),
-(146, 687, 'C111659014', 'In', 0, 0, 0, 0, 0, 687, 25),
-(147, 687, 'C111659012', 'In', 0, 0, 0, 0, 0, 687, 25),
-(148, 687, 'C111659013', 'In', 0, 0, 0, 0, 0, 687, 25),
-(149, 687, 'C111659016', 'In', 0, 0, 0, 0, 0, 687, 25),
-(150, 687, 'B111398063', 'In', 0, 0, 0, 0, 0, 687, 25),
-(151, 687, 'B111398059', 'In', 0, 0, 0, 0, 0, 687, 25),
-(152, 687, 'B111388062', 'In', 0, 0, 0, 0, 0, 687, 25),
-(153, 687, 'B111388060', 'In', 0, 0, 0, 0, 0, 687, 25),
-(154, 687, 'B111388059', 'In', 0, 0, 0, 0, 0, 687, 25),
-(155, 687, 'C111659015', 'In', 0, 0, 0, 0, 0, 687, 25),
-(156, 687, 'C111659017', 'In', 0, 0, 0, 0, 0, 687, 25),
-(157, 691, 'C111659020', 'In', 0, 0, 0, 0, 0, 691, 25),
-(158, 691, 'C111659021', 'In', 0, 0, 0, 0, 0, 691, 25),
-(159, 691, 'C111659018', 'In', 0, 0, 0, 0, 0, 691, 25),
-(160, 691, 'C111659019', 'In', 0, 0, 0, 0, 0, 691, 25),
-(161, 684, 'B111398064', 'In', 0, 0, 0, 0, 0, 684, 25),
-(162, 684, 'B111398065', 'In', 0, 0, 0, 0, 0, 684, 25),
-(163, 684, 'B111388064', 'In', 0, 0, 0, 0, 0, 684, 25),
-(164, 685, 'B111070053', 'In', 0, 0, 0, 0, 0, 685, 25),
-(165, 685, 'C111152023', 'In', 0, 0, 0, 0, 0, 685, 25),
-(166, 685, 'C111152014', 'In', 0, 0, 0, 0, 0, 685, 25),
-(167, 685, 'C111152015', 'In', 0, 0, 0, 0, 0, 685, 25),
-(168, 685, 'B111070059', 'In', 0, 0, 0, 0, 0, 685, 25),
-(169, 685, 'C111152011', 'In', 0, 0, 0, 0, 0, 685, 25),
-(170, 685, 'C111152020', 'In', 0, 0, 0, 0, 0, 685, 25),
-(171, 685, 'C111152019', 'In', 0, 0, 0, 0, 0, 685, 25),
-(172, 685, 'C111152024', 'In', 0, 0, 0, 0, 0, 685, 25),
-(173, 685, 'C111152022', 'In', 0, 0, 0, 0, 0, 685, 25),
-(174, 685, 'C111152013', 'In', 0, 0, 0, 0, 0, 685, 25),
-(175, 685, 'C111152012', 'In', 0, 0, 0, 0, 0, 685, 25),
-(176, 685, 'A1', 'In', 0, 0, 0, 0, 0, 685, 25),
-(177, 690, 'Y111293038', 'In', 0, 0, 0, 0, 0, 690, 25),
-(178, 690, 'Y111293040', 'In', 0, 0, 0, 0, 0, 690, 25),
-(179, 688, 'B111176003', 'In', 0, 0, 0, 0, 0, 688, 25),
-(180, 689, 'B111398070', 'In', 0, 0, 0, 0, 0, 689, 25),
-(181, 689, 'B111388070', 'In', 0, 0, 0, 0, 0, 689, 25),
-(184, 704, 'B111399018', 'In', 0, 0, 0, 0, 0, 704, 25),
-(185, 705, 'B111399019', 'In', 0, 0, 0, 0, 0, 705, 25),
-(186, 706, 'B111399020', 'In', 0, 0, 0, 0, 0, 706, 25),
-(187, 988, 'B111625002', 'In', 0, 0, 0, 0, 0, 988, 25),
-(188, 738, 'B111272034', 'In', 0, 0, 0, 0, 0, 738, 25);
+INSERT INTO `item_serial_numbers` (`id`, `item_id`, `serial_no`, `status`, `grn_id`, `invoice_id`, `iv_invoice_id`, `q_item_id`, `in_inventory_voucher_id`, `master_item_id`, `company_id`, `sale_return_id`, `purchase_return_id`) VALUES
+(1, 1171, 'C111659003', 'In', 6, 0, 0, 0, 0, 0, 25, 0, 0),
+(2, 1171, 'C111659004', 'In', 6, 0, 0, 0, 0, 0, 25, 0, 0),
+(3, 964, 'C111659005', 'In', 8, 0, 0, 0, 0, 0, 25, 0, 0),
+(4, 964, 'C111659006', 'In', 8, 0, 0, 0, 0, 0, 25, 0, 0),
+(5, 1168, 'C111659010', 'In', 8, 0, 0, 0, 0, 0, 25, 0, 0),
+(6, 1170, 'D111008001', 'In', 9, 0, 0, 0, 0, 0, 25, 0, 0),
+(7, 1170, 'D111008002', 'In', 9, 0, 0, 0, 0, 0, 25, 0, 0),
+(8, 737, 'C111658001', 'In', 10, 0, 0, 0, 0, 0, 25, 0, 0),
+(9, 1169, 'C111657001', 'In', 11, 0, 0, 0, 0, 0, 25, 0, 0),
+(10, 1167, 'C111659007', 'In', 13, 0, 0, 0, 0, 0, 25, 0, 0),
+(11, 931, 'SD 170893', 'Out', 15, 44, 0, 0, 0, 0, 25, 0, 0),
+(12, 931, 'SD 170894', 'Out', 15, 44, 0, 0, 0, 0, 25, 0, 0),
+(13, 931, 'SD 170895', 'Out', 15, 44, 0, 0, 0, 0, 25, 0, 0),
+(14, 931, 'SD 170896', 'Out', 15, 44, 0, 0, 0, 0, 25, 0, 0),
+(15, 931, 'SD 170897', 'Out', 15, 44, 0, 0, 0, 0, 25, 0, 0),
+(16, 931, 'SD 170898', 'Out', 15, 44, 0, 0, 0, 0, 25, 0, 0),
+(17, 730, 'D111086003', 'In', 17, 0, 0, 0, 0, 0, 25, 0, 0),
+(48, 600, '1641727/2080', 'In', 26, 0, 0, 0, 0, 0, 25, 0, 0),
+(49, 600, '1641727/2081', 'In', 26, 0, 0, 0, 0, 0, 25, 0, 0),
+(50, 600, '1641727/2082', 'In', 26, 0, 0, 0, 0, 0, 25, 0, 0),
+(51, 600, '1641727/2083', 'In', 26, 0, 0, 0, 0, 0, 25, 0, 0),
+(52, 600, '1641727/2084', 'In', 26, 0, 0, 0, 0, 0, 25, 0, 0),
+(53, 600, '1641727/2085', 'In', 26, 0, 0, 0, 0, 0, 25, 0, 0),
+(54, 600, '1641727/2086', 'In', 26, 0, 0, 0, 0, 0, 25, 0, 0),
+(55, 600, '1641727/2087', 'In', 26, 0, 0, 0, 0, 0, 25, 0, 0),
+(56, 600, '1641727/2088', 'In', 26, 0, 0, 0, 0, 0, 25, 0, 0),
+(57, 600, '1641727/2089', 'In', 26, 0, 0, 0, 0, 0, 25, 0, 0),
+(58, 600, '1641727/2090', 'Out', 26, 51, 0, 0, 0, 0, 25, 0, 0),
+(59, 600, '1641727/2091', 'In', 26, 0, 0, 0, 0, 0, 25, 0, 0),
+(60, 600, '1641727/2092', 'In', 26, 0, 0, 0, 0, 0, 25, 0, 0),
+(61, 600, '1641727/2093', 'Out', 26, 51, 0, 0, 0, 0, 25, 0, 0),
+(62, 600, '1641727/2094', 'In', 26, 0, 0, 0, 0, 0, 25, 0, 0),
+(63, 600, '1641727/2095', 'In', 26, 0, 0, 0, 0, 0, 25, 0, 0),
+(64, 600, '1641727/2096', 'In', 26, 0, 0, 0, 0, 0, 25, 0, 0),
+(65, 600, '1641727/2097', 'In', 26, 0, 0, 0, 0, 0, 25, 0, 0),
+(66, 600, '1641727/2098', 'Out', 26, 51, 0, 0, 0, 0, 25, 0, 0),
+(67, 600, '1641727/2099', 'Out', 26, 51, 0, 0, 0, 0, 25, 0, 0),
+(68, 1148, '1641727/2100', 'Out', 26, 50, 0, 0, 0, 0, 25, 0, 0),
+(69, 1148, '1641727/2101', 'In', 26, 0, 0, 0, 0, 0, 25, 0, 0),
+(70, 1148, '1641727/2102', 'In', 26, 0, 0, 0, 0, 0, 25, 0, 0),
+(71, 1148, '1641727/2103', 'In', 26, 0, 0, 0, 0, 0, 25, 0, 0),
+(72, 1148, '1641727/2104', 'In', 26, 0, 0, 0, 0, 0, 25, 0, 0),
+(73, 1148, '1641727/2105', 'In', 26, 0, 0, 0, 0, 0, 25, 0, 0),
+(74, 1148, '1641727/2106', 'In', 26, 0, 0, 0, 0, 0, 25, 0, 0),
+(75, 1148, '1641727/2107', 'In', 26, 0, 0, 0, 0, 0, 25, 0, 0),
+(76, 1148, '1641727/2108', 'In', 26, 0, 0, 0, 0, 0, 25, 0, 0),
+(77, 1148, '1641727/2109', 'In', 26, 0, 0, 0, 0, 0, 25, 0, 0),
+(78, 731, 'D111070001', 'In', 25, 0, 0, 0, 0, 0, 25, 0, 0),
+(79, 731, 'D111070002', 'In', 25, 0, 0, 0, 0, 0, 25, 0, 0),
+(80, 589, 'N1655859', 'In', 33, 0, 0, 0, 0, 0, 25, 0, 0),
+(81, 589, 'N1655146', 'In', 33, 0, 0, 0, 0, 0, 25, 0, 0),
+(82, 599, '1638922/2114', 'Out', 35, 57, 0, 0, 0, 0, 25, 0, 0),
+(83, 1143, '1638922/2204', 'Out', 34, 58, 0, 0, 0, 0, 25, 0, 0),
+(84, 989, 'C111270001', 'In', 0, 0, 0, 0, 0, 989, 25, 0, 0),
+(85, 935, 'JE 173569', 'Out', 0, 64, 0, 0, 0, 935, 25, 0, 0),
+(86, 1149, '1553188/3531', 'In', 0, 0, 0, 0, 0, 1149, 25, 0, 0),
+(87, 1149, '1553188/3532', 'In', 0, 0, 0, 0, 0, 1149, 25, 0, 0),
+(88, 566, '14/10/D0696N', 'In', 0, 0, 0, 0, 0, 566, 25, 0, 0),
+(89, 583, 'K1432454', 'In', 0, 0, 0, 0, 0, 583, 25, 0, 0),
+(90, 1144, '13112643508', 'In', 0, 0, 0, 0, 0, 1144, 25, 0, 0),
+(91, 1144, '13112643507', 'In', 0, 0, 0, 0, 0, 1144, 25, 0, 0),
+(92, 575, '16/12D1696', 'In', 0, 0, 0, 0, 0, 575, 25, 0, 0),
+(93, 559, '14/3/D829', 'In', 0, 0, 0, 0, 0, 559, 25, 0, 0),
+(94, 597, 'L1501508', 'In', 0, 0, 0, 0, 0, 597, 25, 0, 0),
+(95, 935, 'JE 173569', 'In', 40, 0, 0, 0, 0, 0, 25, 0, 0),
+(96, 605, '1633030/2300', 'In', 41, 0, 0, 0, 0, 0, 25, 0, 0),
+(97, 1168, 'PC111659010', 'In', 43, 0, 0, 0, 0, 0, 25, 0, 0),
+(98, 694, 'Y111139001', 'In', 0, 0, 0, 0, 0, 694, 25, 0, 0),
+(99, 725, 'B111272040', 'In', 0, 0, 0, 0, 0, 725, 26, 0, 0),
+(100, 677, 'C111152006', 'In', 0, 0, 0, 0, 0, 677, 25, 0, 0),
+(101, 677, 'C111152009', 'In', 0, 0, 0, 0, 0, 677, 25, 0, 0),
+(102, 677, 'C111152004', 'In', 0, 0, 0, 0, 0, 677, 25, 0, 0),
+(103, 677, 'C111152002', 'In', 0, 0, 0, 0, 0, 677, 25, 0, 0),
+(104, 679, 'X111081012', 'In', 0, 0, 0, 0, 0, 679, 25, 0, 0),
+(105, 679, 'B111398014', 'In', 0, 0, 0, 0, 0, 679, 25, 0, 0),
+(106, 679, 'B111388019', 'In', 0, 0, 0, 0, 0, 679, 25, 0, 0),
+(107, 679, 'B111398018', 'In', 0, 0, 0, 0, 0, 679, 25, 0, 0),
+(108, 679, 'B111398017', 'In', 0, 0, 0, 0, 0, 679, 25, 0, 0),
+(109, 679, 'B111398015', 'In', 0, 0, 0, 0, 0, 679, 25, 0, 0),
+(110, 679, 'B111388016', 'In', 0, 0, 0, 0, 0, 679, 25, 0, 0),
+(111, 679, 'B111398013', 'In', 0, 0, 0, 0, 0, 679, 25, 0, 0),
+(112, 679, 'B111388015', 'In', 0, 0, 0, 0, 0, 679, 25, 0, 0),
+(113, 679, 'B111398016', 'In', 0, 0, 0, 0, 0, 679, 25, 0, 0),
+(114, 679, 'B111388017', 'In', 0, 0, 0, 0, 0, 679, 25, 0, 0),
+(115, 679, 'B111389014', 'In', 0, 0, 0, 0, 0, 679, 25, 0, 0),
+(116, 679, 'B111388018', 'In', 0, 0, 0, 0, 0, 679, 25, 0, 0),
+(117, 679, 'B111398019', 'In', 0, 0, 0, 0, 0, 679, 25, 0, 0),
+(118, 679, 'B111388013', 'In', 0, 0, 0, 0, 0, 679, 25, 0, 0),
+(119, 679, 'X111119008', 'In', 0, 0, 0, 0, 0, 679, 25, 0, 0),
+(120, 679, 'Z111332014', 'In', 0, 0, 0, 0, 0, 679, 25, 0, 0),
+(121, 679, 'Z111332020', 'In', 0, 0, 0, 0, 0, 679, 25, 0, 0),
+(122, 681, 'B111388049', 'In', 0, 0, 0, 0, 0, 681, 25, 0, 0),
+(123, 681, 'B111398050', 'In', 0, 0, 0, 0, 0, 681, 25, 0, 0),
+(124, 681, 'B111388034', 'In', 0, 0, 0, 0, 0, 681, 25, 0, 0),
+(125, 681, 'B111388042', 'In', 0, 0, 0, 0, 0, 681, 25, 0, 0),
+(126, 681, 'B111388039', 'In', 0, 0, 0, 0, 0, 681, 25, 0, 0),
+(127, 681, 'B111388033', 'In', 0, 0, 0, 0, 0, 681, 25, 0, 0),
+(128, 681, 'B111388038', 'In', 0, 0, 0, 0, 0, 681, 25, 0, 0),
+(129, 681, 'B111388041', 'In', 0, 0, 0, 0, 0, 681, 25, 0, 0),
+(130, 681, 'B111398049', 'In', 0, 0, 0, 0, 0, 681, 25, 0, 0),
+(131, 681, 'C111629013', 'In', 0, 0, 0, 0, 0, 681, 25, 0, 0),
+(132, 682, 'B111398046', 'In', 0, 0, 0, 0, 0, 682, 25, 0, 0),
+(133, 682, 'B111388046', 'In', 0, 0, 0, 0, 0, 682, 25, 0, 0),
+(134, 682, 'B111388044', 'In', 0, 0, 0, 0, 0, 682, 25, 0, 0),
+(135, 682, 'B111388045', 'In', 0, 0, 0, 0, 0, 682, 25, 0, 0),
+(136, 686, 'B111388057', 'In', 0, 0, 0, 0, 0, 686, 25, 0, 0),
+(137, 686, 'B111388058', 'In', 0, 0, 0, 0, 0, 686, 25, 0, 0),
+(138, 686, 'B111070044', 'In', 0, 0, 0, 0, 0, 686, 25, 0, 0),
+(139, 686, 'B111070037', 'In', 0, 0, 0, 0, 0, 686, 25, 0, 0),
+(140, 686, 'A111109036', 'In', 0, 0, 0, 0, 0, 686, 25, 0, 0),
+(141, 686, 'B111388055', 'In', 0, 0, 0, 0, 0, 686, 25, 0, 0),
+(142, 686, 'B111388056', 'In', 0, 0, 0, 0, 0, 686, 25, 0, 0),
+(143, 686, 'B111388054', 'In', 0, 0, 0, 0, 0, 686, 25, 0, 0),
+(144, 686, 'B111070036', 'In', 0, 0, 0, 0, 0, 686, 25, 0, 0),
+(145, 1377, 'Y111293009', 'In', 0, 0, 0, 0, 0, 1377, 25, 0, 0),
+(146, 687, 'C111659014', 'In', 0, 0, 0, 0, 0, 687, 25, 0, 0),
+(147, 687, 'C111659012', 'In', 0, 0, 0, 0, 0, 687, 25, 0, 0),
+(148, 687, 'C111659013', 'In', 0, 0, 0, 0, 0, 687, 25, 0, 0),
+(149, 687, 'C111659016', 'In', 0, 0, 0, 0, 0, 687, 25, 0, 0),
+(150, 687, 'B111398063', 'In', 0, 0, 0, 0, 0, 687, 25, 0, 0),
+(151, 687, 'B111398059', 'In', 0, 0, 0, 0, 0, 687, 25, 0, 0),
+(152, 687, 'B111388062', 'In', 0, 0, 0, 0, 0, 687, 25, 0, 0),
+(153, 687, 'B111388060', 'In', 0, 0, 0, 0, 0, 687, 25, 0, 0),
+(154, 687, 'B111388059', 'In', 0, 0, 0, 0, 0, 687, 25, 0, 0),
+(155, 687, 'C111659015', 'In', 0, 0, 0, 0, 0, 687, 25, 0, 0),
+(156, 687, 'C111659017', 'In', 0, 0, 0, 0, 0, 687, 25, 0, 0),
+(157, 691, 'C111659020', 'In', 0, 0, 0, 0, 0, 691, 25, 0, 0),
+(158, 691, 'C111659021', 'In', 0, 0, 0, 0, 0, 691, 25, 0, 0),
+(159, 691, 'C111659018', 'In', 0, 0, 0, 0, 0, 691, 25, 0, 0),
+(160, 691, 'C111659019', 'In', 0, 0, 0, 0, 0, 691, 25, 0, 0),
+(161, 684, 'B111398064', 'In', 0, 0, 0, 0, 0, 684, 25, 0, 0),
+(162, 684, 'B111398065', 'In', 0, 0, 0, 0, 0, 684, 25, 0, 0),
+(163, 684, 'B111388064', 'In', 0, 0, 0, 0, 0, 684, 25, 0, 0),
+(164, 685, 'B111070053', 'In', 0, 0, 0, 0, 0, 685, 25, 0, 0),
+(165, 685, 'C111152023', 'In', 0, 0, 0, 0, 0, 685, 25, 0, 0),
+(166, 685, 'C111152014', 'In', 0, 0, 0, 0, 0, 685, 25, 0, 0),
+(167, 685, 'C111152015', 'In', 0, 0, 0, 0, 0, 685, 25, 0, 0),
+(168, 685, 'B111070059', 'In', 0, 0, 0, 0, 0, 685, 25, 0, 0),
+(169, 685, 'C111152011', 'In', 0, 0, 0, 0, 0, 685, 25, 0, 0),
+(170, 685, 'C111152020', 'In', 0, 0, 0, 0, 0, 685, 25, 0, 0),
+(171, 685, 'C111152019', 'In', 0, 0, 0, 0, 0, 685, 25, 0, 0),
+(172, 685, 'C111152024', 'In', 0, 0, 0, 0, 0, 685, 25, 0, 0),
+(173, 685, 'C111152022', 'In', 0, 0, 0, 0, 0, 685, 25, 0, 0),
+(174, 685, 'C111152013', 'In', 0, 0, 0, 0, 0, 685, 25, 0, 0),
+(175, 685, 'C111152012', 'In', 0, 0, 0, 0, 0, 685, 25, 0, 0),
+(176, 685, 'A1', 'In', 0, 0, 0, 0, 0, 685, 25, 0, 0),
+(177, 690, 'Y111293038', 'In', 0, 0, 0, 0, 0, 690, 25, 0, 0),
+(178, 690, 'Y111293040', 'In', 0, 0, 0, 0, 0, 690, 25, 0, 0),
+(179, 688, 'B111176003', 'In', 0, 0, 0, 0, 0, 688, 25, 0, 0),
+(180, 689, 'B111398070', 'In', 0, 0, 0, 0, 0, 689, 25, 0, 0),
+(181, 689, 'B111388070', 'In', 0, 0, 0, 0, 0, 689, 25, 0, 0),
+(184, 704, 'B111399018', 'In', 0, 0, 0, 0, 0, 704, 25, 0, 0),
+(185, 705, 'B111399019', 'In', 0, 0, 0, 0, 0, 705, 25, 0, 0),
+(186, 706, 'B111399020', 'In', 0, 0, 0, 0, 0, 706, 25, 0, 0),
+(187, 988, 'B111625002', 'In', 0, 0, 0, 0, 0, 988, 25, 0, 0),
+(188, 738, 'B111272034', 'In', 0, 0, 0, 0, 0, 738, 25, 0, 0),
+(189, 732, 'D111123001', 'In', 44, 0, 0, 0, 0, 0, 25, 0, 0),
+(196, 1096, '041717043', 'In', 46, 0, 0, 0, 0, 0, 25, 0, 0),
+(197, 1097, '041717044', 'In', 46, 0, 0, 0, 0, 0, 25, 0, 0),
+(198, 703, 'D111124003', 'In', 49, 0, 0, 0, 0, 0, 25, 0, 0),
+(199, 703, 'D111124004', 'In', 49, 0, 0, 0, 0, 0, 25, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -5948,7 +5997,7 @@ CREATE TABLE IF NOT EXISTS `ledgers` (
   `company_id` int(11) NOT NULL,
   `ref_no` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1373 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1410 ;
 
 --
 -- Dumping data for table `ledgers`
@@ -6162,8 +6211,6 @@ INSERT INTO `ledgers` (`id`, `transaction_date`, `ledger_account_id`, `debit`, `
 (441, '2017-04-17', 299, '0.00', '7763.43', 18, 'Receipt Voucher', 25, NULL),
 (442, '2017-04-17', 544, '0.43', '0.00', 18, 'Receipt Voucher', 25, NULL),
 (443, '2017-04-17', 145, '7763.00', '0.00', 18, 'Receipt Voucher', 25, NULL),
-(444, '2017-04-21', 133, '25.00', '0.00', 1, 'Payment Voucher', 25, NULL),
-(445, '2017-04-21', 145, '0.00', '25.00', 1, 'Payment Voucher', 25, NULL),
 (448, '2017-04-21', 133, '319.00', '0.00', 3, 'Payment Voucher', 25, NULL),
 (449, '2017-04-21', 145, '0.00', '319.00', 3, 'Payment Voucher', 25, NULL),
 (450, '2017-04-21', 133, '47.91', '0.00', 4, 'Payment Voucher', 25, NULL),
@@ -6588,9 +6635,6 @@ INSERT INTO `ledgers` (`id`, `transaction_date`, `ledger_account_id`, `debit`, `
 (1267, '2017-04-04', 146, '0.00', '323204.00', 70, 'Payment Voucher', 25, NULL),
 (1268, '2017-05-12', 479, '54353.00', '0.00', 71, 'Payment Voucher', 25, NULL),
 (1269, '2017-05-12', 146, '0.00', '54353.00', 71, 'Payment Voucher', 25, NULL),
-(1270, '2017-05-12', 397, '64993.86', '0.00', 65, 'Invoice', 25, NULL),
-(1271, '2017-05-12', 37, '0.00', '56763.20', 65, 'Invoice', 25, NULL),
-(1272, '2017-05-12', 487, '0.00', '8230.66', 65, 'Invoice', 25, NULL),
 (1273, '2017-04-01', 482, '0.00', '5804.00', 0, 'Opening Balance', 25, 'D20161918'),
 (1274, '2017-04-01', 482, '5514.00', '0.00', 0, 'Opening Balance', 25, 'DN13'),
 (1275, '2017-04-11', 482, '0.00', '5514.00', 38, 'Receipt Voucher', 25, NULL),
@@ -6623,13 +6667,13 @@ INSERT INTO `ledgers` (`id`, `transaction_date`, `ledger_account_id`, `debit`, `
 (1306, '2017-04-06', 474, '0.00', '86068.00', 34, 'Invoice Booking', 25, NULL),
 (1307, '2017-04-25', 35, '55751.00', '0.00', 35, 'Invoice Booking', 25, NULL),
 (1308, '2017-04-25', 474, '0.00', '55751.00', 35, 'Invoice Booking', 25, NULL),
-(1309, '2017-04-25', 134, '500.00', '0.00', 76, 'Payment Voucher', 25, NULL);
-INSERT INTO `ledgers` (`id`, `transaction_date`, `ledger_account_id`, `debit`, `credit`, `voucher_id`, `voucher_source`, `company_id`, `ref_no`) VALUES
+(1309, '2017-04-25', 134, '500.00', '0.00', 76, 'Payment Voucher', 25, NULL),
 (1310, '2017-04-25', 133, '28.75', '0.00', 76, 'Payment Voucher', 25, NULL),
 (1311, '2017-04-25', 142, '0.00', '528.75', 76, 'Payment Voucher', 25, NULL),
 (1312, '2017-04-25', 134, '200.00', '0.00', 77, 'Payment Voucher', 25, NULL),
 (1313, '2017-04-25', 133, '28.75', '0.00', 77, 'Payment Voucher', 25, NULL),
-(1314, '2017-04-25', 142, '0.00', '228.75', 77, 'Payment Voucher', 25, NULL),
+(1314, '2017-04-25', 142, '0.00', '228.75', 77, 'Payment Voucher', 25, NULL);
+INSERT INTO `ledgers` (`id`, `transaction_date`, `ledger_account_id`, `debit`, `credit`, `voucher_id`, `voucher_source`, `company_id`, `ref_no`) VALUES
 (1315, '2017-05-13', 134, '200.00', '0.00', 78, 'Payment Voucher', 25, NULL),
 (1316, '2017-05-13', 133, '28.75', '0.00', 78, 'Payment Voucher', 25, NULL),
 (1317, '2017-05-13', 142, '0.00', '228.75', 78, 'Payment Voucher', 25, NULL),
@@ -6687,7 +6731,41 @@ INSERT INTO `ledgers` (`id`, `transaction_date`, `ledger_account_id`, `debit`, `
 (1369, '2017-04-14', 622, '5000.00', '0.00', 1, 'Contra Voucher', 25, NULL),
 (1370, '2017-04-14', 142, '0.00', '5000.00', 1, 'Contra Voucher', 25, NULL),
 (1371, '2017-04-13', 626, '310.20', '0.00', 84, 'Payment Voucher', 27, NULL),
-(1372, '2017-04-13', 352, '0.00', '310.20', 84, 'Payment Voucher', 27, NULL);
+(1372, '2017-04-13', 352, '0.00', '310.20', 84, 'Payment Voucher', 27, NULL),
+(1373, '2017-05-15', 103, '0.01', '0.00', 85, 'Payment Voucher', 25, NULL),
+(1374, '2017-05-15', 146, '0.00', '0.01', 85, 'Payment Voucher', 25, NULL),
+(1375, '2017-05-15', 77, '62106.27', '0.00', 66, 'Invoice', 25, NULL),
+(1376, '2017-05-15', 37, '0.00', '58868.50', 66, 'Invoice', 25, NULL),
+(1377, '2017-05-15', 488, '0.00', '3237.77', 66, 'Invoice', 25, NULL),
+(1378, '2017-05-12', 397, '64993.86', '0.00', 65, 'Invoice', 25, NULL),
+(1379, '2017-05-12', 37, '0.00', '56763.20', 65, 'Invoice', 25, NULL),
+(1380, '2017-05-12', 487, '0.00', '8230.66', 65, 'Invoice', 25, NULL),
+(1381, '2017-05-15', 322, '4600.00', '0.00', 86, 'Payment Voucher', 27, NULL),
+(1382, '2017-05-15', 352, '0.00', '4600.00', 86, 'Payment Voucher', 27, NULL),
+(1383, '2017-05-15', 299, '0.00', '55450.72', 40, 'Receipt Voucher', 25, NULL),
+(1384, '2017-05-15', 544, '0.00', '0.28', 40, 'Receipt Voucher', 25, NULL),
+(1385, '2017-05-15', 145, '55451.00', '0.00', 40, 'Receipt Voucher', 25, NULL),
+(1389, '2017-05-15', 103, '800.00', '0.00', 1, 'Petty Cash Payment Voucher', 25, NULL),
+(1390, '2017-05-15', 106, '110.00', '0.00', 1, 'Petty Cash Payment Voucher', 25, NULL),
+(1391, '2017-05-15', 103, '370.00', '0.00', 1, 'Petty Cash Payment Voucher', 25, NULL),
+(1392, '2017-05-15', 103, '560.00', '0.00', 1, 'Petty Cash Payment Voucher', 25, NULL),
+(1393, '2017-05-15', 106, '800.00', '0.00', 1, 'Petty Cash Payment Voucher', 25, NULL),
+(1394, '2017-05-15', 106, '810.00', '0.00', 1, 'Petty Cash Payment Voucher', 25, NULL),
+(1395, '2017-05-15', 101, '350.00', '0.00', 1, 'Petty Cash Payment Voucher', 25, NULL),
+(1396, '2017-05-15', 101, '350.00', '0.00', 1, 'Petty Cash Payment Voucher', 25, NULL),
+(1397, '2017-05-15', 101, '250.00', '0.00', 1, 'Petty Cash Payment Voucher', 25, NULL),
+(1398, '2017-05-15', 105, '350.00', '0.00', 1, 'Petty Cash Payment Voucher', 25, NULL),
+(1399, '2017-05-15', 105, '225.00', '0.00', 1, 'Petty Cash Payment Voucher', 25, NULL),
+(1400, '2017-05-15', 105, '400.00', '0.00', 1, 'Petty Cash Payment Voucher', 25, NULL),
+(1401, '2017-05-15', 453, '0.00', '5375.00', 1, 'Petty Cash Payment Voucher', 25, NULL),
+(1402, '2017-04-14', 622, '5000.00', '0.00', 1, 'Contra Voucher', 25, NULL),
+(1403, '2017-04-14', 142, '0.00', '5000.00', 1, 'Contra Voucher', 25, NULL),
+(1404, '2017-04-24', 622, '4015.00', '0.00', 2, 'Contra Voucher', 25, NULL),
+(1405, '2017-04-24', 142, '0.00', '4015.00', 2, 'Contra Voucher', 25, NULL),
+(1406, '2017-04-29', 596, '15000.00', '0.00', 87, 'Payment Voucher', 25, NULL),
+(1407, '2017-04-29', 142, '0.00', '15000.00', 87, 'Payment Voucher', 25, NULL),
+(1408, '2017-04-19', 134, '228.75', '0.00', 88, 'Payment Voucher', 25, NULL),
+(1409, '2017-04-19', 142, '0.00', '228.75', 88, 'Payment Voucher', 25, NULL);
 
 -- --------------------------------------------------------
 
@@ -7594,7 +7672,7 @@ CREATE TABLE IF NOT EXISTS `payments` (
   `edited_on` date NOT NULL,
   `cheque_no` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=85 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=89 ;
 
 --
 -- Dumping data for table `payments`
@@ -7684,7 +7762,11 @@ INSERT INTO `payments` (`id`, `voucher_no`, `bank_cash_id`, `created_by`, `creat
 (81, 64, 146, 19, '2017-05-13', 'NEFT/RTGS', 25, '2017-05-13', 0, '0000-00-00', ''),
 (82, 65, 142, 19, '2017-05-15', 'NEFT/RTGS', 25, '2017-04-21', 0, '0000-00-00', ''),
 (83, 66, 142, 16, '2017-05-15', 'NEFT/RTGS', 25, '2017-04-17', 0, '0000-00-00', ''),
-(84, 14, 352, 16, '2017-05-15', 'NEFT/RTGS', 27, '2017-04-13', 0, '0000-00-00', '');
+(84, 14, 352, 16, '2017-05-15', 'NEFT/RTGS', 27, '2017-04-13', 0, '0000-00-00', ''),
+(85, 67, 146, 19, '2017-05-15', 'Cheque', 25, '2017-05-15', 0, '0000-00-00', '000045'),
+(86, 15, 352, 19, '2017-05-15', 'Cheque', 27, '2017-05-15', 0, '0000-00-00', '393517'),
+(87, 68, 142, 19, '2017-05-15', 'NEFT/RTGS', 25, '2017-04-29', 0, '0000-00-00', ''),
+(88, 69, 142, 19, '2017-05-15', 'Cheque', 25, '2017-04-19', 0, '0000-00-00', '393553');
 
 -- --------------------------------------------------------
 
@@ -7700,7 +7782,7 @@ CREATE TABLE IF NOT EXISTS `payment_rows` (
   `cr_dr` varchar(5) NOT NULL,
   `narration` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=162 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=166 ;
 
 --
 -- Dumping data for table `payment_rows`
@@ -7807,7 +7889,11 @@ INSERT INTO `payment_rows` (`id`, `payment_id`, `received_from_id`, `amount`, `c
 (158, 82, 75, '1550000.00000', 'Dr', 'CH.393555 issued to sbbj  Anshul Mogra'),
 (159, 82, 133, '58.00000', 'Dr', 'Ch.393555 Bank Charges '),
 (160, 83, 595, '5000.00000', 'Dr', 'trf to sml '),
-(161, 84, 626, '310.20000', 'Dr', 'Sales tax for March 2017');
+(161, 84, 626, '310.20000', 'Dr', 'Sales tax for March 2017'),
+(162, 85, 103, '0.01000', 'Dr', 'Ch.000045 issued Kotak Banl against Tushaco Pump -Shree Cement'),
+(163, 86, 322, '4600.00000', 'Dr', 'Ch..393517 issued to sbbj against Udaipur Chamber of Commerce & Industry'),
+(164, 87, 596, '15000.00000', 'Dr', 'Transfer Stl-fmsl'),
+(165, 88, 134, '228.75000', 'Dr', 'Ch.393553 issued to sbbj against katpp RRVUN jhalawar');
 
 -- --------------------------------------------------------
 
@@ -7854,7 +7940,14 @@ CREATE TABLE IF NOT EXISTS `petty_cash_vouchers` (
   `edited_on` date NOT NULL,
   `cheque_no` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `petty_cash_vouchers`
+--
+
+INSERT INTO `petty_cash_vouchers` (`id`, `voucher_no`, `bank_cash_id`, `created_by`, `created_on`, `payment_mode`, `company_id`, `transaction_date`, `edited_by`, `edited_on`, `cheque_no`) VALUES
+(1, 1, 453, 16, '2017-05-15', 'Cash', 25, '2017-05-15', 19, '2017-05-15', '');
 
 -- --------------------------------------------------------
 
@@ -7871,7 +7964,25 @@ CREATE TABLE IF NOT EXISTS `petty_cash_voucher_rows` (
   `narration` text NOT NULL,
   `auto_inc` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
+
+--
+-- Dumping data for table `petty_cash_voucher_rows`
+--
+
+INSERT INTO `petty_cash_voucher_rows` (`id`, `petty_cash_voucher_id`, `received_from_id`, `amount`, `cr_dr`, `narration`, `auto_inc`) VALUES
+(3, 1, 103, '800.00000', 'Dr', 'EXP 160 CT spares thru TCI freight', 0),
+(4, 1, 106, '110.00000', 'Dr', 'JK nimbahera mech seal CCR 25 160 pump dt. 28.4.17 ( 50 )\r\nDarling S 630 (Rs. 60)', 1),
+(5, 1, 103, '370.00000', 'Dr', 'Remi Sales 5 HP-2900-1no, dt.7.4.17 (60), \r\nBlue Star S.S.Rod 3nos.dt.21.4.17(240)\r\nRemi sales 7.5HP-2900-2no.dt.7.4.17 (70)', 2),
+(6, 1, 103, '560.00000', 'Dr', 'Antico Pump,Antico Spairs dt.10.4.17', 3),
+(7, 1, 106, '800.00000', 'Dr', 'Shree Cement Bhiwadi RT-10-1no.pumpdt.3.5.17  (200)\r\nShree Raipur Cement -Tushaco Pump 45/42, M.Seal -5nos,dt.23.5.17 (600)\r\n', 4),
+(8, 1, 106, '810.00000', 'Dr', 'Shree Cement Kushkhera Filter Element 4Nosdt.4.4.17 (250)\r\nTushaco Pump Trf Seal kit 1700 2no. dt.24.4.17 (560)', 5),
+(9, 1, 101, '350.00000', 'Dr', 'Darling Pump S-630 dt.24.4.17 Sawriya-W.shop (150)\r\nSPX Flow CB-80-200-2Nos,CN125-400-1no, dt.17.4.17 Singal trans.-W.Shop (200)', 6),
+(10, 1, 101, '350.00000', 'Dr', 'Blue Star S.S.Rod-3nos,dt.22.4.17 \r\nEagle travels - Work shop (200)\r\nSPX flow CCR25-160-2no.25-125-1no,Spair 32-160-2no dt.10.4.17 singal trans - W.shop (150)', 7),
+(11, 1, 101, '250.00000', 'Dr', 'Antico Pump/Spair,\r\nmechneers india 3HP IES Motor-1no, vijay laxmi trans-tci-W.shop dt.10.4.17 (200)\r\nRemi sales Remi Motor 5HP-1no,7.5HP-2No,VRL-w.shop dt.7.4.17 (50)', 8),
+(12, 1, 105, '350.00000', 'Dr', 'Sodexo Chemical KGEN 11.3-2no,11.4-2no,Bhati trans,Antico pump/spair TCI ,Spx power tools-Multani sona dt24.4.17 (200)\r\nAmbuja Cement N2K 32-1250Pump-1no, "A" Square-W-shop dt.2.5.17 (150)\r\n', 9),
+(13, 1, 105, '225.00000', 'Dr', 'HZL Chittod CCR 50-200/15HP-2900 -1no,dt.12.4.17 W.shop-Aashtha logi (100)\r\nShree raipur cement T3ST 45/42 pump dt.11.4.17 Aashtha -ARC trans (125)', 10),
+(14, 1, 105, '400.00000', 'Dr', 'Shree Cement RAS RT-40/1HP-1500-2nos W.shop-Aashtha dt.5.4.17 (50)\r\nSTPP 4 DDR spair dt.4.4.17 W.shop-Jaipur golden (350)', 11);
 
 -- --------------------------------------------------------
 
@@ -8084,7 +8195,7 @@ INSERT INTO `purchase_order_rows` (`id`, `purchase_order_id`, `item_id`, `descri
 (112, 33, 964, 'Mechanical Seal Burgmann MG12 G6 O/U (Sic /Sic 316 Viton )\r\nConversion Kit\r\nDis. of 35% on pump and 15% on Ms will be settled through credit note ', 2, '38519.00', '77038.00', 0, 0, 'Direct'),
 (113, 34, 970, 'CCR 32 200 R6 150 lbs M2 L3 (Imp Dia 188mm)\r\nBurgmann M7N Sic / Car / SS 316 / TTV \r\nConvertion Kit Plan 11,62\r\nSr.No. C411031011\r\n\r\nDiscount of 35 % on pumps and MS 15 % will be settled through credit note', 2, '49392.00', '98784.00', 0, 0, 'Direct'),
 (115, 36, 702, 'Full Dia Impeller ', 2, '12475.00', '24950.00', 0, 0, 'Direct'),
-(116, 36, 703, 'Full Dia Impeller ', 2, '12763.00', '25526.00', 0, 0, 'Direct'),
+(116, 36, 703, 'Full Dia Impeller ', 2, '12763.00', '25526.00', 2, 0, 'Direct'),
 (117, 36, 729, 'Full Dia Impeller ', 1, '23800.00', '23800.00', 0, 0, 'Direct'),
 (122, 37, 962, 'CCR 65C 160 R6 150 LBS M2 L3  ( Imp dia 159 mm )\r\nBurgmann M7N Sic / Car / SS 316 / TTV \r\nConversion Kit with Plan 11, 62\r\nSr. No. C411031007', 1, '51621.00', '51621.00', 0, 0, 'Direct'),
 (123, 38, 731, '( Impeller Dia 166mm )', 2, '37002.00', '74004.00', 2, 0, 'Direct'),
@@ -8102,10 +8213,10 @@ INSERT INTO `purchase_order_rows` (`id`, `purchase_order_id`, `item_id`, `descri
 (148, 45, 692, 'KGEN 12 6 G1 Pump ', 5, '11692.00', '58460.00', 0, 0, 'Direct'),
 (149, 45, 683, 'KGEN 12b 5 G1 Pump', 5, '9943.00', '49715.00', 0, 0, 'Direct'),
 (150, 45, 685, 'KGEN 16 6 G1 Pump', 5, '14590.00', '72950.00', 0, 0, 'Direct'),
-(225, 51, 1096, 'Capacity 0 to 65 LPH, Pressure : 55kg/cm2\r\nScope of supply : Pump with ,Base frame ,coupling ,\r\ncoupling guard', 1, '15000.00', '15000.00', 0, 20, 'Direct'),
-(226, 51, 1097, 'Capacity 0 to 65 LPH, Pressure : 5kg/cm2\r\nScope of supply : Pump with ,Base frame ,coupling ,\r\ncoupling guard', 1, '14000.00', '14000.00', 0, 20, 'Direct'),
-(227, 51, 1099, 'Positive Spares Model : PL 2017', 1, '350.00', '350.00', 0, 20, 'Direct'),
-(228, 51, 1100, 'Positive Spares Model : PL 1011', 1, '350.00', '350.00', 0, 20, 'Direct'),
+(225, 51, 1096, 'Capacity 0 to 65 LPH, Pressure : 55kg/cm2\r\nScope of supply : Pump with ,Base frame ,coupling ,\r\ncoupling guard', 1, '15000.00', '15000.00', 1, 20, 'Direct'),
+(226, 51, 1097, 'Capacity 0 to 65 LPH, Pressure : 5kg/cm2\r\nScope of supply : Pump with ,Base frame ,coupling ,\r\ncoupling guard', 1, '14000.00', '14000.00', 1, 20, 'Direct'),
+(227, 51, 1099, 'Positive Spares Model : PL 2017', 1, '350.00', '350.00', 1, 20, 'Direct'),
+(228, 51, 1100, 'Positive Spares Model : PL 1011', 1, '350.00', '350.00', 1, 20, 'Direct'),
 (244, 16, 634, 'Complete Major Seal Kit\r\nFor Pump Model: TRF 1700\r\n\r\nInterchangeable with existing pump Sr. No. 7036667\r\n\r\nLast supply reference : SO No. 1565519 & 1614615', 1, '139950.00', '139950.00', 1, 0, 'Direct'),
 (245, 15, 634, 'Complete Major Seal Kit\r\nFor Pump Model: TRF 1700\r\n\r\nInterchangeable with existing pump Sr. No. 7036667\r\n\r\nLast supply reference : SO No. 1565519 & 1614615', 1, '139950.00', '139950.00', 1, 0, 'Direct'),
 (246, 23, 627, 'Model : R 50 SL (H) (Without Relief Valve )\r\nFlow : 255 LPM\r\nPressure : 3kg./cm2\r\nSealing : Gland Packing\r\nSuc.* Dis. : 2” X 2 “\r\nLiquid : Molasses\r\nPower : 3 HP / 1000 RPM\r\nEarlier Ref. : Ok.no.117004\r\n\r\nLast SO Number : 1591632/3016\r\nIdentical to sr. no. 117004/7725', 1, '9500.00', '9500.00', 1, 0, 'Direct'),
@@ -8147,14 +8258,14 @@ INSERT INTO `purchase_order_rows` (`id`, `purchase_order_id`, `item_id`, `descri
 (305, 63, 746, 'KGEN 11 3 G1 ', 5, '595.00', '2975.00', 5, 0, 'Direct'),
 (306, 63, 782, 'KGEN 11 4 G1 ', 2, '1460.00', '2920.00', 2, 0, 'Direct'),
 (307, 63, 1207, 'Impeller Cap Nut CCR 50 200 R6A S2 L6', 2, '455.00', '910.00', 2, 0, 'Direct'),
-(308, 65, 795, 'KGEN 12b 5 G1', 1, '3906.00', '3906.00', 0, 0, 'Direct'),
-(309, 65, 1179, 'CB 32 250 G1', 1, '2382.00', '2382.00', 0, 0, 'Direct'),
-(310, 65, 1180, 'CCR 40C 160 R1 M2 L3 ', 1, '927.00', '927.00', 0, 0, 'Direct'),
-(311, 65, 820, 'CCR 40C 160 R1 M2 L3 ', 1, '3004.00', '3004.00', 0, 0, 'Direct'),
-(312, 65, 1181, 'CN 32 160 G1 S2 L3 ', 1, '1941.00', '1941.00', 0, 0, 'Direct'),
-(313, 65, 765, 'KGEN 12 5 to 16 6 G1 ', 4, '208.00', '832.00', 0, 0, 'Direct'),
-(314, 65, 773, 'KGEN 12b 5 G1 ', 2, '411.00', '822.00', 0, 0, 'Direct'),
-(315, 65, 771, 'KGEN 11 4 G1', 3, '358.00', '1074.00', 0, 0, 'Direct'),
+(308, 65, 795, 'KGEN 12b 5 G1', 1, '3906.00', '3906.00', 1, 0, 'Direct'),
+(309, 65, 1179, 'CB 32 250 G1', 1, '2382.00', '2382.00', 1, 0, 'Direct'),
+(310, 65, 1180, 'CCR 40C 160 R1 M2 L3 ', 1, '927.00', '927.00', 1, 0, 'Direct'),
+(311, 65, 820, 'CCR 40C 160 R1 M2 L3 ', 1, '3004.00', '3004.00', 1, 0, 'Direct'),
+(312, 65, 1181, 'CN 32 160 G1 S2 L3 ', 1, '1941.00', '1941.00', 1, 0, 'Direct'),
+(313, 65, 765, 'KGEN 12 5 to 16 6 G1 ', 4, '208.00', '832.00', 4, 0, 'Direct'),
+(314, 65, 773, 'KGEN 12b 5 G1 ', 2, '411.00', '822.00', 2, 0, 'Direct'),
+(315, 65, 771, 'KGEN 11 4 G1', 3, '358.00', '1074.00', 3, 0, 'Direct'),
 (316, 66, 1182, 'CCR 250 250 R4 CD3 L4', 1, '16008.00', '16008.00', 0, 0, 'Direct'),
 (317, 66, 1183, 'CN 100 160 G1 S2 L1', 1, '3404.00', '3404.00', 0, 0, 'Direct'),
 (318, 66, 1184, 'CI Pump Housing FRE 50 125 R6', 2, '1312.00', '2624.00', 0, 0, 'Direct'),
@@ -8179,7 +8290,7 @@ INSERT INTO `purchase_order_rows` (`id`, `purchase_order_id`, `item_id`, `descri
 (351, 24, 621, 'Model : T3 SFP 40 / 38 \r\nSr. No : 964321 / 0125\r\nLast supply SO. No. 1467288', 1, '9000.00', '9000.00', 0, 0, 'Direct'),
 (352, 26, 1156, 'Speed : 1450RPM\r\nLiquid : Glucose\r\nCapacity : 8 to 10 m3/hr\r\nPressure : 4kg /cm2\r\nMotor : 7.5KW/ 1450RPM\r\nMoc : SS 316\r\nSealing : Mechanical Seal\r\nBase Plate , Coupling ,Coupling Guard ,Foundation\r\nBolts and Non FLP Motor .\r\nNote : Material to be booked Freight Paid basis.', 1, '168000.00', '168000.00', 0, 0, 'Direct'),
 (353, 31, 740, 'MCH 16 * 4 stage P Design \r\n35% discount to be settled through credit note ', 1, '34282.00', '34282.00', 0, 0, 'Direct'),
-(354, 35, 732, '(Impeller Dia 154mm)\r\nDiscount 35% Will be settled through credit note ', 1, '38050.00', '38050.00', 0, 0, 'Direct'),
+(354, 35, 732, '(Impeller Dia 154mm)\r\nDiscount 35% Will be settled through credit note ', 1, '38050.00', '38050.00', 1, 0, 'Direct'),
 (355, 42, 1170, '-', 2, '32491.00', '64982.00', 2, 0, 'Direct'),
 (356, 43, 568, 'Frame Size : 90S\r\nMounting : Foot Mounted ', 1, '12830.00', '12830.00', 1, 0, 'Direct'),
 (357, 47, 649, 'Model : NSRP 50 TBG V1J (135S Impeller Dia)\r\nLiquid : 33% HCL \r\nHead : 10 mtr\r\nFlow : 7-8m3/hr\r\nPower : 2HP / 2900RPM (Remi  Make )\r\nSuc.*Dis. : 50*40MM\r\nMOC : PP/Flooded\r\nImpeller Type : Semi Open\r\nPump with Priming Chamber & Base Frame, Coupling , Coupling Guard , Fasteners .', 1, '18500.00', '18500.00', 0, 0, 'Direct'),
@@ -8193,9 +8304,9 @@ INSERT INTO `purchase_order_rows` (`id`, `purchase_order_id`, `item_id`, `descri
 (365, 75, 612, '<p>Complete Mechanical Seal Type Size: 30mm</p><p>Face: Carbon/Silicon/Viton for John Crane</p><p>2100 Type 2 Model : T3ST 45 / 42&nbsp;</p><p>NOTE : Kindly supply as per last supply vide Invoice No.<br></p><p>172 dated 17.6.2017</p>', 4, '2437.00', '9748.00', 4, 80, 'Direct'),
 (366, 75, 621, '<p>Complete Mechanical Seal&nbsp;Type &nbsp;LS -201 Size: 20mm&nbsp;Face: TC/TC&nbsp;</p><p>Model : T3 SFP 20 /56&nbsp;</p>', 1, '1950.00', '1950.00', 1, 80, 'Direct'),
 (374, 68, 605, '<p>Flow  : 3 m3/hr &nbsp; &nbsp;Head : 25 Mtrs &nbsp; &nbsp; &nbsp; &nbsp;Sealing : Mechanical Seal </p><p>\r\nMOC :  CI &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Liquid : FO &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Motor Rating : 3 HP 960 RPM</p><p>  \r\n</p>', 1, '20580.00', '20580.00', 0, 260, 'Direct'),
-(388, 82, 1232, '<p>Seal Cover CCR 40 160&nbsp;</p>', 1, '2350.00', '2350.00', 0, 50, 'Direct'),
-(389, 82, 953, '<p>Shaft Sleeve CCR 40 160&nbsp;</p>', 1, '975.00', '975.00', 0, 50, 'Direct'),
-(390, 82, 1221, '<p>Complete Mechanical Seal Type LS-102-N Size: 35mm</p><p>Face: Silicon/SSilicon with S.S. Gland</p><p>Plate &amp; S.S. Sleeve for Johnson make CCR-40/160 Pump </p><p>Liquid: Clear Water,</p>', 1, '5962.00', '5962.00', 0, 30, 'Direct'),
+(388, 82, 1232, '<p>Seal Cover CCR 40 160&nbsp;</p>', 1, '2350.00', '2350.00', 1, 50, 'Direct'),
+(389, 82, 953, '<p>Shaft Sleeve CCR 40 160&nbsp;</p>', 1, '975.00', '975.00', 1, 50, 'Direct'),
+(390, 82, 1221, '<p>Complete Mechanical Seal Type LS-102-N Size: 35mm</p><p>Face: Silicon/SSilicon with S.S. Gland</p><p>Plate &amp; S.S. Sleeve for Johnson make CCR-40/160 Pump </p><p>Liquid: Clear Water,</p>', 1, '5962.00', '5962.00', 1, 30, 'Direct'),
 (391, 81, 916, '<p>Heat Exchanger&nbsp;</p><p>Gasketed -U-S-GCD-016-58&nbsp;</p><p>Sr.No. GCD-16-L-5-PI-58/121408-1/09</p>', 1, '62000.00', '62000.00', 0, 200, 'Direct'),
 (392, 76, 1228, '<p>Power &nbsp; &nbsp; &nbsp;: 5 HP / 2900 RPM</p><p>Head &nbsp; &nbsp; &nbsp; &nbsp; : &nbsp;41 mtrs Max&nbsp;</p><p>Flow &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;: &nbsp;12m3/hr @ 24mtrs Head </p><p>Dis. Size &nbsp;: 50mm </p><p>Liquid &nbsp; &nbsp; &nbsp; : &nbsp;Water &nbsp;</p><p>Pump with 5 meters cable &nbsp;<br></p><p><br></p>', 4, '20181.00', '80724.00', 0, 200, 'Direct'),
 (393, 78, 1227, '<p>H.P / K.W &nbsp; : &nbsp;7.5 / 5.5&nbsp;</p><p>Flow &nbsp; : 1000LPM</p><p>Head &nbsp;: &nbsp; 12 mtrs&nbsp;</p><p>Head Range : &nbsp;12 to 25 mtrs&nbsp;</p><p>Delivery Outlet : &nbsp;100</p><p>RPM : 2820</p><p>Material of Construction &nbsp;: Complete Pump in SS 316&nbsp;</p><p>Impeller &nbsp;: &nbsp;SS 316&nbsp;</p><p>Casing : SS 316&nbsp;</p><p>Size &nbsp;: &nbsp;3 Core X 2.5 Sq.mm for Power &amp; 3 Core X 0.75 Sq. mm for Control&nbsp;</p><p><br></p>', 1, '147590.00', '147590.00', 0, 150, 'Direct'),
@@ -8348,7 +8459,7 @@ CREATE TABLE IF NOT EXISTS `quotations` (
   `quotation_id` int(10) NOT NULL,
   `pdf_font_size` varchar(10) NOT NULL DEFAULT '16px',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=119 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=120 ;
 
 --
 -- Dumping data for table `quotations`
@@ -8476,7 +8587,8 @@ INSERT INTO `quotations` (`id`, `customer_id`, `customer_address`, `employee_id`
 (116, 93, 'C-17,Panchwati Colony\r\nNear Bhaskar Circle,\r\nRatanada , Jodhpur -342001', 11, 26, '2017-05-24', 'Mr. Mayank Agrawal', '9759279242', 'Email enquiry dated: 13/05/2017', 'BE 3384 offer for JOHNSON make Non Clog Self Priming Pump Set', 'With reference to above enquiry we are pleased to submit our quote as follows :-', '', 'Price Basis : Ex-Our  Works Udaipur .<br>Packing &amp; Forwarding : Extra @  2%<br>Sales Tax : Vat Extra @ 5.5%   or as applicable on date of dispatch.<br>Delivery : Ready Stock Else Within 2 to 3 weeks from date of receipt of Techno-Commercially clear PO.<br>Freight &amp; Insurance : In Buyers account. In case of transit damage you will have to Claim from your Insurance Company.<br>Payment : Advance with PO<br>Warranty : For Pump &amp; Motors\r\nStandard as provided by manufacturer to be free from defects in both material &amp; workmanship for a period of 12 months from date of installation or 18 months from date of supply whichever is earlier. Provided the Motor/Pump is installed as per instructions. We shall not be liable for any loss and or consequential damages due to breakdown of the equipment either for repair purpose or otherwise. Winding failures &amp; Mechanical Seal are not covered under warranty.&nbsp;<br>Validity : 30 Days.<br>', '29850.00', 'Pending', 27, 'FMSL', 14, 'BE-3384', '17-18', 11, 0, '2017-05-13', '0000-00-00', '', '0000-00-00', 0, 116, '16px'),
 (117, 11, 'Unit- Rabriyawas\r\nTehsil-jaitaran \r\nPali (Raj)\r\n\r\n', 11, 5, '2017-05-24', 'Mr. Radhey Shyam Mundr', '7573040626', 'Enquiry No.  2701427664  dated 14.05.2017', 'BE 3274  offer for ANTICO make Centrifugal Pump', 'With reference to above enquiry we are pleased to submit our quote as follows :-', 'You May placed repeat order as per last PO No.: 2800615340/NE05/NIRMAL KUMAR dated : 12.10.2016', '<ol><li>Price Basis : Ex-Our  Works Udaipur .</li><li>Packing &amp; Forwarding : Inclusive</li><li>Sales Tax : Vat Extra @ 14.5%   or as applicable on date of dispatch.</li><li>Excise Duty : Extra if applicable for which we shall provide you EDGP to Claim Cenvat.</li><li>Delivery : Within 4 to 6 weeks from date of receipt of Techno-Commercially clear PO.</li><li>Freight &amp; Insurance : In Buyers account. In case of transit damage you will have to Claim from your Insurance Company.</li><li>Payment : Strictly within 30 days of receipt of material else interest will be charged @ 18 % p.a. for delayed period.</li><li>Discount : &nbsp;5.44 &nbsp;% on quoted price.</li><li>Validity : 30 Days.</li></ol>', '63450.00', 'Pending', 25, 'STL', 96, 'BE-3274', '17-18', 11, 0, '2017-05-15', '0000-00-00', '', '0000-00-00', 0, 117, '14px');
 INSERT INTO `quotations` (`id`, `customer_id`, `customer_address`, `employee_id`, `item_group_id`, `finalisation_date`, `customer_for_attention`, `customer_contact_no`, `enquiry_no`, `subject`, `text`, `additional_note`, `terms_conditions`, `total`, `status`, `company_id`, `qt1`, `qt2`, `qt3`, `qt4`, `created_by`, `edited_by`, `created_on`, `edited_on`, `reason`, `closing_date`, `revision`, `quotation_id`, `pdf_font_size`) VALUES
-(118, 40, 'Pali-Marwar-306401\r\nRajastahn', 11, 16, '2017-05-25', 'Mr. Tapasvi Vaidya', '9001099411', 'Inquiry 16723', 'Offer for JOHNSON Pumps Spare', ' We are thank you for your enquiry for Spares and we being authorized dealer of JOHNSON make Pumps are pleased to submit our offer as under:\r\n', 'Price are same for Item No 1  as per previous supply against Purchase order for 4600010798 Dt. 02.02.16.\r\n\r\n', '<ol><li>Price Basis : F.O.R . Transporter Godown Pali.</li><li>Packing &amp; Forwarding : Inclusive</li><li>Sales Tax : Vat Extra @ 5.5% or as applicable on date of dispatch.</li><li>Delivery : Within 6 to 8 weeks from date of receipt of Techno-Commercially clear PO.</li><li>Freight &amp; Insurance : In Buyers account. In case of transit damage you will have to Claim from your Insurance Company.</li><li>Payment : Strictly within 30 days of receipt of material else interest will be charged @ 18 % p.a. for delayed period.</li><li>Warranty : &nbsp;For Spare\r\nOnly interchange ability with original equipment is confirmed and any manufacturing defect is covered.</li><li>Discount :  @7.5 % on quoted price.</li><li>Validity : 30 Days.</li></ol>', '15000.00', 'Pending', 25, 'STL', 97, 'BE-3189', '17-18', 4, 0, '2017-05-15', '0000-00-00', '', '0000-00-00', 0, 118, '16px');
+(118, 40, 'Pali-Marwar-306401\r\nRajastahn', 11, 16, '2017-05-25', 'Mr. Tapasvi Vaidya', '9001099411', 'Inquiry 16723', 'Offer for JOHNSON Pumps Spare', ' We are thank you for your enquiry for Spares and we being authorized dealer of JOHNSON make Pumps are pleased to submit our offer as under:\r\n', 'Price are same for Item No 1  as per previous supply against Purchase order for 4600010798 Dt. 02.02.16.\r\n\r\n', '<ol><li>Price Basis : F.O.R . Transporter Godown Pali.</li><li>Packing &amp; Forwarding : Inclusive</li><li>Sales Tax : Vat Extra @ 5.5% or as applicable on date of dispatch.</li><li>Delivery : Within 6 to 8 weeks from date of receipt of Techno-Commercially clear PO.</li><li>Freight &amp; Insurance : In Buyers account. In case of transit damage you will have to Claim from your Insurance Company.</li><li>Payment : Strictly within 30 days of receipt of material else interest will be charged @ 18 % p.a. for delayed period.</li><li>Warranty : &nbsp;For Spare\r\nOnly interchange ability with original equipment is confirmed and any manufacturing defect is covered.</li><li>Discount :  @7.5 % on quoted price.</li><li>Validity : 30 Days.</li></ol>', '15000.00', 'Pending', 25, 'STL', 97, 'BE-3189', '17-18', 4, 0, '2017-05-15', '0000-00-00', '', '0000-00-00', 0, 118, '15px'),
+(119, 65, 'Plot# SP1 to & B5 to 8 \r\nAgro Park, M.I.A. (Extention )\r\nAlwar-301030 (Raj.)', 15, 16, '2017-05-19', 'Mr. Jai Gupta', '8266921599', 'As per your verbal enquiry', 'Quote for Johnson Spares', 'With reference to your verbal enquiry we are pleased to submit our quote as follows :-', '', '<ol><li>Price Basis : Ex-Our  Works Udaipur .</li><li>Packing &amp; Forwarding : Extra @  2%</li><li>Sales Tax : Vat Extra @ 5.5% &nbsp;as applicable on date of dispatch.</li><li>Excise Duty : Extra if applicable for which we shall provide you EDGP to Claim Cenvat.</li><li>Delivery : Within 4 to 5 weeks from date of receipt of Techno-Commercially clear PO.</li><li>Freight &amp; Insurance : In Buyers account. In case of transit damage you will have to Claim from your Insurance Company.</li><li>Payment : Strictly within 30 days of receipt of material else interest will be charged @ 18 % p.a. for delayed period.</li><li>Warranty : For Spare\r\nOnly interchange ability with original equipment is confirmed and any manufacturing defect is covered.</li><li>Validity : 30 Days.</li></ol>', '9100.00', 'Pending', 25, 'STL', 98, 'BE-2772', '17-18', 12, 0, '2017-05-15', '0000-00-00', '', '0000-00-00', 0, 119, '14px');
 
 -- --------------------------------------------------------
 
@@ -8520,7 +8632,7 @@ CREATE TABLE IF NOT EXISTS `quotation_rows` (
   `amount` decimal(15,2) NOT NULL,
   `height` int(10) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=445 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=447 ;
 
 --
 -- Dumping data for table `quotation_rows`
@@ -8724,7 +8836,8 @@ INSERT INTO `quotation_rows` (`id`, `quotation_id`, `item_id`, `description`, `q
 (440, 116, 802, '<p>JOHNSON make Non Clog Self Priming Pump Set</p><p>Pump Model : KGEN 12 - 6 G1</p><p>Head : 15 - 19 Meters</p><p>Flow : &nbsp;30 &nbsp;- 12 M3/Hr</p><p>Liquid : Waste Water&nbsp;</p><p>Sealing : Mechanical Seal</p><p>SucxDis &nbsp;Size : 65 x 65 MM</p><p>Power : 5 HP / 2900 RPM</p><p>Particle Size Handling : 19 MM</p><p>MOC : Cast Iron Body &amp; Impeller&nbsp;</p><p>Impeller : Half Open</p><p><span style="font-weight: bold; background-color: transparent;">Price for Pump with BBL make STD. &nbsp;Foot Mounted Motor,</span><br></p><p><span style="font-weight: bold;">MS Base Frame, Coupling, Coupling Guard Fasteners&nbsp;</span></p><p><span style="font-weight: bold;">(Complete Motorised Unit)&nbsp;</span></p>', 1, '29850.00', '29850.00', 0),
 (442, 117, 1353, '<p><span style="font-weight: bold;">Item Code :&nbsp;</span><span style="font-weight: bold; background-color: transparent;">&nbsp;</span><span style="font-weight: bold; background-color: transparent;">308000263959</span></p><p><span style="font-weight: bold; background-color: transparent;">Pump Model : NZK 50*32*125&nbsp;</span></p><p><span style="font-weight: bold; background-color: transparent;">Liquid : 98% H2SO4&nbsp;</span></p><p><span style="font-weight: bold;">Head : 24 Meters</span></p><p><span style="font-weight: bold;">Flow :8.25 M3/hr</span></p><p><span style="font-weight: bold;">Recd. Motor : 7.5 HP/2900 RPM</span></p>', 1, '63450.00', '63450.00', 0),
 (443, 118, 1378, '<p>Split Gland CI PN 1140 for Pump CN 65 160 G1 S2 L3</p>', 15, '650.00', '9750.00', 0),
-(444, 118, 1379, '<p>Bearing Housing PN 2100 for Pump CN 65 160 G1 S2 L3</p>', 1, '5250.00', '5250.00', 0);
+(444, 118, 1379, '<p>Bearing Housing PN 2100 for Pump CN 65 160 G1 S2 L3</p>', 1, '5250.00', '5250.00', 0),
+(446, 119, 796, '<p><span style="font-weight: bold; text-decoration-line: underline;">Spare for "JOHNSON" Pump</span></p><p><span style="font-weight: bold;">Model : KGEN 12 6</span></p><p>Part No. : 0100</p><p>Name of Spare : CI Pump Housing</p>', 1, '9100.00', '9100.00', 0);
 
 -- --------------------------------------------------------
 
@@ -8746,7 +8859,7 @@ CREATE TABLE IF NOT EXISTS `receipts` (
   `cheque_no` varchar(100) NOT NULL,
   `narration` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=40 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=41 ;
 
 --
 -- Dumping data for table `receipts`
@@ -8791,7 +8904,8 @@ INSERT INTO `receipts` (`id`, `voucher_no`, `bank_cash_id`, `created_by`, `creat
 (36, 8, 352, 19, '2017-05-11', 'NEFT/RTGS', 27, '2017-04-27', 0, '0000-00-00', '', 'Nefr Receiveed'),
 (37, 9, 352, 19, '2017-05-11', 'NEFT/RTGS', 27, '2017-04-05', 0, '0000-00-00', '', 'Neft Reveived'),
 (38, 27, 142, 16, '2017-05-12', 'Cheque', 25, '2017-04-11', 0, '0000-00-00', '042322', 'Chq recd for sales commission amount'),
-(39, 28, 145, 16, '2017-05-12', 'NEFT/RTGS', 25, '2017-05-12', 0, '0000-00-00', '', '');
+(39, 28, 145, 16, '2017-05-12', 'NEFT/RTGS', 25, '2017-05-12', 0, '0000-00-00', '', ''),
+(40, 29, 145, 16, '2017-05-15', 'NEFT/RTGS', 25, '2017-05-15', 0, '0000-00-00', '', '');
 
 -- --------------------------------------------------------
 
@@ -8806,7 +8920,7 @@ CREATE TABLE IF NOT EXISTS `receipt_rows` (
   `amount` decimal(20,5) NOT NULL,
   `cr_dr` varchar(5) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=65 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=67 ;
 
 --
 -- Dumping data for table `receipt_rows`
@@ -8868,7 +8982,9 @@ INSERT INTO `receipt_rows` (`id`, `receipt_id`, `received_from_id`, `amount`, `c
 (61, 37, 545, '50832.31000', 'Cr'),
 (62, 38, 482, '5514.00000', 'Cr'),
 (63, 39, 63, '33420.70000', 'Cr'),
-(64, 39, 544, '0.30000', 'Cr');
+(64, 39, 544, '0.30000', 'Cr'),
+(65, 40, 299, '55450.72000', 'Cr'),
+(66, 40, 544, '0.28000', 'Cr');
 
 -- --------------------------------------------------------
 
@@ -9061,8 +9177,8 @@ INSERT INTO `reference_balances` (`id`, `ledger_account_id`, `reference_no`, `cr
 (151, 476, '0101602632', '20196.00', '20196.00', 0),
 (152, 396, 'i006', '0.00', '12640.80', 0),
 (153, 63, 'i007', '33420.70', '33420.70', 0),
-(154, 299, 'i008', '0.00', '1411.17', 0),
-(155, 299, 'i009', '0.00', '54039.55', 0),
+(154, 299, 'i008', '1411.17', '1411.17', 0),
+(155, 299, 'i009', '54039.55', '54039.55', 0),
 (156, 77, 'i010', '0.00', '59831.42', 0),
 (157, 79, 'i011', '30349.71', '30349.71', 0),
 (159, 23, '0013', '0.00', '103425.87', 0),
@@ -9215,7 +9331,7 @@ CREATE TABLE IF NOT EXISTS `reference_details` (
   `nppayment_id` int(11) NOT NULL,
   `contra_voucher_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=368 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=370 ;
 
 --
 -- Dumping data for table `reference_details`
@@ -9535,7 +9651,9 @@ INSERT INTO `reference_details` (`id`, `ledger_account_id`, `receipt_id`, `payme
 (364, 477, 0, 81, 0, '123', '0.00', '29520.00', 'Advance Reference', 0, 0, 0, 0, 0, 0, 0, 0, 0),
 (365, 481, 0, 0, 0, '67', '16524.00', '0.00', 'New Reference', 37, 0, 0, 0, 0, 0, 0, 0, 0),
 (366, 476, 0, 0, 0, '0101700125', '100245.60', '0.00', 'New Reference', 39, 0, 0, 0, 0, 0, 0, 0, 0),
-(367, 474, 0, 0, 0, '100303', '51339.00', '0.00', 'New Reference', 41, 0, 0, 0, 0, 0, 0, 0, 0);
+(367, 474, 0, 0, 0, '100303', '51339.00', '0.00', 'New Reference', 41, 0, 0, 0, 0, 0, 0, 0, 0),
+(368, 299, 40, 0, 0, 'i008', '1411.17', '0.00', 'Against Reference', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(369, 299, 40, 0, 0, 'i009', '54039.55', '0.00', 'Against Reference', 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -9599,8 +9717,8 @@ INSERT INTO `sales_orders` (`id`, `customer_id`, `employee_id`, `customer_addres
 (4, 31, 11, '( A Unit of Shree Cement Ltd )\r\nJind Road\r\nKhukhrana,Assan Kalan\r\nPanipat Haryana-132103', 1, '20.00', '13790.00', '', '0.00', '55160.00', 0, '0.00', '0.00', '55160.00', 'Document Delivery Address:\r\nShree Cement Ltd.,\r\nBangur Nagar, P.O. No.: 33\r\nBeawer - 305901\r\n\r\nPayment Terms : 30 days of Receipt of PO', 25, 'New', 0, 1, '2017-04-20', 'Paid Basis Panipat Transporter Godown Dispatch From Indore Darling Pumps', 6, '422190', '2017-03-22', 'Mr Vivek Saxena', '9214337462', 'saxenav@shreecementltd.com', '( A Unit of Shree Cement Ltd )\r\nJind Road\r\nKhukhrana,Assan Kalan\r\nPanipat Haryana-132103', 'No', 'No', 'STL', 3, 'BE-3240', '16-17', 11, 8, '2017-03-28', '2017-04-17', '2017-04-17 10:47:02AM', '2017-03-28 12:35:55PM', 'Pending'),
 (5, 9, 15, 'P.O. Adityanagar - 326 520\r\nMORAK, Distt. Kota (Rajasthan)', 0, '0.00', '2200.00', '', '0.00', '42500.00', 1, '2.00', '850.00', '43350.00', 'Direct for payment within 30 days. ', 25, 'New', 0, 15, '2017-04-06', 'Freight "TO-PAY" basis upto kota', 6, 'VPG/1100003705', '2017-02-20', 'Vipesh Gupta', '9351468146', 'vipesh.gupta@mangalamcement.com', '93,Dashera Schema, Dadabari\r\nKOTA-324009 (Raj.)', 'No', 'No', 'STL', 4, 'BE-3360', '16-17', 8, 8, '2017-03-28', '2017-04-04', '2017-04-04 02:31:13PM', '2017-03-28 12:55:30PM', 'Pending'),
 (6, 22, 11, 'Unit-Birla White\r\nRajashree Nagar, Kharia Khangar\r\nVillage :-Kharia Khangar\r\nDist. Jodhpur 342606', 1, '10.00', '2600.00', '', '0.00', '23400.00', 0, '0.00', '0.00', '23400.00', 'Document delivery Address\r\nUltratech Cement Ltd.,\r\n(Unit - Birla White )\r\nD-7, Shastri Nagar,\r\nJodhpur - 342003\r\n\r\nPayment Terms: 30 days of Receipt of Material', 25, 'New', 0, 2, '2017-05-16', 'To Pay Basis', 6, 'BW/BWJ/6202007086', '2017-03-04', 'Mr. Neeraj Gautam', '2920264040', 'neeraj.gautam@adityabirla.com', 'Unit-Birla White\r\nRajashree Nagar, Kharia Khangar\r\nVillage :-Kharia Khangar\r\nDist. Jodhpur 342606\r\n', 'No', 'No', 'STL', 5, 'BE-2827', '16-17', 11, 8, '2017-03-28', '2017-05-06', '2017-05-06 01:16:00PM', '2017-03-28 01:19:30PM', 'Pending'),
-(7, 29, 11, 'Bangur City\r\nPO RAS-306107\r\nTehsil :Jaitaran\r\nDist. Pali\r\n', 0, '0.00', '0.00', '', '0.00', '340000.00', 0, '0.00', '0.00', '340000.00', 'Document Delivery Address\r\nShree Cement Ltd.,\r\nBangur Nagar, P.O. No.: 33,\r\nBeawer - 305901\r\n\r\nPayment Terms : 30 days from receipt Material', 25, 'New', 0, 7, '2017-05-26', 'Paid Basis : Beawer Transporter Goodown', 6, '420061', '2017-03-10', 'Mr. Vivek Saxena', '9214337462', 'saxenav@shreecementltd.com', 'Bangur City\r\nPO RAS-306107\r\nTehsil :Jaitaran\r\nDist. Pali\r\n', 'No', 'No', 'STL', 6, 'BE-3368', '16-17', 11, 8, '2017-03-28', '2017-05-05', '2017-05-05 03:03:13PM', '2017-03-28 01:56:56PM', 'Pending'),
-(8, 29, 11, 'Bangur City\r\nPO RAS-306107\r\nTehsil :Jaitaran\r\nDist. Pali\r\n', 0, '0.00', '0.00', '', '0.00', '350774.00', 0, '0.00', '0.00', '350774.00', 'Document Delivery Address\r\nShree Cement Ltd.,\r\nBangur Nagar, P.O. No.: 33,\r\nBeawer - 305901\r\n\r\nPayment Terms : 30 days from receipt Material', 25, 'New', 0, 7, '2017-05-18', 'Freight "PAID" basis', 6, '419575', '2017-03-08', 'Mr Vivek Saxena', '9214337462', 'saxenav@shreecementltd.com', 'Bangur City\r\nPO RAS-306107\r\nTehsil :Jaitaran\r\nDist. Pali\r\n', 'No', 'No', 'STL', 7, 'BE-3368', '16-17', 11, 8, '2017-03-28', '2017-05-05', '2017-05-05 03:07:32PM', '2017-03-28 02:09:21PM', 'Pending'),
+(7, 29, 11, 'Bangur City\r\nPO RAS-306107\r\nTehsil :Jaitaran\r\nDist. Pali\r\n', 0, '0.00', '0.00', '', '0.00', '340000.00', 0, '0.00', '0.00', '340000.00', 'Document Delivery Address\r\nShree Cement Ltd.,\r\nBangur Nagar, P.O. No.: 33,\r\nBeawer - 305901\r\n\r\nPayment Terms : 30 days from receipt Material', 25, 'New', 0, 7, '2017-05-26', 'Paid Basis : Beawer Transporter Goodown', 6, '420061', '2017-03-10', 'Mr. Vivek Saxena', '9214337462', 'saxenav@shreecementltd.com', 'Bangur City\r\nPO RAS-306107\r\nTehsil :Jaitaran\r\nDist. Pali\r\n', 'No', 'No', 'STL', 6, 'BE-3368', '16-17', 11, 8, '2017-03-28', '2017-05-15', '2017-05-15 11:49:20AM', '2017-03-28 01:56:56PM', 'Pending'),
+(8, 29, 11, 'Bangur City\r\nPO RAS-306107\r\nTehsil :Jaitaran\r\nDist. Pali\r\n', 0, '0.00', '0.00', '', '0.00', '350774.00', 0, '0.00', '0.00', '350774.00', 'Document Delivery Address\r\nShree Cement Ltd.,\r\nBangur Nagar, P.O. No.: 33,\r\nBeawer - 305901\r\n\r\nPayment Terms : 30 days from receipt Material', 25, 'New', 0, 7, '2017-05-18', 'Freight "PAID" basis', 6, '419575', '2017-03-08', 'Mr Vivek Saxena', '9214337462', 'saxenav@shreecementltd.com', 'Bangur City\r\nPO RAS-306107\r\nTehsil :Jaitaran\r\nDist. Pali\r\n', 'No', 'No', 'STL', 7, 'BE-3368', '16-17', 11, 8, '2017-03-28', '2017-05-15', '2017-05-15 11:50:58AM', '2017-03-28 02:09:21PM', 'Pending'),
 (9, 30, 11, 'Village -Khapradig ,Teh :-Simga\r\nBhatapara ,Baloda Bazar Raipur -493332\r\nChattisgarh', 0, '0.00', '0.00', '', '0.00', '175387.00', 0, '0.00', '0.00', '175387.00', 'Document Delivery Address\r\nShree Raipur Cement Plant (SRCP),\r\n(A Unit of Shree Cement Ltd),\r\nC-1, Krishnayan Colony, Near City Fuels Petrol Pump, Bhatapara Road, Baloda Bazaar,\r\n Chattisgarh - 493332 (C.G.)\r\n\r\nPayment Terms: 30 Days of Receipt of Material\r\n', 25, 'New', 0, 27, '2017-04-05', 'Paid Basis Transporter Godown Baloda Bazar', 30, '418360', '2017-03-04', 'Mr. Shadaab Rizvi', '8349301232', 'rizvis@shreecementltd.com', 'Village -Khapradig ,Teh :-Simga\r\nBhatapara ,Baloda Bazar Raipur -493332\r\nChattisgarh', 'No', 'Yes', 'STL', 8, 'BE-3241', '16-17', 11, 11, '2017-03-28', '2017-03-28', '2017-03-28 02:42:38PM', '2017-03-28 02:36:30PM', 'Pending'),
 (10, 30, 11, 'Village -Khapradig ,Teh :-Simga\r\nBhatapara ,Baloda Bazar Raipur -493332\r\nChattisgarh', 0, '0.00', '0.00', '', '0.00', '340000.00', 0, '0.00', '0.00', '340000.00', 'Shree Raipur Cement Plant (SRCP)\r\n(A unit of Shee Cement Ltd),\r\nC-1, Krishnayan Colony, Near City Fuels Petrol Pump,\r\nBhatapara Road, Baloda Bazaar,\r\nChhattishgarh - 493332 (CG)', 25, 'New', 0, 27, '2017-04-29', 'Paid Basis Transporter Godown Baloda Bazar', 30, '420688', '2017-03-15', 'Mr Shadaab Rizvi', '8349301232', 'rizvis@shreecementltd.com', 'Village -Khapradig ,Teh :-Simga\r\nBhatapara ,Baloda Bazar Raipur -493332\r\nChattisgarh', 'No', 'Yes', 'STL', 9, 'BE-3241', '16-17', 11, 0, '2017-03-28', '1970-01-01', '', '2017-03-28 02:56:08PM', 'Pending'),
 (11, 94, 7, '206, MTN, Neemach Kheda Main Road, Neenach Mata Scheme, Dewali, UDAIPUR-313001 (Raj.)', 0, '0.00', '0.00', '', '0.00', '0.00', 0, '0.00', '0.00', '29700.00', 'Direct for payment within 07 days', 27, 'New', 0, 29, '2017-04-01', 'Hand delivery', 29, 'email confirmation by Mr. Ali Hussain', '2017-03-22', 'Mr. Ali Hussain', '9828186876', 'ahcorp.udr@gmail.com', '206, MTN, Neemach Kheda Main Road, Neenach Mata Scheme, Dewali, UDAIPUR-313001 (Raj.)', 'No', 'No', 'FMSL', 2, 'BE-3065', '16-17', 8, 8, '2017-03-28', '2017-04-17', '2017-04-17 01:41:44PM', '2017-03-28 03:20:15PM', 'Pending'),
@@ -9698,7 +9816,7 @@ INSERT INTO `sales_orders` (`id`, `customer_id`, `employee_id`, `customer_addres
 (102, 30, 11, 'Village -Khapradig ,Teh :-Simga\r\nBhatapara ,Baloda Bazar Raipur -493332\r\nChattisgarh', 0, '0.00', '0.00', '', '0.00', '39750.00', 0, '0.00', '0.00', '39750.00', 'Document Delivery Address:\r\nChnadra Kant Verma\r\nShree Raipur Cement Plant ( SRCP)\r\nC-1 Krishnayan Colony ,near City Fuel Petrol pump,Bhatapara Road\r\nBaloda Bazar-493332\r\n\r\nPayment : 30 Days form Date of Invoice.\r\n', 25, 'New', 0, 27, '2017-06-09', 'Paid upto Transporter Godown Raipur.', 30, '430092', '2017-05-03', 'Mr. Chandra Kant', '7225015068', 'kantc@shreecementltd.com', 'Village -Khapradig ,Teh :-Simga\r\nBhatapara ,Baloda Bazar Raipur -493332\r\nChattisgarh', 'No', 'Yes', 'STL', 89, 'BE-3386', '17-18', 4, 4, '2017-05-05', '2017-05-05', '2017-05-05 01:29:47PM', '2017-05-05 01:19:54PM', 'Converted'),
 (103, 1, 11, 'Dariba Smelter Complex\r\nRajpura Dariba Mines\r\nRajsamand - 313211', 0, '0.00', '0.00', '', '0.00', '118500.00', 0, '0.00', '0.00', '118500.00', 'Direct for payment within 30 days', 25, 'New', 0, 29, '2017-05-15', '-', 29, '2000039196/4100087355 ', '2017-03-09', 'Mr. Aditya Jalan', '8003093638', 'Aditya.Jalan@vedanta.co.in', 'Dariba Smelter Complex\r\nRajpura Dariba Mines\r\nRajsamand - 313211', 'No', 'No', 'STL', 90, 'BE-2886', '17-18', 8, 0, '2017-05-05', '1970-01-01', '', '2017-05-05 01:45:35PM', 'Pending'),
 (104, 1, 11, 'Dariba Smelter Complex\r\nRajpura Dariba Mines\r\nRajsamand - 313211', 0, '0.00', '0.00', '', '0.00', '39645.00', 0, '0.00', '0.00', '39645.00', 'Direct for payment within 30 days', 25, 'New', 0, 29, '2017-05-15', '-', 29, '2000039196/4100087355', '2017-03-09', 'Mr. Aditya Jalan', '8003093638', 'Aditya.Jalan@vedanta.co.in', 'Dariba Smelter Complex\r\nRajpura Dariba Mines\r\nRajsamand - 313211', 'No', 'No', 'STL', 91, 'BE-3293', '17-18', 8, 0, '2017-05-05', '1970-01-01', '', '2017-05-05 02:12:39PM', 'Pending'),
-(105, 4, 11, 'Bangur Nagar \r\nPost Box no 33\r\nBeawar; 305901', 1, '20.00', '13875.00', '', '0.00', '55500.00', 0, '0.00', '0.00', '55500.00', 'Direct for payment within 30 days', 25, 'New', 0, 7, '2017-05-16', 'Freight "PAID" basis', 6, '420266', '2017-03-11', 'Mr. Vivek Saxena', '9214337462', 'saxenav@shreecementltd.com', 'Bangur Nagar \r\nPost Box no 33\r\nBeawar; 305901', 'No', 'No', 'STL', 92, 'BE-2626', '17-18', 8, 0, '2017-05-05', '1970-01-01', '', '2017-05-05 02:35:23PM', 'Pending'),
+(105, 4, 11, 'Bangur Nagar \r\nPost Box no 33\r\nBeawar; 305901', 1, '20.00', '13875.00', '', '0.00', '55500.00', 0, '0.00', '0.00', '55500.00', 'Direct for payment within 30 days', 25, 'New', 0, 7, '2017-05-16', 'Freight "PAID" basis', 6, '420266', '2017-03-11', 'Mr. Vivek Saxena', '9214337462', 'saxenav@shreecementltd.com', 'Bangur Nagar \r\nPost Box no 33\r\nBeawar; 305901', 'No', 'No', 'STL', 92, 'BE-2626', '17-18', 8, 8, '2017-05-05', '2017-05-15', '2017-05-15 12:40:53PM', '2017-05-05 02:35:23PM', 'Pending'),
 (106, 56, 15, 'Unit-Rochees Breweries,\r\nSP 2-3, RICCO Industrial Area, NH-8, Vill-Neemrana,\r\nTehsil- Behror,PIN-301705\r\n', 1, '9.00', '11022.75', '', '0.00', '111452.25', 1, '2.00', '2229.05', '113681.29', 'Direct for payment within 45 days', 25, 'New', 0, 3, '2017-05-20', 'Freight Extra Actual ', 3, '037926', '2017-03-03', 'Mr. Anirban Mitra', '1494394999', 'Anirban.Mitra@in.sabmiller.com', 'Unit-Rochees Breweries,\r\nSP 2-3, RICCO Industrial Area, NH-8, Vill-Neemrana,\r\nTehsil- Behror,PIN-301705\r\n', 'No', 'No', 'STL', 93, 'BE-3367', '17-18', 8, 8, '2017-05-05', '2017-05-05', '2017-05-05 05:11:24PM', '2017-05-05 05:02:38PM', 'Pending'),
 (107, 112, 15, 'A-135-135-136, Road no. 12, Vishwakarma indusrial Area, Jaipur-302013', 0, '0.00', '0.00', '', '0.00', '42318.00', 0, '0.00', '0.00', '42318.00', 'Direct for payment within 30 days', 25, 'New', 0, 1, '2017-05-20', 'Freight "TO-PAY" basis', 6, '16002928/M3', '2017-03-15', 'Mr. Pankaj Kalani', '9785022279', 'pkalani@sigmaelectric.com', 'A-135-135-136, Road no. 12, Vishwakarma indusrial Area, Jaipur-302013', 'No', 'No', 'STL', 94, 'BE-3194', '17-18', 8, 0, '2017-05-05', '1970-01-01', '', '2017-05-05 05:28:56PM', 'Pending'),
 (108, 91, 15, '117, M.I.A , Alwar (Raj.)', 0, '0.00', '1240.00', '', '0.00', '23560.00', 0, '0.00', '0.00', '23560.00', '50% Advance payment against Invoice ', 25, 'New', 0, 1, '2017-05-15', 'Freight "PAID" basis', 6, '98', '2017-03-03', 'Mr. Ram Arjun', '1442881247', 'ramarjun.vdl@gmail.com', '117, M.I.A , Alwar (Raj.)', 'No', 'No', 'STL', 95, 'BE-3365', '17-18', 8, 0, '2017-05-05', '1970-01-01', '', '2017-05-05 05:40:30PM', 'Pending'),
@@ -9737,7 +9855,7 @@ CREATE TABLE IF NOT EXISTS `sales_order_rows` (
   `processed_quantity` int(5) NOT NULL DEFAULT '0',
   `source_type` varchar(30) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=530 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=533 ;
 
 --
 -- Dumping data for table `sales_order_rows`
@@ -9782,7 +9900,7 @@ INSERT INTO `sales_order_rows` (`id`, `sales_order_id`, `item_id`, `description`
 (145, 19, 881, '<p>Your item code&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; FILTELEM1177</p><p><span style="font-weight: bold; text-decoration: underline;">"MECHFILL" Basket Type Filter Element</span></p><p>Model&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Filter Element</p><p>Micron&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 80 Micron</p>', 4, '3450.00', '13800.00', 'No', 1, 100, 4, ''),
 (148, 20, 923, '<p>Your item code&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; PUMPOILS0017</p><p><span style="font-weight: bold; text-decoration: underline;">"TUSHACO" Gear Pump Sets</span></p><p>Model&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; RT 40</p><p>Capacity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 40 LPM</p><p>Head&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 8 Kg/cm2</p><p>with "CGL" 1 HP/1500 RPM Motor, Coupling L-70, Coupling Guard, Fasteners Dully assembled on MS Baseframe</p><p>Pump Sr. No,&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 1594996/2771, 2769</p><p>Motor Sr. No.&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; PGH-43216, 43244</p>', 2, '17750.00', '35500.00', 'Yes', 1, 0, 2, 'Manufactured'),
 (149, 18, 767, '<p><span style="font-weight: bold;">Your item code&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; RMPII00033966</span></p><p><span style="font-weight: bold; text-decoration: underline;">Spares for "JOHNSON" Pump</span></p><p>Name of Spares&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Shaft</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; For Pump Model KGEN 11-4 G1<br></p>', 2, '704.00', '1408.00', 'No', 2, 0, 2, ''),
-(151, 1, 930, '<p><span style="font-weight: bold; text-decoration: underline;">"JOHNSON" Pump Set</span></p><p>Pump Model : CCR 40 160</p><p>Head: 30 Meters</p><p>Flow: 30 M3/Hr</p><p><span style="line-height: 1.42857143;">Sealing: Gland Packing</span><br></p><p><span style="line-height: 1.42857143;">Power: 7.5 HP/2900 RPM</span><br></p><p><span style="line-height: 1.42857143;">Suc*Dis Size: 50 x 32 MM / P H : 7</span><br></p><p><span style="line-height: 1.42857143;">Price for pump with REMI / BBL Make STD. Foot mounted motor, 7.5 HP/2900 rpm</span><br></p><p>&nbsp;Coupling L-95, Coupling Guard MS Base Frame</p><p>Pump Sr. No.: Z111241009</p><p>Motor Sr. No. : 16/07/D/1584</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>', 2, '58500.00', '117000.00', 'Yes', 2, 0, 1, ''),
+(151, 1, 930, '<p><span style="font-weight: bold; text-decoration: underline;">"JOHNSON" Pump Set</span></p><p>Pump Model : CCR 40 160</p><p>Head: 30 Meters</p><p>Flow: 30 M3/Hr</p><p><span style="line-height: 1.42857143;">Sealing: Gland Packing</span><br></p><p><span style="line-height: 1.42857143;">Power: 7.5 HP/2900 RPM</span><br></p><p><span style="line-height: 1.42857143;">Suc*Dis Size: 50 x 32 MM / P H : 7</span><br></p><p><span style="line-height: 1.42857143;">Price for pump with REMI / BBL Make STD. Foot mounted motor, 7.5 HP/2900 rpm</span><br></p><p>&nbsp;Coupling L-95, Coupling Guard MS Base Frame</p><p>Pump Sr. No.: Z111241009</p><p>Motor Sr. No. : 16/07/D/1584</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>', 2, '58500.00', '117000.00', 'Yes', 2, 0, 2, 'Purchessed'),
 (152, 32, 645, '<p>Your item code : A0703126776</p><p><span style="font-weight: bold; text-decoration: underline;">"DARLING" Submersible Pump Set</span></p><p>Model&nbsp; &nbsp; :&nbsp; &nbsp; WW 101</p><p>Sr. No.:&nbsp; &nbsp; :&nbsp; &nbsp;WD-160569</p><p>with 5 Mtrs. Cable &amp; Control Penal</p>', 1, '31100.00', '31100.00', 'No', 2, 0, 1, ''),
 (153, 15, 951, '<p><span style="font-weight: bold; text-decoration: underline;">Spares for "JOHNSON" Pump</span>&nbsp;</p><p>Model&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; CCR 50-200 R6A S2 L6</p><p><span style="font-weight: bold;">Item code&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Part No.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Description</span></p><p>766141589020&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 2650&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Lock Nut&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>', 2, '227.50', '455.00', 'No', 2, 0, 2, ''),
 (154, 15, 953, '<p>766141775030&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 1100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Shaft Sleeve&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>', 2, '3250.00', '6500.00', 'No', 2, 0, 2, ''),
@@ -9941,10 +10059,7 @@ INSERT INTO `sales_order_rows` (`id`, `sales_order_id`, `item_id`, `description`
 (426, 102, 1342, '<p><span style="text-decoration-line: underline; font-weight: bold;">Your Item Code : PUMPWATR0004</span></p><p><span style="text-decoration-line: underline; font-weight: bold;">JOHNSON Pump Set</span></p><p>Model : CN 50 200 G1 S2 L3</p><p>Flow : 25 M3/ Hr</p><p>Head : 40 Mtrs</p><p>Impeller Dia : 178 mm</p><p>Sealing : Gland Paking</p><p>with <span style="font-weight: bold;">REMI </span>make STD &nbsp;7.5 HP/ 2900 RPM&nbsp;<span style="background-color: transparent;">foot mounted motor, Coupling L-95,</span></p><p><span style="background-color: transparent;">Coupling Guard, Fasteners ,dully assemble on MS base Frame.</span></p><p><span style="background-color: transparent;">Pump Sr. No :</span></p><p><span style="background-color: transparent;">Motor Sr. No :</span></p>', 1, '39750.00', '39750.00', 'Yes', 4, 0, 0, ''),
 (427, 103, 960, '<p><span style="font-weight: bold;">Your item code : 766140027100</span></p><p><span style="font-weight: bold;">"<span style="text-decoration: underline;">JOHNSON" Centrifugal Pump</span></span></p><p>Model&nbsp;&nbsp; &nbsp; :&nbsp; &nbsp; CCR 65-200 R6L M2 L3</p><p>Sr. No.&nbsp; &nbsp; :</p>', 1, '118500.00', '118500.00', 'Yes', 2, 0, 0, ''),
 (428, 104, 740, '<p><span style="font-weight: bold;">Your item code&nbsp; &nbsp; :&nbsp; &nbsp; 766166027010</span></p><p><span style="font-weight: bold; text-decoration: underline;">"JOHNSON" Centrifugal Pump</span></p><p>Model&nbsp;&nbsp; &nbsp; :&nbsp; &nbsp; MCH 16*4</p><p>Head&nbsp; &nbsp; :&nbsp; &nbsp; 110 Mtrs.</p><p>Flow&nbsp; &nbsp; :&nbsp; &nbsp; 30 m3/hr</p><p>Sealing&nbsp;&nbsp; &nbsp; :&nbsp; &nbsp; Gland Packing</p><p>Reccd. Power&nbsp; &nbsp; :&nbsp; &nbsp; 25 HP/2900 RPM</p><p>with Coupling L-110, Coupling Guard, Fasteners dully assembled on MS Baseframe</p><p>Sr. No.&nbsp; &nbsp; :</p>', 1, '39645.00', '39645.00', 'Yes', 2, 0, 0, ''),
-(429, 105, 1155, '<p><span style="font-weight: bold;">Your item code : PUMPSCRW0008</span></p><p><span style="font-weight: bold; text-decoration: underline;">"TUSHACO" Pump</span></p><p>Model&nbsp; &nbsp; :&nbsp; &nbsp; 3.20/56 (T3ST 20/56)</p><p>Pressure&nbsp; &nbsp; :&nbsp; &nbsp; 15 kg/cm2</p><p>Capacity&nbsp; &nbsp; :&nbsp; &nbsp; 14 LPM</p><p>Sr. No.&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;</p>', 1, '69375.00', '69375.00', 'Yes', 1, 0, 0, ''),
 (430, 21, 606, '<p>Your item code&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; PUMPOILS0016</p><p><span style="font-weight: bold; text-decoration: underline;">"TUSHACO" Screw Pump</span>&nbsp;</p><p>Model&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; T3ST 45/42</p><p>Capacity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 120 LPM</p><p>Pressure&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 40 kg/cm2</p>', 2, '170000.00', '340000.00', 'Yes', 1, 0, 0, ''),
-(431, 7, 606, '<p><span style="font-weight: bold;">Your Item Code : PUMPOILS0016</span></p><p><span style="text-decoration: underline; font-weight: bold;">TUSHACO Three Screw Pump</span></p><p>Pump Model : T3ST 45/42&nbsp;</p><p>Capacity &nbsp;: &nbsp;120 LPM</p><p>Pressure : 40 Kg/cm2</p>', 2, '170000.00', '340000.00', 'Yes', 1, 0, 0, ''),
-(432, 8, 606, '<p><span style="font-weight: bold;">Your Item Code: PUMPOILS0016</span></p><p><span style="font-weight: bold; text-decoration: underline;">TUSHACO Three Screw Pump</span></p><p>Pump Model: T3ST 45/42</p><p>Capacity : 120 LPM</p><p>Pressure: 40 Kg/cm2</p><p><br></p>', 2, '175387.00', '350774.00', 'Yes', 1, 0, 0, ''),
 (439, 106, 1166, '<p>Your item code : 401515000082</p><p><span style="font-weight: bold; text-decoration: underline;">"JOHNSON" Self Priming Pump</span>&nbsp;</p><p>Model :&nbsp; &nbsp; FRE 80 210</p><p>Sealing&nbsp; &nbsp; :&nbsp; &nbsp; Mechanical Seal</p><p>Capacity&nbsp; &nbsp; :&nbsp; &nbsp; 70 M3/hr</p><p>Head&nbsp; &nbsp; :&nbsp; &nbsp; 9.7 mtrs.</p><p>Sr. No.&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;</p>', 1, '68475.00', '68475.00', 'No', 2, 0, 0, ''),
 (440, 106, 1343, '<p>Your item code : 401515000083</p><p>Model&nbsp; &nbsp; :&nbsp; &nbsp; CCR 50 200 R1A S2 L3</p><p>Flow&nbsp; &nbsp; :&nbsp; &nbsp; 30 m3/hr</p><p>Suc*Dis.&nbsp; &nbsp; :&nbsp; &nbsp; 80*50 mm</p><p>Head&nbsp; &nbsp; :&nbsp; &nbsp; 30 Mtrs.</p><p>Sealing&nbsp;&nbsp; &nbsp; :&nbsp; &nbsp; Gland Packing</p><p>Sr. No.&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;</p>', 1, '54000.00', '54000.00', 'No', 2, 0, 0, ''),
 (441, 107, 1344, '<p><span style="font-weight: bold;">Your item code : PUMP WITH MOTOR OF HCL</span></p><p><span style="font-weight: bold; text-decoration: underline;">"ANTICO" Pump Set</span></p><p>Model&nbsp;&nbsp; &nbsp; :&nbsp; &nbsp; NSRP 50 TBG V1J</p><p>Head&nbsp; &nbsp; :&nbsp; &nbsp; 10 Mtrs.</p><p>Flow&nbsp; &nbsp; :&nbsp; &nbsp; 7-8 M3/hr</p><p>Suc*Dis.&nbsp; &nbsp; :&nbsp; &nbsp; 50*40 mm</p><p>with "REMI" 1.5 HP/2900 RPM Motor, Coupling, Coupling Guard, Fastners dully assembled on MS Baseframe.</p><p>Pump Sr. No.&nbsp; &nbsp; :</p><p>Motor Sr. No.&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;</p>', 1, '28920.00', '28920.00', 'Yes', 1, 0, 0, ''),
@@ -9969,9 +10084,9 @@ INSERT INTO `sales_order_rows` (`id`, `sales_order_id`, `item_id`, `description`
 (464, 112, 1346, '<p><span style="font-weight: bold;">Your item code : SEALRING2838</span></p><p><span style="font-weight: bold; text-decoration: underline;">Spares for "TUSHACO" Pump</span></p><p>Name of Spares&nbsp;&nbsp; &nbsp; :&nbsp; &nbsp; Oil Seal</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; For Pump Model RT 10</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>', 10, '150.00', '1500.00', 'No', 1, 0, 10, ''),
 (466, 90, 668, '<p><p></p><p></p><p></p><span style="font-weight: bold; text-decoration: underline;">Spares for "ANTICO" Pump</span><br>Name of Spares&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Mechanical Seal&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; For Pump Model HE 120 CT</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p></p><p></p><p><p></p></p>', 2, '3700.00', '7400.00', 'No', 1, 0, 2, ''),
 (472, 114, 935, '<p><span style="font-weight: bold;">Your item code&nbsp;&nbsp; &nbsp; :&nbsp; &nbsp; PUMPOTHR0371</span></p><p><span style="font-weight: bold; text-decoration: underline;">"DARLING" Submersible Pump</span></p><p>Model&nbsp; &nbsp; :&nbsp; &nbsp; LJ 15 LN</p><p>Head&nbsp; &nbsp; :&nbsp; &nbsp; 10 Mtrs.</p><p>Flow&nbsp; &nbsp; :&nbsp; &nbsp; 375 LPM</p><p>with 10 Mtrs. cable&nbsp;</p><p>Sr. No.&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;JE 173569&nbsp;</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>', 1, '34475.00', '34475.00', 'Yes', 3, 0, 1, ''),
-(478, 116, 931, '<p>Your item Code : 766842027100</p><p><span style="font-weight: bold; text-decoration-line: underline;">"DARLING" Submersible Pumps</span></p><p>Pump Model : S 630</p><p>Head : 0 to 32 Mtrs.</p><p>Sr. No :&nbsp;</p><p>with 5 Mtrs Cable</p><p><br></p>', 25, '15435.00', '385875.00', 'Yes', 4, 0, 0, '');
+(478, 116, 931, '<p>Your item Code : 766842027100</p><p><span style="font-weight: bold; text-decoration-line: underline;">"DARLING" Submersible Pumps</span></p><p>Pump Model : S 630</p><p>Head : 0 to 32 Mtrs.</p><p>Sr. No :&nbsp;</p><p>with 5 Mtrs Cable</p><p><br></p>', 25, '15435.00', '385875.00', 'Yes', 4, 0, 0, ''),
+(489, 117, 925, '<h6 style="color: rgb(51, 51, 51);"><p class="MsoNoSpacing"><b><span style="font-size:12.0pt;font-family:&quot;Palatino Linotype&quot;,&quot;serif&quot;;mso-fareast-language:\r\nEN-IN">Item Code : 768915027010<o:p></o:p></span></b></p>\r\n\r\n<p class="MsoNoSpacing"><b><u><span style="font-size:12.0pt;font-family:&quot;Palatino Linotype&quot;,&quot;serif&quot;;mso-fareast-language:\r\nEN-IN">"TUSHACO" Gear Pump Set<o:p></o:p></span></u></b></p>\r\n\r\n<p class="MsoNoSpacing"><span style="font-size:12.0pt;font-family:&quot;Palatino Linotype&quot;,&quot;serif&quot;;\r\nmso-fareast-language:EN-IN">Tushaco Make : RT-125 /50 Pump<br>\r\nPressure : upto 8\r\nKG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<o:p></o:p></span></p>\r\n\r\n<p class="MsoNoSpacing"><span style="font-size:12.0pt;font-family:&quot;Palatino Linotype&quot;,&quot;serif&quot;;\r\nmso-fareast-language:EN-IN">Capacity : 177 LPM<br>\r\nSuc*Dis Size :\r\n1.5"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<o:p></o:p></span></p>\r\n\r\n<p class="MsoNoSpacing"><span style="font-size:12.0pt;font-family:&quot;Palatino Linotype&quot;,&quot;serif&quot;;\r\nmso-fareast-language:EN-IN">Sealing : Mechanical Seal&nbsp; &nbsp;&nbsp;&nbsp;\r\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>\r\n&nbsp;With REMI Make 7.5 HP / 1500 RPM Flame Proof Foot Mounted Motor,<br>\r\n, Coupling, Coupling Guard, fasteners ,dully assemble on MS Base Frame.<o:p></o:p></span></p>\r\n\r\n<p class="MsoNoSpacing"><span style="font-size:12.0pt;font-family:&quot;Palatino Linotype&quot;,&quot;serif&quot;"><o:p>&nbsp;</o:p></span></p>\r\n\r\n<p class="MsoNoSpacing"><span style="font-size:12.0pt;font-family:&quot;Palatino Linotype&quot;,&quot;serif&quot;">Pump\r\nSr. No. :<o:p></o:p></span></p>\r\n\r\n<p class="MsoNoSpacing"><span style="font-size:12.0pt;font-family:&quot;Palatino Linotype&quot;,&quot;serif&quot;">Motor\r\nSr. No. :<o:p></o:p></span></p></h6>', 1, '60000.00', '60000.00', 'Yes', 1, 0, 0, 'Manufactured');
 INSERT INTO `sales_order_rows` (`id`, `sales_order_id`, `item_id`, `description`, `quantity`, `rate`, `amount`, `excise_duty`, `sale_tax_id`, `height`, `processed_quantity`, `source_type`) VALUES
-(489, 117, 925, '<h6 style="color: rgb(51, 51, 51);"><p class="MsoNoSpacing"><b><span style="font-size:12.0pt;font-family:&quot;Palatino Linotype&quot;,&quot;serif&quot;;mso-fareast-language:\r\nEN-IN">Item Code : 768915027010<o:p></o:p></span></b></p>\r\n\r\n<p class="MsoNoSpacing"><b><u><span style="font-size:12.0pt;font-family:&quot;Palatino Linotype&quot;,&quot;serif&quot;;mso-fareast-language:\r\nEN-IN">"TUSHACO" Gear Pump Set<o:p></o:p></span></u></b></p>\r\n\r\n<p class="MsoNoSpacing"><span style="font-size:12.0pt;font-family:&quot;Palatino Linotype&quot;,&quot;serif&quot;;\r\nmso-fareast-language:EN-IN">Tushaco Make : RT-125 /50 Pump<br>\r\nPressure : upto 8\r\nKG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<o:p></o:p></span></p>\r\n\r\n<p class="MsoNoSpacing"><span style="font-size:12.0pt;font-family:&quot;Palatino Linotype&quot;,&quot;serif&quot;;\r\nmso-fareast-language:EN-IN">Capacity : 177 LPM<br>\r\nSuc*Dis Size :\r\n1.5"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<o:p></o:p></span></p>\r\n\r\n<p class="MsoNoSpacing"><span style="font-size:12.0pt;font-family:&quot;Palatino Linotype&quot;,&quot;serif&quot;;\r\nmso-fareast-language:EN-IN">Sealing : Mechanical Seal&nbsp; &nbsp;&nbsp;&nbsp;\r\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>\r\n&nbsp;With REMI Make 7.5 HP / 1500 RPM Flame Proof Foot Mounted Motor,<br>\r\n, Coupling, Coupling Guard, fasteners ,dully assemble on MS Base Frame.<o:p></o:p></span></p>\r\n\r\n<p class="MsoNoSpacing"><span style="font-size:12.0pt;font-family:&quot;Palatino Linotype&quot;,&quot;serif&quot;"><o:p>&nbsp;</o:p></span></p>\r\n\r\n<p class="MsoNoSpacing"><span style="font-size:12.0pt;font-family:&quot;Palatino Linotype&quot;,&quot;serif&quot;">Pump\r\nSr. No. :<o:p></o:p></span></p>\r\n\r\n<p class="MsoNoSpacing"><span style="font-size:12.0pt;font-family:&quot;Palatino Linotype&quot;,&quot;serif&quot;">Motor\r\nSr. No. :<o:p></o:p></span></p></h6>', 1, '60000.00', '60000.00', 'Yes', 1, 0, 0, 'Manufactured'),
 (490, 115, 1334, '<p><span style="font-weight: bold;">Your item code : SPRENGMECHPUMP0253</span></p><p><span style="font-weight: bold; text-decoration: underline;">"JOHNSON" Pump Sets</span></p><p>Model&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; CCR 40C 200 R6 S2 L3 (Impeller Dia-180 mm)</p><p>Suc*Dis.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 60*45mm</p><p>Sealing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Gland Packing</p><p>with "<span style="line-height: 1.42857143;">REMI" 1.5 HP/1500 RPM Motor, Coupling L-95, Coupling Guard, Fasteners dully assembled on MS Basefame</span></p><p><span style="line-height: 1.42857143;">Pump Sr. No.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :</span></p><p><span style="line-height: 1.42857143;"></span></p><p>Motor Sr. No.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p></p><p></p><p></p>', 3, '48000.00', '144000.00', 'Yes', 2, 0, 0, 'Manufactured'),
 (491, 119, 1337, '', 2, '15400.00', '30800.00', 'No', 2, 4, 0, ''),
 (492, 93, 628, '<p><br></p>', 1, '21500.00', '21500.00', 'Yes', 4, 0, 0, ''),
@@ -10005,7 +10120,10 @@ INSERT INTO `sales_order_rows` (`id`, `sales_order_id`, `item_id`, `description`
 (526, 28, 1097, '<p>Material Code : 768175000000</p><p>Bare Pump PL 1011</p>', 1, '17000.00', '17000.00', 'Yes', 3, 0, 0, ''),
 (527, 28, 1096, '<p>Material Code : 768176000000</p><p>Bare Pump PL 2017</p>', 1, '17812.50', '17812.50', 'Yes', 3, 0, 0, ''),
 (528, 28, 1100, '<p>Material Code : 768175881100</p><p><span style="background-color: transparent;">NRV Ball &nbsp;PL 1011</span></p>', 1, '495.00', '495.00', 'Yes', 3, 0, 0, ''),
-(529, 28, 1110, '<p>Material Code : 768176881100</p><p>Valve Seat PL 2017</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>', 1, '525.00', '525.00', 'Yes', 3, 0, 0, '');
+(529, 28, 1110, '<p>Material Code : 768176881100</p><p>Valve Seat PL 2017</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>', 1, '525.00', '525.00', 'Yes', 3, 0, 0, ''),
+(530, 7, 606, '<p><span style="font-weight: bold;">Your Item Code : PUMPOILS0016</span></p><p><span style="text-decoration: underline; font-weight: bold;">TUSHACO Three Screw Pump</span></p><p>Pump Model : T3ST 45/42&nbsp;</p><p>Capacity &nbsp;: &nbsp;120 LPM</p><p>Pressure : 40 Kg/cm2</p>', 2, '170000.00', '340000.00', 'No', 1, 0, 0, ''),
+(531, 8, 606, '<p><span style="font-weight: bold;">Your Item Code: PUMPOILS0016</span></p><p><span style="font-weight: bold; text-decoration: underline;">TUSHACO Three Screw Pump</span></p><p>Pump Model: T3ST 45/42</p><p>Capacity : 120 LPM</p><p>Pressure: 40 Kg/cm2</p><p><br></p>', 2, '175387.00', '350774.00', 'No', 1, 0, 0, ''),
+(532, 105, 1155, '<p><span style="font-weight: bold;">Your item code : PUMPSCRW0008</span></p><p><span style="font-weight: bold; text-decoration: underline;">"TUSHACO" Pump</span></p><p>Model&nbsp; &nbsp; :&nbsp; &nbsp; 3.20/56 (T3ST 20/56)</p><p>Pressure&nbsp; &nbsp; :&nbsp; &nbsp; 15 kg/cm2</p><p>Capacity&nbsp; &nbsp; :&nbsp; &nbsp; 14 LPM</p><p>Sr. No.&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>', 1, '69375.00', '69375.00', 'No', 1, 0, 0, '');
 
 -- --------------------------------------------------------
 
@@ -10288,7 +10406,7 @@ CREATE TABLE IF NOT EXISTS `user_rights` (
   `login_id` int(10) NOT NULL,
   `page_id` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3034 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3088 ;
 
 --
 -- Dumping data for table `user_rights`
@@ -10693,28 +10811,6 @@ INSERT INTO `user_rights` (`id`, `login_id`, `page_id`) VALUES
 (2999, 13, 83),
 (3000, 13, 85),
 (3001, 13, 87),
-(3002, 15, 23),
-(3003, 15, 17),
-(3004, 15, 18),
-(3005, 15, 123),
-(3006, 15, 40),
-(3007, 15, 90),
-(3008, 15, 91),
-(3009, 15, 92),
-(3010, 15, 93),
-(3011, 15, 94),
-(3012, 15, 95),
-(3013, 15, 96),
-(3014, 15, 97),
-(3015, 15, 98),
-(3016, 15, 99),
-(3017, 15, 100),
-(3018, 15, 101),
-(3019, 15, 114),
-(3020, 15, 115),
-(3021, 15, 116),
-(3022, 15, 117),
-(3023, 15, 27),
 (3024, 10, 5),
 (3025, 10, 6),
 (3026, 10, 24),
@@ -10724,7 +10820,35 @@ INSERT INTO `user_rights` (`id`, `login_id`, `page_id`) VALUES
 (3030, 10, 15),
 (3031, 10, 16),
 (3032, 10, 36),
-(3033, 10, 27);
+(3033, 10, 27),
+(3060, 15, 23),
+(3061, 15, 31),
+(3062, 15, 17),
+(3063, 15, 18),
+(3064, 15, 123),
+(3065, 15, 40),
+(3066, 15, 90),
+(3067, 15, 91),
+(3068, 15, 92),
+(3069, 15, 93),
+(3070, 15, 94),
+(3071, 15, 95),
+(3072, 15, 96),
+(3073, 15, 97),
+(3074, 15, 98),
+(3075, 15, 99),
+(3076, 15, 100),
+(3077, 15, 101),
+(3078, 15, 102),
+(3079, 15, 103),
+(3080, 15, 104),
+(3081, 15, 105),
+(3082, 15, 114),
+(3083, 15, 115),
+(3084, 15, 116),
+(3085, 15, 117),
+(3086, 15, 27),
+(3087, 15, 32);
 
 -- --------------------------------------------------------
 
@@ -11025,7 +11149,6 @@ INSERT INTO `voucher_ledger_accounts` (`vouchers_reference_id`, `ledger_account_
 (1, 401),
 (1, 402),
 (1, 403),
-(1, 404),
 (1, 405),
 (1, 406),
 (1, 407),
@@ -11069,7 +11192,6 @@ INSERT INTO `voucher_ledger_accounts` (`vouchers_reference_id`, `ledger_account_
 (1, 482),
 (1, 483),
 (1, 484),
-(1, 485),
 (1, 486),
 (1, 487),
 (1, 488),
@@ -11077,16 +11199,12 @@ INSERT INTO `voucher_ledger_accounts` (`vouchers_reference_id`, `ledger_account_
 (1, 490),
 (1, 491),
 (1, 493),
-(1, 515),
 (1, 523),
 (1, 526),
 (1, 529),
 (1, 544),
 (1, 547),
 (1, 555),
-(1, 558),
-(1, 561),
-(1, 564),
 (1, 567),
 (1, 568),
 (1, 569),
@@ -11250,10 +11368,10 @@ INSERT INTO `voucher_ledger_accounts` (`vouchers_reference_id`, `ledger_account_
 (5, 134),
 (5, 135),
 (5, 544),
-(5, 572),
 (5, 595),
 (5, 596),
 (6, 453),
+(6, 622),
 (7, 142),
 (7, 145),
 (7, 146),

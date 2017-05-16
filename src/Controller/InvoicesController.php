@@ -1252,4 +1252,13 @@ class InvoicesController extends AppController
 		
 		exit;
 	}
+	public function salesReport(){
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
+		$this->viewBuilder()->layout('index_layout');
+		$invoices = $this->Invoices->find()->contain(['InvoiceRows','Customers'])->order(['Invoices.id' => 'DESC'])->where(['Invoices.company_id'=>$st_company_id]);
+		//pr($invoices->toArray()); exit;
+		$this->set(compact('invoices'));
+	}
 }

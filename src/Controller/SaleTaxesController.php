@@ -129,7 +129,7 @@ class SaleTaxesController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		
         $saleTax = $this->SaleTaxes->get($id, [
-            'contain' => ['Companies']
+            'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $saleTax = $this->SaleTaxes->patchEntity($saleTax, $this->request->data);

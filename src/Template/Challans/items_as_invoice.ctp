@@ -10,5 +10,5 @@ elseif($source_model=="Invoice_Booking"){
 	foreach($Invoices->invoice_booking_rows as $invoice_booking_row){
 		$options[]=['text' =>$invoice_booking_row->item->name, 'value' => $invoice_booking_row->item->id];
 	}
-} pr($options);
+}
 echo $this->Form->input('item_id', ['empty'=>'Select','options' => $options,'label' => false,'class' => 'form-control input-sm  item_box item_id','placeholder' => 'Item']);

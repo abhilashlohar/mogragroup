@@ -628,6 +628,8 @@ select
 								<?php echo '<li>'.$this->Html->link( 'Overdue Report for Supplier', '/Vendors/Over-Due-Report' ).'</li>';?>
 							</ul>
 						</li>
+						<li><?php $today =date('d-m-Y');
+						echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Sales Report',array('controller'=>'Invoices','action'=>'salesReport','From'=>$today,'To'=>$today),array('escape'=>false)); ?></li>
 						<?php if(in_array(36,$allowed_pages)){?>
 						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Item Report','/Item-Ledgers/Stock-Report',array('escape'=>false)); ?></li>	
 						<?php } ?>

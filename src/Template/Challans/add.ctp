@@ -701,7 +701,7 @@ $(document).ready(function() {
 		
 	}
 	
-	$('select[name="invoice_id"]').live("change",function() { alert();
+	$('select[name="invoice_id"]').live("change",function() { 
 		var in_id=$(this).val();
 		itemsAsInvoice(in_id,'Invoices');
 	});

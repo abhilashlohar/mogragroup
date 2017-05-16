@@ -103,21 +103,21 @@ if(!empty($status)){
 				<table class="table table-bordered table-striped">
 					<thead>
 						<tr>
-							<th>Sr. No.</th>
-							<th>Ref. No.</th>
-							<th>Customer</th>
-							<th>Salesman</th>
-							<th>Product</th>
+							<th width="5%">Sr. No.</th>
+							<th width="15%">Ref. No.</th>
+							<th width="15%">Customer</th>
+							<th width="15%">Salesman</th>
+							<th width="15%">Product</th>
 							<?php if($pull_request=="true"){ ?>
-							<th>Quotation Date</th>
+							<th width="10%">Quotation Date</th>
 							<?php }else{ ?>
-							<th>Finalisation Date</th>
+							<th width="10%">Finalisation Date</th>
 							<?php } ?>
 							<?php if($status=="Closed"){ ?>
-							<th>Closing Reason</th>
-							<th>Closing Date</th>
+							<th width="10%">Closing Reason</th>
+							<th width="10%">Closing Date</th>
 							<?php } ?>
-							<th class="actions"><?= __('Actions') ?></th>
+							<th width="10%" class="actions"><?= __('Actions') ?></th>
 						</tr>
 					</thead>
 					<tbody>

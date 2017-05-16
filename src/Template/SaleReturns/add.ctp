@@ -260,7 +260,9 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 					<td  align="right"><b>Sale Tax Amount </b></td>
 
 					<td><?php echo $this->Form->input('sale_tax_per', ['type' => 'hidden','label' => false,'class' => 'form-control input-sm','readonly','step'=>0.01,'value'=>$invoice->sale_tax_per]); ?>
-					<?php echo $this->Form->input('sale_tax_amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly','step'=>0.01]); ?></td>
+					<?php echo $this->Form->input('sale_tax_amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly','step'=>0.01]); ?>
+					
+					</td>
 
 				</tr>
 				<tr>
@@ -315,6 +317,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 		</div>
 		<?php echo $this->Form->input('process_status', ['type' => 'hidden','value' => @$process_status]); ?>
 		<?php echo $this->Form->input('in_id', ['type' => 'hidden','value' => @$invoice->id]); ?>
+		
 		<div class="form-actions">
 			<div class="row">
 				<div class="col-md-offset-3 col-md-9">

@@ -327,7 +327,8 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 							</div>
 						</div>
 					</td>
-					<td><?php echo $this->Form->input('sale_tax_amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly','step'=>0.01]); ?></td>
+					<td><?php echo $this->Form->input('sale_tax_amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly','step'=>0.01]); ?>
+					<?php echo $this->Form->input('sale_tax_id', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly','step'=>0.01]); ?></td>
 				</tr>
 				<tr>
 					<td  align="left">

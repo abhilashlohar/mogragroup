@@ -8,10 +8,10 @@
 		</div>
 		<div class="actions">
 			
-			<?php echo $this->Html->link('Sales Report','/Invoices/salesReport',array('escape'=>false,'class'=>'btn btn-primary')); ?>
-			<?php echo $this->Html->link('Sales Return Report','/SaleReturns/salesReturnReport',array('escape'=>false,'class'=>'btn btn-default')); ?>
-			<?php echo $this->Html->link('Purchase Report','/InvoiceBookings/purchaseReport',array('escape'=>false,'class'=>'btn btn-default')); ?>
-			<?php echo $this->Html->link('Purchase Return Report','/PurchaseReturns/purchaseReturnReport',array('escape'=>false,'class'=>'btn btn-default')); ?>
+			<?php echo $this->Html->link('Sales Report','/Invoices/salesReport',array('escape'=>false,'class'=>'btn btn-default')); ?>
+			<?php echo $this->Html->link('Sales Return Report','/SaleReturns/salesReturnReport',array('escape'=>false,'class'=>'btn btn-primary')); ?>
+			<?php echo $this->Html->link('Purchase Report','/AccountFirstSubgroups/',array('escape'=>false,'class'=>'btn btn-default')); ?>
+			<?php echo $this->Html->link('Purchase Return Report','/AccountSecondSubgroups/',array('escape'=>false,'class'=>'btn btn-default')); ?>
 		</div>
 		
 	</div>
@@ -61,54 +61,54 @@
 					</tr>
 				</thead>
 				<tbody><?php $sales5=0; $vat5=0; $sales14=0; $vat14=0; $sales2=0; $vat2=0; $sales0=0; ?>
-				<?php foreach ($invoices as $invoice): ?>
+				<?php foreach ($SaleReturns as $SaleReturn): ?>
 					<tr>
 						<td><?= h(++$page_no) ?></td>
-							<td><?= h(($invoice->in1.'/IN-'.str_pad($invoice->in2, 3, '0', STR_PAD_LEFT).'/'.$invoice->in3.'/'.$invoice->in4)) ?></td>
-							<td><?php echo date("d-m-Y",strtotime($invoice->date_created)); ?></td>
-							<td><?= h($invoice->customer->customer_name) ?></td>
-							<td><?php if($invoice->sale_tax_per==5.50){
-								echo $invoice->total;
-								$sales5=$sales5+$invoice->total;
+							<td><?= h(($SaleReturn->sr1.'/IN-'.str_pad($SaleReturn->sr2, 3, '0', STR_PAD_LEFT).'/'.$SaleReturn->sr3.'/'.$SaleReturn->sr4)) ?></td>
+							<td><?php echo date("d-m-Y",strtotime($SaleReturn->date_created)); ?></td>
+							<td><?= h($SaleReturn->customer->customer_name) ?></td>
+							<td><?php if($SaleReturn->sale_tax_per==5.50){
+								echo $SaleReturn->total;
+								$sales5=$sales5+$SaleReturn->total;
 							}else{
 								echo "-";
 							} ?>
 							</td>
-							<td><?php if($invoice->sale_tax_per==5.50){
-								echo $invoice->sale_tax_amount;
-								$vat5=$vat5+$invoice->sale_tax_amount;
+							<td><?php if($SaleReturn->sale_tax_per==5.50){
+								echo $SaleReturn->sale_tax_amount;
+								$vat5=$vat5+$SaleReturn->sale_tax_amount;
 							}else{
 								echo "-";
 							} ?></td>
-							<td><?php if($invoice->sale_tax_per==14.50){
-								echo $invoice->total;
-								$sales14=$sales14+$invoice->total;
+							<td><?php if($SaleReturn->sale_tax_per==14.50){
+								echo $SaleReturn->total;
+								$sales14=$sales14+$SaleReturn->total;
 							}else{
 								echo "-";
 							} ?>
 							</td>
-							<td><?php if($invoice->sale_tax_per==14.50){
-								echo $invoice->sale_tax_amount;
-								$vat14=$vat14+$invoice->sale_tax_amount;
+							<td><?php if($SaleReturn->sale_tax_per==14.50){
+								echo $SaleReturn->sale_tax_amount;
+								$vat14=$vat14+$SaleReturn->sale_tax_amount;
 							}else{
 								echo "-";
 							} ?></td>
-							<td><?php if($invoice->sale_tax_per==2.00){
-								echo $invoice->total;
-								$sales2=$sales2+$invoice->total;
+							<td><?php if($SaleReturn->sale_tax_per==2.00){
+								echo $SaleReturn->total;
+								$sales2=$sales2+$SaleReturn->total;
 							}else{
 								echo "-";
 							} ?>
 							</td>
-							<td><?php if($invoice->sale_tax_per==2.00){
-								echo $invoice->sale_tax_amount;
-								$vat2=$vat2+$invoice->sale_tax_amount;
+							<td><?php if($SaleReturn->sale_tax_per==2.00){
+								echo $SaleReturn->sale_tax_amount;
+								$vat2=$vat2+$SaleReturn->sale_tax_amount;
 							}else{
 								echo "-";
 							} ?></td>
-							<td><?php if($invoice->sale_tax_per==0.00){
-								echo $invoice->total;
-								$sales0=$sales0+$invoice->total;
+							<td><?php if($SaleReturn->sale_tax_per==0.00){
+								echo $SaleReturn->total;
+								$sales0=$sales0+$SaleReturn->total;
 							}else{
 								echo "-";
 							} ?></td>

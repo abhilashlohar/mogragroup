@@ -8,9 +8,9 @@
 		</div>
 		<div class="actions">
 			
-			<?php echo $this->Html->link('Sales Report','/Invoices/salesReport',array('escape'=>false,'class'=>'btn btn-primary')); ?>
+			<?php echo $this->Html->link('Sales Report','/Invoices/salesReport',array('escape'=>false,'class'=>'btn btn-default')); ?>
 			<?php echo $this->Html->link('Sales Return Report','/SaleReturns/salesReturnReport',array('escape'=>false,'class'=>'btn btn-default')); ?>
-			<?php echo $this->Html->link('Purchase Report','/InvoiceBookings/purchaseReport',array('escape'=>false,'class'=>'btn btn-default')); ?>
+			<?php echo $this->Html->link('Purchase Report','/InvoiceBookings/purchaseReport',array('escape'=>false,'class'=>'btn btn-primary')); ?>
 			<?php echo $this->Html->link('Purchase Return Report','/PurchaseReturns/purchaseReturnReport',array('escape'=>false,'class'=>'btn btn-default')); ?>
 		</div>
 		

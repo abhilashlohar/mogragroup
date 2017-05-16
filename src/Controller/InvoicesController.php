@@ -686,7 +686,7 @@ class InvoicesController extends AppController
 		
 		if(!in_array(date("m-Y",strtotime($invoice->date_created)),$closed_month))
 		{
-		
+		//pr(['company_id'=>$st_company_id,'source_model'=>'Customers','source_id'=>$invoice->customer->id]); exit;
 		$c_LedgerAccount=$this->Invoices->LedgerAccounts->find()->where(['company_id'=>$st_company_id,'source_model'=>'Customers','source_id'=>$invoice->customer->id])->first();
 		
 		$ReferenceDetails=$this->Invoices->ReferenceDetails->find()->where(['ledger_account_id'=>$c_LedgerAccount->id,'invoice_id'=>$invoice->id]);
@@ -717,8 +717,9 @@ class InvoicesController extends AppController
 		 $Em = new FinancialYearsController;
 	     $financial_year_data = $Em->checkFinancialYear($invoice->date_created);
 		$invoice_id=$id;
-		
+		//pr(['ledger_account_id'=>$c_LedgerAccount->id,'invoice_id'=>$invoice_id]); exit;
 		$ReferenceDetails = $this->Invoices->ReferenceDetails->find()->where(['ledger_account_id'=>$c_LedgerAccount->id,'invoice_id'=>$invoice_id])->toArray();
+		
 		if(!empty($ReferenceDetails))
 		{
 			foreach($ReferenceDetails as $ReferenceDetail)
@@ -1255,6 +1256,10 @@ class InvoicesController extends AppController
 	public function salesReport(){
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
+		$From=$this->request->query('From');
+		$To=$this->request->query('To');
+		$where=[];
+		
 		
 		$this->viewBuilder()->layout('index_layout');
 		$invoices = $this->Invoices->find()->contain(['InvoiceRows','Customers'])->order(['Invoices.id' => 'DESC'])->where(['Invoices.company_id'=>$st_company_id]);

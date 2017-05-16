@@ -268,6 +268,7 @@ class VendorsController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
+		
 		$LedgerAccounts =$this->Vendors->LedgerAccounts->find()
 			->where(['LedgerAccounts.company_id'=>$st_company_id,'source_model'=>'Vendors']);
 			
@@ -300,8 +301,6 @@ class VendorsController extends AppController
 				$over_due_report[$key]=$due;	
 			}
 
-        $Vendors = $this->paginate($this->Vendors->Ledgers->find()->where(['ledger_account_id'=>$key]));
-		
         $this->set(compact('LedgerAccounts','Ledgers','over_due_report','company_name'));
         $this->set('_serialize', ['Vendors']);
     }

@@ -275,8 +275,6 @@ class CustomersController extends AppController
 				$over_due_report[$key]=$due;	
 			}
 
-        $customers = $this->paginate($this->Customers->Ledgers->find()->where(['ledger_account_id'=>$key]));
-		
         $this->set(compact('LedgerAccounts','Ledgers','over_due_report','custmer_name','custmer_alise'));
         $this->set('_serialize', ['customers']);
     }

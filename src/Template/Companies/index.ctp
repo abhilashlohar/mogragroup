@@ -4,21 +4,21 @@
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Companies</span>
 		</div>
-	</div>
+	
 <div class="portlet-body">
 	<div class="row">
 		<div class="col-md-12">
 			<table class="table table-bordered">
 				<thead>
 					<tr>
-						<th>Sr.No.</th>
-						<th>Name</th> 
-						<th>Pan No</th>
-						<th>Tin No</th>
-						<th>Tan No</th>
-						<th>Landline No</th>
-						<th>Mobile No</th>
-						<th> Actions</th>
+						<th width="5%">Sr.No.</th>
+						<th width="20%">Name</th> 
+						<th width="8%">Pan No</th>
+						<th width="10%">Tin No</th>
+						<th width="10%">Tan No</th>
+						<th width="10%">Landline No</th>
+						<th width="10%">Mobile No</th>
+						<th width="10%"> Actions</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -52,15 +52,16 @@
 					<?php endforeach; ?>
 				</tbody>
 			</table>
-			<div class="paginator">
-			<ul class="pagination">
-			<?= $this->Paginator->prev('< ' . __('previous')) ?>
-			<?= $this->Paginator->numbers() ?>
-			<?= $this->Paginator->next(__('next') . ' >') ?>
-			</ul>
-			<p><?= $this->Paginator->counter() ?></p>
 			</div>
-		</div>
 	</div>
-</div>
-</div>
+	</div></div>
+	<div class="paginator">
+		<ul class="pagination">
+		<?= $this->Paginator->prev('< ' . __('previous')) ?>
+		<?= $this->Paginator->numbers() ?>
+		<?= $this->Paginator->next(__('next') . ' >') ?>
+		</ul>
+		<p><?= $this->Paginator->counter() ?></p>
+	</div>
+		
+	</div>

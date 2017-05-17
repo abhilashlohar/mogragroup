@@ -8,11 +8,13 @@
 		<div class="actions">
 			<?= $this->Html->link(
 				'Add',
-				'/Items/Cost'
+				'/Items/Cost',
+				['class' => 'btn btn-default']
 			); ?>
 			<?= $this->Html->link(
 				'View',
-				'/Items/Cost-View'
+				'/Items/Cost-View',
+				['class' => 'btn btn-default']
 			); ?>
 		</div>
 	</div>

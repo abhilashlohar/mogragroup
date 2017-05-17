@@ -66,7 +66,7 @@
 					
 					<div class="col-md-4">
 						<form method="GET" >
-							<table class="table-condensed" align="right">
+							<table align="right">
 								<tbody>
 									<tr>
 										<td>

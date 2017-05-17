@@ -60,6 +60,9 @@
 							<td>
 							      <input type="text" name="vendor" class="form-control input-sm" placeholder="Supplier" value="<?php echo @$vendor; ?>">
 							</td>
+							<td>
+							      <input type="text" name="items" class="form-control input-sm" placeholder="Items" value="<?php echo @$items; ?>">
+							</td>
 							
 							<input type="hidden" name="pull-request" value='<?php echo $pull_request; ?>'  />
 							
@@ -95,7 +98,7 @@
 							<td><?= h($purchaseOrder->vendor->company_name) ?></td>
 							<td>
 								<div class="btn-group">
-									<button id="btnGroupVerticalDrop5" type="button" class="btn default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Items <i class="fa fa-angle-down"></i></button>
+									<button id="btnGroupVerticalDrop5" type="button" class="btn default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Items <i class="fa fa-angle-down"></i></button>
 										<ul class="dropdown-menu" role="menu" aria-labelledby="btnGroupVerticalDrop5">
 										<?php  foreach($purchaseOrder->purchase_order_rows as $purchase_order_row){ 
 											if($purchase_order_row->purchase_order_id == $purchaseOrder->id){?>

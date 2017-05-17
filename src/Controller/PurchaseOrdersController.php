@@ -34,7 +34,8 @@ class PurchaseOrdersController extends AppController
 		$file=$this->request->query('file');
 		$vendor=$this->request->query('vendor');
 		$total=$this->request->query('total');
-		$this->set(compact('purchase_no','vendor','total','file'));
+		$items=$this->request->query('items');
+		$this->set(compact('purchase_no','vendor','total','file','items'));
 		if(!empty($purchase_no)){
 			$where['po2 LIKE']=$purchase_no;
 		}
@@ -47,6 +48,9 @@ class PurchaseOrdersController extends AppController
 		if(!empty($vendor)){
 			$where['Vendors.company_name LIKE']='%'.$vendor.'%';
 		}
+		if(!empty($items)){
+			$where[[]='%'.$items.'%';
+		}
 		
 		
 		if($status==null or $status=='Pending'){
@@ -55,8 +59,10 @@ class PurchaseOrdersController extends AppController
 			$having=['total_rows =' => 0];
 		}
 		
-		
-		
+		if(){
+			$purchaseOrders = $this->paginate($this->PurchaseOrders->find()->contain()
+		}
+		else{
 		$purchaseOrders=$this->paginate(
 			$this->PurchaseOrders->find()->contain(['PurchaseOrderRows'=>['Items']])->select(['total_rows' => 
 				$this->PurchaseOrders->find()->func()->count('PurchaseOrderRows.id')])
@@ -70,7 +76,7 @@ class PurchaseOrdersController extends AppController
 				->where(['company_id'=>$st_company_id])
 				->order(['PurchaseOrders.id' => 'DESC'])
 			);
-		
+		}
 		$PurchaseOrderRows = $this->PurchaseOrders->PurchaseOrderRows->find()->toArray();
 		//pr($PurchaseOrderRows);exit;
         $this->set(compact('purchaseOrders','pull_request','status','PurchaseOrderRows','PurchaseItems'));

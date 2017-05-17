@@ -55,8 +55,10 @@ class PurchaseOrdersController extends AppController
 			$having=['total_rows =' => 0];
 		}
 		
+		
+		
 		$purchaseOrders=$this->paginate(
-			$this->PurchaseOrders->find()->select(['total_rows' => 
+			$this->PurchaseOrders->find()->contain(['PurchaseOrderRows'=>['Items']])->select(['total_rows' => 
 				$this->PurchaseOrders->find()->func()->count('PurchaseOrderRows.id')])
 				->leftJoinWith('PurchaseOrderRows', function ($q) {
 					return $q->where(['PurchaseOrderRows.processed_quantity < PurchaseOrderRows.quantity']);
@@ -68,8 +70,10 @@ class PurchaseOrdersController extends AppController
 				->where(['company_id'=>$st_company_id])
 				->order(['PurchaseOrders.id' => 'DESC'])
 			);
-
-        $this->set(compact('purchaseOrders','pull_request','status'));
+		
+		$PurchaseOrderRows = $this->PurchaseOrders->PurchaseOrderRows->find()->toArray();
+		//pr($PurchaseOrderRows);exit;
+        $this->set(compact('purchaseOrders','pull_request','status','PurchaseOrderRows','PurchaseItems'));
         $this->set('_serialize', ['purchaseOrders']);
 		$this->set(compact('url'));
     }

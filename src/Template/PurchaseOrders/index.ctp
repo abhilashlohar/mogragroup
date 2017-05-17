@@ -74,12 +74,13 @@
 				<table class="table table-bordered table-striped table-hover">
 						<thead>
 							<tr>
-								<th>S.No</th>
-								<th>Purchase No.</th>
-								<th>Party Name</th>
-								<th style="text-align:right">Total</th>
+								<th width="5%">S.No</th>
+								<th width="10%">Purchase No.</th>
+								<th width="10%">Party Name</th>
+								<th width="10%">Items Name</th>
+								<th width="10%" style="text-align:right">Total</th>
 								
-								<th class="actions"><?= __('Actions') ?></th>
+								<th width="10%" class="actions"><?= __('Actions') ?></th>
 							</tr>
 					
 					</thead>
@@ -92,6 +93,17 @@
 							<td><?= h(($purchaseOrder->po1.'/PO-'.str_pad($purchaseOrder->po2, 3, '0', STR_PAD_LEFT).'/'.$purchaseOrder->po3.'/'.$purchaseOrder->po4)) ?></td>
 							
 							<td><?= h($purchaseOrder->vendor->company_name) ?></td>
+							<td>
+								<div class="btn-group">
+									<button id="btnGroupVerticalDrop5" type="button" class="btn default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Items <i class="fa fa-angle-down"></i></button>
+										<ul class="dropdown-menu" role="menu" aria-labelledby="btnGroupVerticalDrop5">
+										<?php  foreach($purchaseOrder->purchase_order_rows as $purchase_order_row){ 
+											if($purchase_order_row->purchase_order_id == $purchaseOrder->id){?>
+											<li><?= h($purchase_order_row->item->name) ?></li>
+											<?php }}?>
+										</ul>
+								</div>
+							</td>
 							<td align="right"><?= $this->Number->format($purchaseOrder->total) ?></td>
 						
 							<td class="actions">

@@ -148,7 +148,7 @@ class NppaymentsController extends AppController
                     }
                     
                     $ledger->voucher_id = $nppayment->id;
-                    $ledger->voucher_source = 'Payment Voucher';
+                    $ledger->voucher_source = 'Non Print Payment Voucher';
                     $ledger->transaction_date = $nppayment->transaction_date;
                     $this->Nppayments->Ledgers->save($ledger);
                     
@@ -229,7 +229,7 @@ class NppaymentsController extends AppController
                 $ledger->debit = 0;
                 $ledger->credit = $total_amount;
                 $ledger->voucher_id = $nppayment->id;
-                $ledger->voucher_source = 'Payment Voucher';
+                $ledger->voucher_source = 'Non Print Payment Voucher';
                 $ledger->transaction_date = $nppayment->transaction_date;
                 $this->Nppayments->Ledgers->save($ledger);
                 
@@ -241,7 +241,7 @@ class NppaymentsController extends AppController
                 $this->Flash->error(__('The non print payment could not be saved. Please, try again.'));
             }
         }
-        $vr=$this->Nppayments->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Payment Voucher','sub_entity'=>'Cash/Bank'])->first();
+        $vr=$this->Nppayments->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Non Print Payment Voucher','sub_entity'=>'Cash/Bank'])->first();
         $ReceiptVouchersCashBank=$vr->id;
         $vouchersReferences = $this->Nppayments->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
@@ -269,7 +269,7 @@ class NppaymentsController extends AppController
         }
         //pr($bankCashes->toArray())    ; exit;
         
-        $vr=$this->Nppayments->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Payment Voucher','sub_entity'=>'Paid To'])->first();
+        $vr=$this->Nppayments->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Non Print Payment Voucher','sub_entity'=>'Paid To'])->first();
         $ReceiptVouchersReceivedFrom=$vr->id;
         $vouchersReferences = $this->Nppayments->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
@@ -343,7 +343,7 @@ class NppaymentsController extends AppController
             //Save receipt
             //pr($payment); exit;
             if ($this->Nppayments->save($nppayment)) {
-                $this->Nppayments->Ledgers->deleteAll(['voucher_id' => $nppayment->id, 'voucher_source' => 'Payment Voucher']);
+                $this->Nppayments->Ledgers->deleteAll(['voucher_id' => $nppayment->id, 'voucher_source' => 'Non Print Payment Voucher']);
                 $total_cr=0; $total_dr=0;
                 foreach($nppayment->nppayment_rows as $nppayment_row){
                     
@@ -361,7 +361,7 @@ class NppaymentsController extends AppController
                         $total_cr=$total_cr+$nppayment_row->amount;
                     }
                     $ledger->voucher_id = $nppayment->id;
-                    $ledger->voucher_source = 'Payment Voucher';
+                    $ledger->voucher_source = 'Non Print Payment Voucher';
                     $ledger->transaction_date = $nppayment->transaction_date;
                     $this->Nppayments->Ledgers->save($ledger);
                     
@@ -465,7 +465,7 @@ class NppaymentsController extends AppController
                 $ledger->debit = 0;
                 $ledger->credit = $total_amount;
                 $ledger->voucher_id = $nppayment->id;
-                $ledger->voucher_source = 'Payment Voucher';
+                $ledger->voucher_source = 'Non Print Payment Voucher';
                 $ledger->transaction_date = $nppayment->transaction_date;
                 $this->Nppayments->Ledgers->save($ledger);
                 
@@ -477,7 +477,7 @@ class NppaymentsController extends AppController
             }
         }
         
-        $vr=$this->Nppayments->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Payment Voucher','sub_entity'=>'Cash/Bank'])->first();
+        $vr=$this->Nppayments->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Non Print Payment Voucher','sub_entity'=>'Cash/Bank'])->first();
         $ReceiptVouchersCashBank=$vr->id;
         $vouchersReferences = $this->Nppayments->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
@@ -504,7 +504,7 @@ class NppaymentsController extends AppController
             $BankCashes_selected='no';
         }
         
-        $vr=$this->Nppayments->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Payment Voucher','sub_entity'=>'Paid To'])->first();
+        $vr=$this->Nppayments->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Non Print Payment Voucher','sub_entity'=>'Paid To'])->first();
         $ReceiptVouchersReceivedFrom=$vr->id;
         $vouchersReferences = $this->Nppayments->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
@@ -647,8 +647,4 @@ class NppaymentsController extends AppController
         
         exit;
     }
-
-
-
-
 }

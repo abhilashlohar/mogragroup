@@ -235,6 +235,14 @@ class LedgerAccountsController extends AppController
 		}
 		$this->set(compact('date'));
 	}
+ 
+
+	public function ajax_liablitie_group_name()
+	{
+		
+	}
+
+
 	
 	public function ProfitLossStatement (){
 		$this->viewBuilder()->layout('index_layout');

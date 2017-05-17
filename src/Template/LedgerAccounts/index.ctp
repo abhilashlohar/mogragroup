@@ -55,15 +55,13 @@
 		<!-- BEGIN FORM-->
 		<br/>
 		<div class="row ">
-		<div class="col-md-12">
-			<div class="form-body">
-				<div class="form-group">
-					<div class="col-md-6">
-						<input type="text" class="form-control input-sm " placeholder="Search..." id="search2"  style="width: 20%;" >
+				<div class="col-md-4">
+						<input type="text" class="form-control input-sm " placeholder="Search..." id="search2"   >
 					</div>
-					<div class="col-md-5">
+					<div class="col-md-2"></div>
+					<div class="col-md-6">
 						<form method="GET" >
-							<table class=" table-condensed">
+							<table class="table-condensed" align="right">
 								<tbody>
 									<tr>
 										<td>
@@ -80,8 +78,7 @@
 							</table>
 						</form>
 					</div>
-				</div>
-			</div>
+				
 		<?= $this->Form->end() ?>
 		</div>
 		<!-- END FORM-->
@@ -139,7 +136,7 @@
 											'confirm' => __('Are you sure ?', $ledgerAccount->id)
 										]
 									) ?>
-							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'EditCompany', $ledgerAccount->id],array('escape'=>false,'class'=>'btn btn-xs green tooltips','data-original-title'=>'Add/Remove in other companies, Freeze/Unfreeze, Serial Number Enable/Disable')); ?>
+							<!--<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'EditCompany', $ledgerAccount->id],array('escape'=>false,'class'=>'btn btn-xs green tooltips','data-original-title'=>'Add/Remove in other companies, Freeze/Unfreeze, Serial Number Enable/Disable')); ?>-->
 							</td>
 							</tr>
 							<?php endforeach; ?>

@@ -185,7 +185,7 @@ $this->Form->templates([
 							</td>
 							
 							<td>
-							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.sale_tax',['value'=>$invoice_booking_row->sale_tax,'label'=>false,'type'=>'text','class'=>'form-control input-sm row_textbox']); ?>
+							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.sale_tax',['value'=>$invoice_booking_row->sale_tax,'label'=>false,'type'=>'text','class'=>'vattext form-control input-sm row_textbox']); ?>
 							<span class="check_text">In percentages</span>
 							</td>
 							
@@ -344,18 +344,31 @@ $(document).ready(function() {
 		$('#main_tb thead th:eq(9)').text('VAT');
 		$('input[name="cst_vat"]').val('VAT');
 		$('#ledger_account_for_vat').show();
+		
 	}
-
+$('.vattext').die().live("blur",function() {
+			var text = $(this).val();
+				if(text!="5" && text!="14.50" && text!="14.5" && text!="5.50" && text!="5.5"){
+					$(this).val(0);
+				}
+			});
 	$('select[name="purchase_ledger_account"]').die().live("change",function() {
 		var purchase_ledger_account=$(this).val();
 		if(purchase_ledger_account=="35"){
 			$('#main_tb thead th:eq(9)').text('CST');
 			$('input[name="cst_vat"]').val('CST');
 			$('#ledger_account_for_vat').hide();
+			$(".vattext").removeClass("vattext");
 		}else{
 			$('#main_tb thead th:eq(9)').text('VAT');
 			$('input[name="cst_vat"]').val('VAT');
 			$('#ledger_account_for_vat').show();
+			$('.vattext').die().live("blur",function() {
+			var text = $(this).val();
+				if(text!="5" && text!="14.50" && text!="14.5" && text!="5.50" && text!="5.5"){
+					$(this).val(0);
+				}
+			});
 		}
 		calculate_total();
     });

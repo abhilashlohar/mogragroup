@@ -55,7 +55,7 @@ margin-bottom: 0;
 			<td width="50%" valign="top" align="right">
 				<table>
 					<tr>
-						<td>Transaction Date.</td>
+						<td>Transaction Date</td>
 						<td width="20" align="center">:</td>
 						<td><?= h(date("d-m-Y",strtotime($receipt->transaction_date))) ?></td>
 					</tr>
@@ -70,7 +70,7 @@ margin-bottom: 0;
 			
 			<table>
 					<tr>
-						<td>Created Date.</td>
+						<td>Created On Date</td>
 						<td width="20" align="center">:</td>
 						<td><?= h(date("d-m-Y",strtotime($receipt->created_on))) ?></td>
 					</tr>

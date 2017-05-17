@@ -61,7 +61,7 @@ margin-bottom: 0;
 			<td width="50%" valign="top" align="right">
 				<table>
 					<tr>
-						<td>Transaction Date.</td>
+						<td>Transaction Date</td>
 						<td width="20" align="center">:</td>
 						<td><?= h(date("d-m-Y",strtotime($journalVoucher->transaction_date))) ?></td>
 					</tr>
@@ -75,7 +75,7 @@ margin-bottom: 0;
 			<td width="50%" valign="top" align="right">
 				<table>
 					<tr>
-						<td>Created On Date.</td>
+						<td>Created On Date</td>
 						<td width="20" align="center">:</td>
 						<td><?= h(date("d-m-Y",strtotime($journalVoucher->created_on))) ?></td>
 					</tr>
@@ -87,13 +87,13 @@ margin-bottom: 0;
 	
 	<div style="height:3px;" class="hdrmargin"></div>
 	<table width="100%" class="table" style="font-size:12px">
-		<thead>
+		
 			<tr>
 				<th><?= __('Ledger A/C') ?></th>
 				<th><?= __('Dr') ?></th>
 				<th><?= __('Cr') ?></th>
 			</tr>
-		</thead>
+		
 		
 			<?php $sr=0; $dr=0; $cr=0; foreach ($journalVoucher->journal_voucher_rows as $journal_voucher_row): $sr++; ?>
 			<tr>

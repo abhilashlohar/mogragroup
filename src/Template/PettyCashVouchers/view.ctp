@@ -19,7 +19,7 @@ margin-bottom: 0;
 </style>
 <a class="btn  blue hidden-print margin-bottom-5 pull-right" onclick="javascript:window.print();">Print <i class="fa fa-print"></i></a>
 
-<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 55%;font-size: 14px;" class="maindiv">    
+<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 65%;font-size: 12px;" class="maindiv">    
     <table width="100%" class="divHeader">
         <tr>
             <td width="30%"><?php echo $this->Html->image('/logos/'.$pettycashvoucher->company->logo, ['width' => '40%']); ?></td>
@@ -50,7 +50,7 @@ margin-bottom: 0;
             <td width="50%" valign="top" align="right">
                 <table>
                     <tr>
-                        <td>Date.</td>
+                        <td>Transaction Date</td>
                         <td width="20" align="center">:</td>
                         <td><?= h(date("d-m-Y",strtotime($pettycashvoucher->transaction_date))) ?></td>
                     </tr>
@@ -58,6 +58,20 @@ margin-bottom: 0;
             </td>
         </tr>
     </table>
+	<table width="100%">
+		<tr>
+			<td width="50%" valign="top" align="right"></td>
+			<td width="50%" valign="top" align="right">
+				<table>
+					<tr>
+						<td>Created On Date</td>
+						<td width="20" align="center">:</td>
+						<td><?= h(date("d-m-Y",strtotime($pettycashvoucher->created_on))) ?></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
     <br/>
     <table width="100%" class="table" style="font-size:12px">
         <tr>

@@ -19,10 +19,11 @@
 			<span class="caption-subject font-blue-steel uppercase">Account Statement</span>
 		</div>
 		
-	</div>
+	
+	
 	<div class="portlet-body form">
 	<form method="GET" >
-				<table class="table table-condensed" style="width:90%;">
+				<table class="table table-condensed" >
 				<tbody>
 					<tr>
 					<td>
@@ -183,4 +184,4 @@
 			
 		</div>
 <?php } ?>
-</div>
+</div></div>

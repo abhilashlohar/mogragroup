@@ -117,8 +117,10 @@
 $(document).ready(function() {
 	$(".group_name").die().live('click',function(e){
 	   var group_id=$(this).attr('group_id');
+	   var date = $('.date-picker').val();
+	  // alert(date);
 		var url="<?php echo $this->Url->build(['controller'=>'LedgerAccounts','action'=>'firstSubGroups']); ?>";
-		url=url+'/'+group_id,
+		url=url+'/'+group_id +'/'+date,
 		alert(url);
 	    $.ajax({
 			url: url,

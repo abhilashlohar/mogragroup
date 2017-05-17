@@ -114,6 +114,8 @@ class NppaymentsController extends AppController
         
         $nppayment = $this->Nppayments->newEntity();
         
+
+		
         if ($this->request->is('post')) {
             $nppayment = $this->Nppayments->patchEntity($nppayment, $this->request->data);
             $nppayment->company_id=$st_company_id;
@@ -128,7 +130,7 @@ class NppaymentsController extends AppController
             $nppayment->created_on=date("Y-m-d");
             $nppayment->created_by=$s_employee_id;
             $nppayment->transaction_date=date("Y-m-d",strtotime($nppayment->transaction_date));
-            //pr($payment); exit;
+            //pr($nppayment); exit;
             if ($this->Nppayments->save($nppayment)) {
                 $total_cr=0; $total_dr=0;
                 foreach($nppayment->nppayment_rows as $nppayment_row){

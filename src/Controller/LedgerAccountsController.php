@@ -241,9 +241,39 @@ class LedgerAccountsController extends AppController
 	}
  
 
-	public function firstSubGroups($group_id)
+	public function firstSubGroups($group_id,$date)
 	{
-		$this->viewBuilder()->layout('');
+		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
+
+			$query2=$this->LedgerAccounts->Ledgers->find();
+			$Ledgers_Liablities=$query2->select(['total_debit' => $query2->func()->sum('debit'),'total_credit' => $query2->func()->sum('credit')])
+			->matching('LedgerAccounts.AccountSecondSubgroups.AccountFirstSubgroups.AccountGroups', function ($q) use($group_id) {
+				return $q->where(['AccountGroups.id' => $group_id]);
+			})
+			->where(['transaction_date <='=>date('Y-m-d',strtotime($date)),'Ledgers.company_id'=>$st_company_id])
+			->contain(['LedgerAccounts'])
+			->group(['ledger_account_id'])
+			->autoFields(true)->toArray();
+			
+			
+			pr($Ledgers_Liablities);exit;
+			$liablitie_groups=[];
+			foreach($Ledgers_Liablities as $Ledgers_Liablitie){
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountGroups']->id]['group_id']
+					=$Ledgers_Liablitie->_matchingData['AccountGroups']->id;
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountGroups']->id]['debit']
+					=@$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountGroups']->id][$Ledgers_Liablitie->_matchingData['AccountGroups']->name]['debit']+($Ledgers_Liablitie->total_debit);
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountGroups']->id]['credit']
+					=@$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountGroups']->id][$Ledgers_Liablitie->_matchingData['AccountGroups']->name]['credit']+($Ledgers_Liablitie->total_credit);
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountGroups']->id]['name']
+					=$Ledgers_Liablitie->_matchingData['AccountGroups']->name;
+			}
+
+
+			pr($liablitie_groups); exit;
 		
 	}
 

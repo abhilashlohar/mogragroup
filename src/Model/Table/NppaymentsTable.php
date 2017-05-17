@@ -108,10 +108,7 @@ class NppaymentsTable extends Table
             ->requirePresence('payment_mode', 'create')
             ->notEmpty('payment_mode');
 
-        $validator
-            ->date('transaction_date')
-            ->requirePresence('transaction_date', 'create')
-            ->notEmpty('transaction_date');
+
 
         
 

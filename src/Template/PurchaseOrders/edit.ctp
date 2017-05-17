@@ -97,7 +97,7 @@
 						</thead>
 						<tbody id="main_tbody">
 							<?php $q=0; foreach ($purchaseOrder->purchase_order_rows as $purchase_order_rows): ?>
-							<tr class="tr1" row_no='<?php echo @$purchase_order_rows->id; ?>'>
+							<tr class="tr1 main_tr" row_no='<?php echo @$purchase_order_rows->id; ?>'>
 									<td rowspan="2"><?= h($q) ?></td>
 									<?php if($purchase_order_rows->pull_status =='Direct'){ ?>
 									<td>
@@ -126,7 +126,7 @@
 									
 									<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 								</tr>
-								<tr class="tr2 preimp" row_no='<?php echo @$purchase_order_rows->id; ?>'>
+								<tr class="tr2 preimp main_tr" row_no='<?php echo @$purchase_order_rows->id; ?>'>
 									<td colspan="6">
 									<div class="note-editable" id="summer<?php echo $q; ?>" ><?php echo $purchase_order_rows->description; ?></div>
 									</td>
@@ -421,19 +421,15 @@ $(document).ready(function() {
 		add_row();
     });
 	
-	function add_row(){
+	
+	function add_row(){ 
 		var tr1=$("#sample_tb tbody tr.tr1").clone();
 		$("#main_tb tbody#main_tbody").append(tr1);
 		var tr2=$("#sample_tb tbody tr.tr2").clone();
 		$("#main_tb tbody#main_tbody").append(tr2);
 		
-		var w=0; var r=0;
-		$("#main_tb tbody tr").each(function(){
-			$(this).attr("row_no",w);
-			r++;
-			if(r==2){ w++; r=0; }
-		});
-
+		
+		
 		rename_rows();
 		calculate_total();
 	}
@@ -441,6 +437,7 @@ $(document).ready(function() {
 		$('.deleterow').die().live("click",function() {
 		var l=$(this).closest("table tbody").find("tr").length;
 		if (confirm("Are you sure to remove row ?") == true) {
+		
 			if(l>2){
 				var row_no=$(this).closest("tr").attr("row_no");
 				var del="tr[row_no="+row_no+"]";
@@ -453,7 +450,16 @@ $(document).ready(function() {
 	
 	
 	function rename_rows(){
-	var i=0;
+	
+		var w=0; var r=0; 
+		$("#main_tb tbody tr.main_tr").each(function(){
+			$(this).attr("row_no",w);
+			r++;
+			if(r==2){ w++; r=0; }
+			
+		});
+		
+		var i=0;
 		$("#main_tb tbody tr.tr1").each(function(){
 			$(this).find("td:nth-child(1)").html(++i); i--;
 			var len=$(this).find("td:nth-child(2) select").length;
@@ -467,7 +473,6 @@ $(document).ready(function() {
 						}
 					});
 				$(this).find("td:nth-child(2) input[type='hidden']").attr({name:"purchase_order_rows["+i+"][processed_quantity]", id:"purchase_order_rows-"+i+"-processed_quantity"}).rules("add", "required");
-					
 			}else{
 				$(this).find("td:nth-child(2) input:eq(0)").attr({name:"purchase_order_rows["+i+"][item_id]", id:"purchase_order_rows-"+i+"-item_id"}).rules("add", "required");
 				
@@ -478,7 +483,9 @@ $(document).ready(function() {
 				
 			}
 			
+			
 			$(this).find("td:nth-child(3) input").attr({name:"purchase_order_rows["+i+"][quantity]", id:"purchase_order_rows-"+i+"-quantity"}).rules("add", "required");
+			
 			$(this).find("td:nth-child(4) input").attr({name:"purchase_order_rows["+i+"][rate]", id:"purchase_order_rows-"+i+"-rate"}).rules("add", "required");
 			$(this).find("td:nth-child(5) input").attr("name","purchase_order_rows["+i+"][amount]");
 			i++;
@@ -496,7 +503,7 @@ $(document).ready(function() {
 		i++; });
 	}
 		
-		$('#main_tb input').die().live("keyup","blur",function() { 
+	$('#main_tb input').die().live("keyup","blur",function() {
 		calculate_total();
     });
 	
@@ -537,15 +544,19 @@ $(document).ready(function() {
 
 <table id="sample_tb" style="display:none;">
 	<tbody>
-		<tr class="tr1">
+		<tr class="tr1 main_tr">
 			<td rowspan="2" width="10">0</td>
-			<td><?php echo $this->Form->input('q', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm item_id']); ?></td>
+			<td>
+				<?php echo $this->Form->input('q', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm item_id']);
+				
+				echo $this->Form->input('q', ['label' => false,'type' => 'hidden','value'=>0]); ?>
+			</td>
 			<td width="100"><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
 			<td width="130"><?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate']); ?></td>
 			<td width="130"><?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>
 			<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
-		<tr class="tr2">
+		<tr class="tr2 main_tr">
 			<td colspan="6"><?php echo $this->Form->input('description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'5']); ?></td>
 			<td></td>
 		</tr>

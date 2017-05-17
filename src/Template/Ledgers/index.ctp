@@ -1,50 +1,45 @@
-
-
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Ledger Account</span>
 		</div>
-		
-	</div>
+
 	<div class="portlet-body form">
-	<form method="GET" >
-				<table class="table table-condensed" style="width:90%;">
+	<div class="row ">
+		<div class="col-md-12">
+		<form method="GET" >
+			<table class="table table-condensed">
 				<tbody>
 					<tr>
-					<td>
-						<div class="row">
-							<div class="col-md-6">
-								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo @$From; ?>"  data-date-format="dd-mm-yyyy" >
+						<td>
+							<div class="row">
+								<div class="col-md-6">
+									<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo @$From; ?>"  data-date-format="dd-mm-yyyy" >
+								</div>
+								<div class="col-md-6">
+									<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Transaction To" value="<?php echo @$To; ?>"  data-date-format="dd-mm-yyyy" >
+								</div>
 							</div>
-							<div class="col-md-6">
-								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Transaction To" value="<?php echo @$To; ?>"  data-date-format="dd-mm-yyyy" >
-							</div>
-						</div>
-					</td>
-					
-							
-						<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+						</td>
+						<td>
+							<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button>
+						</td>
 					</tr>
 				</tbody>
 			</table>
-			</form>
+		</form>
 		<!-- BEGIN FORM-->
-		<div class="row ">
-		
-		<div class="col-md-12">
-		
-		 <?php $page_no=$this->Paginator->current('Ledgers'); $page_no=($page_no-1)*20; ?>
+		<?php $page_no=$this->Paginator->current('Ledgers'); $page_no=($page_no-1)*20; ?>
 			<table class="table table-bordered table-striped table-hover">
 				<thead>
 					<tr>
-						<th>Transaction Date</th>
-						<th>Ledger Account</th>
-						<th>Source</th>
-						<th>Reference</th>
-						<th>Debit</th>
-						<th>Credit</th>
+						<th width="10%">Transaction Date</th>
+						<th width="10%">Ledger Account</th>
+						<th width="10%">Source</th>
+						<th width="10%">Reference</th>
+						<th width="5%">Debit</th>
+						<th width="5%">Credit</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -76,13 +71,13 @@
 						
 						?>
 						</td>
-						<td align="right"><?= $this->Number->format($ledger->debit) ?></td>
-						<td align="right"><?= $this->Number->format($ledger->credit) ?></td>
+						<td ><?= $this->Number->format($ledger->debit) ?></td>
+						<td ><?= $this->Number->format($ledger->credit) ?></td>
 				</tr>
 				<?php endforeach; ?>
 				</tbody>
 			</table>
-			</div>
+				
 			<div class="paginator">
 				<ul class="pagination">
 					<?= $this->Paginator->prev('<') ?>
@@ -92,9 +87,7 @@
 				<p><?= $this->Paginator->counter() ?></p>
 			</div>
 		</div>
-		
-		
-		<!-- END FORM-->
-
-
+	</div>
+  </div>
+</div>
 </div>

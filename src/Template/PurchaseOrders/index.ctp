@@ -74,13 +74,13 @@
 				<table class="table table-bordered table-striped table-hover">
 						<thead>
 							<tr>
-								<th width="5%">S.No</th>
-								<th width="10%">Purchase No.</th>
-								<th width="10%">Party Name</th>
-								<th width="10%">Items Name</th>
-								<th width="10%" style="text-align:right">Total</th>
+								<th>S.No</th>
+								<th>Purchase No.</th>
+								<th>Party Name</th>
+								<th>Items Name</th>
+								<th style="text-align:right">Total</th>
 								
-								<th width="10%" class="actions"><?= __('Actions') ?></th>
+								<th class="actions"><?= __('Actions') ?></th>
 							</tr>
 					
 					</thead>
@@ -99,7 +99,7 @@
 										<ul class="dropdown-menu" role="menu" aria-labelledby="btnGroupVerticalDrop5">
 										<?php  foreach($purchaseOrder->purchase_order_rows as $purchase_order_row){ 
 											if($purchase_order_row->purchase_order_id == $purchaseOrder->id){?>
-											<li><?= h($purchase_order_row->item->name) ?></li>
+											<li><a><?= h($purchase_order_row->item->name) ?></a></li>
 											<?php }}?>
 										</ul>
 								</div>

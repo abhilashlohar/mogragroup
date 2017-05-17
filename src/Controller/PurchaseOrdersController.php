@@ -48,9 +48,7 @@ class PurchaseOrdersController extends AppController
 		if(!empty($vendor)){
 			$where['Vendors.company_name LIKE']='%'.$vendor.'%';
 		}
-		if(!empty($items)){
-			$where[[]='%'.$items.'%';
-		}
+		
 		
 		
 		if($status==null or $status=='Pending'){
@@ -59,8 +57,10 @@ class PurchaseOrdersController extends AppController
 			$having=['total_rows =' => 0];
 		}
 		
-		if(){
-			$purchaseOrders = $this->paginate($this->PurchaseOrders->find()->contain()
+		if(!empty($items)){
+			$purchaseOrdersitem = $this->paginate($this->PurchaseOrders->find()->contain(['PurchaseOrderRows'=>['Items']])
+			);
+			pr($purchaseOrdersitem);exit;
 		}
 		else{
 		$purchaseOrders=$this->paginate(

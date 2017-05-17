@@ -847,7 +847,7 @@ div[contenteditable="true"]:active{
 <script>
 $("a[role='button']").live('click',function(e){
 		e.preventDefault();
-	});
+});
 
 $('a[role="button"]').live('click',function(e){
 	e.preventDefault();

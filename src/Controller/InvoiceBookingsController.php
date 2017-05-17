@@ -665,9 +665,9 @@ class InvoiceBookingsController extends AppController
 		}
 		
 		$this->viewBuilder()->layout('index_layout');
-		$invoices = $this->Invoices->find()->contain(['InvoiceRows','Customers'])->where($where)->order(['Invoices.id' => 'DESC'])->where(['Invoices.company_id'=>$st_company_id]);
-		//pr($invoices->toArray()); exit;
-		$this->set(compact('invoices'));
+		$InvoiceBookings = $this->InvoiceBookings->find()->contain(['InvoiceBookingRows','Vendors'])->where($where)->order(['InvoiceBookings.id' => 'DESC'])->where(['InvoiceBookings.company_id'=>$st_company_id]);
+		//pr($InvoiceBookings->toArray()); exit;
+		$this->set(compact('InvoiceBookings'));
 	}
 
 }

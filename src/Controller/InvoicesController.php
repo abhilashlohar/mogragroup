@@ -1270,7 +1270,7 @@ class InvoicesController extends AppController
 		}
 		
 		$this->viewBuilder()->layout('index_layout');
-		$invoices = $this->Invoices->find()->contain(['InvoiceRows','Customers'])->where($where)->order(['Invoices.id' => 'DESC'])->where(['Invoices.company_id'=>$st_company_id]);
+		$invoices = $this->Invoices->find()->contain(['InvoiceRows','Customers'])->order(['Invoices.id' => 'DESC'])->where(['Invoices.company_id'=>$st_company_id]);
 		//pr($invoices->toArray()); exit;
 		$this->set(compact('invoices'));
 	}

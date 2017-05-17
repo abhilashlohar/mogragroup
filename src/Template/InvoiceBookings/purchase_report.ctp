@@ -4,7 +4,7 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Sales Report</span>
+			<span class="caption-subject font-blue-steel uppercase">Purchase Report</span>
 		</div>
 		<div class="actions">
 			
@@ -50,23 +50,22 @@
 						<th>Sr.No.</th>
 						<th>Invoice No</th>
 						<th>Date</th>
-						<th>Customer</th>
-						<th>Sales @ 5.50 %</th>
+						<th>Supplier</th>
+						<th>Purchase @ 5.50 %</th>
 						<th>VAT @5.50 %</th>
-						<th>Sales @ 14.50 %</th>
+						<th>Purchase @ 14.50 %</th>
 						<th>VAT @14.50 %</th>
-						<th>2 % CST Sale</th>
-						<th>CST @ 2 %</th>
-						<th>Sale NIL Tax</th>
+						<th>Purchase @ 5.00 %</th>
+						<th>VAT @5.00 %</th>
 					</tr>
 				</thead>
 				<tbody><?php $sales5=0; $vat5=0; $sales14=0; $vat14=0; $sales2=0; $vat2=0; $sales0=0; ?>
-				<?php foreach ($invoices as $invoice): ?>
+				<?php foreach ($InvoiceBookings as $InvoiceBooking): ?>
 					<tr>
 						<td><?= h(++$page_no) ?></td>
-							<td><?= h(($invoice->in1.'/IN-'.str_pad($invoice->in2, 3, '0', STR_PAD_LEFT).'/'.$invoice->in3.'/'.$invoice->in4)) ?></td>
-							<td><?php echo date("d-m-Y",strtotime($invoice->date_created)); ?></td>
-							<td><?= h($invoice->customer->customer_name) ?></td>
+							<td><?= h(($InvoiceBooking->ib1.'/IN-'.str_pad($InvoiceBooking->ib2, 3, '0', STR_PAD_LEFT).'/'.$InvoiceBooking->ib3.'/'.$InvoiceBooking->ib4)) ?></td>
+							<td><?php echo date("d-m-Y",strtotime($InvoiceBooking->date_created)); ?></td>
+							<td><?= h($InvoiceBooking->vendor->company_name) ?></td>
 							<td><?php if($invoice->sale_tax_per==5.50){
 								echo $invoice->total;
 								$sales5=$sales5+$invoice->total;

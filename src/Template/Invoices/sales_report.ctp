@@ -14,10 +14,10 @@
 			<?php echo $this->Html->link('Purchase Return Report','/PurchaseReturns/purchaseReturnReport',array('escape'=>false,'class'=>'btn btn-default')); ?>
 		</div>
 		
-	</div>
+	
 	<div class="portlet-body form">
 	<form method="GET" >
-				<table class="table table-condensed" style="width:90%;">
+				<table class="table table-condensed">
 				<tbody>
 					<tr>
 					<td>
@@ -127,7 +127,7 @@
 				</tbody>
 			</table>
 			</div>
-		
+		</div>
 		</div>
 		
 		

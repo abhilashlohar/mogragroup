@@ -214,8 +214,8 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 						else{	$checked2="";
 							 } 
 					?> 
-					<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per','Checked'=>$checked2]); ?></label>(in %)</b>
-						<div class="input-group col-md-2" style="display:none;" id="discount_text">
+					<b>Discount <label style="display:none;"><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per','Checked'=>$checked2]); ?></label>(in %)</b>
+						<div class="input-group col-md-2"  id="discount_text">
 						<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 readonly value="<?php echo $invoice->discount_per; ?> "><span class="input-group-addon">%</span>
 						</div>
 					</td>
@@ -238,10 +238,10 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 							 } 
 					?> 
 					<td  align="right">
-					<b>P&F <label><?php echo $this->Form->input('pnf_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'pnfper','Checked'=>$checked2]); ?></label>(in %)</b>
+					<b>P&F <label style="display:none"><?php echo $this->Form->input('pnf_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'pnfper','Checked'=>$checked2]); ?></label>(in %)</b>
 					<?php if($invoice->pnf_type=='1'){ ?>
 						<div class="input-group col-md-2"  id="pnf_text">
-							<input type="text" name="pnf_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01  readonly value='<?= h($invoice->pnf_per) ?>'><span class="input-group-addon">%</span>
+							<input type="text"  name="pnf_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01  readonly value='<?= h($invoice->pnf_per) ?>'><span class="input-group-addon">%</span>
 						</div>
 					<?php }else{ ?>
 						<div class="input-group col-md-2"  id="pnf_text" style="display:none;">
@@ -250,7 +250,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 					<?php } ?>
 					
 					</td>
-					<td><?php echo $this->Form->input('pnf', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'P&F','step'=>0.01]); ?></td>
+					<td><?php echo $this->Form->input('pnf', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly','placeholder' => 'P&F','step'=>0.01]); ?></td>
 				</tr>
 				<tr>
 					<td  align="right"><b>Total after P&F </b></td>
@@ -441,16 +441,12 @@ $(document).ready(function() {
 	
 	//--	 END OF VALIDATION
 	
-	if($("#discount_per").is(':checked')){
-		$("#discount_text").show();
-		$('input[name="discount"]').attr('readonly','readonly');
-		
-	}else{
-		$("#discount_text").hide();
-		$('input[name="discount"]').removeAttr('readonly');
-		$('input[name="discount_per"]').val(0);
-		$('input[name="discount"]').val(0);
-	}
+	
+	
+	$("#discount_text").show();
+	$('input[name="discount"]').attr('readonly','readonly');
+	calculate_total();
+	
 	$("#discount_per").on('click',function(){
 		if($(this).is(':checked')){
 			$("#discount_text").show();

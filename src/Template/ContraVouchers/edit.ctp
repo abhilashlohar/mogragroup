@@ -205,6 +205,9 @@ $(document).ready(function() {
                 bank_cash_id:{
                     required: true,
                 },
+				 cheque_no:{
+                    required: true,
+                },
             },
 
         errorPlacement: function (error, element) { // render error placement for each input type

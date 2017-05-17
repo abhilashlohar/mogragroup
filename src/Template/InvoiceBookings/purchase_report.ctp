@@ -60,58 +60,54 @@
 					</tr>
 				</thead>
 				<tbody><?php $sales5=0; $vat5=0; $sales14=0; $vat14=0; $sales2=0; $vat2=0; $sales0=0; ?>
-				<?php foreach ($InvoiceBookings as $InvoiceBooking): ?>
+				<?php foreach ($InvoiceBookings as $InvoiceBooking): 
+				if($InvoiceBooking->purchase_ledger_account !=35){ 
+				?>
 					<tr>
 						<td><?= h(++$page_no) ?></td>
 							<td><?= h(($InvoiceBooking->ib1.'/IN-'.str_pad($InvoiceBooking->ib2, 3, '0', STR_PAD_LEFT).'/'.$InvoiceBooking->ib3.'/'.$InvoiceBooking->ib4)) ?></td>
-							<td><?php echo date("d-m-Y",strtotime($InvoiceBooking->date_created)); ?></td>
+							<td><?php echo date("d-m-Y",strtotime($InvoiceBooking->created_on)); ?></td>
 							<td><?= h($InvoiceBooking->vendor->company_name) ?></td>
-							<td><?php if($invoice->sale_tax_per==5.50){
-								echo $invoice->total;
-								$sales5=$sales5+$invoice->total;
+							<?php $purchase5=0; $vat5=0; $purchase14=0; $vat14=0; $purchase2=0; $vat2=0; ?>
+							<?php foreach($InvoiceBooking->invoice_booking_rows as $invoice_booking_row ) {?>
+								<?php if($invoice_booking_row->sale_tax==5.00){
+									$total_amt=($invoice_booking_row->amount*$invoice_booking_row->sale_tax)/100;
+									$vat5=$vat5+$total_amt;
+								}else if($invoice_booking_row->sale_tax==14.5){
+									$total_amt=($invoice_booking_row->amount*$invoice_booking_row->sale_tax)/100;
+									$vat14=$vat14+$total_amt;
+								} else if($invoice_booking_row->sale_tax==5.50){ 
+									$total_amt=($invoice_booking_row->amount*$invoice_booking_row->sale_tax)/100;
+									$vat2=$vat2+$total_amt;
+									
+								}
+								?>
+							<?php }?>
+							<?php //pr($vat2);  ?>
+							<td></td>
+							<td><?php if($invoice_booking_row->sale_tax==5.50){
+								echo $vat2;
+							}else{
+								echo "-";
+							} ?></td>
+							<td></td>
+							<td><?php if($invoice_booking_row->sale_tax==14.5){
+								echo $vat14;
 							}else{
 								echo "-";
 							} ?>
 							</td>
-							<td><?php if($invoice->sale_tax_per==5.50){
-								echo $invoice->sale_tax_amount;
-								$vat5=$vat5+$invoice->sale_tax_amount;
-							}else{
-								echo "-";
-							} ?></td>
-							<td><?php if($invoice->sale_tax_per==14.50){
-								echo $invoice->total;
-								$sales14=$sales14+$invoice->total;
+							<td></td>
+							<td><?php if($invoice_booking_row->sale_tax==5.0){
+								echo $vat5;
 							}else{
 								echo "-";
 							} ?>
 							</td>
-							<td><?php if($invoice->sale_tax_per==14.50){
-								echo $invoice->sale_tax_amount;
-								$vat14=$vat14+$invoice->sale_tax_amount;
-							}else{
-								echo "-";
-							} ?></td>
-							<td><?php if($invoice->sale_tax_per==2.00){
-								echo $invoice->total;
-								$sales2=$sales2+$invoice->total;
-							}else{
-								echo "-";
-							} ?>
-							</td>
-							<td><?php if($invoice->sale_tax_per==2.00){
-								echo $invoice->sale_tax_amount;
-								$vat2=$vat2+$invoice->sale_tax_amount;
-							}else{
-								echo "-";
-							} ?></td>
-							<td><?php if($invoice->sale_tax_per==0.00){
-								echo $invoice->total;
-								$sales0=$sales0+$invoice->total;
-							}else{
-								echo "-";
-							} ?></td>
+							
+							
 				</tr>
+				<?php } ?>
 				<?php endforeach; ?>
 				<tr>
 					<td colspan="4" align="right">Total</td>

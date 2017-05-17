@@ -58,8 +58,13 @@
 				<div class="col-md-4">
 						<input type="text" class="form-control input-sm " placeholder="Search..." id="search2"   >
 					</div>
-					<div class="col-md-2"></div>
-					<div class="col-md-6">
+					<?php if($company_data=='all'){?>
+						<div align="right" class="col-md-4">Ledger Account For<u>All Compaines</u></div>
+					<?php	}else{ ?>
+					<div align="right" class="col-md-4">Ledger Account For <u><?php echo $Current_company->name; ?></u></div>
+					<?php } ?>
+					
+					<div class="col-md-4">
 						<form method="GET" >
 							<table class="table-condensed" align="right">
 								<tbody>
@@ -95,7 +100,10 @@
 								<th>Account Group</th>
 								<th>Account First Subgroup </th>
 								<th>Account Second Subgroup </th>	
-								<th>Ledger Account </th>	
+								<th>Ledger Account </th>
+								<?php if($company_data=='all'){?>
+								<th>Company </th>
+								<?php } ?>
 								<th width="120">Actions</th>
 							</tr>
 						</thead>
@@ -116,6 +124,9 @@
 									<?= h($ledgerAccount->name) ?> 
 									<?php if(!empty($ledgerAccount->alias)){ ?>  (<?= h($ledgerAccount->alias) ?>)<?php } ?>
 								</td>
+								<?php if($company_data=='all'){?>
+								<td style="font-size:10px;"><?php echo $ledgerAccount->company->name ?></td>
+								<?php } ?>
 								<td>
 								<?php if($ledgerAccount->source_model == 'Customers'){
 									echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'customers','action' => 'Edit', $ledgerAccount->source_id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); }

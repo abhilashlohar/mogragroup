@@ -53,7 +53,7 @@ class LedgerAccountsController extends AppController
         $this->set('_serialize', ['ledgerAccount']);
 		
 		if($company_data=='all'){
-			$ledgerAccounts = $this->LedgerAccounts->find()->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups'=>['AccountCategories']]]]);
+			$ledgerAccounts = $this->LedgerAccounts->find()->contain(['Companies','AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups'=>['AccountCategories']]]]);
 		}else{
 			$ledgerAccounts = $this->LedgerAccounts->find()->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups'=>['AccountCategories']]]])->where(['LedgerAccounts.company_id'=>$st_company_id]);
 		}

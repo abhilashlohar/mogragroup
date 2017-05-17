@@ -346,12 +346,14 @@ $(document).ready(function() {
 		$('#ledger_account_for_vat').show();
 		
 	}
-$('.vattext').die().live("blur",function() {
+	
+	$('.vattext').die().live("blur",function() {
 			var text = $(this).val();
 				if(text!="5" && text!="14.50" && text!="14.5" && text!="5.50" && text!="5.5"){
 					$(this).val(0);
 				}
-			});
+	});
+	
 	$('select[name="purchase_ledger_account"]').die().live("change",function() {
 		var purchase_ledger_account=$(this).val();
 		if(purchase_ledger_account=="35"){

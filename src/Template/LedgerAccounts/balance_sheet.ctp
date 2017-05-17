@@ -28,12 +28,14 @@
 								<div class="col-md-12">
 									<table class="table table-condensed table-hover">
 										<tbody>
-										<?php $lib_tr = 0; $ass_tr = 0; $liablitie_tr =0; $assets_tr = 0; $Total_Liablities=0; $Total_lib_Dr=0; $Total_lib_Cr=0;
+										<?php 
+										$lib_tr = 0; $ass_tr = 0; $liablitie_tr =0; $assets_tr = 0; $Total_Liablities=0; $Total_lib_Dr=0; $Total_lib_Cr=0;
 										
 										foreach($liablitie_groups as $liablitie_group){ 
 										$Total_Liablities=$liablitie_group['debit']-$liablitie_group['credit']; ?>
 											<tr> <?php $liablitie_tr++; ?>
-												<td> <a href='#' class="liablitie_group_name" > 
+												<td> 
+													<a href='#' role='button' class="group_name" group_id='<?php echo $liablitie_group['group_id']; ?>' > 
 														<?=  h($liablitie_group['name']) ?> 
 													</a>  
 												</td>
@@ -113,14 +115,15 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
-   $('.liablitie_group_name').click(function(){
-	   
-		var url="<?php echo $this->Url->build(['controller'=>'LedgerAccounts','action'=>'ajax_liablitie_group_name']); ?>";
-		url=url+'/'+customer_id,
+	$(".group_name").die().live('click',function(e){
+	   var group_id=$(this).attr('group_id');
+		var url="<?php echo $this->Url->build(['controller'=>'LedgerAccounts','action'=>'firstSubGroups']); ?>";
+		url=url+'/'+group_id,
+		alert(url);
 	    $.ajax({
 			url: url,
 		}).done(function(response) {
-			$("#result_ajax").html(response);
+			console.log(response);
 		});		
    });
 });

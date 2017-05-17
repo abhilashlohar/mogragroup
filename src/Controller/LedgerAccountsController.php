@@ -202,6 +202,8 @@ class LedgerAccountsController extends AppController
 
 			$asset_groups=[];
 			foreach($Ledgers_Assets as $Ledgers_Asset){
+				$asset_groups[$Ledgers_Asset->_matchingData['AccountGroups']->id]['group_id']
+					=$Ledgers_Asset->_matchingData['AccountGroups']->id;
 				$asset_groups[$Ledgers_Asset->_matchingData['AccountGroups']->id]['debit']
 					=@$asset_groups[$Ledgers_Asset->_matchingData['AccountGroups']->id][$Ledgers_Asset->_matchingData['AccountGroups']->name]['debit']+($Ledgers_Asset->total_debit);
 				$asset_groups[$Ledgers_Asset->_matchingData['AccountGroups']->id]['credit']
@@ -223,6 +225,8 @@ class LedgerAccountsController extends AppController
 			
 			$liablitie_groups=[];
 			foreach($Ledgers_Liablities as $Ledgers_Liablitie){
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountGroups']->id]['group_id']
+					=$Ledgers_Liablitie->_matchingData['AccountGroups']->id;
 				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountGroups']->id]['debit']
 					=@$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountGroups']->id][$Ledgers_Liablitie->_matchingData['AccountGroups']->name]['debit']+($Ledgers_Liablitie->total_debit);
 				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountGroups']->id]['credit']
@@ -237,8 +241,9 @@ class LedgerAccountsController extends AppController
 	}
  
 
-	public function ajax_liablitie_group_name()
+	public function firstSubGroups($group_id)
 	{
+		$this->viewBuilder()->layout('');
 		
 	}
 

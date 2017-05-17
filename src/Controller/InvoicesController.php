@@ -1260,9 +1260,17 @@ class InvoicesController extends AppController
 		$To=$this->request->query('To');
 		$where=[];
 		
+		if(!empty($From)){
+			$From=date("Y-m-d",strtotime($this->request->query('From')));
+			$where['transaction_date >=']=$From;
+		}
+		if(!empty($To)){
+			$To=date("Y-m-d",strtotime($this->request->query('To')));
+			$where['transaction_date <=']=$To;
+		}
 		
 		$this->viewBuilder()->layout('index_layout');
-		$invoices = $this->Invoices->find()->contain(['InvoiceRows','Customers'])->order(['Invoices.id' => 'DESC'])->where(['Invoices.company_id'=>$st_company_id]);
+		$invoices = $this->Invoices->find()->contain(['InvoiceRows','Customers'])->where($where)->order(['Invoices.id' => 'DESC'])->where(['Invoices.company_id'=>$st_company_id]);
 		//pr($invoices->toArray()); exit;
 		$this->set(compact('invoices'));
 	}

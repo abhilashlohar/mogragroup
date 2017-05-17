@@ -631,7 +631,6 @@ class InvoiceBookingsController extends AppController
 			$this->InvoiceBookings->ReferenceDetails->deleteAll(['ledger_account_id'=>$old_received_from_id,'reference_no'=>$old_ref]);
 		}elseif($old_ref_type=="Against Reference"){
 			$ReferenceDetail=$this->InvoiceBookings->ReferenceDetails->find()->where(['ledger_account_id'=>$old_received_from_id,'invoice_booking_id'=>$invoice_booking_id,'reference_no'=>$old_ref])->first();
-			pr($ReferenceDetail);
 			if(!empty($ReferenceDetail->dedit)){
 				$ReferenceBalance=$this->InvoiceBookings->ReferenceBalances->find()->where(['ledger_account_id' => $ReferenceDetail->ledger_account_id, 'reference_no' => $ReferenceDetail->reference_no])->first();
 				$ReferenceBalance=$this->InvoiceBookings->ReferenceBalances->get($ReferenceBalance->id);
@@ -648,6 +647,27 @@ class InvoiceBookingsController extends AppController
 		}
 		
 		exit;
+	}
+	public function purchaseReport(){
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		$From=$this->request->query('From');
+		$To=$this->request->query('To');
+		$where=[];
+		
+		if(!empty($From)){
+			$From=date("Y-m-d",strtotime($this->request->query('From')));
+			$where['transaction_date >=']=$From;
+		}
+		if(!empty($To)){
+			$To=date("Y-m-d",strtotime($this->request->query('To')));
+			$where['transaction_date <=']=$To;
+		}
+		
+		$this->viewBuilder()->layout('index_layout');
+		$invoices = $this->Invoices->find()->contain(['InvoiceRows','Customers'])->where($where)->order(['Invoices.id' => 'DESC'])->where(['Invoices.company_id'=>$st_company_id]);
+		//pr($invoices->toArray()); exit;
+		$this->set(compact('invoices'));
 	}
 
 }

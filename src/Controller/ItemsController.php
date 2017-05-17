@@ -340,7 +340,8 @@ class ItemsController extends AppController
 	
 	public function DeleteItemOpeningBalance($id = null)
 	{
-		$this->request->allowMethod(['post', 'delete']);
+		//pr($id);exit;
+	//	$this->request->allowMethod(['post', 'delete']);
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		$ItemLedger = $this->Items->ItemLedgers->get($id);

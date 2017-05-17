@@ -125,6 +125,20 @@
 		
 		
 		<button type="submit" class="btn blue-hoki">Submit</button>
+
+		<?php 
+		
+		if(empty($ItemSerialNumbers[0]->serial_no)){?>
+		
+		<?= $this->Html->link('Delete',
+							['action' => 'DeleteItemOpeningBalance', $ItemLedger->id], 
+							[
+								'escape' => false,
+								'class'=>'btn btn-danger'
+							]
+						); 
+
+		}?>
 	<?= $this->Form->end() ?>
 	</div>
 </div>

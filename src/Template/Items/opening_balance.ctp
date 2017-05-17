@@ -21,12 +21,16 @@
 	<div class="portlet-body form">
 	<?= $this->Form->create($ItemLedger,['id'=>'form_sample_3']) ?>
 		<div class="row">
+		<div class="col-md-1"></div>
 			<div class="col-md-4">
 				<div class="form-group">
 					<label class="control-label">Item <span class="required" aria-required="true">*</span></label>
 					<?php echo $this->Form->input('Item_id', ['empty'=>'--select--','label' => false,'class' => 'form-control input-sm select2me','options'=>$Items,'required']); ?>
 				</div>
 			</div>
+
+			<div class="col-md-2"></div>
+
 			<div class="col-md-3">
 				<div class="form-group">
 					<label class="control-label">Date <span class="required" aria-required="true">*</span></label>

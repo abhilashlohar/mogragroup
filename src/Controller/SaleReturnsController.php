@@ -117,6 +117,7 @@ class SaleReturnsController extends AppController
 			
 			$saleReturn->company_id=$invoice->company_id;
 			$saleReturn->invoice_id=$invoice->id;
+			$saleReturn->sale_tax_id=$invoice->sale_tax_id;
 			$saleReturn->date_created=date("Y-m-d");
 			$saleReturn->sr1=$invoice->in1;
 			$last_sr_no=$this->SaleReturns->find()->select(['sr2'])->where(['company_id' => $st_company_id])->order(['sr2' => 'DESC'])->first();
@@ -354,6 +355,7 @@ class SaleReturnsController extends AppController
 			}
 			$saleReturn->date_created=date("Y-m-d");
 			$saleReturn->invoice_id=$invoice->id;
+			$saleReturn->sale_tax_id=$invoice->sale_tax_id;
 
         if ($this->SaleReturns->save($saleReturn)) {
 				$this->SaleReturns->Ledgers->deleteAll(['voucher_id' => $saleReturn->id, 'voucher_source' => 'Sale Return']);
@@ -649,5 +651,16 @@ class SaleReturnsController extends AppController
 		}
 		
 		exit;
+	}
+	public function salesReturnReport(){
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		$From=$this->request->query('From');
+		$To=$this->request->query('To');
+		$where=[];
+		$this->viewBuilder()->layout('index_layout');
+		$SaleReturns = $this->SaleReturns->find()->contain(['SaleReturnRows','Customers'])->order(['SaleReturns.id' => 'DESC'])->where(['SaleReturns.company_id'=>$st_company_id]);
+		//pr($invoices->toArray()); exit;
+		$this->set(compact('SaleReturns'));
 	}
 }

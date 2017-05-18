@@ -395,13 +395,15 @@ class GrnsController extends AppController
 		$st_company_id = $session->read('st_company_id');
 		
 		$this->viewBuilder()->layout('index_layout');
-			$grn = $this->Grns->get($id, [
+		
+		$grn = $this->Grns->get($id, [
 				'contain' => [
 						'Companies','ItemSerialNumbers','Vendors','PurchaseOrders'=>['PurchaseOrderRows','Grns'=>['GrnRows']],'GrnRows'=>['Items' => ['ItemCompanies' =>function($q) use($st_company_id){
 									return $q->where(['company_id'=>$st_company_id]);
 								}]]
 					]
 			]);
+			//pr($grn); exit;
 		$Em = new FinancialYearsController;
 	    $financial_year_data = $Em->checkFinancialYear($grn->date_created);
 

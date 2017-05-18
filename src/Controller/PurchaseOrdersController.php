@@ -13,7 +13,7 @@ class PurchaseOrdersController extends AppController
 
     /**
      * Index method
-     *
+     * 
      * @return \Cake\Network\Response|null
      */
     public function index($status=null)
@@ -57,7 +57,7 @@ class PurchaseOrdersController extends AppController
 			$having=['total_rows =' => 0];
 		}
 		
-		//pr($items);exit;
+		
 		if(!empty($items)){ 
 			$purchaseOrders=$this->paginate($this->PurchaseOrders->find()
 			->contain(['PurchaseOrderRows'=>['Items']])
@@ -67,8 +67,6 @@ class PurchaseOrdersController extends AppController
 					}
 				)
 				);
-				
-			//pr($items_data->toArray()); exit;	
 		}
 		else{		
 			$purchaseOrders=$this->paginate(

@@ -215,6 +215,11 @@ class VendorsController extends AppController
 		$ledgerAccount->company_id = $company_id;
 		//pr($ledgerAccount); exit;
 		$this->Vendors->LedgerAccounts->save($ledgerAccount);
+		$VouchersReferences = $this->Vendors->VouchersReferences->find()->where(['company_id'=>$company_id,'voucher_entity'=>'PaymentVoucher -> Paid To'])->first();
+					$voucherLedgerAccount = $this->Vendors->VoucherLedgerAccounts->newEntity();
+					$voucherLedgerAccount->vouchers_reference_id =$VouchersReferences->id;
+					$voucherLedgerAccount->ledger_account_id =$ledgerAccount->id;
+					$this->Vendors->VoucherLedgerAccounts->save($voucherLedgerAccount);
 		
 		return $this->redirect(['action' => 'EditCompany/'.$vendor_id]);
 	}

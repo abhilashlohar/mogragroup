@@ -73,7 +73,7 @@
 					</tbody>
 				</table>
 			</form>
-				<?php $page_no=$this->Paginator->current('Purchase Orders'); $page_no=($page_no-1)*20; ?>
+				<?php $page_no=$this->Paginator->current('PurchaseOrders'); $page_no=($page_no-1)*20; ?>
 				<table class="table table-bordered table-striped table-hover">
 						<thead>
 							<tr>

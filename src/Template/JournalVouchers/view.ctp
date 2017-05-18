@@ -70,7 +70,7 @@ margin-bottom: 0;
 			<td width="50%" valign="top" align="right">
 				<table>
 					<tr>
-						<td>Created On Date</td>
+						<td>Created On</td>
 						<td width="20" align="center">:</td>
 						<td><?= h(date("d-m-Y",strtotime($journalVoucher->created_on))) ?></td>
 					</tr>

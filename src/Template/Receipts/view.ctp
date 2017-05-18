@@ -70,7 +70,7 @@ margin-bottom: 0;
 			
 			<table>
 					<tr>
-						<td>Created On Date</td>
+						<td>Created On</td>
 						<td width="20" align="center">:</td>
 						<td><?= h(date("d-m-Y",strtotime($receipt->created_on))) ?></td>
 					</tr>

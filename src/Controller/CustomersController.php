@@ -102,7 +102,7 @@ class CustomersController extends AppController
 					return $this->redirect(['action' => 'index']);
 				
 				
-            } else {
+            } else { 
                 $this->Flash->error(__('The customer could not be saved. Please, try again.'));
             }
 			

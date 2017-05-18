@@ -261,7 +261,9 @@ class CustomersController extends AppController
 		$custmer_payment[$LedgerAccount->id] = $Customers->payment_terms;
 		$custmer_name[$LedgerAccount->id] = $Customers->customer_name;
 		$custmer_alise[$LedgerAccount->id] = $Customers->alias;
+		$custmer_payment_ctp[$LedgerAccount->id] = $Customers->payment_terms;
 		}
+		//pr($custmer_payment);exit;
 		$over_due_report = [];
 		foreach ($custmer_payment as $key=>$custmer_payment){
 			$total_debit=0;$total_credit=0;$due=0;
@@ -279,10 +281,11 @@ class CustomersController extends AppController
 				}
 				$due=$total_debit-$total_credit; //pr($due); exit;
 				$Customers_name =$custmer_name[$key];
+				//$Customers_payment=$custmer_payment[$key];
 				$over_due_report[$key]=$due;	
 			}
-
-        $this->set(compact('LedgerAccounts','Ledgers','over_due_report','custmer_name','custmer_alise'));
+//pr($custmer_payment_ctp);exit;
+        $this->set(compact('LedgerAccounts','Ledgers','over_due_report','custmer_name','custmer_payment','custmer_alise','custmer_payment_ctp'));
         $this->set('_serialize', ['customers']);
     }
 	

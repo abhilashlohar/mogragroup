@@ -15,18 +15,21 @@
 					<tr>
 						<th>Sr. No.</th>
 						<th>Customer Name</th>
-						<th>Over-Due</th>
+						<th style="text-align:center">Payment Terms</th>
+						<th style="text-align: right;">Over-Due</th>
 					</tr>
 				</thead>
 				<tbody>
 					<?php  $page_no=0;
 					foreach ($over_due_report as $key=>$over_due_reports){ 
+						//pr($custmer_payment);
 						if($over_due_reports>0){
 					?>
 					<tr>
 						<td><?= h(++$page_no) ?></td>
 						<td><?php echo $custmer_name[$key]."(". $custmer_alise[$key].")"?></td>
-						<td><?= h($over_due_reports) ?></td>
+						<td style="text-align:center"><?php echo $custmer_payment_ctp[$key] ?></td>
+						<td align="right"><?= h($over_due_reports) ?></td>
 						
 					</tr>
 					<?php }} ?>

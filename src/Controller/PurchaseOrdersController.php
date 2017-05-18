@@ -60,7 +60,7 @@ class PurchaseOrdersController extends AppController
 		
 		if(!empty($items)){
 			$purchaseOrdersitem = $this->PurchaseOrders->find()->contain(['PurchaseOrderRows'=>['Items'=>function($q){
-				return $q->where(['PurchaseOrderRows.item_id'=>'Items.id']);
+				return $q->where(['Items.name LIKE'=>$items]);
 			}]])->toArray();			
 			pr($purchaseOrdersitem);exit;
 		}

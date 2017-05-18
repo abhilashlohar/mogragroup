@@ -284,7 +284,7 @@ class VendorsController extends AppController
 		$Vendors = $this->Vendors->find()->where(['id'=>$LedgerAccount->source_id])->first();
 		$vendor_payment[$LedgerAccount->id] = $Vendors->payment_terms;
 		$company_name[$LedgerAccount->id] = $Vendors->company_name;
-		
+		$vendor_payment_ctp[$LedgerAccount->id] = $Vendors->payment_terms;
 		}
 		$over_due_report = [];
 		foreach ($vendor_payment as $key=>$vendor_payment){
@@ -306,7 +306,7 @@ class VendorsController extends AppController
 				$over_due_report[$key]=$due;	
 			}
 
-        $this->set(compact('LedgerAccounts','Ledgers','over_due_report','company_name'));
+        $this->set(compact('LedgerAccounts','Ledgers','over_due_report','company_name','vendor_payment_ctp'));
         $this->set('_serialize', ['Vendors']);
     }
 }

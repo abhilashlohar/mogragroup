@@ -15,7 +15,8 @@
 					<tr>
 						<th >Sr. No.</th>
 						<th >Supplier Name</th>
-						<th align="right" >Over-Due</th>
+						<th style="text-align:center">Payment Terms</th>
+						<th style="text-align: right">Over-Due</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -26,7 +27,8 @@
 					<tr>
 						<td><?= h(++$page_no) ?></td>
 						<td><?= h($company_name[$key]);?></td>
-						<td><?= h($over_due_reports) ?></td>
+						<td style="text-align:center"><?php echo $vendor_payment_ctp[$key] ?></td>
+						<td align="right"><?= h($over_due_reports) ?></td>
 						
 					</tr>
 					<?php }} ?>

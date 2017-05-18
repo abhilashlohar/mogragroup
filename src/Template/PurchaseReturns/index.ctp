@@ -13,13 +13,13 @@
 				<table class="table table-condensed">
 					<tbody>
 						<tr>
-							<td>
+							<td width="10%">
 								<input type="text" name="vouch_no" class="form-control input-sm" placeholder="Voucher No" value="<?php echo @$vouch_no; ?>">
 							</td>
-							<td>
+							<td width="15%">
 								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Date From" value="<?php echo @$From; ?>"  data-date-format="dd-mm-yyyy" >
 							</td>
-							<td>
+							<td width="15%">
 								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Date To" value="<?php echo @$To; ?>"  data-date-format="dd-mm-yyyy" >
 							</td>
 							<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>

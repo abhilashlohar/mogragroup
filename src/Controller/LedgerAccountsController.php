@@ -205,13 +205,12 @@ class LedgerAccountsController extends AppController
 				$asset_groups[$Ledgers_Asset->_matchingData['AccountGroups']->id]['group_id']
 					=$Ledgers_Asset->_matchingData['AccountGroups']->id;
 				$asset_groups[$Ledgers_Asset->_matchingData['AccountGroups']->id]['debit']
-					=@$asset_groups[$Ledgers_Asset->_matchingData['AccountGroups']->id][$Ledgers_Asset->_matchingData['AccountGroups']->name]['debit']+($Ledgers_Asset->total_debit);
+					=@$asset_groups[$Ledgers_Asset->_matchingData['AccountGroups']->id]['debit']+($Ledgers_Asset->total_debit);
 				$asset_groups[$Ledgers_Asset->_matchingData['AccountGroups']->id]['credit']
-					=@$asset_groups[$Ledgers_Asset->_matchingData['AccountGroups']->id][$Ledgers_Asset->_matchingData['AccountGroups']->name]['credit']+($Ledgers_Asset->total_credit);
+					=@$asset_groups[$Ledgers_Asset->_matchingData['AccountGroups']->id]['credit']+($Ledgers_Asset->total_credit);
 				$asset_groups[$Ledgers_Asset->_matchingData['AccountGroups']->id]['name']
 					=$Ledgers_Asset->_matchingData['AccountGroups']->name;
 			}
-			
 			
 			$query2=$this->LedgerAccounts->Ledgers->find();
 			$Ledgers_Liablities=$query2->select(['total_debit' => $query2->func()->sum('debit'),'total_credit' => $query2->func()->sum('credit')])
@@ -224,16 +223,16 @@ class LedgerAccountsController extends AppController
 			->autoFields(true)->toArray();
 			
 			$liablitie_groups=[];
-			foreach($Ledgers_Liablities as $Ledgers_Liablitie){
+			foreach($Ledgers_Liablities as $Ledgers_Liablitie){ //pr($Ledgers_Liablitie->total_credit);
 				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountGroups']->id]['group_id']
 					=$Ledgers_Liablitie->_matchingData['AccountGroups']->id;
 				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountGroups']->id]['debit']
-					=@$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountGroups']->id][$Ledgers_Liablitie->_matchingData['AccountGroups']->name]['debit']+($Ledgers_Liablitie->total_debit);
+					=@$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountGroups']->id]['debit']+($Ledgers_Liablitie->total_debit);
 				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountGroups']->id]['credit']
-					=@$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountGroups']->id][$Ledgers_Liablitie->_matchingData['AccountGroups']->name]['credit']+($Ledgers_Liablitie->total_credit);
+					=@$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountGroups']->id]['credit']+($Ledgers_Liablitie->total_credit);
 				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountGroups']->id]['name']
 					=$Ledgers_Liablitie->_matchingData['AccountGroups']->name;
-			}
+			} //pr($liablitie_groups); exit;
 			
 			$this->set(compact('Ledgers_Assets','Ledgers_Liablities', 'asset_groups', 'liablitie_groups'));
 		}
@@ -243,12 +242,11 @@ class LedgerAccountsController extends AppController
 
 	public function firstSubGroups($group_id,$date)
 	{
-		
+		$this->viewBuilder()->layout('');
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		
-
-			$query2=$this->LedgerAccounts->Ledgers->find();
+		$query2=$this->LedgerAccounts->Ledgers->find();
 			$Ledgers_Liablities=$query2->select(['total_debit' => $query2->func()->sum('debit'),'total_credit' => $query2->func()->sum('credit')])
 			->matching('LedgerAccounts.AccountSecondSubgroups.AccountFirstSubgroups.AccountGroups', function ($q) use($group_id) {
 				return $q->where(['AccountGroups.id' => $group_id]);
@@ -257,23 +255,19 @@ class LedgerAccountsController extends AppController
 			->contain(['LedgerAccounts'])
 			->group(['ledger_account_id'])
 			->autoFields(true)->toArray();
-			
-			
-			pr($Ledgers_Liablities);exit;
 			$liablitie_groups=[];
 			foreach($Ledgers_Liablities as $Ledgers_Liablitie){
-				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountGroups']->id]['group_id']
-					=$Ledgers_Liablitie->_matchingData['AccountGroups']->id;
-				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountGroups']->id]['debit']
-					=@$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountGroups']->id][$Ledgers_Liablitie->_matchingData['AccountGroups']->name]['debit']+($Ledgers_Liablitie->total_debit);
-				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountGroups']->id]['credit']
-					=@$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountGroups']->id][$Ledgers_Liablitie->_matchingData['AccountGroups']->name]['credit']+($Ledgers_Liablitie->total_credit);
-				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountGroups']->id]['name']
-					=$Ledgers_Liablitie->_matchingData['AccountGroups']->name;
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountFirstSubgroups']->id]['group_id']
+					=$Ledgers_Liablitie->_matchingData['AccountFirstSubgroups']->id;
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountFirstSubgroups']->id]['debit']
+					=@$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountFirstSubgroups']->id]['debit']+($Ledgers_Liablitie->total_debit);
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountFirstSubgroups']->id]['credit']
+					=@$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountFirstSubgroups']->id]['credit']+($Ledgers_Liablitie->total_credit);
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountFirstSubgroups']->id]['name']
+					=$Ledgers_Liablitie->_matchingData['AccountFirstSubgroups']->name;
 			}
 
-
-			pr($liablitie_groups); exit;
+			$this->set(compact('liablitie_groups'));
 		
 	}
 

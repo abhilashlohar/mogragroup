@@ -86,7 +86,7 @@ class PurchaseReturnsController extends AppController
 		$invoiceBooking = $this->PurchaseReturns->InvoiceBookings->get($invoice_booking_id, [
             'contain' => ['InvoiceBookingRows' => ['Items'],'Grns'=>['Companies','Vendors','GrnRows'=>['Items'],'PurchaseOrders'=>['PurchaseOrderRows']]]
         ]);
-		
+		//pr($invoiceBooking->purchase_ledger_account); exit;
 		$v_LedgerAccount=$this->PurchaseReturns->LedgerAccounts->find()->where(['company_id'=>$st_company_id,'source_model'=>'Vendors','source_id'=>$invoiceBooking->vendor_id])->first();
 		
 		 if ($this->request->is('post')) {
@@ -95,6 +95,7 @@ class PurchaseReturnsController extends AppController
 			$purchaseReturn->company_id=$st_company_id;
 			$purchaseReturn->created_on= date("Y-m-d");
 			$purchaseReturn->created_by=$s_employee_id;
+			$purchaseReturn->purchase_ledger_account=$invoiceBooking->purchase_ledger_account;
 			$last_pr_no=$this->PurchaseReturns->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
 			if($last_pr_no){
 				$purchaseReturn->voucher_no=$last_pr_no->voucher_no+1;

@@ -137,17 +137,19 @@
 <script>
 $(document).ready(function() {
 	$(".group_name").die().live('click',function(e){
-	   //$('.append_tr').remove();
-	 if($(this.attr('status') == 'open')
+	   var current_obj=$(this);
+	   var group_id=$(this).attr('group_id');
+	  
+	  if(current_obj.attr('status') == 'open')
 	   {
-			$('.append_tr').hide();
-	   }
-	   else
-	   {
+			$('tr.row_for_'+group_id+'').remove();
+			current_obj.attr('status','close');
 		   $('table > tbody > tr > td> a').removeClass("group_a");
 		   $('table > tbody > tr > td> span').removeClass("group_a");
-		   var current_obj=$(this);
-		   var group_id=$(this).attr('group_id');
+
+		}
+	   else
+	   {  
 		   var date = $('.date-picker').val();
 		   var url="<?php echo $this->Url->build(['controller'=>'LedgerAccounts','action'=>'firstSubGroups']); ?>";
 		   url=url+'/'+group_id +'/'+date,
@@ -157,7 +159,7 @@ $(document).ready(function() {
 				current_obj.attr('status','open');
 				 current_obj.addClass("group_a");
 				current_obj.closest('tr').find('span').addClass("group_a");
-				$('<tr class="append_tr"><td colspan="2">'+response+'</td></tr>').insertAfter(current_obj.closest('tr'));
+				$('<tr class="append_tr row_for_'+group_id+'"><td colspan="2">'+response+'</td></tr>').insertAfter(current_obj.closest('tr'));
 			});			   
 		}   
 	});	   	

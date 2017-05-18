@@ -258,7 +258,7 @@ class EmployeesController extends AppController
 
     public function CheckCompany($company_id = null, $employee_id = null)
     {
-        $this->viewBuilder()->layout('index_layout');
+		$this->viewBuilder()->layout('index_layout');
         $this->request->allowMethod(['post', 'delete']);
         $employees_ledger = $this->Employees->LedgerAccounts->find()->where(['source_model' => 'Employees', 'source_id' => $employee_id, 'company_id' => $company_id])->first();
 
@@ -268,6 +268,7 @@ class EmployeesController extends AppController
             $customer_Company_dlt = $this->Employees->EmployeeCompanies->find()->where(['EmployeeCompanies.employee_id' => $employee_id, 'company_id' => $company_id])->first();
             $customer_ledger_dlt = $this->Employees->LedgerAccounts->find()->where(['source_model' => 'Employees', 'source_id' => $employee_id, 'company_id' => $company_id])->first();
             $VoucherLedgerAccountsexist = $this->Employees->VoucherLedgerAccounts->exists(['ledger_account_id' => $employees_ledger->id]);
+			//pr($VoucherLedgerAccountsexist );exit;
             if ($VoucherLedgerAccountsexist) {
                 $Voucherref = $this->Employees->VouchersReferences->find()->contain(['VoucherLedgerAccounts'])->where(['VouchersReferences.company_id' => $company_id]);
                 foreach ($Voucherref as $Voucherref) {
@@ -314,6 +315,18 @@ class EmployeesController extends AppController
         $ledgerAccount->company_id = $company_id;
         //pr($ledgerAccount); exit;
         $this->Employees->LedgerAccounts->save($ledgerAccount);
+		//
+		$VouchersReferences = $this->Employees->VouchersReferences->find()->where(['company_id'=>$company_id,'voucher_entity'=>'PaymentVoucher -> Paid To'])->first();
+					$voucherLedgerAccount = $this->Employees->VoucherLedgerAccounts->newEntity();
+					$voucherLedgerAccount->vouchers_reference_id =$VouchersReferences->id;
+					$voucherLedgerAccount->ledger_account_id =$ledgerAccount->id;
+					$this->Employees->VoucherLedgerAccounts->save($voucherLedgerAccount);
+					//
+					$VouchersReferences = $this->Employees->VouchersReferences->find()->where(['company_id'=>$company_id,'voucher_entity'=>'Receipt Voucher -> Received From'])->first();
+				$voucherLedgerAccount = $this->Employees->VoucherLedgerAccounts->newEntity();
+				$voucherLedgerAccount->vouchers_reference_id =$VouchersReferences->id;
+				$voucherLedgerAccount->ledger_account_id =$ledgerAccount->id;
+				$this->Employees->VoucherLedgerAccounts->save($voucherLedgerAccount);
 
         return $this->redirect(['action' => 'EditCompany/' . $employee_id]);
     }

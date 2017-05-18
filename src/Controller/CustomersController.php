@@ -394,6 +394,11 @@ class CustomersController extends AppController
 		$ledgerAccount->source_id = $customer_details->id;
 		$ledgerAccount->company_id = $company_id;
 		$this->Customers->LedgerAccounts->save($ledgerAccount);
+		$VouchersReferences = $this->Customers->VouchersReferences->find()->where(['company_id'=>$company_id,'voucher_entity'=>'Receipt Voucher -> Received From'])->first();
+				$voucherLedgerAccount = $this->Customers->VoucherLedgerAccounts->newEntity();
+				$voucherLedgerAccount->vouchers_reference_id =$VouchersReferences->id;
+				$voucherLedgerAccount->ledger_account_id =$ledgerAccount->id;
+				$this->Customers->VoucherLedgerAccounts->save($voucherLedgerAccount);
 		
 		return $this->redirect(['action' => 'EditCompany/'.$customer_id]);
 	}

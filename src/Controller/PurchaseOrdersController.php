@@ -59,7 +59,8 @@ class PurchaseOrdersController extends AppController
 		
 		//pr($items);exit;
 		if(!empty($items)){ //pr($items);exit;
-			 $items_data= $this->PurchaseOrders->find()->contain(['PurchaseOrderRows'=>['Items']])->toArray();		
+			 $items_data= $this->PurchaseOrders->find()->contain(['PurchaseOrderRows'=>['Items']])->
+			 toArray();		
 			//
 			////$where['PurchaseOrderRows.Items.name']='%'.$items.'%';
 		}

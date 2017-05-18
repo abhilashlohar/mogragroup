@@ -57,14 +57,13 @@ class PurchaseOrdersController extends AppController
 			$having=['total_rows =' => 0];
 		}
 		
-		
-		if(!empty($items)){
-			$purchaseOrdersitem = $this->PurchaseOrders->find()->contain(['PurchaseOrderRows'=>['Items'=>function($q){
-				return $q->where(['Items.name LIKE'=>$items]);
-			}]])->toArray();			
-			pr($purchaseOrdersitem);exit;
+		//pr($items);exit;
+		if(!empty($items)){ //pr($items);exit;
+			 $items_data= $this->PurchaseOrders->find()->contain(['PurchaseOrderRows'=>['Items']])->toArray();		
+			//
+			////$where['PurchaseOrderRows.Items.name']='%'.$items.'%';
 		}
-		else{
+		pr($items_data);exit;
 		$purchaseOrders=$this->paginate(
 			$this->PurchaseOrders->find()->contain(['PurchaseOrderRows'=>['Items']])->select(['total_rows' => 
 				$this->PurchaseOrders->find()->func()->count('PurchaseOrderRows.id')])
@@ -78,7 +77,7 @@ class PurchaseOrdersController extends AppController
 				->where(['company_id'=>$st_company_id])
 				->order(['PurchaseOrders.id' => 'DESC'])
 			);
-		}
+		
 		$PurchaseOrderRows = $this->PurchaseOrders->PurchaseOrderRows->find()->toArray();
 		//pr($PurchaseOrderRows);exit;
         $this->set(compact('purchaseOrders','pull_request','status','PurchaseOrderRows','PurchaseItems'));

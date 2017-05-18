@@ -58,14 +58,20 @@ class PurchaseOrdersController extends AppController
 		}
 		
 		//pr($items);exit;
-		if(!empty($items)){ //pr($items);exit;
-			 $items_data= $this->PurchaseOrders->find()->contain(['PurchaseOrderRows'=>['Items']])->
-			 toArray();		
-			//
-			////$where['PurchaseOrderRows.Items.name']='%'.$items.'%';
+		if(!empty($items)){ 
+			$purchaseOrders=$this->paginate($this->PurchaseOrders->find()
+			->contain(['PurchaseOrderRows'=>['Items']])
+			->matching(
+					'PurchaseOrderRows.Items', function ($q) use($items) {
+						return $q->where(['Items.name LIKE' =>'%'.$items.'%']);
+					}
+				)
+				);
+				
+			//pr($items_data->toArray()); exit;	
 		}
-		pr($items_data);exit;
-		$purchaseOrders=$this->paginate(
+		else{		
+			$purchaseOrders=$this->paginate(
 			$this->PurchaseOrders->find()->contain(['PurchaseOrderRows'=>['Items']])->select(['total_rows' => 
 				$this->PurchaseOrders->find()->func()->count('PurchaseOrderRows.id')])
 				->leftJoinWith('PurchaseOrderRows', function ($q) {
@@ -78,7 +84,7 @@ class PurchaseOrdersController extends AppController
 				->where(['company_id'=>$st_company_id])
 				->order(['PurchaseOrders.id' => 'DESC'])
 			);
-		
+}
 		$PurchaseOrderRows = $this->PurchaseOrders->PurchaseOrderRows->find()->toArray();
 		//pr($PurchaseOrderRows);exit;
         $this->set(compact('purchaseOrders','pull_request','status','PurchaseOrderRows','PurchaseItems'));

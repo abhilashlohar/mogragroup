@@ -57,9 +57,11 @@ class PurchaseOrdersController extends AppController
 			$having=['total_rows =' => 0];
 		}
 		
+		
 		if(!empty($items)){
-			$purchaseOrdersitem = $this->paginate($this->PurchaseOrders->find()->contain(['PurchaseOrderRows'=>['Items']])
-			);
+			$purchaseOrdersitem = $this->PurchaseOrders->find()->contain(['PurchaseOrderRows'=>['Items'=>function($q){
+				return $q->where(['PurchaseOrderRows.item_id'=>'Items.id']);
+			}]])->toArray();			
 			pr($purchaseOrdersitem);exit;
 		}
 		else{

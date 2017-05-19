@@ -316,11 +316,16 @@ class ItemsController extends AppController
 				}
 			}	
 		}
-		
+				
+			if($totalquantity != 0){	
 			$this->Items->ItemLedgers->save($ItemLedger);
-			
-			
 			$this->Flash->success(__('Item Opening Balance has been saved.'));
+			}else{
+				$this->Flash->error(__('Item Opening Balance cant not save when Quantity is 0.Please Enter Quantity'));
+			}
+			
+			
+			
 			return $this->redirect(['action' => 'EditItemOpeningBalance/'.$id]);
 		}
 		
@@ -373,14 +378,23 @@ class ItemsController extends AppController
 		$ItemSerialNumber = $this->Items->ItemSerialNumbers->get($id);
 		
 		if($ItemSerialNumber->status=='In'){
+			$ItemQuantity = $ItemLedger->quantity-1;
+			//pr($ItemQuantity);exit;
+			if($ItemQuantity == 0){
+				$this->Items->ItemLedgers->delete($ItemLedger);
+				$this->Flash->success(__('The Item has been deleted.'));
+				return $this->redirect(['action' => 'Opening-Balance']);
+				
+			}else{
 			$query = $this->Items->ItemLedgers->query();
 			$query->update()
 				->set(['quantity' => $ItemLedger->quantity-1])
 				->where(['item_id' => $item_id,'company_id'=>$st_company_id,'source_model'=>'Items'])
 				->execute();
-						
+					
 			$this->Items->ItemSerialNumbers->delete($ItemSerialNumber);
 			$this->Flash->success(__('The Serial Number has been deleted.'));
+			}
 		}else{ 
 			if($ItemSerialNumber->invoice_id != 0){
 				$this->Flash->error(__('The Serial Number could not be deleted. These item out from invoice number: '.$ItemSerialNumber->invoice_id));

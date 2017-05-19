@@ -95,7 +95,9 @@ class PurchaseReturnsController extends AppController
 			$purchaseReturn->company_id=$st_company_id;
 			$purchaseReturn->created_on= date("Y-m-d");
 			$purchaseReturn->created_by=$s_employee_id;
+			$purchaseReturn->created_by=$s_employee_id;
 			$purchaseReturn->purchase_ledger_account=$invoiceBooking->purchase_ledger_account;
+			$purchaseReturn->vendor_id=$invoiceBooking->vendor_id;
 			$last_pr_no=$this->PurchaseReturns->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
 			if($last_pr_no){
 				$purchaseReturn->voucher_no=$last_pr_no->voucher_no+1;
@@ -119,20 +121,17 @@ class PurchaseReturnsController extends AppController
 				$vat_amounts=[]; $total_amounts=[];
 				foreach($invoiceBooking->invoice_booking_rows as $invoice_booking_row){
 					$amount=$invoice_booking_row->unit_rate_from_po*$invoice_booking_row->quantity;
-
 					$amount=$amount+$invoice_booking_row->misc;
 					if($invoice_booking_row->discount_per==1){
 						$amount=$amount*((100-$invoice_booking_row->discount)/100);
 					}else{
 						$amount=$amount-$invoice_booking_row->discount;
 					}
-
 					if($invoice_booking_row->pnf_per==1){
 						$amount=$amount*((100+$invoice_booking_row->pnf)/100);
 					}else{
 						$amount=$amount+$invoice_booking_row->pnf;
 					}
-
 					$amount=$amount*((100+	$invoice_booking_row->excise_duty)/100);
 					$amountofVAT=($amount*$invoice_booking_row->sale_tax)/100;
 					$amount=$amount*((100+$invoice_booking_row->sale_tax)/100);
@@ -146,9 +145,14 @@ class PurchaseReturnsController extends AppController
 				foreach($purchaseReturn->purchase_return_rows as $purchase_return_row){
 					$total_vat=$vat_amounts[$purchase_return_row->item_id]*$purchase_return_row->quantity;
 					$total_vat_item=$total_vat_item+$total_vat;
-					
 					$total_amt=$total_amounts[$purchase_return_row->item_id]*$purchase_return_row->quantity;
 					$total_amounts_item=$total_amounts_item+$total_amt;
+					
+					$query = $this->PurchaseReturns->PurchaseReturnRows->query();
+						$query->update()
+							->set(['vat_per_item'=>$vat_amounts[$purchase_return_row->item_id],])
+							->where(['purchase_return_id' => $purchaseReturn->id,'item_id'=>$purchase_return_row->item_id])
+							->execute();
 
 				}
 
@@ -308,7 +312,9 @@ class PurchaseReturnsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $purchaseReturn = $this->PurchaseReturns->patchEntity($purchaseReturn, $this->request->data);
 			$ref_rows=@$this->request->data['ref_rows'];
-
+			$purchaseReturn->purchase_ledger_account=$invoiceBooking->purchase_ledger_account;
+			$purchaseReturn->vendor_id=$invoiceBooking->vendor_id;
+			
             if ($this->PurchaseReturns->save($purchaseReturn)) {
 				$this->PurchaseReturns->Ledgers->deleteAll(['voucher_id' => $purchaseReturn->id, 'voucher_source' => 'Purchase Return']);
 				$this->PurchaseReturns->ItemLedgers->deleteAll(['source_id' => $purchaseReturn->id, 'source_model' => 'Purchase Return','company_id'=>$st_company_id]);
@@ -356,9 +362,14 @@ class PurchaseReturnsController extends AppController
 				foreach($purchaseReturn->purchase_return_rows as $purchase_return_row){
 					$total_vat=$vat_amounts[$purchase_return_row->item_id]*$purchase_return_row->quantity;
 					$total_vat_item=$total_vat_item+$total_vat;
-					
 					$total_amt=$total_amounts[$purchase_return_row->item_id]*$purchase_return_row->quantity;
+					//pr($total_amt); exit;
 					$total_amounts_item=$total_amounts_item+$total_amt;
+					$query = $this->PurchaseReturns->PurchaseReturnRows->query();
+						$query->update()
+							->set(['vat_per_item'=>$vat_amounts[$purchase_return_row->item_id],])
+							->where(['purchase_return_id' => $purchaseReturn->id,'item_id'=>$purchase_return_row->item_id])
+							->execute();
 
 				}
 
@@ -579,5 +590,31 @@ class PurchaseReturnsController extends AppController
 		}
 		
 		exit;
+	}
+	
+	public function purchaseReturnReport(){
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		$From=$this->request->query('From');
+		$To=$this->request->query('To');
+		$where=[];
+		
+		if(!empty($From)){
+			$From=date("Y-m-d",strtotime($this->request->query('From')));
+			$where['transaction_date >=']=$From;
+		}
+		if(!empty($To)){
+			$To=date("Y-m-d",strtotime($this->request->query('To')));
+			$where['transaction_date <=']=$To;
+		}
+		
+		$this->viewBuilder()->layout('index_layout');
+		$PurchaseReturns = $this->PurchaseReturns->find()->contain(['InvoiceBookings'=>['InvoiceBookingRows'],'PurchaseReturnRows','Vendors'])->order(['PurchaseReturns.id' => 'DESC'])->where(['PurchaseReturns.company_id'=>$st_company_id]);
+		//$InvoiceBookings=$this->PurchaseReturns->InvoiceBookings->find()->contain(['InvoiceBookingRows','Vendors']);
+		/* foreach($PurchaseReturns->invoice_booking_rows as $invoice_booking_row ) {
+			
+		} */
+		//pr($PurchaseReturns->toArray()); exit;
+		$this->set(compact('PurchaseReturns'));
 	}
 }

@@ -10,6 +10,9 @@ use App\Controller\AppController;
  */
 class LedgersController extends AppController
 {
+	public $helpers = [
+         'Paginator' => ['templates' => 'paginator-templates']
+         ];
 
     /**
      * Index method

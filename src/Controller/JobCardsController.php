@@ -329,7 +329,7 @@ class JobCardsController extends AppController
 
 				foreach($jobCard->sales_order_rows as $sales_order_row ){
 
-						if($sales_order_row['source_type'] = 'Purchessed')
+						if($sales_order_row['source_type'] =='Purchessed')
 						{
 							$count_sales_item = $count_sales_item - 1; 
 							$query = $this->JobCards->SalesOrders->SalesOrderRows->query();

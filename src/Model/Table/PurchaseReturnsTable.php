@@ -43,12 +43,14 @@ class PurchaseReturnsTable extends Table
             'joinType' => 'INNER'
         ]);
 		$this->belongsTo('LedgerAccounts');
+		$this->belongsTo('Vendors');
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
         ]);
         $this->hasMany('PurchaseReturnRows', [
-            'foreignKey' => 'purchase_return_id'
+            'foreignKey' => 'purchase_return_id',
+			'saveStrategy' => 'replace'
         ]);
 		$this->belongsTo('ReferenceDetails');
 		$this->belongsTo('ReferenceBalances');

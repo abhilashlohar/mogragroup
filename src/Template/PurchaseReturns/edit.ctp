@@ -28,7 +28,7 @@ $this->Form->templates([
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Add Purchase Return</span>
+			<span class="caption-subject font-blue-steel uppercase">Edit Purchase Return</span>
 		</div>
 		
 	</div>
@@ -212,7 +212,7 @@ $this->Form->templates([
 		<div class="form-actions">
 			<div class="row">
 				<div class="col-md-3">
-				<?= $this->Form->button(__('UPDATE BOOK INVOICE'),['class'=>'btn btn-primary','id'=>'add_submit','type'=>'Submit']) ?>
+				<?= $this->Form->button(__('UPDATE PURCHASE RETURN'),['class'=>'btn btn-primary','type'=>'Submit']) ?>
 					
 				</div>
 			</div>

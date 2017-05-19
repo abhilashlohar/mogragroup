@@ -681,10 +681,12 @@ $(document).ready(function() {
 		//$('select[name=invoice_booking_id]').val('').select2();
     }
 	
-	//$('select[name="customer_id"]').val();
+	var in_id=$('select[name="customer_id"]').val();
+	customerInvoice(in_id,'Customers');
 	
 	$('select[name="customer_id"]').on("change",function() {
 		var in_id=$(this).val();
+		//alert('<?php echo ');
 		customerInvoice(in_id,'Customers');
 	});
 	function customerInvoice(in_id,source_model){

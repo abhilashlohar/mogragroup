@@ -229,12 +229,7 @@ class ItemsController extends AppController
 			$this->Items->ItemLedgers->save($ItemLedger);
 			
 			if($this->request->data['serial_number_enable']==1){
-				$query = $this->Items->ItemCompanies->query();
-				$query->update()
-					->set(['serial_number_enable' => 1])
-					->where(['item_id' => $this->request->data['Item_id'],'company_id'=>$st_company_id])
-					->execute();
-					
+				
 				foreach($this->request->data['serial_numbers'] as $serial_number){
 					$ItemSerialNumber = $this->Items->ItemSerialNumbers->newEntity();
 					$ItemSerialNumber->item_id = $this->request->data['Item_id'];
@@ -250,7 +245,7 @@ class ItemsController extends AppController
 			return $this->redirect(['action' => 'Opening-Balance']);
 		}
 		
-		$this->set(compact('Items','ItemLedger','financial_year'));
+		$this->set(compact('Items','ItemLedger','financial_year','ItemCompanies'));
 		$this->set('_serialize', ['ItemLedger']);
 	}
 	
@@ -306,6 +301,8 @@ class ItemsController extends AppController
 			$ItemLedger->quantity=$totalquantity;
 			$ItemLedger->rate=$this->request->data['rate'];
 			
+			$rows=@$this->request->data['serial_numbers'];
+			if($rows>0){
 			
 			if($serial_number_enable == '1'){
 			foreach($this->request->data['serial_numbers'] as $serial_number){
@@ -318,16 +315,17 @@ class ItemsController extends AppController
 					$this->Items->ItemSerialNumbers->save($ItemSerialNumber);
 				}
 			}	
-		
-		$query = $this->Items->ItemCompanies->query();
-					$query->update()
-						->set(['serial_number_enable' =>$serial_number_enable])
-						->where(['item_id' => $item_id,'company_id'=>$st_company_id])
-						->execute();
+		}
+				
+			if($totalquantity != 0){	
 			$this->Items->ItemLedgers->save($ItemLedger);
-			
-			
 			$this->Flash->success(__('Item Opening Balance has been saved.'));
+			}else{
+				$this->Flash->error(__('Item Opening Balance cant not save when Quantity is 0.Please Enter Quantity'));
+			}
+			
+			
+			
 			return $this->redirect(['action' => 'EditItemOpeningBalance/'.$id]);
 		}
 		
@@ -337,6 +335,19 @@ class ItemsController extends AppController
 		'SerialNumberEnable'));
 		$this->set('_serialize', ['ItemLedger']);
 	}	
+	
+	public function checkSerial($item_id = null){
+		$this->viewBuilder()->layout('');
+		
+		//pr($item_id);exit;
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		$ItemCompanies = $this->Items->ItemCompanies->find()->where(['company_id'=>$st_company_id,'item_id'=>$item_id])->first();
+		//pr($ItemCompanies);
+		$this->set(compact('ItemCompanies'));
+		
+	}
+	
 	
 	public function DeleteItemOpeningBalance($id = null)
 	{
@@ -367,14 +378,23 @@ class ItemsController extends AppController
 		$ItemSerialNumber = $this->Items->ItemSerialNumbers->get($id);
 		
 		if($ItemSerialNumber->status=='In'){
+			$ItemQuantity = $ItemLedger->quantity-1;
+			//pr($ItemQuantity);exit;
+			if($ItemQuantity == 0){
+				$this->Items->ItemLedgers->delete($ItemLedger);
+				$this->Flash->success(__('The Item has been deleted.'));
+				return $this->redirect(['action' => 'Opening-Balance']);
+				
+			}else{
 			$query = $this->Items->ItemLedgers->query();
 			$query->update()
 				->set(['quantity' => $ItemLedger->quantity-1])
 				->where(['item_id' => $item_id,'company_id'=>$st_company_id,'source_model'=>'Items'])
 				->execute();
-						
+					
 			$this->Items->ItemSerialNumbers->delete($ItemSerialNumber);
 			$this->Flash->success(__('The Serial Number has been deleted.'));
+			}
 		}else{ 
 			if($ItemSerialNumber->invoice_id != 0){
 				$this->Flash->error(__('The Serial Number could not be deleted. These item out from invoice number: '.$ItemSerialNumber->invoice_id));
@@ -440,7 +460,7 @@ class ItemsController extends AppController
 				$Company_array1[$Company->id]=$Company->name;
 				$Company_array2[$Company->id]=$item_data->freeze;
 				$Company_array3[$Company->id]=$item_data->serial_number_enable;
-
+				
 			}else{
 
 				$Company_array[$Company->id]='No';
@@ -467,12 +487,27 @@ class ItemsController extends AppController
 
 public function SerialNumberEnabled($company_id=null,$item_id=null,$item_serial_no=null)
 	{
-		$query2 = $this->Items->ItemCompanies->query();
-		$query2->update()
-			->set(['serial_number_enable' => $item_serial_no])
-			->where(['item_id' => $item_id,'company_id'=>$company_id])
-			->execute();
-
+		if($item_serial_no == 0){
+			$ItemSerialNumbers = $this->Items->ItemSerialNumbers->exists(['item_id'=>$item_id
+								 ,'company_id'=>$company_id]);
+			if($ItemSerialNumbers){
+				$this->Flash->error(__('Item Can not Disabled.These Item has Serial Number , Firstly, you can delete serial number then you can disabled'));
+			}else{
+				$query2 = $this->Items->ItemCompanies->query();
+				$query2->update()
+						->set(['serial_number_enable' => $item_serial_no])
+						->where(['item_id' => $item_id,'company_id'=>$company_id])
+						->execute();
+				$this->Flash->success(__('Item Serial Number Disabled Successfully '));		
+			}
+		}else{
+				$query2 = $this->Items->ItemCompanies->query();
+				$query2->update()
+						->set(['serial_number_enable' => $item_serial_no])
+						->where(['item_id' => $item_id,'company_id'=>$company_id])
+						->execute();
+			$this->Flash->success(__('Item Serial Number Enabled Successfully '));
+		}
 		return $this->redirect(['action' => 'EditCompany/'.$item_id]);
 	}
 

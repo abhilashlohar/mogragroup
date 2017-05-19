@@ -421,7 +421,8 @@ class GrnsController extends AppController
 		$st_company_id = $session->read('st_company_id');
 		
 		$this->viewBuilder()->layout('index_layout');
-			$grn = $this->Grns->get($id, [
+		
+		$grn = $this->Grns->get($id, [
 				'contain' => [
 						'Companies','ItemSerialNumbers','Vendors','PurchaseOrders'=>['PurchaseOrderRows','Grns'=>['GrnRows']],'GrnRows'=>['Items' => ['ItemCompanies' =>function($q) use($st_company_id){
 									return $q->where(['company_id'=>$st_company_id]);
@@ -451,6 +452,7 @@ class GrnsController extends AppController
 	
 	
 		if ($this->request->is(['patch', 'post', 'put'])) {
+
 			$serial_numbers=@$this->request->data['serial_numbers']; 
 			$item_serial_numbers=[];
 			if(sizeof($serial_numbers)>0){
@@ -458,7 +460,7 @@ class GrnsController extends AppController
 				foreach($data as $sr)
 				$item_serial_numbers[]=['item_id'=>$item_id,'serial_no'=>$sr,'company_id'=>$st_company_id,'status'=>'In'];
 			}
-		
+		//pr($serial_numbers); exit;
 			$this->request->data['item_serial_numbers']=$item_serial_numbers;
 			}
             $grn = $this->Grns->patchEntity($grn, $this->request->data);
@@ -509,4 +511,32 @@ class GrnsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	public function DeleteSerialNumbers($id=null,$item_id=null,$grn_id=null){
+		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		$ItemLedger=$this->Grns->ItemLedgers->find()->where(['item_id'=>$item_id,'source_model'=>'Grns'])->first();
+		
+		$GrnRow=$this->Grns->GrnRows->find()->where(['item_id'=>$item_id,'grn_id'=>$grn_id])->first();
+		
+		$ItemSerialNumber = $this->Grns->ItemSerialNumbers->get($id);
+		
+		if($ItemSerialNumber->status=='In'){
+			$query = $this->Grns->ItemLedgers->query();
+			$query->update()
+				->set(['quantity' => $ItemLedger->quantity-1])
+				->where(['item_id' => $item_id,'company_id'=>$st_company_id,'source_model'=>'Grns'])
+				->execute();
+			$query1 = $this->Grns->GrnRows->query();
+			$query1->update()
+				->set(['quantity' => $GrnRow->quantity-1])
+				->where(['item_id'=>$item_id,'grn_id'=>$grn_id])
+				->execute();
+						
+			$this->Grns->ItemSerialNumbers->delete($ItemSerialNumber);
+			$this->Flash->success(__('The Serial Number has been deleted.'));
+		}
+		
+		return $this->redirect(['action' => 'EditNew/'.$grn_id]);
+	}
 }

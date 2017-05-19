@@ -4,6 +4,7 @@
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Ledger Account</span>
 		</div>
+		<div class="pull-right"><p><?= $this->Paginator->counter() ?></p></div>
 
 	<div class="portlet-body form">
 	<div class="row ">
@@ -12,23 +13,33 @@
 			<table class="table table-condensed">
 				<tbody>
 					<tr>
-						<td>
-							<div class="row">
-								<div class="col-md-6">
-									<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo @$From; ?>"  data-date-format="dd-mm-yyyy" >
-								</div>
-								<div class="col-md-6">
+						<td width="20%">
+							<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo @$From; ?>"  data-date-format="dd-mm-yyyy" >
+						</td>
+						<td width="20%">
 									<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Transaction To" value="<?php echo @$To; ?>"  data-date-format="dd-mm-yyyy" >
-								</div>
-							</div>
 						</td>
 						<td>
 							<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button>
+						</td>
+						<td align="right"> 
+						<form method="get" >
+								<label>Page number</label>
+									<select class="form-control input-sm select2me" name='page' style="width:20%">
+										<?= $this->Paginator->numbers(array('modulus'=>PHP_INT_MAX,'separator'=>'&nbsp;&nbsp;&nbsp;</b>|<b>&nbsp;&nbsp;&nbsp;')); ?>
+									</select>
+						</td>
+						<td ><button type="submit" class="btn btn-primary btn-sm">Go</button>						
+						</form>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 		</form>
+		
+						
+		
+		
 		<!-- BEGIN FORM-->
 		<?php $page_no=$this->Paginator->current('Ledgers'); $page_no=($page_no-1)*20; ?>
 			<table class="table table-bordered table-striped table-hover">
@@ -77,15 +88,7 @@
 				<?php endforeach; ?>
 				</tbody>
 			</table>
-				
-			<div class="paginator">
-				<ul class="pagination">
-					<?= $this->Paginator->prev('<') ?>
-					<?= $this->Paginator->numbers() ?>
-					<?= $this->Paginator->next('>') ?>
-				</ul>
-				<p><?= $this->Paginator->counter() ?></p>
-			</div>
+			
 		</div>
 	</div>
   </div>

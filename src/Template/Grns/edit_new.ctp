@@ -144,12 +144,12 @@
 									if($item_serial_number->item_id == $grn_rows->item_id){ ?>
 										<?php if($item_serial_number->status=='Out'){  ?>
 										<div class="row">
-										<div class="col-md-10"><?php echo $this->Form->input('q', ['label' => false,'type'=>'text','value' => $item_serial_number->serial_no,]); ?></div>
+										<div class="col-md-10"><?php echo $this->Form->input('q', ['label' => false,'type'=>'text','value' => $item_serial_number->serial_no,'readonly']); ?></div>
 										</div>
 										<div class="col-md-2"></div>
 										<?php  } else {?>
 										<div class="row">
-										<div class="col-md-10"><?php echo $this->Form->input('q', ['label' => false,'type'=>'text','value' => $item_serial_number->serial_no,]); ?></div>
+										<div class="col-md-10"><?php echo $this->Form->input('q', ['label' => false,'type'=>'text','value' => $item_serial_number->serial_no,'readonly']); ?></div>
 										
 										<div class="col-md-2">
 											<?= $this->Html->link('<i class="fa fa-trash"></i> ',

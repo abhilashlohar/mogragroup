@@ -84,7 +84,8 @@
 					</thead>
 					<tbody>
 					
-						<?php 
+						<?php  
+							
 							foreach($grn->purchase_order->grns as $data){
 								foreach($data->grn_rows as $data2){
 									//pr(@$data2->quantity);
@@ -96,7 +97,20 @@
 								$total_items[$data3->item_id]=@$total_items[$data3->item_id]+$data3->quantity;
 								//pr($total_items[$data3->item_id]);
 							}
+							
 							$q=0; foreach ($grn->grn_rows as $grn_rows): ?>
+							<?php 
+							$min_val=0;
+							$min_val1=0;
+							foreach($grn->item_serial_numbers as $item_serial_number){
+									if($item_serial_number->item_id == $grn_rows->item_id){ 
+										if($item_serial_number->status=='Out'){ 
+										$min_val=$min_val+1;
+										}
+										$min_val1++;
+									}
+							} 
+							?>
 							<tr class="tr1" row_no='<?php echo @$grn_rows->id; ?>'>
 								<td rowspan="2"><?php echo ++$q; --$q; ?></td>
 								<td>
@@ -107,21 +121,51 @@
 								</td>
 								<td>
 								
-								<?php echo $this->Form->input('q', ['label' => false,'type' => 'text','class' => 'form-control input-sm quan quantity','placeholder'=>'Quantity','value' => @$grn_rows->quantity-$grn_rows->processed_quantity,'min'=>'1','max'=>$total_items[$grn_rows->item_id]-$processed_items[$grn_rows->item_id]+$grn_rows->quantity]); ?>
+								<?php echo $this->Form->input('q', ['label' => false,'type' => 'text','class' => 'form-control input-sm quan quantity','placeholder'=>'Quantity','value' => @$grn_rows->quantity-$grn_rows->processed_quantity,'min'=>$min_val,'max'=>$total_items[$grn_rows->item_id]-$processed_items[$grn_rows->item_id]+$grn_rows->quantity]); ?>
 								</td>
 								<td>
-									<label><?php echo $this->Form->input('check.'.$q, ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$grn_rows->id,'checked'=>"checked"]); ?></label>
+									<label><?php echo $this->Form->input('check.'.$q, ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$grn_rows->id,'checked'=>"checked",'old_qty'=>$grn_rows->quantity]); ?></label>
 								</td>
 								
 							</tr>
 							<tr class="tr2" row_no='<?php echo @$grn_rows->id; ?>'>
-								<td colspan="3">
 								<?php  $i=1; foreach($grn->item_serial_numbers as $item_serial_number){
 									if($item_serial_number->item_id == $grn_rows->item_id){ ?>
 									<div style="margin-bottom:6px;">
-									<?php echo $this->Form->input('serial_numbers['.$grn_rows->item_id.'][]', ['label' => false,'type'=>'text','class'=>'sr_no','ids'=>'sr_no['.$i.']','value' => $item_serial_number->serial_no]); ?>
+									<?php echo $this->Form->input('serial_numbers['.$grn_rows->item_id.']['.$i.']', ['label' => false,'type'=>'hidden','class'=>'sr_no','ids'=>'sr_no['.$i.']','value' => $item_serial_number->serial_no,'readonly']); ?>
 									</div>
-								<?php  $i++; }  }?><br/></td>
+									<?php  $i++;  }  }?><br/>
+								<td colspan="2" class="td_append">
+								
+								</td>
+								<td colspan="1" class="demo">
+									
+								<?php  $i=1; foreach($grn->item_serial_numbers as $item_serial_number){
+									if($item_serial_number->item_id == $grn_rows->item_id){ ?>
+										<?php if($item_serial_number->status=='Out'){  ?>
+										<div class="row">
+										<div class="col-md-10"><?php echo $this->Form->input('q', ['label' => false,'type'=>'text','value' => $item_serial_number->serial_no,]); ?></div>
+										</div>
+										<div class="col-md-2"></div>
+										<?php  } else {?>
+										<div class="row">
+										<div class="col-md-10"><?php echo $this->Form->input('q', ['label' => false,'type'=>'text','value' => $item_serial_number->serial_no,]); ?></div>
+										
+										<div class="col-md-2">
+											<?= $this->Html->link('<i class="fa fa-trash"></i> ',
+													['action' => 'DeleteSerialNumbers', $item_serial_number->id, $item_serial_number->item_id,$grn->id], 
+													[
+														'escape' => false,
+														'class' => 'btn btn-xs red',
+														'confirm' => __('Are you sure, you want to delete {0}?', $item_serial_number->id)
+													]
+												) ?>
+											
+										</div>
+										</div>
+									<?php  $i++; } }  }?>
+									
+								</td>
 							</tr>
 						<?php $q++; endforeach; ?>
 					</tbody>
@@ -243,33 +287,29 @@ $(document).ready(function() {
 		$("#main_tb tbody tr.tr1").each(function(){
 			var row_no=$(this).attr('row_no');
 			var serial_number_enable=$(this).find('td:nth-child(2) input[type="hidden"]:nth-child(2)').val();
+			
 			var val=$(this).find('td:nth-child(4) input[type="checkbox"]:checked').val();
-			var qty=$(this).find('td:nth-child(3) input[type="text"]').val();
+			var qty=parseInt($(this).find('td:nth-child(3) input[type="text"]').val());
+			var min=$(this).find('td:nth-child(3) input[type="text"]').attr('min');
+			var old_qty=parseInt($(this).find('td:nth-child(4) input[type="checkbox"]:checked').attr('old_qty'));
+		
 			var item_id=$(this).find('td:nth-child(2) input[type="hidden"]:nth-child(1)').val();
 			var l=$('.tr2[row_no="'+row_no+'"]').find('input').length;
 			
 				if(val && serial_number_enable=='1'){
-			
-					if(qty < l){
-				
-						for(i=l;i>qty;i--){
-						$('.tr2[row_no="'+row_no+'"]').find('input[ids="sr_no['+i+']"]').remove();
-						}
+					
+					for(i=0; i <= old_qty; i++){
+					$('.tr2[row_no="'+row_no+'"]').find('td div.td_append'+i+row_no+'').remove();
 					}
 					
-					if(qty > l){
-						l=l+1;
-						for(i=l;i<=qty;i++){
-						$('.tr2[row_no="'+row_no+'"] td:nth-child(1)').append('<div style="margin-bottom:6px;"><input type="text" class="sr_no" name="serial_numbers['+item_id+']['+l+']" ids="sr_no['+i+']" id="sr_no'+l+row_no+'"/></div>');
+					for(i=0; i < (qty-old_qty); i++){
+						
+						$('.tr2[row_no="'+row_no+'"]').find('td.td_append').append('<div style="margin-bottom:6px;" class="td_append'+i+row_no+'"><input type="text" class="sr_no" name="serial_numbers['+item_id+'][new_'+i+']" ids="sr_no['+i+']" id="sr_no'+l+row_no+'"/></div>');
 						
 						$('.tr2[row_no="'+row_no+'"] td:nth-child(1)').find('input#sr_no'+l+row_no).rules('add', {required: true});
-						l++;
-						}
+						
+						
 					}
-				}
-				
-				else{
-				$('tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').find('input.sr_no').remove();
 				}
 		});
 	}
@@ -302,7 +342,7 @@ $(document).ready(function() {
 		rename_rows();
 		update_sr_textbox();
     });
-	$('.quantity').die().live("blur",function() {
+	$('.quantity').die().live("change",function() {
 		update_sr_textbox();
 		rename_rows();
     });

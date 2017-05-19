@@ -15,6 +15,7 @@ class LoginsTable extends Table
             'joinType' => 'INNER'
         ]);
 		$this->belongsTo('UserRights');
+		$this->belongsTo('UserLogs');
 		
     }
 	

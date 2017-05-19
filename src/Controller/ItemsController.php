@@ -229,12 +229,7 @@ class ItemsController extends AppController
 			$this->Items->ItemLedgers->save($ItemLedger);
 			
 			if($this->request->data['serial_number_enable']==1){
-				$query = $this->Items->ItemCompanies->query();
-				$query->update()
-					->set(['serial_number_enable' => 1])
-					->where(['item_id' => $this->request->data['Item_id'],'company_id'=>$st_company_id])
-					->execute();
-					
+				
 				foreach($this->request->data['serial_numbers'] as $serial_number){
 					$ItemSerialNumber = $this->Items->ItemSerialNumbers->newEntity();
 					$ItemSerialNumber->item_id = $this->request->data['Item_id'];
@@ -250,7 +245,7 @@ class ItemsController extends AppController
 			return $this->redirect(['action' => 'Opening-Balance']);
 		}
 		
-		$this->set(compact('Items','ItemLedger','financial_year'));
+		$this->set(compact('Items','ItemLedger','financial_year','ItemCompanies'));
 		$this->set('_serialize', ['ItemLedger']);
 	}
 	
@@ -306,6 +301,8 @@ class ItemsController extends AppController
 			$ItemLedger->quantity=$totalquantity;
 			$ItemLedger->rate=$this->request->data['rate'];
 			
+			$rows=@$this->request->data['serial_numbers'];
+			if($rows>0){
 			
 			if($serial_number_enable == '1'){
 			foreach($this->request->data['serial_numbers'] as $serial_number){
@@ -318,12 +315,8 @@ class ItemsController extends AppController
 					$this->Items->ItemSerialNumbers->save($ItemSerialNumber);
 				}
 			}	
+		}
 		
-		$query = $this->Items->ItemCompanies->query();
-					$query->update()
-						->set(['serial_number_enable' =>$serial_number_enable])
-						->where(['item_id' => $item_id,'company_id'=>$st_company_id])
-						->execute();
 			$this->Items->ItemLedgers->save($ItemLedger);
 			
 			
@@ -337,6 +330,19 @@ class ItemsController extends AppController
 		'SerialNumberEnable'));
 		$this->set('_serialize', ['ItemLedger']);
 	}	
+	
+	public function checkSerial($item_id = null){
+		$this->viewBuilder()->layout('');
+		
+		//pr($item_id);exit;
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		$ItemCompanies = $this->Items->ItemCompanies->find()->where(['company_id'=>$st_company_id,'item_id'=>$item_id])->first();
+		//pr($ItemCompanies);
+		$this->set(compact('ItemCompanies'));
+		
+	}
+	
 	
 	public function DeleteItemOpeningBalance($id = null)
 	{

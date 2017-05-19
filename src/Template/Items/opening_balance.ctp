@@ -29,7 +29,7 @@
 				</div>
 			</div>
 
-			<div class="col-md-2"></div>
+			<div class="col-md-5"></div>
 
 			<div class="col-md-3">
 				<div class="form-group">
@@ -39,6 +39,7 @@
 			</div>
 		</div>
 		<div class="row">
+		<div class="col-md-1"></div>
 			<div class="col-md-3">
 				<div class="form-group">
 					<label class="control-label">quantity <span class="required" aria-required="true">*</span></label>
@@ -57,12 +58,14 @@
 					<?php echo $this->Form->input('value', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Value']); ?>
 				</div>
 			</div>
-			<div class="col-md-3">
+			<div class="col-md-1" id="itm_srl_num_enable">
+			</div>
+			<!--<div class="col-md-3">
 				<label class="control-label">serial_number_enable</label>
 				<div class="checkbox-list">
 					<?php echo $this->Form->radio('serial_number_enable',[['value' => '1', 'text' => 'Yes'],['value' => '0', 'text' => 'No', 'checked']]); ?>
 				</div>
-			</div>
+			</div>--> 	
 		</div>
 		<div class="row">
 			<div class="col-md-3" id="itm_srl_num">
@@ -178,12 +181,29 @@ $(document).ready(function() {
     });
 
 
-	$('input[name="serial_number_enable"]').die().live("change",function() {
-		add_sr_textbox();
+	$('select[name="Item_id"]').on("change",function() {
+	
+	$('#itm_srl_num').hide();
+
+		var Item_id=$('select[name="Item_id"] option:selected').val();
+		var url="<?php echo $this->Url->build(['controller'=>'Items','action'=>'check_serial']); ?>";
+		url=url+'/'+Item_id,
+		$.ajax({
+			url: url,
+		}).done(function(response) { 
+			$('#itm_srl_num_enable').html(response);
+			$('input[name="quantity"]').val(0);
+			
+		});
 	});
+	
+	$('input[name="quantity"]').on("keyup",function() {
+		add_sr_textbox(); 
+	});	
 		
    function add_sr_textbox(){
-	   var serial_number=$('input[name=serial_number_enable]:checked').val(); 
+	    $('#itm_srl_num').show();
+	   var serial_number=$('input[name=serial_number_enable]').val(); 
 	   var quantity=$('input[name="quantity"]').val();
 	   
 		if(serial_number=='1'){ 

@@ -62,15 +62,7 @@
 								'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'
 							]
 						) ?>
-					<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
-							['action' => 'DeleteItemOpeningBalance', $ItemLedger->id], 
-							[
-								'escape' => false,
-								'class'=>'btn btn-xs red tooltips','data-original-title'=>'Delete',
-								
-								'confirm' => __('Are you sure ?', $ItemLedger->id)
-							]
-						) ?>
+					
 					</td>
 				</tr>
 			<?php } ?>

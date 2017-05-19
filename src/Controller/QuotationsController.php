@@ -318,7 +318,7 @@ class QuotationsController extends AppController
 			   $todate = strtotime($todate1); 
 			   $tody = strtotime($tody1);
 
-			  if($fromdate > $tody || $todate < $tody)
+			  if($fromdate < $tody || $todate > $tody)
 			   {
 				 if($SessionCheckDate['status'] == 'Open')
 				 { $chkdate = 'Found'; }
@@ -328,9 +328,11 @@ class QuotationsController extends AppController
 			   }
 			   else
 				{
-					$chkdate = 'Not Found';	
+					$chkdate = 'Not Found 1';	
 				}
 
+				
+				
         if ($this->request->is(['patch', 'post', 'put'])) {
 			//pr($this->request->data); exit;
 			$quotation = $this->Quotations->newEntity();
@@ -438,7 +440,7 @@ class QuotationsController extends AppController
 			   $todate = strtotime($todate1); 
 			   $tody = strtotime($tody1);
 
-			  if($fromdate > $tody || $todate < $tody)
+			  if($fromdate < $tody || $todate > $tody)
 			   {
 				 if($SessionCheckDate['status'] == 'Open')
 				 { $chkdate = 'Found'; }

@@ -98,19 +98,19 @@ class ContraVouchersController extends AppController
 			   $todate = strtotime($todate1); 
 			   $tody = strtotime($tody1);
 
-			  if($fromdate > $tody || $todate < $tody)
+			  if($fromdate < $tody || $todate > $tody)
 			   {
 				 if($SessionCheckDate['status'] == 'Open')
-				 { $chkdate = 'Found'; }
+				 {   $chkdate = 'Found'; }
 				 else
-				 { $chkdate = 'Not Found'; }
+				 {   $chkdate = 'Not Found'; }
 
 			   }
 			   else
 				{
-					$chkdate = 'Not Found';	
+					 $chkdate = 'Not Found';	
 				}
-        
+       
         $contravoucher = $this->ContraVouchers->newEntity();
         
         if ($this->request->is('post')) {
@@ -336,7 +336,7 @@ class ContraVouchersController extends AppController
 			   $todate = strtotime($todate1); 
 			   $tody = strtotime($tody1);
 
-			  if($fromdate > $tody || $todate < $tody)
+			  if($fromdate < $tody || $todate > $tody)
 			   {
 				 if($SessionCheckDate['status'] == 'Open')
 				 { $chkdate = 'Found'; }

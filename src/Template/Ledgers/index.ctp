@@ -22,15 +22,14 @@
 						<td>
 							<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button>
 						</td>
-						<td align="right"> 
-						<form method="get" >
-								<label>Page number</label>
-									<select class="form-control input-sm select2me" name='page' style="width:20%">
+						<td align="right"><label>Page Number</label></td>
+						<td align="right" width="5%"> 
+								<select class="form-control input-sm select2me" name='page'>
 										<?= $this->Paginator->numbers(array('modulus'=>PHP_INT_MAX,'separator'=>'&nbsp;&nbsp;&nbsp;</b>|<b>&nbsp;&nbsp;&nbsp;')); ?>
 									</select>
 						</td>
 						<td ><button type="submit" class="btn btn-primary btn-sm">Go</button>						
-						</form>
+						
 						</td>
 					</tr>
 				</tbody>

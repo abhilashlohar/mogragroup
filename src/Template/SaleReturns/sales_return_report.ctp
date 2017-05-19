@@ -4,14 +4,14 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Sales Report</span>
+			<span class="caption-subject font-blue-steel uppercase">Sales Return Report</span>
 		</div>
 		<div class="actions">
 			
 			<?php echo $this->Html->link('Sales Report','/Invoices/salesReport',array('escape'=>false,'class'=>'btn btn-default')); ?>
 			<?php echo $this->Html->link('Sales Return Report','/SaleReturns/salesReturnReport',array('escape'=>false,'class'=>'btn btn-primary')); ?>
-			<?php echo $this->Html->link('Purchase Report','/AccountFirstSubgroups/',array('escape'=>false,'class'=>'btn btn-default')); ?>
-			<?php echo $this->Html->link('Purchase Return Report','/AccountSecondSubgroups/',array('escape'=>false,'class'=>'btn btn-default')); ?>
+			<?php echo $this->Html->link('Purchase Report','/InvoiceBookings/purchaseReport',array('escape'=>false,'class'=>'btn btn-default')); ?>
+			<?php echo $this->Html->link('Purchase Return Report','/PurchaseReturns/purchaseReturnReport',array('escape'=>false,'class'=>'btn btn-default')); ?>
 		</div>
 		
 	</div>

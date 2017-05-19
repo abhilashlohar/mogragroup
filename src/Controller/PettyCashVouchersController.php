@@ -27,29 +27,8 @@ class PettyCashVouchersController extends AppController
         ];
         
         
-        $pettycashvouchers = $this->paginate($this->PettyCashVouchers->find()->where(['company_id'=>$st_company_id])->contain(['PettyCashVoucherRows'=>function($q){
-            $PettyCashVoucherRows = $this->PettyCashVouchers->PettyCashVoucherRows->find();
-            $totalCrCase = $PettyCashVoucherRows->newExpr()
-                ->addCase(
-                    $PettyCashVoucherRows->newExpr()->add(['cr_dr' => 'Cr']),
-                    $PettyCashVoucherRows->newExpr()->add(['amount']),
-                    'integer'
-                );
-            $totalDrCase = $PettyCashVoucherRows->newExpr()
-                ->addCase(
-                    $PettyCashVoucherRows->newExpr()->add(['cr_dr' => 'Dr']),
-                    $PettyCashVoucherRows->newExpr()->add(['amount']),
-                    'integer'
-                );
-            return $PettyCashVoucherRows->select([
-                    'total_cr' => $PettyCashVoucherRows->func()->sum($totalCrCase),
-                    'total_dr' => $PettyCashVoucherRows->func()->sum($totalDrCase)
-                ])
-                ->group('petty_cash_voucher_id')
-                
-                ->autoFields(true);
-            
-        }])->order(['voucher_no'=>'DESC']));
+        $pettycashvouchers = $this->paginate($this->PettyCashVouchers->find()->where(['company_id'=>$st_company_id])->contain(['PettyCashVoucherRows'])->order(['voucher_no'=>'DESC']));
+		
         
 
         $this->set(compact('pettycashvouchers'));
@@ -89,6 +68,29 @@ class PettyCashVouchersController extends AppController
         $financial_year = $this->PettyCashVouchers->FinancialYears->find()->where(['id'=>$st_year_id])->first();
         
         $pettycashvoucher = $this->PettyCashVouchers->newEntity();
+
+			   $SessionCheckDate = $this->FinancialYears->get($st_year_id);
+			   $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
+			   $todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
+			   $tody1 = date("Y-m-d");
+
+			   $fromdate = strtotime($fromdate1);
+			   $todate = strtotime($todate1); 
+			   $tody = strtotime($tody1);
+
+			  if($fromdate > $tody || $todate < $tody)
+			   {
+				 if($SessionCheckDate['status'] == 'Open')
+				 { $chkdate = 'Found'; }
+				 else
+				 { $chkdate = 'Not Found'; }
+
+			   }
+			   else
+				{
+					$chkdate = 'Not Found';	
+				}
+
         
         if ($this->request->is('post')) {
             $pettycashvoucher = $this->PettyCashVouchers->patchEntity($pettycashvoucher, $this->request->data);
@@ -296,7 +298,7 @@ class PettyCashVouchersController extends AppController
         }else{
             $ReceivedFroms_selected='no';
         }
-        $this->set(compact('pettycashvoucher', 'bankCashes', 'receivedFroms', 'financial_year', 'BankCashes_selected', 'ReceivedFroms_selected'));
+        $this->set(compact('pettycashvoucher', 'bankCashes', 'receivedFroms', 'financial_year', 'BankCashes_selected', 'ReceivedFroms_selected','chkdate'));
         $this->set('_serialize', ['pettycashvoucher']);
     }
 
@@ -324,6 +326,32 @@ class PettyCashVouchersController extends AppController
         $old_ref_rows=[];
         $old_received_from_ids=[];
         $old_reference_numbers=[];
+
+			   $session = $this->request->session();
+			   $st_year_id = $session->read('st_year_id');
+
+			   $SessionCheckDate = $this->FinancialYears->get($st_year_id);
+			   $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
+			   $todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
+			   $tody1 = date("Y-m-d");
+
+			   $fromdate = strtotime($fromdate1);
+			   $todate = strtotime($todate1); 
+			   $tody = strtotime($tody1);
+
+			  if($fromdate > $tody || $todate < $tody)
+			   {
+				 if($SessionCheckDate['status'] == 'Open')
+				 { $chkdate = 'Found'; }
+				 else
+				 { $chkdate = 'Not Found'; }
+
+			   }
+			   else
+				{
+					$chkdate = 'Not Found';	
+				}
+
         
         foreach($pettycashvoucher->petty_cash_voucher_rows as $petty_cash_voucher_row){
             $ReferenceDetails=$this->PettyCashVouchers->ReferenceDetails->find()->where(['ledger_account_id'=>$petty_cash_voucher_row->received_from_id,'petty_cash_voucher_id'=>$pettycashvoucher->id,'auto_inc'=>$petty_cash_voucher_row->auto_inc]);
@@ -561,7 +589,7 @@ class PettyCashVouchersController extends AppController
             $ReceivedFroms_selected='no';
         }
          //pr($pettycashvoucher); exit;
-        $this->set(compact('pettycashvoucher', 'bankCashes', 'receivedFroms', 'financial_year', 'BankCashes_selected', 'ReceivedFroms_selected', 'old_ref_rows'));
+        $this->set(compact('pettycashvoucher', 'bankCashes', 'receivedFroms', 'financial_year', 'BankCashes_selected', 'ReceivedFroms_selected', 'old_ref_rows','chkdate'));
         $this->set('_serialize', ['pettycashvoucher']);
     }
 

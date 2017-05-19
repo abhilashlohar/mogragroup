@@ -12,7 +12,14 @@
 		 <?= $this->Form->create($vouchersReference,['type' => 'file','id'=>'form_sample_3']) ?>
 			<div class="form-body">
 				<div class="row">
-					<div class="col-md-4">
+
+					<span style="color: red;">
+						<?php if($chkdate == 'Not Found'){  ?>
+							You are not in Current Financial Year
+						<?php } ?>
+					</span>
+
+				<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Voucher Entity <span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('voucher_entity', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Voucher Entity']); ?>
@@ -125,7 +132,14 @@
 			</div>
 		
 			<div class="form-actions">
-				<button type="submit" class="btn btn-primary">EDIT VOUCHER REFERENCE</button>
+
+			<?php if($chkdate == 'Not Found'){  ?>
+					<label class="btn btn-danger"> You are not in Current Financial Year </label>
+				<?php } else { ?>
+					<button type="submit" class="btn btn-primary">EDIT VOUCHER REFERENCE</button>
+				<?php } ?>	
+
+
 			</div>
 		</div>
 		<?= $this->Form->end() ?>

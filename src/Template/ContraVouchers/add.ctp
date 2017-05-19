@@ -36,7 +36,13 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
                     <label class="control-label">Transaction Date<span class="required" aria-required="true">*</span></label>
                     <?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','value' => date("d-m-Y"),'data-date-start-date' => date("d-m-Y",strtotime($financial_year->date_from)),'data-date-end-date' => date("d-m-Y",strtotime($financial_year->date_to))]); ?>
                 </div>
-            </div>
+					<span style="color: red;">
+						<?php if($chkdate == 'Not Found'){  ?>
+							You are not in Current Financial Year
+						<?php } ?>
+					</span>
+
+				</div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label class="control-label">Bank/Cash Account<span class="required" aria-required="true">*</span></label>
@@ -84,7 +90,13 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
                 <td><a class="btn btn-xs btn-default addrow" href="#" role="button"><i class="fa fa-plus"></i> Add row</a></td>
                 <td id="receipt_amount" style="font-size: 14px;font-weight: bold;"></td>
                 <td></td>
-                <td><button type="submit" class="btn btn-primary" id='submitbtn' >CREATE CONTRA VOUCHER</button></td>
+                <td>
+					<?php if($chkdate == 'Not Found'){  ?>
+						<label class="btn btn-danger"> You are not in Current Financial Year </label>
+					<?php } else { ?>
+					<button type="submit" class="btn btn-primary" id='submitbtn' >CREATE CONTRA VOUCHER</button>
+					<?php } ?>				
+				</td>
                 <td></td>
             </tfoot>
         </table>

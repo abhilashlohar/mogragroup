@@ -29,6 +29,14 @@
 						<label class="col-md-3 control-label">Date</label>
 						<div class="col-md-9">
 							<?php echo $this->Form->input('created_on', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => date("d-m-Y"),'readonly']); ?>
+
+					
+					<span style="color: red;">
+						<?php if($chkdate == 'Not Found'){  ?>
+							You are not in Current Financial Year
+						<?php } ?>
+					</span>
+							
 						</div>
 					</div>
 				</div>
@@ -136,7 +144,15 @@
 				</div>
 			</div>
 			<div class="form-actions">
-				<?= $this->Form->button(__('ADD PAYMENT VOUCHER'),['class'=>'btn btn-primary','id'=>'add_submit','type'=>'Submit']) ?>
+
+				<?php if($chkdate == 'Not Found'){  ?>
+					<label class="btn btn-danger"> You are not in Current Financial Year </label>
+				<?php } else { ?>
+					<?= $this->Form->button(__('ADD PAYMENT VOUCHER'),['class'=>'btn btn-primary','id'=>'add_submit','type'=>'Submit']) ?>
+				<?php } ?>	
+
+
+			
 			</div>
 		</div>
 		<?= $this->Form->end() ?>

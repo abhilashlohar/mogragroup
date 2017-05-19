@@ -233,23 +233,27 @@ class SalesOrdersController extends AppController
 		
 		$st_year_id = $session->read('st_year_id');
 		
-       $SessionCheckDate = $this->FinancialYears->get($st_year_id);
-       $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
-       $todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
-       $tody1 = date("Y-m-d");
+			   $SessionCheckDate = $this->FinancialYears->get($st_year_id);
+			   $fromdate1 = DATE("Y-m-d",strtotime($SessionCheckDate->date_from));   
+			   $todate1 = DATE("Y-m-d",strtotime($SessionCheckDate->date_to)); 
+			   $tody1 = DATE("Y-m-d");
 
-       $fromdate = strtotime($fromdate1);
-       $todate = strtotime($todate1); 
-       $tody = strtotime($tody1);
+			   $fromdate = strtotime($fromdate1);
+			   $todate = strtotime($todate1); 
+			   $tody = strtotime($tody1);
 
-      if($fromdate > $tody || $todate < $tody)
-       {
-       	   $chkdate = 'Not Found';
-       }
-       else
-       {
-       	  $chkdate = 'Found';
-       }
+			  if($fromdate > $tody || $todate < $tody)
+			   {
+				 if($SessionCheckDate['status'] == 'Open')
+				 { $chkdate = 'Found'; }
+				 else
+				 { $chkdate = 'Not Found'; }
+
+			   }
+			   else
+				{
+					$chkdate = 'Not Found';	
+				}
 
 			
 				
@@ -409,6 +413,30 @@ class SalesOrdersController extends AppController
 			
 			$session = $this->request->session();
 			$st_company_id = $session->read('st_company_id');
+			$st_year_id = $session->read('st_year_id');
+			   $SessionCheckDate = $this->FinancialYears->get($st_year_id);
+			   $fromdate1 = DATE("Y-m-d",strtotime($SessionCheckDate->date_from));   
+			   $todate1 = DATE("Y-m-d",strtotime($SessionCheckDate->date_to)); 
+			   $tody1 = DATE("Y-m-d");
+
+			   $fromdate = strtotime($fromdate1);
+			   $todate = strtotime($todate1); 
+			   $tody = strtotime($tody1);
+
+			  if($fromdate > $tody || $todate < $tody)
+			   {
+				 if($SessionCheckDate['status'] == 'Open')
+				 { $chkdate = 'Found'; }
+				 else
+				 { $chkdate = 'Not Found'; }
+
+			   }
+			   else
+				{
+					$chkdate = 'Not Found';	
+				}
+
+
 			
 			if ($this->request->is(['patch', 'post', 'put'])) {
 				$salesOrder = $this->SalesOrders->patchEntity($salesOrder, $this->request->data);
@@ -481,7 +509,7 @@ class SalesOrdersController extends AppController
 							return $q->where(['SaleTaxCompanies.company_id' => $st_company_id]);
 						} 
 					);
-			$this->set(compact('salesOrder', 'customers', 'companies','quotationlists','items','transporters','termsConditions','serviceTaxs','exciseDuty','employees','SaleTaxes','Filenames','financial_year_data'));
+			$this->set(compact('salesOrder', 'customers', 'companies','quotationlists','items','transporters','termsConditions','serviceTaxs','exciseDuty','employees','SaleTaxes','Filenames','financial_year_data','chkdate'));
 			$this->set('_serialize', ['salesOrder']);
 		}
 		else

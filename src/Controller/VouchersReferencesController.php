@@ -84,7 +84,32 @@ class VouchersReferencesController extends AppController
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		$this->viewBuilder()->layout('index_layout');
-	
+
+		   $st_year_id = $session->read('st_year_id');
+
+		   $SessionCheckDate = $this->FinancialYears->get($st_year_id);
+		        $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
+		        $todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
+		        $tody1 = date("Y-m-d");
+
+		   $fromdate = strtotime($fromdate1);
+		   $todate = strtotime($todate1); 
+		   $tody = strtotime($tody1);
+
+		  if($fromdate > $tody || $todate < $tody)
+		   {
+			 if($SessionCheckDate['status'] == 'Open')
+			 { $chkdate = 'Found'; }
+			 else
+			 { $chkdate = 'Not Found'; }
+
+		   }
+		   else
+			{
+				$chkdate = 'Not Found';	
+			}
+
+		
         $vouchersReference = $this->VouchersReferences->get($id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
@@ -110,7 +135,7 @@ class VouchersReferencesController extends AppController
 		$AccountGroups = $this->VouchersReferences->AccountGroups->find('all')->contain(['AccountFirstSubgroups'=>['AccountSecondSubgroups'=>['LedgerAccounts' => function ($q) use($st_company_id){
 			return $q->where(['company_id'=>$st_company_id]);
 		}]]]);
-        $this->set(compact('vouchersReference','AccountGroups','ledger_arr','st_company_id'));
+        $this->set(compact('vouchersReference','AccountGroups','ledger_arr','st_company_id','chkdate'));
         $this->set('_serialize', ['vouchersReference']);
     }
 

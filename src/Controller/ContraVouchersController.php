@@ -88,6 +88,28 @@ class ContraVouchersController extends AppController
         $st_company_id = $session->read('st_company_id');
         $st_year_id = $session->read('st_year_id');
         $financial_year = $this->ContraVouchers->FinancialYears->find()->where(['id'=>$st_year_id])->first();
+
+			   $SessionCheckDate = $this->FinancialYears->get($st_year_id);
+			   $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
+			   $todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
+			   $tody1 = date("Y-m-d");
+
+			   $fromdate = strtotime($fromdate1);
+			   $todate = strtotime($todate1); 
+			   $tody = strtotime($tody1);
+
+			  if($fromdate > $tody || $todate < $tody)
+			   {
+				 if($SessionCheckDate['status'] == 'Open')
+				 { $chkdate = 'Found'; }
+				 else
+				 { $chkdate = 'Not Found'; }
+
+			   }
+			   else
+				{
+					$chkdate = 'Not Found';	
+				}
         
         $contravoucher = $this->ContraVouchers->newEntity();
         
@@ -275,7 +297,7 @@ class ContraVouchersController extends AppController
         }else{
             $ReceivedFroms_selected='no';
         }
-        $this->set(compact('contravoucher', 'bankCashes', 'receivedFroms', 'financial_year', 'BankCashes_selected', 'ReceivedFroms_selected'));
+        $this->set(compact('contravoucher', 'bankCashes', 'receivedFroms', 'financial_year', 'BankCashes_selected', 'ReceivedFroms_selected','chkdate'));
         $this->set('_serialize', ['contravoucher']);
 
     }
@@ -304,6 +326,29 @@ class ContraVouchersController extends AppController
         $old_ref_rows=[];
         $old_received_from_ids=[];
         $old_reference_numbers=[];
+
+			   $SessionCheckDate = $this->FinancialYears->get($st_year_id);
+			   $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
+			   $todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
+			   $tody1 = date("Y-m-d");
+
+			   $fromdate = strtotime($fromdate1);
+			   $todate = strtotime($todate1); 
+			   $tody = strtotime($tody1);
+
+			  if($fromdate > $tody || $todate < $tody)
+			   {
+				 if($SessionCheckDate['status'] == 'Open')
+				 { $chkdate = 'Found'; }
+				 else
+				 { $chkdate = 'Not Found'; }
+
+			   }
+			   else
+				{
+					$chkdate = 'Not Found';	
+				}
+
         
         foreach($contravoucher->contra_voucher_rows as $contra_voucher_row){
             $ReferenceDetails=$this->ContraVouchers->ReferenceDetails->find()->where(['ledger_account_id'=>$contra_voucher_row->received_from_id,'contra_voucher_id'=>$contravoucher->id]);
@@ -513,7 +558,7 @@ class ContraVouchersController extends AppController
             $ReceivedFroms_selected='no';
         }
         
-        $this->set(compact('contravoucher', 'bankCashes', 'receivedFroms', 'financial_year', 'BankCashes_selected', 'ReceivedFroms_selected', 'old_ref_rows'));
+        $this->set(compact('contravoucher', 'bankCashes', 'receivedFroms', 'financial_year', 'BankCashes_selected', 'ReceivedFroms_selected', 'old_ref_rows','chkdate'));
         $this->set('_serialize', ['contravoucher']);
 
     }

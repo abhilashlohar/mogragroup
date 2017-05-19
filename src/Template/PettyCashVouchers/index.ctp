@@ -21,9 +21,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php $i=0; foreach ($pettycashvouchers as $pettycashvoucher): $i++; 
-                        
-                    ?>
+                        <?php $i=0; foreach ($pettycashvouchers as $pettycashvoucher): $i++;  ?>
                         <tr>
                             <td><?= h(++$page_no) ?></td>
                             <td><?= h(date("d-m-Y",strtotime($pettycashvoucher->transaction_date)))?></td>

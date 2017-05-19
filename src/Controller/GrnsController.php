@@ -116,24 +116,27 @@ class GrnsController extends AppController
 		$st_company_id = $session->read('st_company_id');
 
 		 $st_year_id = $session->read('st_year_id');
+		   $SessionCheckDate = $this->FinancialYears->get($st_year_id);
+		   $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
+		   $todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
+		   $tody1 = date("Y-m-d");
 
-       $SessionCheckDate = $this->FinancialYears->get($st_year_id);
-       $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
-       $todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
-       $tody1 = date("Y-m-d");
+		   $fromdate = strtotime($fromdate1);
+		   $todate = strtotime($todate1); 
+		   $tody = strtotime($tody1);
 
-       $fromdate = strtotime($fromdate1);
-       $todate = strtotime($todate1); 
-       $tody = strtotime($tody1);
+		  if($fromdate > $tody || $todate < $tody)
+		   {
+			 if($SessionCheckDate['status'] == 'Open')
+			 { $chkdate = 'Found'; }
+			 else
+			 { $chkdate = 'Not Found'; }
 
-      if($fromdate > $tody || $todate < $tody)
-       {
-       	   $chkdate = 'Not Found';
-       }
-       else
-       {
-       	  $chkdate = 'Found';
-       }
+		   }
+		   else
+			{
+				$chkdate = 'Not Found';	
+			}
 
 
 		 $grn = $this->Grns->newEntity();
@@ -235,25 +238,25 @@ class GrnsController extends AppController
 		$this->set(compact('purchase_order'));
 		
 
-		 $st_year_id = $session->read('st_year_id');
+			   $st_year_id = $session->read('st_year_id');
 
-       $SessionCheckDate = $this->FinancialYears->get($st_year_id);
-       $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
-       $todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
-       $tody1 = date("Y-m-d");
+			   $SessionCheckDate = $this->FinancialYears->get($st_year_id);
+			   $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
+			   $todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
+			   $tody1 = date("Y-m-d");
 
-       $fromdate = strtotime($fromdate1);
-       $todate = strtotime($todate1); 
-       $tody = strtotime($tody1);
+			   $fromdate = strtotime($fromdate1);
+			   $todate = strtotime($todate1); 
+			   $tody = strtotime($tody1);
 
-      if($fromdate > $tody || $todate < $tody)
-       {
-       	   $chkdate = 'Not Found';
-       }
-       else
-       {
-       	  $chkdate = 'Found';
-       }
+			  if($fromdate > $tody || $todate < $tody || $SessionCheckDate['status'] == 'Closed')
+			   {
+				   $chkdate = 'Not Found';
+			   }
+			   else
+			   {
+				  $chkdate = 'Found';
+			   }
 
 
 		 $grn = $this->Grns->newEntity();
@@ -342,10 +345,33 @@ class GrnsController extends AppController
 						'Companies','ItemSerialNumbers','Vendors','PurchaseOrders'=>['PurchaseOrderRows','Grns'=>['GrnRows']],'GrnRows'=>['Items']
 					]
 			]);
-		
-		$Em = new FinancialYearsController;
-	    $financial_year_data = $Em->checkFinancialYear($grn->date_created);
+			
+			   $session = $this->request->session();
+			   $st_year_id = $session->read('st_year_id');
 
+			   $SessionCheckDate = $this->FinancialYears->get($st_year_id);
+			   $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
+			   $todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
+			   $tody1 = date("Y-m-d");
+
+			   $fromdate = strtotime($fromdate1);
+			   $todate = strtotime($todate1); 
+			   $tody = strtotime($tody1);
+
+			  if($fromdate > $tody || $todate < $tody)
+			   {
+				 if($SessionCheckDate['status'] == 'Open')
+				 { $chkdate = 'Found'; }
+				 else
+				 { $chkdate = 'Not Found'; }
+
+			   }
+			   else
+				{
+					$chkdate = 'Not Found';	
+				}
+
+		
 			if ($this->request->is(['patch', 'post', 'put'])) {
 			$serial_numbers=$this->request->data['serial_numbers']; 
 			$item_serial_numbers=[];
@@ -382,7 +408,7 @@ class GrnsController extends AppController
 			}
         $purchaseOrders = $this->Grns->PurchaseOrders->find('list', ['limit' => 200]);
         $companies = $this->Grns->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('grn', 'purchaseOrders', 'companies','financial_year_data'));
+        $this->set(compact('grn', 'purchaseOrders', 'companies','chkdate'));
         $this->set('_serialize', ['grn']);
     }
 	////
@@ -402,10 +428,29 @@ class GrnsController extends AppController
 								}]]
 					]
 			]);
-		$Em = new FinancialYearsController;
-	    $financial_year_data = $Em->checkFinancialYear($grn->date_created);
 
-			if ($this->request->is(['patch', 'post', 'put'])) {
+			   $st_year_id = $session->read('st_year_id');
+
+			   $SessionCheckDate = $this->FinancialYears->get($st_year_id);
+			   $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
+			   $todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
+			   $tody1 = date("Y-m-d");
+
+			   $fromdate = strtotime($fromdate1);
+			   $todate = strtotime($todate1); 
+			   $tody = strtotime($tody1);
+
+			  if($fromdate > $tody || $todate < $tody || $SessionCheckDate['status'] == 'Closed')
+			   {
+				   $chkdate = 'Not Found';
+			   }
+			   else
+			   {
+				  $chkdate = 'Found';
+			   }			
+	
+	
+		if ($this->request->is(['patch', 'post', 'put'])) {
 			$serial_numbers=@$this->request->data['serial_numbers']; 
 			$item_serial_numbers=[];
 			if(sizeof($serial_numbers)>0){
@@ -442,7 +487,7 @@ class GrnsController extends AppController
 			}
         $purchaseOrders = $this->Grns->PurchaseOrders->find('list', ['limit' => 200]);
         $companies = $this->Grns->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('grn', 'purchaseOrders', 'companies','financial_year_data'));
+        $this->set(compact('grn', 'purchaseOrders', 'companies','chkdate'));
         $this->set('_serialize', ['grn']);
     }
     /**

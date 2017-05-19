@@ -346,23 +346,28 @@ class InvoicesController extends AppController
 		$session = $this->request->session();
 		$st_year_id = $session->read('st_year_id');
 		
-	   $SessionCheckDate = $this->FinancialYears->get($st_year_id);
-       $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
-       $todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
-       $tody1 = date("Y-m-d");
+			   $SessionCheckDate = $this->FinancialYears->get($st_year_id);
+			   $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
+			   $todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
+			   $tody1 = date("Y-m-d");
 
-       $fromdate = strtotime($fromdate1);
-       $todate = strtotime($todate1); 
-       $tody = strtotime($tody1);
+			   $fromdate = strtotime($fromdate1);
+			   $todate = strtotime($todate1); 
+			   $tody = strtotime($tody1);
 
-      if($fromdate > $tody || $todate < $tody)
-       {
-       	   $chkdate = 'Not Found';
-       }
-       else
-       {
-       	  $chkdate = 'Found';
-       }
+			  if($fromdate > $tody || $todate < $tody)
+			   {
+				 if($SessionCheckDate['status'] == 'Open')
+				 { $chkdate = 'Found'; }
+				 else
+				 { $chkdate = 'Not Found'; }
+
+			   }
+			   else
+				{
+					$chkdate = 'Not Found';	
+				}
+
 
 
 
@@ -1050,6 +1055,33 @@ class InvoicesController extends AppController
 				$total_debit=$total_debit+$customer_reference_detail->debit;
 			}
 		}
+
+		//$session = $this->request->session();
+		$st_year_id = $session->read('st_year_id');
+		
+			   $SessionCheckDate = $this->FinancialYears->get($st_year_id);
+			   $fromdate1 = DATE("Y-m-d",strtotime($SessionCheckDate->date_from));   
+			   $todate1 = DATE("Y-m-d",strtotime($SessionCheckDate->date_to)); 
+			   $tody1 = DATE("Y-m-d");
+
+			   $fromdate = strtotime($fromdate1);
+			   $todate = strtotime($todate1); 
+			   $tody = strtotime($tody1);
+
+			  if($fromdate > $tody || $todate < $tody)
+			   {
+				 if($SessionCheckDate['status'] == 'Open')
+				 { $chkdate = 'Found'; }
+				 else
+				 { $chkdate = 'Not Found'; }
+
+			   }
+			   else
+				{
+					$chkdate = 'Not Found';	
+				}
+
+
 		
 		$temp_due_payment=$total_credit-$total_debit;
 		$old_due_payment=$temp_due_payment-$invoice->grand_total;
@@ -1073,7 +1105,7 @@ class InvoicesController extends AppController
 		$termsConditions = $this->Invoices->TermsConditions->find('all');
 		$SaleTaxes = $this->Invoices->SaleTaxes->find('all')->where(['freeze'=>0]);
 		$employees = $this->Invoices->Employees->find('list');
-        $this->set(compact('invoice_id','ReferenceDetails','ReferenceBalances','invoice', 'customers', 'companies', 'salesOrders','old_due_payment','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees','dueInvoices','serial_no','ItemSerialNumber','SelectItemSerialNumber','ItemSerialNumber2','financial_year_data','ledger_account_details','ledger_account_details_for_fright','sale_tax_ledger_accounts','c_LedgerAccount'));
+        $this->set(compact('invoice_id','ReferenceDetails','ReferenceBalances','invoice', 'customers', 'companies', 'salesOrders','old_due_payment','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees','dueInvoices','serial_no','ItemSerialNumber','SelectItemSerialNumber','ItemSerialNumber2','financial_year_data','ledger_account_details','ledger_account_details_for_fright','sale_tax_ledger_accounts','c_LedgerAccount','chkdate'));
         $this->set('_serialize', ['invoice']);
 		}
 		else

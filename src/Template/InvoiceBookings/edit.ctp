@@ -15,15 +15,7 @@
 	font-size:10px;
 }
 </style>
-<?php 
-$this->Form->templates([
-				'inputContainer' => '{{content}}'
-			]);
-			
-    if($financial_year_data['Response'] == "Close" ){
- 			echo "Financial Year Closed"; 
-
- 		} else { ?>
+<?php $this->Form->templates([ 'inputContainer' => '{{content}}' ]);?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -68,7 +60,12 @@ $this->Form->templates([
 									<div class="form-group">
 										<label class="control-label">Date</label>
 										<br/>
-										<?php echo date("d-m-Y"); ?>
+										<?php echo date("d-m-Y"); ?> <br>
+										<span style="color: red;">
+											<?php if($chkdate == 'Not Found'){  ?>
+												You are not in Current Financial Year
+											<?php } ?>
+										</span>
 									</div>
 								</div>
 				</div><br/>
@@ -279,8 +276,12 @@ $this->Form->templates([
 		<div class="form-actions">
 			<div class="row">
 				<div class="col-md-3">
-				<?= $this->Form->button(__('UPDATE BOOK INVOICE'),['class'=>'btn btn-primary','id'=>'add_submit','type'=>'Submit']) ?>
-					
+
+				<?php if($chkdate == 'Not Found'){  ?>
+					<label class="btn btn-danger"> You are not in Current Financial Year </label>
+				<?php } else { ?>
+					<?= $this->Form->button(__('UPDATE BOOK INVOICE'),['class'=>'btn btn-primary','id'=>'add_submit','type'=>'Submit']) ?>
+				<?php } ?>					
 				</div>
 			</div>
 		</div>
@@ -746,4 +747,3 @@ $(document).ready(function() {
 	</table>
 </div>
 
-<?php } ?>

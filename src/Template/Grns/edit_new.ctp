@@ -1,7 +1,3 @@
-<?php if($financial_year_data['Response'] == "Close" ){
- 			echo "Financial Year Closed"; 
-
- 		} else { ?>
 
 <?php $this->Form->templates([
      'inputContainer' => '{{content}}'
@@ -52,8 +48,13 @@
 						<div class="form-group">
 							<label class="control-label">Date</label>
 							<br/>
-							<?php echo date("d-m-Y"); ?>
-						</div>
+							<?php echo date("d-m-Y"); ?> <br>
+							<span style="color: red;">
+								<?php if($chkdate == 'Not Found'){  ?>
+									You are not in Current Financial Year
+								<?php } ?>
+							</span>
+							</div>
 					</div>
 				</div><br/>
 				<div class="row">
@@ -131,7 +132,11 @@
 			<div class="form-actions">
 				<div class="row">
 					<div class="col-md-offset-3 col-md-9">
-						<button type="submit" class="btn btn-primary">EDIT GRN</button>
+					<?php if($chkdate == 'Not Found'){  ?>
+						<label class="btn btn-danger"> You are not in Current Financial Year </label>
+					<?php } else { ?>
+						<button type="submit" class="btn btn-primary">EDIT GRN</button>	
+					<?php } ?>						
 					</div>
 				</div>
 			</div>
@@ -331,4 +336,3 @@ $(document).ready(function() {
 	}
 });		
 </script>
-<?php } ?>

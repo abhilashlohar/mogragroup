@@ -309,23 +309,27 @@ class QuotationsController extends AppController
 		
         $st_year_id = $session->read('st_year_id');
 
-       $SessionCheckDate = $this->FinancialYears->get($st_year_id);
-       $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
-       $todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
-       $tody1 = date("Y-m-d");
+			   $SessionCheckDate = $this->FinancialYears->get($st_year_id);
+			   $fromdate1 = DATE("Y-m-d",strtotime($SessionCheckDate->date_from));   
+			   $todate1 = DATE("Y-m-d",strtotime($SessionCheckDate->date_to)); 
+			   $tody1 = DATE("Y-m-d");
 
-       $fromdate = strtotime($fromdate1);
-       $todate = strtotime($todate1); 
-       $tody = strtotime($tody1);
+			   $fromdate = strtotime($fromdate1);
+			   $todate = strtotime($todate1); 
+			   $tody = strtotime($tody1);
 
-      if($fromdate > $tody || $todate < $tody)
-       {
-       	   $chkdate = 'Not Found';
-       }
-       else
-       {
-       	  $chkdate = 'Found';
-       }
+			  if($fromdate > $tody || $todate < $tody)
+			   {
+				 if($SessionCheckDate['status'] == 'Open')
+				 { $chkdate = 'Found'; }
+				 else
+				 { $chkdate = 'Not Found'; }
+
+			   }
+			   else
+				{
+					$chkdate = 'Not Found';	
+				}
 
         if ($this->request->is(['patch', 'post', 'put'])) {
 			//pr($this->request->data); exit;
@@ -424,6 +428,30 @@ class QuotationsController extends AppController
 			$session = $this->request->session();
 			$st_company_id = $session->read('st_company_id');
 			$Company = $this->Quotations->Companies->get($st_company_id);
+
+			   $SessionCheckDate = $this->FinancialYears->get($st_year_id);
+			   $fromdate1 = DATE("Y-m-d",strtotime($SessionCheckDate->date_from));   
+			   $todate1 = DATE("Y-m-d",strtotime($SessionCheckDate->date_to)); 
+			   $tody1 = DATE("Y-m-d");
+
+			   $fromdate = strtotime($fromdate1);
+			   $todate = strtotime($todate1); 
+			   $tody = strtotime($tody1);
+
+			  if($fromdate > $tody || $todate < $tody)
+			   {
+				 if($SessionCheckDate['status'] == 'Open')
+				 { $chkdate = 'Found'; }
+				 else
+				 { $chkdate = 'Not Found'; }
+
+			   }
+			   else
+				{
+					$chkdate = 'Not Found';	
+				}
+
+
 			
 			if ($this->request->is(['patch', 'post', 'put'])) {
 				$this->request->data["finalisation_date"]=date("Y-m-d",strtotime($this->request->data["finalisation_date"]));
@@ -465,7 +493,7 @@ class QuotationsController extends AppController
 					);
 			$termsConditions = $this->Quotations->TermsConditions->find('all',['limit' => 200]);
 			
-			$this->set(compact('quotation', 'customers','companies','employees','ItemGroups','items','termsConditions','Filenames'));
+			$this->set(compact('quotation', 'customers','companies','employees','ItemGroups','items','termsConditions','Filenames','chkdate'));
 			$this->set('_serialize', ['quotation']);
 		}
 		else

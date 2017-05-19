@@ -7,7 +7,12 @@
 <div class="row">
 	<div class="col-md-12" style="background-color:#FFF;">
 		<div class="row">
-			<div class="col-md-3"> 
+					<span style="color: red;">
+						<?php if($chkdate == 'Not Found'){  ?>
+							You are not in Current Financial Year
+						<?php } ?>
+					</span>
+		<div class="col-md-3"> 
 				<ul class="nav nav-tabs tabs-left">
 					<?php foreach($display_items as $item_id=>$display_item){ ?>
 					<li <?php if($q_item_id==$item_id){ echo 'class="active"'; } ?> >
@@ -78,7 +83,14 @@
 				
 					</tbody>
 				</table>
-				<button type="submit" class="btn btn-primary" id='submitbtn' >Save & Next</button>
+
+				<?php if($chkdate == 'Not Found'){  ?>
+					<label class="btn btn-danger"> You are not in Current Financial Year </label>
+				<?php } else { ?>
+					<button type="submit" class="btn btn-primary" id='submitbtn' >Save & Next</button>
+				<?php } ?>	
+
+				
 				<?= $this->Form->end() ?>
 			</div>
 		</div>

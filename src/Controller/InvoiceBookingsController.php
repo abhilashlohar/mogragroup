@@ -120,24 +120,30 @@ class InvoiceBookingsController extends AppController
 		$st_company_id = $session->read('st_company_id');
 		$st_year_id = $session->read('st_year_id');
 
-       $SessionCheckDate = $this->FinancialYears->get($st_year_id);
-       $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
-       $todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
-       $tody1 = date("Y-m-d");
+			   $SessionCheckDate = $this->FinancialYears->get($st_year_id);
+			   $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
+			   $todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
+			   $tody1 = date("Y-m-d");
 
-       $fromdate = strtotime($fromdate1);
-       $todate = strtotime($todate1); 
-       $tody = strtotime($tody1);
+			   $fromdate = strtotime($fromdate1);
+			   $todate = strtotime($todate1); 
+			   $tody = strtotime($tody1);
 
-      if($fromdate > $tody || $todate < $tody)
-       {
-       	   $chkdate = 'Not Found';
-       }
-       else
-       {
-       	  $chkdate = 'Found';
-       }
+			  if($fromdate > $tody || $todate < $tody)
+			   {
+				 if($SessionCheckDate['status'] == 'Open')
+				 { $chkdate = 'Found'; }
+				 else
+				 { $chkdate = 'Not Found'; }
 
+			   }
+			   else
+				{
+					$chkdate = 'Not Found';	
+				}
+			
+			
+			   
 		$grn_id=@(int)$this->request->query('grn');
 		$grn=array();
 		if(!empty($grn_id)){
@@ -365,7 +371,33 @@ class InvoiceBookingsController extends AppController
 	$session = $this->request->session();
 	$invoice_booking_id=$id;
 	$st_company_id = $session->read('st_company_id');
-        $invoiceBooking = $this->InvoiceBookings->get($id, [
+
+	$st_year_id = $session->read('st_year_id');
+
+	   $SessionCheckDate = $this->FinancialYears->get($st_year_id);
+	   $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
+	   $todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
+	   $tody1 = date("Y-m-d");
+
+	   $fromdate = strtotime($fromdate1);
+	   $todate = strtotime($todate1); 
+	   $tody = strtotime($tody1);
+
+	  if($fromdate > $tody || $todate < $tody)
+	   {
+		 if($SessionCheckDate['status'] == 'Open')
+		 { $chkdate = 'Found'; }
+		 else
+		 { $chkdate = 'Not Found'; }
+
+	   }
+	   else
+		{
+			$chkdate = 'Not Found';	
+		}
+
+
+	$invoiceBooking = $this->InvoiceBookings->get($id, [
             'contain' => ['InvoiceBookingRows' => ['Items'],'Grns'=>['Companies','Vendors','GrnRows'=>['Items'],'PurchaseOrders'=>['PurchaseOrderRows']]]
         ]);
 		
@@ -562,7 +594,7 @@ class InvoiceBookingsController extends AppController
 			return $q->where(['AccountFirstSubgroups.id'=>$AccountReference->account_first_subgroup_id]);
 		}]])->order(['LedgerAccounts.name' => 'ASC'])->where(['LedgerAccounts.company_id'=>$st_company_id]);
 		
-        $this->set(compact('invoiceBooking','ReferenceDetails', 'grns','financial_year_data','ReferenceBalances','invoice_booking_id','v_LedgerAccount', 'ledger_account_details', 'ledger_account_vat'));
+        $this->set(compact('invoiceBooking','ReferenceDetails', 'grns','financial_year_data','ReferenceBalances','invoice_booking_id','v_LedgerAccount', 'ledger_account_details', 'ledger_account_vat','chkdate'));
         $this->set('_serialize', ['invoiceBooking']);
     }
 

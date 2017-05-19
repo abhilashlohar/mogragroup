@@ -460,7 +460,7 @@ class ItemsController extends AppController
 				$Company_array1[$Company->id]=$Company->name;
 				$Company_array2[$Company->id]=$item_data->freeze;
 				$Company_array3[$Company->id]=$item_data->serial_number_enable;
-
+				
 			}else{
 
 				$Company_array[$Company->id]='No';
@@ -487,12 +487,20 @@ class ItemsController extends AppController
 
 public function SerialNumberEnabled($company_id=null,$item_id=null,$item_serial_no=null)
 	{
+		
+		if($item_serial_no == 0){
+			$ItemSerialNumbers = $this->Items->ItemSerialNumbers->exists(['item_id'=>$item_id
+		,'company_id'=>$company_id]);
+			if($ItemSerialNumbers){
+				$this->Flash->error(__('Item Can not Disabled.These Item has Serial Number , Firstly, you can delete serial number then you can disabled'));
+			}
+		}else{
 		$query2 = $this->Items->ItemCompanies->query();
 		$query2->update()
 			->set(['serial_number_enable' => $item_serial_no])
 			->where(['item_id' => $item_id,'company_id'=>$company_id])
 			->execute();
-
+		}
 		return $this->redirect(['action' => 'EditCompany/'.$item_id]);
 	}
 

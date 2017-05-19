@@ -1,7 +1,4 @@
-<?php 
-if($financial_year_data['Response'] == "Close" ){
- 			echo "Financial Year Closed"; 
- 		} else { ?>
+
 <style>
 table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table > thead > tr > td, table > tbody > tr > td, table > tfoot > tr > td{
 	vertical-align: top !important;
@@ -41,7 +38,12 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 						<label class="col-md-3 control-label">Date</label>
 						<div class="col-md-9">
 							<?php echo $this->Form->input('date_created', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => date("d-m-Y",strtotime($invoice->date_created)),'readonly']); ?>
-						</div>
+					<span style="color: red;">
+						<?php if($chkdate == 'Not Found'){  ?>
+							You are not in Current Financial Year
+						<?php } ?>
+					</span>
+							</div>
 					</div>
 				</div>
 			</div><br/>
@@ -321,7 +323,12 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 		<div class="form-actions">
 			<div class="row">
 				<div class="col-md-offset-3 col-md-9">
+					<?php if($chkdate == 'Not Found'){  ?>
+						<label class="btn btn-danger"> You are not in Current Financial Year </label>
+					<?php } else { ?>
 					<?= $this->Form->button(__('SALE RETURN'),['class'=>'btn btn-primary','id'=>'add_submit','type'=>'Submit']) ?>
+					<?php } ?>						
+
 				</div>
 			</div>
 		</div>
@@ -727,7 +734,6 @@ $(document).ready(function() {
 
 
 
-<?php } ?>
 
 
 <?php $ref_types=['New Reference'=>'New Ref','Against Reference'=>'Agst Ref','Advance Reference'=>'Advance']; ?>

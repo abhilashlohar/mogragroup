@@ -20,10 +20,7 @@ $this->Form->templates([
 				'inputContainer' => '{{content}}'
 			]);
 			
-    if($financial_year_data['Response'] == "Close" ){
- 			echo "Financial Year Closed"; 
-
- 		} else { ?>
+ ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -67,8 +64,14 @@ $this->Form->templates([
 									<div class="form-group">
 										<label class="control-label">Date</label>
 										<br/>
-										<?php echo date("d-m-Y"); ?>
-									</div>
+										<?php echo date("d-m-Y"); ?> <br/>
+									<span style="color: red;">
+										<?php if($chkdate == 'Not Found'){  ?>
+											You are not in Current Financial Year
+										<?php } ?>
+									</span>
+
+										</div>
 								</div>
 				</div><br/>
 					<div class="row">
@@ -212,7 +215,14 @@ $this->Form->templates([
 		<div class="form-actions">
 			<div class="row">
 				<div class="col-md-3">
-				<?= $this->Form->button(__('UPDATE PURCHASE RETURN'),['class'=>'btn btn-primary','type'=>'Submit']) ?>
+
+				<?php if($chkdate == 'Not Found'){  ?>
+					<label class="btn btn-danger"> You are not in Current Financial Year </label>
+				<?php } else { ?>
+					<?= $this->Form->button(__('UPDATE PURCHASE RETURN'),['class'=>'btn btn-primary','type'=>'Submit']) ?>
+				<?php } ?>	
+
+				
 					
 				</div>
 			</div>
@@ -529,7 +539,7 @@ rename_ref_rows();
 });
 
 </script>
-<?php } ?>
+
 
 <?php $ref_types=['New Reference'=>'New Ref','Against Reference'=>'Agst Ref','Advance Reference'=>'Advance']; ?>
 <div id="sample_ref" style="display:none;">

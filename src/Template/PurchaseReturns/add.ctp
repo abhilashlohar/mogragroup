@@ -19,11 +19,7 @@
 $this->Form->templates([
 				'inputContainer' => '{{content}}'
 			]);
-			
-    if($financial_year_data['Response'] == "Close" ){
- 			echo "Financial Year Closed"; 
-
- 		} else { ?>
+			?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -67,7 +63,12 @@ $this->Form->templates([
 									<div class="form-group">
 										<label class="control-label">Date</label>
 										<br/>
-										<?php echo date("d-m-Y"); ?>
+										<?php echo date("d-m-Y"); ?> <br >
+											<span style="color: red;">
+												<?php if($chkdate == 'Not Found'){  ?>
+													You are not in Current Financial Year
+												<?php } ?>
+											</span>
 									</div>
 								</div>
 				</div><br/>
@@ -185,7 +186,14 @@ $this->Form->templates([
 		<div class="form-actions">
 			<div class="row">
 				<div class="col-md-3">
+
+				<?php if($chkdate == 'Not Found'){  ?>
+					<label class="btn btn-danger"> You are not in Current Financial Year </label>
+				<?php } else { ?>
 				<?= $this->Form->button(__('UPDATE BOOK INVOICE'),['class'=>'btn btn-primary','id'=>'add_submit','type'=>'Submit']) ?>
+				<?php } ?>	
+
+
 					
 				</div>
 			</div>
@@ -471,7 +479,6 @@ $(document).ready(function() {
 });
 
 </script>
-<?php } ?>
 
 <?php $ref_types=['New Reference'=>'New Ref','Against Reference'=>'Agst Ref','Advance Reference'=>'Advance']; ?>
 <div id="sample_ref" style="display:none;">

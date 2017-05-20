@@ -701,17 +701,17 @@ $(document).ready(function() {
 		
 	}
 	
-	$('select[name="invoice_id"]').live("change",function() { 
-		var in_id=$(this).val();
+	$('select[name="invoice_id"]').live("change",function() {  
+		var in_id=$(this).val(); 
 		itemsAsInvoice(in_id,'Invoices');
 	});
 	
-	$('select[name="invoice_booking_id"]').live("change",function() {
+	$('select[name="invoice_booking_id"]').live("change",function() { 
 		var in_id=$(this).val();
 		itemsAsInvoice(in_id,'Invoice_Booking');
 	});
      		
-	function itemsAsInvoice(in_id,source_model){
+	function itemsAsInvoice(in_id,source_model){ 
 		var url = "<?php echo $this->Url->build(['controller'=>'Challans','action'=>'itemsAsInvoice']);?>";
 		url=url+'/'+in_id+'/'+source_model,
         $.ajax({

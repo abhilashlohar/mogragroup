@@ -25,12 +25,7 @@ class PettyCashVouchersController extends AppController
         $this->paginate = [
             'contain' => []
         ];
-        
-        
         $pettycashvouchers = $this->paginate($this->PettyCashVouchers->find()->where(['company_id'=>$st_company_id])->contain(['PettyCashVoucherRows'])->order(['voucher_no'=>'DESC']));
-		
-        
-
         $this->set(compact('pettycashvouchers'));
         $this->set('_serialize', ['pettycashvouchers']);
     }

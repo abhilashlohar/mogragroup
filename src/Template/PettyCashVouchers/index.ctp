@@ -26,7 +26,9 @@
                             <td><?= h(++$page_no) ?></td>
                             <td><?= h(date("d-m-Y",strtotime($pettycashvoucher->transaction_date)))?></td>
                             <td><?= h('#'.str_pad($pettycashvoucher->voucher_no, 4, '0', STR_PAD_LEFT)) ?></td>
-                            <td><?= h($pettycashvoucher->petty_cash_voucher_rows[0]->total_dr-$pettycashvoucher->petty_cash_voucher_rows[0]->total_cr) ?></td>
+							<?php foreach($pettycashvoucher->petty_cash_voucher_rows as $petty_cash_voucher_row){ pr($petty_cash_voucher_row);
+							} ?>
+                            <td><?= pr($pettycashvoucher); ?></td>
                             <td class="actions">
                             <?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $pettycashvoucher->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View ')); ?>
                              <?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $pettycashvoucher->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>

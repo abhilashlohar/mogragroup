@@ -388,7 +388,7 @@ class ChallansController extends AppController
 		$this->viewBuilder()->layout('');
 		$Invoices=$this->Challans->Invoices->find()->where(['customer_id'=>$in_id,'company_id'=>$st_company_id]);
 	//pr($Invoices->toArray());
-		$this->set(compact('Invoices', 'source_model'));
+		$this->set(compact('Invoices', 'source_model','in_id'));
 		
 	}	
 	public function vendorInvoicebooking($in_id=null,$source_model=null)
@@ -409,4 +409,6 @@ class ChallansController extends AppController
 		$this->set(compact('invoice_bookings', 'source_model','ib_id'));
 		
 	}
+	
+	
 }

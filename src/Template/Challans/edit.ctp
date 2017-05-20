@@ -84,7 +84,7 @@
 						<div class="form-group">
 							<label class="control-label">Invoice No. <span class="required" aria-required="true">*</span></label>
 							<div class="row">
-								<?php
+								<?php //pr($challan->invoice_id);
 									$options=array();
 									foreach($invoices as $invoice){
 										$merge=(($invoice->in1.'/PO-'.str_pad($invoice->in2, 3, '0', STR_PAD_LEFT).'/'.$invoice->in4.'/'.$invoice->in3));
@@ -686,8 +686,7 @@ $(document).ready(function() {
 	
 	$('select[name="customer_id"]').on("change",function() {
 		var in_id=$(this).val();
-		//alert('<?php echo ');
-		customerInvoice(in_id,'Customers');
+		customerInvoice(in_id,'Customer');
 	});
 	function customerInvoice(in_id,source_model){
 		var url = "<?php echo $this->Url->build(['controller'=>'Challans','action'=>'customerInvoice']);?>";
@@ -695,7 +694,7 @@ $(document).ready(function() {
         $.ajax({
 			url: url,
 			type: 'GET',
-		}).done(function(response) { 
+		}).done(function(response) {  //alert(response);
 			$('#invoice_div').html(response);
 			
 		});
@@ -720,7 +719,7 @@ $(document).ready(function() {
 	}	
 		
 	$('select[name="invoice_id"]').live("change",function() {
-		var in_id=$(this).val();
+		var in_id=$(this).val(); 
 		itemsAsInvoice(in_id,'Invoices');
 	});
 	

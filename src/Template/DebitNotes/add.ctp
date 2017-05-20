@@ -1,3 +1,18 @@
+<style>
+table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table > thead > tr > td, table > tbody > tr > td, table > tfoot > tr > td{
+	vertical-align: top !important;
+	border-bottom:solid 1px #CCC;
+}
+.page-content-wrapper .page-content {
+    padding: 5px;
+}
+.portlet.light {
+    padding: 4px 10px 4px 10px;
+}
+.help-block-error{
+	font-size: 10px;
+}
+</style>
 <?php if(@$ErrorsalesAccs){
 		?> 
 		<div class="actions">
@@ -35,13 +50,6 @@
 				</div>
 
 				<div class="row" style="margin-top:30px;">
-				<div class="col-md-4" >
-						<div class="form-group">
-						<label class=" control-label">Transaction Date<span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','value' => date("d-m-Y"),'data-date-start-date' => date("d-m-Y",strtotime($financial_year->date_from)),'data-date-end-date' => date("d-m-Y",strtotime($financial_year->date_to))]); ?>
-						
-						</div>
-					</div>
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Sales Account<span class="required" aria-required="true">*</span></label>
@@ -57,81 +65,32 @@
 						</div>
 					</div>
 				</div>
-				<div class="row">
-				<div class="col-md-4">
-						<div class="form-group">
-							<label class="control-label">Mode of Payment<span class="required" aria-required="true">*</span></label>
-							<div class="radio-list">
-								<div class="radio-inline" >
-								<?php echo $this->Form->radio(
-									'payment_mode',
-									[
-										['value' => 'Cheque', 'text' => 'Cheque','checked'],
-										['value' => 'Cash', 'text' => 'Cash']
-									]
-								); ?>
-								</div>
-                            </div>
-						</div>
-						<div class="form-group" id="chq_no">
-							<label class="control-label">Cheque No<span class="required" aria-required="true">*</span></label>
-							<?php 
-							echo $this->Form->input('cheque_no', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Cheque No','checked']); ?>
-						</div>
-				</div>
-				<div class="col-md-4">
-						<div class="form-group">
-							<label class="control-label">Amount<span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm quantity']); ?>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-							<label class="control-label">Narration <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('narration', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Narration']); ?>
-						</div>
-					</div>
-				</div>
-				
-				<div class="row">
-					<div class="col-md-12">
-						<div class="form-group">
-						<?php echo $this->Form->button('<i class="fa fa-plus"></i> New Ref', ['label' => false,'class' => 'btn btn-primary new_ref','type'=>'button']); ?>
-						<?php echo $this->Form->button('<i class="fa fa-plus"></i> Agst Ref', ['label' => false,'class' => 'btn btn-primary agst_ref','type'=>'button']); ?>
-						<?php echo $this->Form->button('<i class="fa fa-plus"></i> Advance', ['label' => false,'class' => 'btn btn-primary adv_ref','type'=>'button']); ?>
-						</div>
-					</div>
-				  </div>
-				  <div class="row">
-					<div class="col-md-12">
-						<table class="table table-bordered" id="main_table" style="text-align:center;">
-						<thead>
-						<tr>
-						<td>Ref. Type</td>
-						<td>Ref. No.</td>
-						<td>Amount</td>
-						<td></td>
-						</tr>
-						</thead>
-						<tbody>
-						</tbody>
-						</table>
-					</div>
-				  </div>
 
-				
-				<?php echo $this->Form->input('bill_to_bill', ['label' => false,'class' => 'form-control input-sm','type'=>'text','id'=>'bill_to_bill','style'=>'height:0px; border:none; widht:0px;']); ?>
-			
-				<div id="bill_to_bill_show" style="display:none;">
-					<table width="100%">
-						<tr>
-							<td width="45%" valign="top" id="pending_invoice_container"></td>
+					<div style="overflow: auto;">
+					<table width="100%" id="main_table">
+						<thead>
+							<th width="25%"><label class="control-label">Paid TO</label></th>
+							<th width="15%"><label class="control-label">Amount</label></th>
+						    <th width="15%"><label class="control-label">Narration</label></th>
+							<th width="3%"></th>
+						</thead>
+						<tbody id="main_tbody">
+						
+						</tbody>
+						<tfoot>
+							<td><a class="btn btn-xs btn-default addrow" href="#" role="button"><i class="fa fa-plus"></i> Add row</a></td>
+							<td id="receipt_amount" style="font-size: 14px;font-weight: bold;"></td>
 							<td></td>
+							<td>
+								
+							</td>
 							
-						</tr>
+							<td></td>
+						</tfoot>
 					</table>
-				</div>
-				
+					</div>
+
+
 			</div>
 		
 			<div class="form-actions">
@@ -140,178 +99,13 @@
 		</div>
 		<?= $this->Form->end() ?>
 		<!-- END FORM-->
-		
-		<table class="table table-bordered" id="new_ref" style="display:none;">
-			<tbody>
-			<tr>
-			<td>New Ref<?= $this->Form->hidden('reference_type[]',['class'=>'','label'=>false, 'value'=>'New Reference']) ?></td>
-			<td><?= $this->Form->input('reference_no[]',['type'=>'text','class'=>'form-control distinctreference','label'=>false,'id'=>'reference_no_2']) ?></td>
-			<td><?= $this->Form->input('credit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
-			<td><?= $this->Form->button(__('<i class="fa fa-trash-o"></i>'),['type'=>'button','class'=>'btn btn-danger btn-sm remove_row','label'=>false]) ?></td>
-			</tr>
-			</tbody>
-		</table>
-		<table class="table table-bordered" id="agst_ref" style="display:none;">
-		<tbody>
-			<tr class="against_references_no">
-			<td>Agst Ref<?= $this->Form->hidden('reference_type[]',['class'=>'','label'=>false, 'value'=>'Against Reference']) ?><?= $this->Form->hidden('reference_no[]',['type'=>'text','class'=>'form-control ','label'=>false,'id'=>'reference_no_2']) ?></td>
-			<td id="against_references_no"></td>
-			<td><?= $this->Form->input('credit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
-			<td><?= $this->Form->button(__('<i class="fa fa-trash-o"></i>'),['type'=>'button','class'=>'btn btn-danger btn-sm remove_row','label'=>false]) ?></td>
-			</tr>
-			</tbody>
-		</table>
-		<table class="table table-bordered" id="adv_ref" style="display:none;">
-		<tbody>
-			<tr>
-			<td>Adv Ref<?= $this->Form->hidden('reference_type[]',['class'=>'','label'=>false, 'value'=>'Advance Reference']) ?></td>
-			<td><?= $this->Form->input('reference_no[]',['type'=>'text','class'=>'form-control distinctreference','label'=>false,'id'=>'reference_no_2']) ?></td>
-			<td><?= $this->Form->input('credit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
-			<td><?= $this->Form->button(__('<i class="fa fa-trash-o"></i>'),['type'=>'button','class'=>'btn btn-danger btn-sm remove_row','label'=>false]) ?></td>
-			</tr>
-			</tbody>
-		</table>
 	</div>
 </div>
 <?php } ?>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
-	
-	$( document ).on( 'keyup', 'input[name="credit[]"]', function() {
-			var credit=parseFloat($(this).val());
-			var amount=$(this).closest('tr').find('select[name="against_references_no"] option:selected').attr('amount');
-			amount=parseFloat(amount);
-
-			if(amount<credit)
-			{
-				$(this).val(amount);
-			}	
-	});
-	
-	$('select[name="against_references_no"]').live("change",function() {
-		var against_references_no=$(this).val();
-		var amount=eval($('option:selected',this).attr('amount'));
-		
-		$(this).closest('tr').find('input[name="reference_no[]"]').val(against_references_no);
-		$(this).closest('tr').find('input[name="credit[]"]').val(amount);
-	});
-	$('select[name="sales_acc_id"]').live("change",function() {
-		var received_from_id=$(this).val();
-		
-		var url="<?php echo $this->Url->build(['controller'=>'DebitNotes','action'=>'fetchReferenceNo']); ?>";
-		url=url+'/'+received_from_id,
-		
-		$.ajax({
-			url: url,
-			type: 'GET',
-			dataType: 'text'
-		}).done(function(response) {
-			$("#main_table tbody").find('tr.against_references_no').remove();
-			alert(response);
-			if(!response)
-			{ 
-				$('#agst_ref').remove();
-				
-			}
-			$('#against_references_no').html(response);
-		});
-		
-	});
-	$('input[name="amount"],[name^=credit]').live("blur",function() {
-		var val=$(this).val();
-		$(this).val(parseFloat($(this).val()).toFixed(2));
-	});
-	
-	
-
-	$('input[name="payment_mode"]').die().live("click",function() {
-		var payment_mode=$(this).val();
-		
-		if(payment_mode=="Cheque"){
-			$("#chq_no").show();
-		}else{
-			$("#chq_no").hide();
-		}
-	});
-	
-	$( document ).on( 'click', '.new_ref', function() {
-		var new_line=$('#new_ref tbody').html();
-		$("#main_table tbody").append(new_line);
-		var i=1;
-		var len=$("[name^=reference_no]").length;
-		
-		$("[name^=reference_no]").each(function () {
-			
-			$(this).attr('id','reference_no_'+i);
-			
-			$(this).rules("add", {
-				required: true,
-				noSpace: true,
-				notEqualToGroup: ['.distinctreference']
-			});
-			i++;
-		});
-	});
-	$( document ).on( 'click', '.agst_ref', function() {
-		var new_line=$('#agst_ref tbody').html();
-		$("#main_table tbody").append(new_line);
-		var i=1;
-		var len=$("[name^=reference_no]").length;
-		
-		$("[name^=reference_no]").each(function () {
-			
-			$(this).attr('id','reference_no_'+i);
-			
-			$(this).rules("add", {
-				required: true,
-				noSpace: true,
-				notEqualToGroup: ['.distinctreference']
-			});
-			i++;
-		});
-	});
-	$( document ).on( 'click', '.adv_ref', function() {
-		var new_line=$('#adv_ref tbody').html();
-		$("#main_table tbody").append(new_line);
-		var i=1;
-		var len=$("[name^=reference_no]").length;
-		
-		$("[name^=reference_no]").each(function () {
-			
-			$(this).attr('id','reference_no_'+i);
-			
-			$(this).rules("add", {
-				required: true,
-				noSpace: true,
-				notEqualToGroup: ['.distinctreference']
-			});
-			i++;
-		});
-	});
-	$( document ).on( 'click', '.remove_row', function() {
-		$(this).closest("#main_table tr").remove();
-		var i=1;
-		var len=$("[name^=reference_no]").length;
-		
-		$("[name^=reference_no]").each(function () {
-			
-			$(this).attr('id','reference_no_'+i);
-			
-			$(this).rules("add", {
-				required: true,
-				noSpace: true,
-				notEqualToGroup: ['.distinctreference']
-			});
-			i++;
-		});
-	});
-	
-	
-	
-	
-	
-	//--------- FORM VALIDATION
+		//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
 	var success3 = $('.alert-success', form3);
@@ -424,5 +218,62 @@ $(document).ready(function() {
 			$("#chq_no").hide();
 		}
 	});
+
+	add_row();
+	function add_row(){
+		var tr=$("#sample_table tbody tr").clone();
+		$("#main_table tbody#main_tbody").append(tr);
+		rename_rows();
+	}
+	
+	function rename_rows(){
+		var i=0;
+		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
+			$(this).find("td:eq(0) select.received_from").select2().attr({name:"payment_rows["+i+"][received_from_id]", id:"quotation_rows-"+i+"-received_from_id"}).rules('add', {
+						required: true,
+						notEqualToGroup: ['.received_from'],
+						messages: {
+							notEqualToGroup: "Do not select same party again."
+						}
+					});
+			$(this).find("td:eq(1) input").attr({name:"payment_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"}).rules('add', {
+						required: true,
+						min: 0.01,
+					});
+
+			$(this).find("td:nth-child(4) textarea").attr({name:"payment_rows["+i+"][narration]", id:"quotation_rows-"+i+"-narration"}).rules("add", "required");
+			i++;
+		});
+	}
+	
+	$('.addrow').live("click",function() {
+		add_row();
+	});
+	$('.deleterow').live("click",function() {
+		$(this).closest("tr").remove();
+	});
+	
+	
+	
 });
 </script>
+
+
+
+<table id="sample_table" style="display:none; width:100%; ">
+	<tbody>
+		<tr class="main_tr">
+			<td><?php echo $this->Form->input('party_id', ['empty'=>'--Select-','label' => false,'class' => 'form-control input-sm received_from']); ?></td>
+			<td>
+			<div class="row">
+				<div class="col-md-7" style="padding-right: 0;">
+					<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm mian_amount','placeholder'=>'Amount']); ?>
+				</div>
+			</div>
+			</td>
+			
+			<td><?php echo $this->Form->input('narration', ['type'=>'textarea','label' => false,'class' => 'form-control input-sm','placeholder'=>'Narration']); ?></td>
+			<td><a class="btn btn-xs btn-default deleterow" href="#" role="button"><i class="fa fa-times"></i></a></td>
+		</tr>
+	</tbody>
+</table>

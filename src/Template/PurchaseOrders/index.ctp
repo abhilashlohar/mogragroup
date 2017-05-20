@@ -116,8 +116,12 @@
 								<?php if($pull_request=="true"){
 									echo $this->Html->link('<i class="fa fa-repeat"></i>  Convert Into GRN','/Grns/AddNew?purchase-order='.$purchaseOrder->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 								} ?>
-								<?php if($pull_request!="true" and in_array(14,$allowed_pages)){ 
-									echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $purchaseOrder->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));} ?>
+								
+								
+								<?php
+								if($status != 'Converted-Into-GRN') {
+								if($pull_request!="true" and in_array(14,$allowed_pages)){ 
+								echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $purchaseOrder->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));} } ?>
 
 							</td>
 						</tr>

@@ -1,13 +1,14 @@
-<div class="portlet box blue-hoki">
+<div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="fa fa-comments"></i>Items
 		</div>
-	</div>
+		<div class="portlet-title pull-right"><p><?= $this->Paginator->counter() ?></p></div>
+	
 	<div class="portlet-body">
 		<div class="table-scrollable">
 			<form method="GET" >
-			<table class="table table-condensed">
+			<table class="table table-bordered table-striped">
 				<thead>
 					
 				</thead>
@@ -23,12 +24,21 @@
 						
 						
 						<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+						<td align="right"><label>Page Number</label></td>
+						<td align="right" width="5%"> 
+								<select class="form-control input-sm select2me" name='page'>
+										<?= $this->Paginator->numbers(array('modulus'=>PHP_INT_MAX,'separator'=>'&nbsp;&nbsp;&nbsp;</b>|<b>&nbsp;&nbsp;&nbsp;')); ?>
+									</select>
+						</td>
+						<td ><button type="submit" class="btn btn-primary btn-sm">Go</button>						
+						
+						</td>
 					</tr>
 				</tbody>
 			</table>
 			</form>
 			<?php $page_no=$this->Paginator->current('Items'); $page_no=($page_no-1)*20; ?>
-			 <table class="table table-hover">
+			 <table class="table table-bordered table-striped table-hover">
 				 <thead>
 					<tr>
 						<th>Sr. No.</th>
@@ -70,13 +80,6 @@
 				</tbody>
 			</table>
 		</div>
-		 <div class="paginator">
-			<ul class="pagination">
-				<?= $this->Paginator->prev('< ' . __('previous')) ?>
-				<?= $this->Paginator->numbers() ?>
-				<?= $this->Paginator->next(__('next') . ' >') ?>
-			</ul>
-			<p><?= $this->Paginator->counter() ?></p>
 		</div>
 	</div>
 </div>

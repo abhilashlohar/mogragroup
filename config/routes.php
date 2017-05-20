@@ -22,6 +22,13 @@ use Cake\Core\Plugin;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 
+//Start CSV Plugin
+ 
+Router::extensions('csv');
+
+// End CSV Plugin 
+
+
 /**
  * The default class to use for all routes
  *

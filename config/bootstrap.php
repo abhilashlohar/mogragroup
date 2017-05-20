@@ -64,6 +64,12 @@ use Cake\Routing\DispatcherFactory;
 use Cake\Utility\Inflector;
 use Cake\Utility\Security;
 
+//Start CSV Plugin 
+Plugin::load('CsvView');
+
+
+// end CSV Plugin 
+
 /**
  * Read configuration file and inject configuration into various
  * CakePHP classes.

@@ -23,7 +23,7 @@ class UserLogsController extends AppController
         $this->paginate = [
             'contain' => ['Logins']
         ];
-       $userLogs = $this->paginate($this->UserLogs->find()->contain(['Logins'=>['Employees']])->order(['Employees.name' => 'ASC']));
+       $userLogs = $this->paginate($this->UserLogs->find()->contain(['Logins'=>['Employees']])->order(['datetime' => 'DESC']));
 		//pr($userLogs);exit;
         $this->set(compact('userLogs'));
         $this->set('_serialize', ['userLogs']);

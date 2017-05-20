@@ -220,6 +220,7 @@ class ItemsController extends AppController
 				return $this->redirect(['action' => 'openingBalance']);
 			}
 			
+			
 			$ItemLedger->item_id = $this->request->data['Item_id'];
 			$ItemLedger->quantity = $this->request->data['quantity'];
 			$ItemLedger->rate = $this->request->data['rate'];
@@ -230,6 +231,7 @@ class ItemsController extends AppController
 			$ItemLedger->in_out = 'In';
 			$ItemLedger->left_item_id = 0;
 			$ItemLedger->processed_on = date('Y-m-d',strtotime($this->request->data['date']));
+			
 			$this->Items->ItemLedgers->save($ItemLedger);
 			
 			if($this->request->data['serial_number_enable']==1){
@@ -244,7 +246,6 @@ class ItemsController extends AppController
 					$this->Items->ItemSerialNumbers->save($ItemSerialNumber);
 				}
 			}
-			
 			$this->Flash->success(__('Item Opening Balance has been saved.'));
 			return $this->redirect(['action' => 'Opening-Balance']);
 		}

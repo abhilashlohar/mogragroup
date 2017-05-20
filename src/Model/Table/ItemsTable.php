@@ -75,6 +75,8 @@ class ItemsTable extends Table
 		$this->hasMany('InvoiceRows', [
             'foreignKey' => 'item_id'
         ]);
+		$this->belongsTo('InventoryTransferVouchers');
+		
 		$this->belongsTo('QuotationRows');
 		$this->belongsTo('SalesOrderRows');
 		

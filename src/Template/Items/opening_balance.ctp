@@ -98,6 +98,7 @@ $(document).ready(function() {
 			},
 			rate    : {
 				  required: true,
+				  min:0.01
 			}
 		},
 

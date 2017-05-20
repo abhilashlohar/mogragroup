@@ -420,7 +420,7 @@ class QuotationsController extends AppController
         $quotation = $this->Quotations->get($id, [
             'contain' => ['QuotationRows']
         ]);
-		
+		$st_year_id = $session->read('st_year_id');
 		$closed_month=$this->viewVars['closed_month'];
 		
 		if(!in_array(date("m-Y",strtotime($quotation->created_on)),$closed_month))

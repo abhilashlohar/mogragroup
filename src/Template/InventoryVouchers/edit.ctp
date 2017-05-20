@@ -61,20 +61,24 @@
 					<tbody id="maintbody">
 					<?php 
 					
-					foreach($InventoryVoucherRows as $InventoryVoucherRow){ ?>
+					foreach($InventoryVoucherRows as $InventoryVoucherRow){ 
 					
-
+					?>
+					
+					
 					<tr class="main" >
 							<td>
 								<?php 
-								$item_option=[];
+								$item_option=[]; 
 									foreach($Items as $Item){
 										$item_option[]=['text' =>$Item->name, 'value' => $Item->id, 'serial_number_enable' => (int)$Item->serial_number_enable];
 									} 
 								echo $this->Form->input('q', ['empty'=>'Select','options' => $item_option,'label' => false,'class' => 'form-control input-sm select_item item_id','value'=>$InventoryVoucherRow->item_id]); ?>
 							</td>
-							<td>
-								<?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm qty_bx ','placeholder' => 'Quantity','value'=>$InventoryVoucherRow->quantity]); ?>
+							<td><?php if($status=='FisrtTime'){ $total_quant=($q_qty*$InventoryVoucherRow->quantity)/$job_card_qty; ?>
+								<?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm qty_bx ','placeholder' => 'Quantity','value'=>$total_quant]);}else{
+								echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm qty_bx ','placeholder' => 'Quantity','value'=>$InventoryVoucherRow->quantity]);
+								}?>
 							</td>
 							<td></td>
 							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>

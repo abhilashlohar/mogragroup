@@ -298,14 +298,12 @@ class ItemsController extends AppController
 			$oldquantity = $this->request->data['quantity'];
 			$newquantity = $this->request->data['new_quantity'];
 			$totalquantity = $oldquantity + $newquantity ;
-	
-			
 			$ItemLedger=$this->Items->ItemLedgers->find()->where(['item_id'=>$item_id,'company_id'=>$st_company_id,'source_model'=>'Items'])->first();
-//pr($this->request->data);exit;
 			$ItemLedger=$this->Items->ItemLedgers->get($ItemLedger->id);
 			$ItemLedger->quantity=$totalquantity;
 			$ItemLedger->rate=$this->request->data['rate'];
-			
+			$date=$this->request->data['date'];
+			$ItemLedger->processed_on=date("Y-m-d",strtotime($date)); 
 			$rows=@$this->request->data['serial_numbers'];
 			if($rows>0){
 			

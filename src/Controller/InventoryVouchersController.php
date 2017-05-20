@@ -546,20 +546,31 @@ class InventoryVouchersController extends AppController
 			$q_qty=$Invoice_qty->quantity;
 			$q_item_sr=$this->InventoryVouchers->Items->get($q_item_id);
 			$q_sno=$q_item_sr->serial_number_enable;
+			$Invoices=$this->InventoryVouchers->Invoices->get($invoice_id);	
+			$status='Exist';
+			//pr($SalesOrderRow); exit;
 			}else{
 			$Invoices=$this->InventoryVouchers->Invoices->get($invoice_id);	
 			$SalesOrderRow=$this->InventoryVouchers->SalesOrderRows->find()->where(['SalesOrderRows.sales_order_id'=>$Invoices->sales_order_id,'SalesOrderRows.item_id'=>$q_item_id])->first();
 			//pr($SalesOrderRow); exit;
-			$InventoryVoucherRows=$this->InventoryVouchers->SalesOrderRows->JobCardRows->find()->contain(['Items'])->where(['sales_order_row_id'=>$SalesOrderRow->id])->toArray();
+			$InventoryVoucherRows=$this->InventoryVouchers->SalesOrderRows->JobCardRows->find()->contain(['Items'])->where(['sales_order_row_id'=>$SalesOrderRow->id]);
+
+			$sor=$this->InventoryVouchers->SalesOrderRows->JobCardRows->find()->contain(['Items'])->where(['sales_order_row_id'=>$SalesOrderRow->id])->first();
+			$sales_order_row=$this->InventoryVouchers->SalesOrderRows->get($sor->sales_order_row_id);
+			//pr($sales_order_row->quantity); exit;
+			
 			$Invoice_qty=$this->InventoryVouchers->Invoices->InvoiceRows->find()->where(['InvoiceRows.invoice_id'=>$invoice_id,'InvoiceRows.item_id'=>$q_item_id])->first();
 			$q_qty=$Invoice_qty->quantity;
 			$q_item_sr=$this->InventoryVouchers->Items->get($q_item_id);
 			$q_sno=$q_item_sr->serial_number_enable;
+			$job_card_qty=$sales_order_row->quantity;
+			$status='FisrtTime';
+
 			
 			}
 			
 		}
-	
+	//pr($status); exit;
 		$Items = $this->InventoryVouchers->Items->find()->where(['source IN'=>['Purchessed','Purchessed/Manufactured']])->order(['Items.name' => 'ASC'])->matching(
 					'ItemCompanies', function ($q) use($st_company_id) {
 						return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0]);
@@ -567,7 +578,7 @@ class InventoryVouchersController extends AppController
 				);
 				
 		//pr($Items->toArray()); exit;		
-		$this->set(compact('display_items','invoice_id','q_item_id','InventoryVoucherRows','Items','InventoryVoucher','selected_seials','q_qty','q_sno','is_in_made','q_ItemSerialNumbers','JobCardRowsData','chkdate'));
+		$this->set(compact('display_items','invoice_id','q_item_id','InventoryVoucherRows','Items','InventoryVoucher','selected_seials','q_qty','q_sno','is_in_made','q_ItemSerialNumbers','JobCardRowsData','chkdate','job_card_qty','status'));
     }
 
     /**

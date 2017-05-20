@@ -55,10 +55,15 @@ class InventoryTransferVouchersController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-		$display_items = $this->InventoryTransferVouchers->Items->find()->contain(['ItemSerialNumbers']);
+		$display_items = $this->InventoryTransferVouchers->Items->find()->contain(['ItemSerialNumbers'])->toArray();
+		$options = [];
 		
+		foreach($display_items as $display_item){
+			$options[$display_item->name]= $display_item->name;
+		}
+			
 		
-		pr($display_items->toArray());exit;
+		//pr($display_items[0]->name);exit;
         $inventoryTransferVoucher = $this->InventoryTransferVouchers->newEntity();
         if ($this->request->is('post')) {
             $inventoryTransferVoucher = $this->InventoryTransferVouchers->patchEntity($inventoryTransferVoucher, $this->request->data);
@@ -71,7 +76,7 @@ class InventoryTransferVouchersController extends AppController
             }
         }
         $companies = $this->InventoryTransferVouchers->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('inventoryTransferVoucher', 'companies','display_items'));
+        $this->set(compact('inventoryTransferVoucher', 'companies','display_items','options'));
         $this->set('_serialize', ['inventoryTransferVoucher']);
     }
 

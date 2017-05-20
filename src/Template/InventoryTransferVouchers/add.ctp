@@ -13,7 +13,8 @@
 					<div class="col-md-2">
 						<div class="form-group">
 							<label class="control-label">Item</label>
-							<?php echo $this->Form->input('item_id', ['empty'=>'--Select-','options'=>$display_items,'label' => false,'class' => 'form-control input-sm select2me']); ?>
+							
+							<?php echo $this->Form->input('item_id', ['empty'=>'--Select-','options'=>$options,'label' => false,'class' => 'form-control input-sm select2me']);  ?>
 						</div>
 					</div>
 					<div class="col-md-2">

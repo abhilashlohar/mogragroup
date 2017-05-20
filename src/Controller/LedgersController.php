@@ -311,8 +311,11 @@ class LedgersController extends AppController
 		$total_balance=$query->select(['total_debit' => $query->func()->sum('debit'),'total_credit' => $query->func()->sum('credit')])->where(['Ledgers.ledger_account_id' => $ledger_account_id,'Ledgers.transaction_date <'=>$transaction_from_date])->toArray();
 
 		$query = $this->Ledgers->find();
-		$total_opening_balance=$query->select(['total_opening_debit' => $query->func()->sum('debit'),'total_opening_credit' => $query->func()->sum('credit')])->where(['Ledgers.ledger_account_id' => $ledger_account_id, 'Ledgers.voucher_source'=>'Opening Balance','Ledgers.transaction_date'=>$transaction_from_date])->toArray();
+		$total_opening_balance=$query->select(['total_opening_debit' => $query->func()->sum('debit'),'total_opening_credit' => $query->func()->sum('credit')])->where(['Ledgers.ledger_account_id' => $ledger_account_id, 'Ledgers.voucher_source'=>'Opening Balance'])->where(function($exp) use($transaction_from_date,$transaction_to_date) {
+			return $exp->between('transaction_date', $transaction_from_date, $transaction_to_date, 'date');
+		})->toArray();
 	}
+		//pr($total_opening_balance); exit;
 		$ledger=$this->Ledgers->LedgerAccounts->find('list',
 				['keyField' => function ($row) {
 					return $row['id'];
@@ -325,8 +328,6 @@ class LedgersController extends AppController
 					}
 					
 				}])->where(['company_id'=>$st_company_id]);
-
-
 
 		$this->set(compact('ledger','Ledgers_rows','total_balance','ledger_account_id','transaction_from_date','transaction_to_date','Ledger_Account_data','total_opening_balance'));
 	}

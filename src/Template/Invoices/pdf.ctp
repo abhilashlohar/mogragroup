@@ -42,7 +42,7 @@ $html = '
 		page-break-inside: avoid;
 	}
 	.table_rows, .table_rows th, .table_rows td {
-	   border: 1px solid  #000;border-collapse: collapse;padding:2px; 
+	   border-collapse: collapse;padding:2px; 
 	}
 	.itemrow tbody td{
 		border-bottom: none;border-top: none;

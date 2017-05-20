@@ -72,14 +72,17 @@
 					
 					$final_opening_blnc = 0;
 					if($total_opening_balance[0]->total_opening_debit > $total_opening_balance[0]->total_opening_credit)
-					{
+					{  
 						 $final_opening_blnc = $total_opening_balance[0]->total_opening_debit - $total_opening_balance[0]->total_opening_credit;
 						
 					}
-					else if($total_balance[0]->total_opening_debit< $total_balance[0]->total_opening_credit)
-					{
-						 $final_opening_blnc = $total_opening_balance[0]->total_opening_debit - $total_opening_balance[0]->total_opening_credit;	
+					
+					
+					else if($total_opening_balance[0]->total_opening_debit < $total_opening_balance[0]->total_opening_credit)
+					{ 
+						 $final_opening_blnc = $total_opening_balance[0]->total_opening_credit - $total_opening_balance[0]->total_opening_debit;	
 					}
+					
 				
 				/////////////////
 				
@@ -125,7 +128,7 @@
 					$url_path="/receipts/view/".$ledger->voucher_id;
 				}
 				
-				if($ledger->voucher_source !== 'Opening Balance')	
+				if($ledger->voucher_source != 'Opening Balance')	
 				{
 				?>
 				<tr>

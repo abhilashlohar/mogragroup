@@ -21,8 +21,13 @@
 							<td width="10%"> 
 								<input type="text" name="vouch_no" class="form-control input-sm" placeholder="Voucher No" value="<?php echo @$vouch_no; ?>">
 							</td>
-							<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
-						</tr>
+							<td width="10%"><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+
+							<td>
+								<?php echo $this->Html->link('<i class="fa fa-file-excel-o"></i> Export',['action' => 'ReceiptVoucherExport'],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-primary btn-sm','data-original-title'=>'Export')); ?>
+							
+							</td>
+							</tr>
 					</tbody>
 				</table>
 				</form>

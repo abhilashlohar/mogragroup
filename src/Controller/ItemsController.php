@@ -16,6 +16,10 @@ class ItemsController extends AppController
      *
      * @return \Cake\Network\Response|null
      */
+	public $helpers = [
+         'Paginator' => ['templates' => 'paginator-templates']
+         ];
+		 
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
@@ -90,7 +94,7 @@ class ItemsController extends AppController
 				
 				 $this->Flash->success(__('The item has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'Add']);
             } else { 
                 $this->Flash->error(__('The item could not be saved. Please, try again.'));
             }

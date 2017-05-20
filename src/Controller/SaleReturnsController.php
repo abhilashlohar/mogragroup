@@ -88,6 +88,30 @@ class SaleReturnsController extends AppController
 		$this->viewBuilder()->layout('index_layout');
         $saleReturn = $this->SaleReturns->newEntity();
 		$invoice_id=@(int)$this->request->query('invoice');
+		$st_year_id = $session->read('st_year_id');
+			   $SessionCheckDate = $this->FinancialYears->get($st_year_id);
+			   $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
+			   $todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
+			   $tody1 = date("Y-m-d");
+
+			   $fromdate = strtotime($fromdate1);
+			   $todate = strtotime($todate1); 
+			   $tody = strtotime($tody1);
+
+				if($fromdate < $tody || $todate > $tody)
+			   {
+				 if($SessionCheckDate['status'] == 'Open')
+				 { $chkdate = 'Found'; }
+				 else
+				 { $chkdate = 'Not Found'; }
+
+			   }
+			   else
+				{
+					$chkdate = 'Not Found';	
+				}
+
+
 		$invoice = $this->SaleReturns->Invoices->get($invoice_id, [
             'contain' => ['InvoiceRows' => ['Items'=>['ItemSerialNumbers'=>function($q) use($invoice_id){
 							return $q->where(['ItemSerialNumbers.Status' => 'Out','ItemSerialNumbers.invoice_id'=>$invoice_id]);
@@ -306,7 +330,7 @@ class SaleReturnsController extends AppController
         $salesOrders = $this->SaleReturns->SalesOrders->find('list', ['limit' => 200]);
         $employees = $this->SaleReturns->Employees->find('list', ['limit' => 200]);
         $transporters = $this->SaleReturns->Transporters->find('list', ['limit' => 200]);
-        $this->set(compact('saleReturn', 'customers', 'saleTaxes', 'companies', 'salesOrders', 'employees', 'transporters','invoice','Transporter','financial_year_data','ledger_account_details','ledger_account_details_for_fright','c_LedgerAccount'));
+        $this->set(compact('saleReturn', 'customers', 'saleTaxes', 'companies', 'salesOrders', 'employees', 'transporters','invoice','Transporter','financial_year_data','ledger_account_details','ledger_account_details_for_fright','c_LedgerAccount','chkdate'));
         $this->set('_serialize', ['saleReturn']);
     }
 
@@ -324,6 +348,32 @@ class SaleReturnsController extends AppController
 		$this->viewBuilder()->layout('index_layout');
         $saleReturn = $this->SaleReturns->newEntity();
 		$invoice_id=@(int)$this->request->query('invoice');
+		
+				$st_year_id = $session->read('st_year_id');
+			   $SessionCheckDate = $this->FinancialYears->get($st_year_id);
+			   $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
+			   $todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
+			   $tody1 = date("Y-m-d");
+
+			   $fromdate = strtotime($fromdate1);
+			   $todate = strtotime($todate1); 
+			   $tody = strtotime($tody1);
+
+				if($fromdate < $tody || $todate > $tody)
+			   {
+				 if($SessionCheckDate['status'] == 'Open')
+				 { $chkdate = 'Found'; }
+				 else
+				 { $chkdate = 'Not Found'; }
+
+			   }
+			   else
+				{
+					$chkdate = 'Not Found';	
+				}
+
+
+
 		$invoice = $this->SaleReturns->Invoices->get($invoice_id, [
             'contain' => ['SaleReturns'=> ['SaleReturnRows'],'InvoiceRows' => ['Items'=>['ItemSerialNumbers'=>function($q) use($invoice_id){
 							return $q->where(['ItemSerialNumbers.Status' => 'Out','ItemSerialNumbers.invoice_id'=>$invoice_id]);
@@ -569,7 +619,7 @@ class SaleReturnsController extends AppController
         $employees = $this->SaleReturns->Employees->find('list', ['limit' => 200]);
         $transporters = $this->SaleReturns->Transporters->find('list', ['limit' => 200]);
         //$stLedgerAccounts = $this->SaleReturns->StLedgerAccounts->find('list', ['limit' => 200]);
-        $this->set(compact('saleReturn','ledger_account_details','ledger_account_details_for_fright','Transporter', 'financial_year_data','customers', 'saleTaxes', 'companies', 'salesOrders', 'employees', 'transporters', 'stLedgerAccounts','invoice','ItemSerialNumber','ReferenceDetails','c_LedgerAccount'));
+        $this->set(compact('saleReturn','ledger_account_details','ledger_account_details_for_fright','Transporter', 'financial_year_data','customers', 'saleTaxes', 'companies', 'salesOrders', 'employees', 'transporters', 'stLedgerAccounts','invoice','ItemSerialNumber','ReferenceDetails','c_LedgerAccount','chkdate'));
         $this->set('_serialize', ['saleReturn']);
     }
 

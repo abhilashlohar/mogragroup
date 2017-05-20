@@ -1,4 +1,3 @@
-
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -66,12 +65,25 @@
     </table>
 	</div>
     <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-        </ul>
-        <p><?= $this->Paginator->counter() ?></p>
+        <form method="GET" >
+       <table width="30%">
+				<tbody>
+					<tr>
+						
+						<td align="right"><label>Page Number</label></td>
+						<td align="right" width="5%"> 
+								<select class="form-control input-sm select2me" name='page'>
+										<?= $this->Paginator->numbers(array('modulus'=>PHP_INT_MAX,'separator'=>'&nbsp;&nbsp;&nbsp;</b>|<b>&nbsp;&nbsp;&nbsp;')); ?>
+									</select>
+						</td>
+						<td ><button type="submit" class="btn btn-primary btn-sm">Go</button>						
+						
+						</td>
+						<td><p><?= $this->Paginator->counter() ?></p></td>
+					</tr>
+				</tbody>
+			</table>
+			</form>
     </div>
 		
 	</div>

@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller;
 use App\Controller\AppController;
-
+use Cake\I18n\Time;
 class LoginsController extends AppController
 {
 	
@@ -32,6 +32,14 @@ class LoginsController extends AppController
 				$Employee=$this->Logins->Employees->get($employee_id, [
 					'contain' => ['Companies']
 				]);
+				
+				$time = Time::now();
+				$user_logs = $this->Logins->UserLogs->newEntity();
+				
+				$user_logs->login_id = $login_id;
+				$user_logs->datetime = $time;
+				//pr($user_logs);exit;
+				$this->Logins->UserLogs->save($user_logs);
 				
 				$count=0;
 				foreach($Employee->companies as $company){

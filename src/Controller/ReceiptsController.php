@@ -11,6 +11,55 @@ use App\Controller\AppController;
 class ReceiptsController extends AppController
 {
 
+// Start CSV function 
+
+		public function ReceiptVoucherExport()
+		{	
+			$session = $this->request->session();
+			$st_company_id = $session->read('st_company_id');
+			$where = [];
+			$receipts = $this->Receipts->find()->where($where)->where(['company_id'=>$st_company_id])->contain(['ReceiptRows'=>function($q){
+				$ReceiptRows = $this->Receipts->ReceiptRows->find();
+				$totalCrCase = $ReceiptRows->newExpr()
+					->addCase(
+						$ReceiptRows->newExpr()->add(['cr_dr' => 'Cr']),
+						$ReceiptRows->newExpr()->add(['amount']),
+						'integer'
+					);
+				$totalDrCase = $ReceiptRows->newExpr()
+					->addCase(
+						$ReceiptRows->newExpr()->add(['cr_dr' => 'Dr']),
+						$ReceiptRows->newExpr()->add(['amount']),
+						'integer'
+					);
+				return $ReceiptRows->select([
+						'total_cr' => $ReceiptRows->func()->sum($totalCrCase),
+						'total_dr' => $ReceiptRows->func()->sum($totalDrCase)
+					])
+					->group('receipt_id')
+					->autoFields(true);
+				
+			}]);
+
+			$i=0; foreach ($receipts as $receipt){ $i++; 
+
+				$data[] = [
+					$i,date("d-m-Y",strtotime($receipt->transaction_date)),'#'.str_pad($receipt->voucher_no, 4, '0', STR_PAD_LEFT),$receipt->receipt_rows[0]->total_cr-$receipt->receipt_rows[0]->total_dr
+				];			
+				
+			}
+			
+			$_serialize = 'data';
+			$_header = ['Sr. No.', 'Transaction Date', 'Vocher No', 'Amount'];
+			
+
+			$this->response->download('Receipt_Voucher.csv');
+			$this->viewBuilder()->className('CsvView.Csv');
+			$this->set(compact('data', '_serialize', '_header', '_footer'));
+		}	
+// End CSV function 	
+
+
     /**
      * Index method
      *
@@ -699,4 +748,9 @@ class ReceiptsController extends AppController
 		
 		exit;
 	}
+	
+
+	
+	
+	
 }

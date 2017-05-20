@@ -88,6 +88,27 @@ class JournalVouchersController extends AppController
         $st_year_id = $session->read('st_year_id');
 		$financial_year = $this->JournalVouchers->FinancialYears->find()->where(['id'=>$st_year_id])->first();
 		
+		$SessionCheckDate = $this->FinancialYears->get($st_year_id);
+		   $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
+		   $todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
+		   $tody1 = date("Y-m-d");
+
+		   $fromdate = strtotime($fromdate1);
+		   $todate = strtotime($todate1); 
+		   $tody = strtotime($tody1);
+
+			if($fromdate < $tody || $todate > $tody)
+		   {
+			 if($SessionCheckDate['status'] == 'Open')
+			 { $chkdate = 'Found'; }
+			 else
+			 { $chkdate = 'Not Found'; }
+
+		   }
+		   else
+			{
+				$chkdate = 'Not Found';	
+			}
 		
 		if ($this->request->is('post')) {
 			$last_ref_no=$this->JournalVouchers->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
@@ -240,7 +261,7 @@ class JournalVouchersController extends AppController
 		}else{
 			$ReceivedFroms_selected='no';
 		}
-        $this->set(compact('journalVoucher', 'ledgers','companies','Errorledgers','financial_year','JournalVoucherLedger','receivedFroms','ReceivedFroms_selected'));
+        $this->set(compact('journalVoucher', 'ledgers','companies','Errorledgers','financial_year','JournalVoucherLedger','receivedFroms','ReceivedFroms_selected','chkdate'));
         $this->set('_serialize', ['journalVoucher']);
     }
 
@@ -264,7 +285,28 @@ class JournalVouchersController extends AppController
             'contain' => ['Companies','JournalVoucherRows'=>['ReceivedFroms'],'Companies','Creator']
         ]);
 		
-		
+		   $SessionCheckDate = $this->FinancialYears->get($st_year_id);
+		   $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
+		   $todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
+		   $tody1 = date("Y-m-d");
+
+		   $fromdate = strtotime($fromdate1);
+		   $todate = strtotime($todate1); 
+		   $tody = strtotime($tody1);
+
+			if($fromdate < $tody || $todate > $tody)
+		   {
+			 if($SessionCheckDate['status'] == 'Open')
+			 { $chkdate = 'Found'; }
+			 else
+			 { $chkdate = 'Not Found'; }
+
+		   }
+		   else
+			{
+				$chkdate = 'Not Found';	
+			}
+				
 		$old_ref_rows=[];
 		$old_received_from_ids=[];
 		$old_reference_numbers=[];

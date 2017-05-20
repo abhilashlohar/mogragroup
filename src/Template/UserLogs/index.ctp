@@ -24,7 +24,6 @@
 						<td><?= h(++$page_no) ?></td>
 						<td><?= h($userlog->login->employee->name) ?></td>
 						<td><?php echo date("d-m-Y h:i:s A" ,strtotime($userlog->datetime)); ?></td>
-						
 					</tr>
 					<?php endforeach; ?>
 				</tbody>
@@ -60,5 +59,4 @@ var $rows = $('#main_tble tbody tr');
     		}
     	});
 });
-		
 </script>

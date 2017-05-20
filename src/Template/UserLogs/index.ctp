@@ -2,7 +2,7 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">CUSTOMERS</span>
+			<span class="caption-subject font-blue-steel uppercase">User Logs</span>
 		</div>
 	</div>
 	<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3"  style="width: 20%;" >

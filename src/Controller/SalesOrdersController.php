@@ -36,8 +36,9 @@ class SalesOrdersController extends AppController
 		$po_no=$this->request->query('po_no');
 		$From=$this->request->query('From');
 		$To=$this->request->query('To');
+		$items=$this->request->query('items');
 		$pull_request=$this->request->query('pull-request');
-		$this->set(compact('sales_order_no','customer','po_no','product','From','To','file','pull_request'));
+		$this->set(compact('sales_order_no','customer','po_no','product','From','To','file','pull_request','items'));
 		/* if(!empty($company_alise)){
 			$where['SalesOrders.so1 LIKE']='%'.$company_alise.'%';
 		} */
@@ -69,13 +70,27 @@ class SalesOrdersController extends AppController
             'contain' => ['Customers']
         ];
 		
+		
+		
 		if($status==null or $status=='Pending'){
 			$having=['total_rows >' => 0];
 		}elseif($status=='Converted Into Invoice'){
 			$having=['total_rows =' => 0];
 		}
+		
+		if(!empty($items)){
+			
+			$salesOrders=$this->paginate($this->SalesOrders->find()
+			->contain(['SalesOrderRows'=>['Items']])
+			->matching(
+					'SalesOrderRows.Items', function ($q) use($items) {
+						return $q->where(['Items.name LIKE' =>'%'.$items.'%']);
+					}
+				)
+				);
+		}else{
 		$salesOrders=$this->paginate(
-			$this->SalesOrders->find()->select(['total_rows' => 
+			$this->SalesOrders->find()->contain(['SalesOrderRows'=>['Items']])->select(['total_rows' => 
 				$this->SalesOrders->find()->func()->count('SalesOrderRows.id')])
 					->leftJoinWith('SalesOrderRows', function ($q) {
 						return $q->where(['SalesOrderRows.processed_quantity < SalesOrderRows.quantity']);
@@ -87,13 +102,16 @@ class SalesOrdersController extends AppController
 					->where(['company_id'=>$st_company_id])
 					->order(['SalesOrders.id' => 'DESC'])
 			);
+			
+		}	
 		if(!empty($job_card)){
 			$salesOrders=$this->paginate(
 				$this->SalesOrders->find()->contain(['SalesOrderRows'])
 				->where(['job_card'=>'Pending'])->order(['SalesOrders.id' => 'DESC'])
 			);
 		}
-        $this->set(compact('salesOrders','status','copy_request','job_card'));
+		$SalesOrderRows = $this->SalesOrders->SalesOrderRows->find()->toArray();
+        $this->set(compact('salesOrders','status','copy_request','job_card','SalesOrderRows'));
         $this->set('_serialize', ['salesOrders']);
 		$this->set(compact('url'));
     }

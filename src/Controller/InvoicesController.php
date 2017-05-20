@@ -37,7 +37,8 @@ class InvoicesController extends AppController
 		$To=$this->request->query('To');
 		$total_From=$this->request->query('total_From');
 		$page=$this->request->query('page');
-		$this->set(compact('customer','total_From','From','To','page','invoice_no','file'));
+		$items=$this->request->query('items');
+		$this->set(compact('customer','total_From','From','To','page','invoice_no','file','items'));
 		
 		if(!empty($invoice_no)){
 			$where['Invoices.in2 LIKE']=$invoice_no;
@@ -76,20 +77,33 @@ class InvoicesController extends AppController
 				$where['status']='Cancel';
 			}	
 		}
-		if($inventory_voucher=='true'){
+		
+		if(!empty($items)){ 
+		
+			$invoices=$this->paginate($this->Invoices->find()
+			->contain(['InvoiceRows'=>['Items']])
+			->matching(
+					'InvoiceRows.Items', function ($q) use($items) {
+						return $q->where(['Items.name LIKE' =>'%'.$items.'%']);
+					}
+				)
+			);
+			
+		}
+		
+		else if($inventory_voucher=='true'){
 			$invoices=[];
 			$invoices=$this->paginate($this->Invoices->find()->where($where)->contain(['InvoiceRows'=>['Items'=>function ($q) {
 				return $q->where(['source !='=>'Purchessed']);
 				}]])->where(['company_id'=>$st_company_id,'inventory_voucher_status'=>'Pending','inventory_voucher_create'=>'Yes'])->order(['Invoices.id' => 'DESC']));
-		}else{
-			$invoices = $this->paginate($this->Invoices->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Invoices.id' => 'DESC']));
-		}
-		if($sales_return=='true'){
+		}else if($sales_return=='true'){
 			
-			$invoices = $this->paginate($this->Invoices->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Invoices.id' => 'DESC']));
+			$invoices = $this->paginate($this->Invoices->find()->contain(['InvoiceRows'])->where($where)->where(['company_id'=>$st_company_id])->order(['Invoices.id' => 'DESC']));
+		} else{
+			$invoices = $this->paginate($this->Invoices->find()->contain(['InvoiceRows'=>['Items']])->where($where)->where(['company_id'=>$st_company_id])->order(['Invoices.id' => 'DESC']));
 		}
-		//pr($invoices); exit;
-		$this->set(compact('invoices','status','inventory_voucher','sales_return'));
+		
+		$this->set(compact('invoices','status','inventory_voucher','sales_return','InvoiceRows'));
         $this->set('_serialize', ['invoices']);
 		$this->set(compact('url'));
     }

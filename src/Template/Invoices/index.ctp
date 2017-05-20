@@ -34,33 +34,34 @@
 			<div class="col-md-12">
 				<form method="GET" >
 				<input type="hidden" name="inventory_voucher" value="<?php echo @$inventory_voucher; ?>">
-				<table class="table table-condensed">
+				<table class="table table-bordered table-striped table-hover">
 					<tbody>
 						<tr>
-							<td><input type='hidden' name='sales_return' value='<?php echo $sales_return; ?>' />
-										<div class="input-group" style="" id="pnf_text">
-											<span class="input-group-addon">IN-</span><input type="text" name="invoice_no" class="form-control input-sm" placeholder="Invoice No" value="<?php echo @$invoice_no; ?>">
-										</div>
-									</td>
-									<td>
-										<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
-									
+							<td>
+								<input type='hidden' name='sales_return' value='<?php echo $sales_return; ?>' />
+								<div class="input-group" style="" id="pnf_text">
+									<span class="input-group-addon">IN-</span><input type="text" name="invoice_no" class="form-control input-sm" placeholder="Invoice No" value="<?php echo @$invoice_no; ?>">
+								</div>
 							</td>
-							<td><input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>"></td>
 							<td>
+								<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
+							</td>
+							<td>
+								<input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>">
+							</td>
+							<td>
+								<input type="text" name="items" class="form-control input-sm" placeholder="Items" value="<?php echo @$items; ?>">
+							</td>
+							<td>
+								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Date From" value="<?php echo @$From; ?>" data-date-format="dd-mm-yyyy">
+							</td>
+							<td>
+								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Date To" value="<?php echo @$To; ?>" data-date-format="dd-mm-yyyy" >
+							</td>
+							<td>
+								<input type="text" name="total_From" class="form-control input-sm" placeholder="Total" value="<?php echo @$total_From; ?>">
+							</td>
 								
-										<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Date From" value="<?php echo @$From; ?>" data-date-format="dd-mm-yyyy" >
-									</td>
-									<td>
-										<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Date To" value="<?php echo @$To; ?>" data-date-format="dd-mm-yyyy" >
-									</td>
-							
-							<td>
-							<table>
-								<tr>
-									<td><input type="text" name="total_From" class="form-control input-sm" placeholder="Total" value="<?php echo @$total_From; ?>"></td>
-								</tr>
-							</table>
 							</td>
 							<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
 						</tr>
@@ -73,8 +74,9 @@
 						<tr>
 							<th width="5%">Sr. No.</th>
 							<th width="10%">Invoice No.</th>
-							<th width="10%">Customer</th>
-							<th width="10%">Date</th>
+							<th width="12%">Customer</th>
+							<th width="8%">Items</th>
+							<th width="8%">Date</th>
 							<th width="10%">Total</th>
 							<th width="10%">Actions</th>
 						</tr>
@@ -88,6 +90,17 @@
 							<td><?= h(++$page_no) ?></td>
 							<td><?= h(($invoice->in1.'/IN-'.str_pad($invoice->in2, 3, '0', STR_PAD_LEFT).'/'.$invoice->in3.'/'.$invoice->in4)) ?></td>
 							<td><?= h($invoice->customer->customer_name) ?></td>
+							<td>
+								<div class="btn-group">
+									<button id="btnGroupVerticalDrop5" type="button" class="btn  btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Items <i class="fa fa-angle-down"></i></button>
+										<ul class="dropdown-menu" role="menu" aria-labelledby="btnGroupVerticalDrop5">
+										<?php  foreach($invoice->invoice_rows as $invoice_row){
+											if($invoice_row->invoice_id == $invoice->id){?>
+											<li><a><?= h($invoice_row->item->name) ?></a></li>
+											<?php }}?>
+										</ul>
+								</div>
+							</td>
 							<td><?php echo date("d-m-Y",strtotime($invoice->date_created)); ?></td>
 							<td><?= h($invoice->total_after_pnf) ?></td>
 							<td class="actions">

@@ -19,6 +19,7 @@
 		</div>
 	
 	<div class="portlet-body form">
+	
 		<form method="GET" >
 			<input type="hidden" name="pull-request" value="<?php echo @$pull_request; ?>">
 				<table class="table table-condensed" width="20%">
@@ -26,12 +27,15 @@
 						<tr>
 							<td width="20%"><input type="text" name="item" class="form-control input-sm" placeholder="Item Name" value="<?php echo @$item; ?>"></td>
 							<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+							<td align="right"><input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3"  style="width: 40%;"></td>
 							</tr>
 						</tbody>
 				</table>
+				
 		</form>
+		
 		<?php $page_no=$this->Paginator->current('ItemLedgers'); $page_no=($page_no-1)*20; ?>
-		<table class="table table-bordered table-striped" >
+		<table class="table table-bordered table-striped" id="main_tble">
 			<thead>
 				<tr>
 					<th>Sr. No.</th>
@@ -71,3 +75,24 @@
 	</div>
 </div>
 </div>
+<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+<script>
+$(document).ready(function() {
+var $rows = $('#main_tble tbody tr');
+	$('#search3').on('keyup',function() {
+	
+			var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+    		var v = $(this).val();
+    		if(v){ 
+    			$rows.show().filter(function() {
+    				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+		
+    				return !~text.indexOf(val);
+    			}).hide();
+    		}else{
+    			$rows.show();
+    		}
+    	});
+});
+		
+</script>

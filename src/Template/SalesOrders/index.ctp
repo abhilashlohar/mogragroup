@@ -51,27 +51,33 @@
 				<table class="table table-condensed">
 					<tbody>
 						<tr>
+							<td width="16%">
+								<div class="input-group" id="pnf_text">
+									<span class="input-group-addon">SO-</span><input type="text" name="sales_order_no" class="form-control input-sm" placeholder="Sales Order No" value="<?php echo @$sales_order_no; ?>">
+								</div>
+							</td>
+							<td width="13%">
+								<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
+							</td>
+							<td width="22%">
+								<input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>">
+							</td>
+							<td width="17%">
+								<input type="text" name="po_no" class="form-control input-sm" placeholder="PO No." value="<?php echo @$po_no; ?>">
+							</td>
+							<td width="17%">
+								<input type="text" name="items" class="form-control input-sm" placeholder="Item" value="<?php echo @$items; ?>">
+							</td>
+							<td width="10%">
+								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="From" value="<?php echo @$From; ?>" data-date-format="dd-mm-yyyy" >
+							</td>
+							<td width="8%">
+								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="To" value="<?php echo @$To; ?>" data-date-format="dd-mm-yyyy" >
+							</td>
+							
 							<td>
-								
-										<div class="input-group" id="pnf_text">
-											<span class="input-group-addon">SO-</span><input type="text" name="sales_order_no" class="form-control input-sm" placeholder="Sales Order No" value="<?php echo @$sales_order_no; ?>">
-										</div>
-								</td>
-									<td>
-										<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
-									</td>
-								
-							<td><input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>"></td>
-							<td>
-								
-										<input type="text" name="From" class="form-control input-sm date-picker" placeholder="From" value="<?php echo @$From; ?>" data-date-format="dd-mm-yyyy" >
-									</td>
-									<td>
-										<input type="text" name="To" class="form-control input-sm date-picker" placeholder="To" value="<?php echo @$To; ?>" data-date-format="dd-mm-yyyy" >
-									</td>
-								
-							<td><input type="text" name="po_no" class="form-control input-sm" placeholder="PO No." value="<?php echo @$po_no; ?>"></td>
-							<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+								<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button>
+							</td>
 						</tr>
 					</tbody>
 				</table>
@@ -80,12 +86,13 @@
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
 						<tr>
-							<th width="10%">S. No.</th>
-							<th width="20%">Sales Order No</th>
+							<th width="5%" >S. No.</th>
+							<th width="15%" >Sales Order No</th>
 							<th width="15%">Customer</th>
-							<th width="10%">Date</th>
 							<th width="10%">PO No.</th>
-							<th width="23%">Actions</th>
+							<th width="10%">Items Name</th>
+							<th width="10%">Date</th>
+							<th width="10%">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -94,8 +101,20 @@
 							<td><?= h(++$page_no) ?></td>
 							<td><?= h(($salesOrder->so1.'/SO-'.str_pad($salesOrder->so2, 3, '0', STR_PAD_LEFT).'/'.$salesOrder->so3.'/'.$salesOrder->so4)) ?></td>
 							<td><?= h($salesOrder->customer->customer_name) ?></td>
-							<td><?php echo date("d-m-Y",strtotime($salesOrder->created_on)); ?></td>
 							<td><?= h($salesOrder->customer_po_no); ?></td>
+							<td>
+								<div class="btn-group">
+									<button id="btnGroupVerticalDrop5" type="button" class="btn  btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Items <i class="fa fa-angle-down"></i></button>
+										<ul class="dropdown-menu" role="menu" aria-labelledby="btnGroupVerticalDrop5">
+										<?php  foreach($salesOrder->sales_order_rows as $sales_order_rows){ 
+											if($sales_order_rows->sales_order_id == $salesOrder->id){?>
+											<li><a><?= h($sales_order_rows->item->name) ?></a></li>
+											<?php }}?>
+										</ul>
+								</div>
+							</td>
+							<td><?php echo date("d-m-Y",strtotime($salesOrder->created_on)); ?></td>
+							
 							<td class="actions">
 							<?php if(in_array(22,$allowed_pages)){ ?>
 								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $salesOrder->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>

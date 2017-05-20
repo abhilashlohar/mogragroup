@@ -55,10 +55,10 @@ class InventoryTransferVouchersController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-		$display_items= $this->InventoryTransferVouchers->Items->ItemSerialNumbers->find()
+		$display_items = $this->InventoryTransferVouchers->Items->find()->contain(['ItemSerialNumbers']);
 		
-		->toArray();
-		//pr($display_items);exit;
+		
+		pr($display_items->toArray());exit;
         $inventoryTransferVoucher = $this->InventoryTransferVouchers->newEntity();
         if ($this->request->is('post')) {
             $inventoryTransferVoucher = $this->InventoryTransferVouchers->patchEntity($inventoryTransferVoucher, $this->request->data);

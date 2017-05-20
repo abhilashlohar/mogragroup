@@ -13,7 +13,7 @@ class ReceiptsController extends AppController
 
 // Start CSV function 
 
-		public function export()
+		public function ReceiptVoucherExport()
 		{	
 			$session = $this->request->session();
 			$st_company_id = $session->read('st_company_id');

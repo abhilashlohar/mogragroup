@@ -24,7 +24,7 @@
 							<td width="10%"><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
 
 							<td>
-								<?php echo $this->Html->link('<i class="fa fa-file-excel-o"></i> Export',['action' => 'export'],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-primary btn-sm','data-original-title'=>'Export')); ?>
+								<?php echo $this->Html->link('<i class="fa fa-file-excel-o"></i> Export',['action' => 'ReceiptVoucherExport'],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-primary btn-sm','data-original-title'=>'Export')); ?>
 							
 							</td>
 							</tr>

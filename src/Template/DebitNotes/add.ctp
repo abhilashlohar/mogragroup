@@ -37,9 +37,29 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 		 <?= $this->Form->create($debitNote,['type' => 'file','id'=>'form_sample_3']) ?>
 			<div class="form-body">
 				<div class="row">
-					<div class="col-md-9">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="col-md-5 control-label">Sales Account<span class="required" aria-required="true">*</span></label>
+							<div class="col-md-7">
+								<?php echo $this->Form->input('sales_acc_id', ['empty'=>'--Select-','label' => false,'class' => 'form-control input-sm select2me']); ?>
+							</div>
+						
+						</div>
 					</div>
-					<div class="col-md-3">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="col-md-3 control-label">
+							   Party
+							   <span class="required" aria-required="true">*</span>
+							</label>
+							
+							<div class="col-md-9">
+							<?php echo $this->Form->input('party_id', ['empty'=>'--Select-','label' => false,'class' => 'form-control input-sm select2me']); ?>
+							</div>
+						
+						</div>
+					</div>
+					<div class="col-md-4">
 						<div class="form-group">
 							<label class="col-md-3 control-label">Date</label>
 							<div class="col-md-9">
@@ -48,24 +68,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 						</div>
 					</div>
 				</div>
-
-				<div class="row" style="margin-top:30px;">
-					<div class="col-md-4">
-						<div class="form-group">
-							<label class="control-label">Sales Account<span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('sales_acc_id', ['empty'=>'--Select-','label' => false,'class' => 'form-control input-sm select2me']); ?>
-						
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-							<label class="control-label">Party<span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('party_id', ['empty'=>'--Select-','label' => false,'class' => 'form-control input-sm select2me']); ?>
-						
-						</div>
-					</div>
-				</div>
-
+				<br>
 					<div style="overflow: auto;">
 					<table width="100%" id="main_table">
 						<thead>
@@ -101,89 +104,10 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 </div>
 <?php } ?>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+
 <script>
 $(document).ready(function() {
-	
-		$('.quantity').die().live("keyup",function() {
-		var asc=$(this).val();
-		var numbers =  /^[0-9]*\.?[0-9]*$/;
-		if(asc==0)
-		{
-			$(this).val('');
-			return false; 
-		}
-		else if(asc.match(numbers))  
-		{  
-		} 
-		else  
-		{  
-			$(this).val('');
-			return false;  
-		}
-	});
-	$('input[name="amount"]').die().live("keyup",function() { 
-		var asc=$(this).val();
-			var numbers =  /^[0-9]*\.?[0-9]*$/;
-			if(asc.match(numbers))  
-			{  
-			} 
-			else  
-			{  
-				$(this).val('');
-				return false;  
-			}
-	});
-	
-	$('input[name="payment_mode"]').die().live("click",function() {
-		var payment_mode=$(this).val();
-		
-		if(payment_mode=="Cheque"){
-			$("#chq_no").show();
-		}else{
-			$("#chq_no").hide();
-		}
-	});
-
-
-	$('.addrow').live("click",function() {
-		add_row();
-	});
-	$('.deleterow').live("click",function() {
-		$(this).closest("tr").remove();
-	});	
-	
-	
 	add_row();
-	function add_row(){
-		var tr=$("#sample_table tbody tr").clone();
-		
-		$("#main_table tbody#main_tbody").append(tr);
-		rename_rows();
-	}
-	
-	function rename_rows(){
-		var i=0;
-		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
-			$(this).find("td:eq(0) select.received_from").select2().attr({name:"payment_rows["+i+"][received_from_id]", id:"quotation_rows-"+i+"-received_from_id"}).rules('add', {
-						required: true,
-						notEqualToGroup: ['.received_from'],
-						messages: {
-							notEqualToGroup: "Do not select same party again."
-						}
-					});
-			$(this).find("td:eq(1) input").attr({name:"payment_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"}).rules('add', {
-						required: true,
-						min: 0.01,
-					});
-
-			$(this).find("td:nth-child(4) textarea").attr({name:"payment_rows["+i+"][narration]", id:"quotation_rows-"+i+"-narration"}).rules("add", "required");
-			i++;
-		});
-	}
-	
-
-	
-	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
 	var success3 = $('.alert-success', form3);
@@ -256,11 +180,86 @@ $(document).ready(function() {
 			}
 		}
 
-	});	
+	});
+	
+	function rename_rows(){
+		var i=0;
+		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
+			$(this).find("td:eq(0) select.received_from").select2().attr({name:"payment_rows["+i+"][received_from_id]", id:"quotation_rows-"+i+"-received_from_id"}).rules('add', {
+						required: true,
+						notEqualToGroup: ['.received_from'],
+						messages: {
+							notEqualToGroup: "Do not select same party again."
+						}
+					});
+			$(this).find("td:eq(1) input").attr({name:"payment_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"}).rules('add', {
+						required: true,
+						min: 0.01,
+					});
+
+			$(this).find("td:nth-child(4) textarea").attr({name:"payment_rows["+i+"][narration]", id:"quotation_rows-"+i+"-narration"}).rules("add", "required");
+			i++;
+		});
+	}
+	
+
+		function add_row(){
+			 var tr=$("#sample_table tbody tr").clone();
+			 $("#main_table tbody#main_tbody").append(tr);
+			 rename_rows();
+		}	
+
+			$('.quantity').die().live("keyup",function() {
+				var asc=$(this).val();
+				var numbers =  /^[0-9]*\.?[0-9]*$/;
+				if(asc==0)
+				{
+					$(this).val('');
+					return false; 
+				}
+				else if(asc.match(numbers))  
+				{  
+				} 
+				else  
+				{  
+					$(this).val('');
+					return false;  
+				}
+			});
+			$('input[name="amount"]').die().live("keyup",function() { 
+				var asc=$(this).val();
+					var numbers =  /^[0-9]*\.?[0-9]*$/;
+					if(asc.match(numbers))  
+					{  
+					} 
+					else  
+					{  
+						$(this).val('');
+						return false;  
+					}
+			});
+			
+			$('input[name="payment_mode"]').die().live("click",function() {
+				var payment_mode=$(this).val();
+				
+				if(payment_mode=="Cheque"){
+					$("#chq_no").show();
+				}else{
+					$("#chq_no").hide();
+				}
+			});
+
+
+			$('.addrow').live("click",function() {
+				add_row();
+			});
+			$('.deleterow').live("click",function() {
+				$(this).closest("tr").remove();
+			});
+	
 	
 });
 </script>
-
 
 
 <table id="sample_table" style="display:none; width:100%; ">
@@ -276,7 +275,11 @@ $(document).ready(function() {
 			</td>
 			
 			<td><?php echo $this->Form->input('narration', ['type'=>'textarea','label' => false,'class' => 'form-control input-sm','placeholder'=>'Narration']); ?></td>
-			<td><a class="btn btn-xs btn-default deleterow" href="#" role="button"><i class="fa fa-times"></i></a></td>
+			<td>
+				<a class="btn btn-xs btn-default deleterow" href="#" role="button">
+					<i class="fa fa-times"></i>
+				</a>
+			</td>
 		</tr>
 	</tbody>
 </table>

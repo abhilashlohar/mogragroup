@@ -69,9 +69,9 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 					<div style="overflow: auto;">
 					<table width="100%" id="main_table">
 						<thead>
-							<th width="25%"><label class="control-label">Paid TO</label></th>
-							<th width="15%"><label class="control-label">Amount</label></th>
-						    <th width="15%"><label class="control-label">Narration</label></th>
+							<th width="30%"><label class="control-label">Paid TO</label></th>
+							<th width="30%"><label class="control-label">Amount</label></th>
+						    <th width="30%"><label class="control-label">Narration</label></th>
 							<th width="3%"></th>
 						</thead>
 						<tbody id="main_tbody">
@@ -89,8 +89,6 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 						</tfoot>
 					</table>
 					</div>
-
-
 			</div>
 		
 			<div class="form-actions">
@@ -105,7 +103,87 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
-		//--------- FORM VALIDATION
+	
+		$('.quantity').die().live("keyup",function() {
+		var asc=$(this).val();
+		var numbers =  /^[0-9]*\.?[0-9]*$/;
+		if(asc==0)
+		{
+			$(this).val('');
+			return false; 
+		}
+		else if(asc.match(numbers))  
+		{  
+		} 
+		else  
+		{  
+			$(this).val('');
+			return false;  
+		}
+	});
+	$('input[name="amount"]').die().live("keyup",function() { 
+		var asc=$(this).val();
+			var numbers =  /^[0-9]*\.?[0-9]*$/;
+			if(asc.match(numbers))  
+			{  
+			} 
+			else  
+			{  
+				$(this).val('');
+				return false;  
+			}
+	});
+	
+	$('input[name="payment_mode"]').die().live("click",function() {
+		var payment_mode=$(this).val();
+		
+		if(payment_mode=="Cheque"){
+			$("#chq_no").show();
+		}else{
+			$("#chq_no").hide();
+		}
+	});
+
+
+	$('.addrow').live("click",function() {
+		add_row();
+	});
+	$('.deleterow').live("click",function() {
+		$(this).closest("tr").remove();
+	});	
+	
+	
+	add_row();
+	function add_row(){
+		var tr=$("#sample_table tbody tr").clone();
+		
+		$("#main_table tbody#main_tbody").append(tr);
+		rename_rows();
+	}
+	
+	function rename_rows(){
+		var i=0;
+		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
+			$(this).find("td:eq(0) select.received_from").select2().attr({name:"payment_rows["+i+"][received_from_id]", id:"quotation_rows-"+i+"-received_from_id"}).rules('add', {
+						required: true,
+						notEqualToGroup: ['.received_from'],
+						messages: {
+							notEqualToGroup: "Do not select same party again."
+						}
+					});
+			$(this).find("td:eq(1) input").attr({name:"payment_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"}).rules('add', {
+						required: true,
+						min: 0.01,
+					});
+
+			$(this).find("td:nth-child(4) textarea").attr({name:"payment_rows["+i+"][narration]", id:"quotation_rows-"+i+"-narration"}).rules("add", "required");
+			i++;
+		});
+	}
+	
+
+	
+	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
 	var success3 = $('.alert-success', form3);
@@ -178,82 +256,7 @@ $(document).ready(function() {
 			}
 		}
 
-	});
-		$('.quantity').die().live("keyup",function() {
-		var asc=$(this).val();
-		var numbers =  /^[0-9]*\.?[0-9]*$/;
-		if(asc==0)
-		{
-			$(this).val('');
-			return false; 
-		}
-		else if(asc.match(numbers))  
-		{  
-		} 
-		else  
-		{  
-			$(this).val('');
-			return false;  
-		}
-	});
-	$('input[name="amount"]').die().live("keyup",function() { 
-		var asc=$(this).val();
-			var numbers =  /^[0-9]*\.?[0-9]*$/;
-			if(asc.match(numbers))  
-			{  
-			} 
-			else  
-			{  
-				$(this).val('');
-				return false;  
-			}
-	});
-	
-	$('input[name="payment_mode"]').die().live("click",function() {
-		var payment_mode=$(this).val();
-		
-		if(payment_mode=="Cheque"){
-			$("#chq_no").show();
-		}else{
-			$("#chq_no").hide();
-		}
-	});
-
-	add_row();
-	function add_row(){
-		var tr=$("#sample_table tbody tr").clone();
-		$("#main_table tbody#main_tbody").append(tr);
-		rename_rows();
-	}
-	
-	function rename_rows(){
-		var i=0;
-		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
-			$(this).find("td:eq(0) select.received_from").select2().attr({name:"payment_rows["+i+"][received_from_id]", id:"quotation_rows-"+i+"-received_from_id"}).rules('add', {
-						required: true,
-						notEqualToGroup: ['.received_from'],
-						messages: {
-							notEqualToGroup: "Do not select same party again."
-						}
-					});
-			$(this).find("td:eq(1) input").attr({name:"payment_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"}).rules('add', {
-						required: true,
-						min: 0.01,
-					});
-
-			$(this).find("td:nth-child(4) textarea").attr({name:"payment_rows["+i+"][narration]", id:"quotation_rows-"+i+"-narration"}).rules("add", "required");
-			i++;
-		});
-	}
-	
-	$('.addrow').live("click",function() {
-		add_row();
-	});
-	$('.deleterow').live("click",function() {
-		$(this).closest("tr").remove();
-	});
-	
-	
+	});	
 	
 });
 </script>

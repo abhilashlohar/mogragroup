@@ -803,7 +803,7 @@ $(document).ready(function() {
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').append('<textarea name="invoice_rows['+val+'][description]"style="display:none;"></textarea>');
 				$(this).css('background-color','#fffcda');
 				
-				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]');
 				var qty=$(this).find('td:nth-child(3) input[type="text"]').val();
 				var serial_l=$('#main_tb tbody tr.tr3[row_no="'+row_no+'"] td:nth-child(2) select').length;
 				

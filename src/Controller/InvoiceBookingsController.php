@@ -188,6 +188,17 @@ class InvoiceBookingsController extends AppController
 			$invoiceBooking->supplier_date=date("Y-m-d",strtotime($invoiceBooking->supplier_date)); 
 			$invoiceBooking->created_by=$this->viewVars['s_employee_id'];
 			$invoiceBooking->due_payment=$invoiceBooking->total;
+
+			$cst_purchase=0;
+			if($st_company_id=='25'){
+				$cst_purchase=35;
+			}else if($st_company_id=='26'){
+				$cst_purchase=161;
+			}else if($st_company_id=='27'){
+				$cst_purchase=309;
+				}
+			pr($cst_purchase);
+			pr($invoiceBooking->purchase_ledger_account); exit;
 			
             if ($this->InvoiceBookings->save($invoiceBooking)) {
 				$i=0;
@@ -230,8 +241,7 @@ class InvoiceBookingsController extends AppController
 					$this->InvoiceBookings->Grns->save($grn);
 				}
 				$accountReferences = $this->InvoiceBookings->AccountReferences->get(2);
-				
-				if($invoiceBooking->purchase_ledger_account==35){
+				if($invoiceBooking->purchase_ledger_account==$cst_purchase){
 					//ledger posting for PURCHASE ACCOUNT
 					$ledger = $this->InvoiceBookings->Ledgers->newEntity();
 					$ledger->ledger_account_id = $invoiceBooking->purchase_ledger_account;
@@ -350,6 +360,13 @@ class InvoiceBookingsController extends AppController
 			return $q->where(['AccountFirstSubgroups.id'=>$AccountReference->account_first_subgroup_id]);
 		}]])->order(['LedgerAccounts.name' => 'ASC'])->where(['LedgerAccounts.company_id'=>$st_company_id]);
 		
+		$cst_purchase=0;
+			if($st_company_id=='25'){
+				$cst_purchase=35;
+			}else if($st_company_id=='26'){
+				$cst_purchase=161;
+			}else if($st_company_id=='27'){
+				$cst_purchase=309;
 		
 		
 		$companies = $this->InvoiceBookings->Companies->find('all');

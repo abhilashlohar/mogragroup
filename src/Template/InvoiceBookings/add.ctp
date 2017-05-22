@@ -457,6 +457,30 @@ $(document).ready(function() {
 				var amount_after_cst=amount_after_ex*(100+cst)/100;
 				total_cst=total_cst+(amount_after_ex*cst/100);
 				total_for_rate=amount_after_ex;
+			}else if(vat_cst==161){
+				var cst=parseFloat($(this).find("td:nth-child(10) input").val());
+				if(!cst){ cst=0; }
+				var amount_after_cst=amount_after_ex*(100+cst)/100;
+				total_cst=total_cst+(amount_after_ex*cst/100);
+				total_for_rate=total_for_rate+(amount_after_ex*cst/100);
+			}else if(vat_cst==160){
+				var cst=parseFloat($(this).find("td:nth-child(10) input").val());
+				if(!cst){ cst=0; }
+				var amount_after_cst=amount_after_ex*(100+cst)/100;
+				total_cst=total_cst+(amount_after_ex*cst/100);
+				total_for_rate=amount_after_ex;
+			}else if(vat_cst==309){
+				var cst=parseFloat($(this).find("td:nth-child(10) input").val());
+				if(!cst){ cst=0; }
+				var amount_after_cst=amount_after_ex*(100+cst)/100;
+				total_cst=total_cst+(amount_after_ex*cst/100);
+				total_for_rate=total_for_rate+(amount_after_ex*cst/100);
+			}else if(vat_cst==308){
+				var cst=parseFloat($(this).find("td:nth-child(10) input").val());
+				if(!cst){ cst=0; }
+				var amount_after_cst=amount_after_ex*(100+cst)/100;
+				total_cst=total_cst+(amount_after_ex*cst/100);
+				total_for_rate=amount_after_ex;
 			}
 			row_total=row_total+(amount_after_ex*cst/100);
 			
@@ -583,8 +607,7 @@ $(document).ready(function() {
 		
 
 		submitHandler: function (form) {
-			$('#add_submit').prop('disabled', true);
-			$('#add_submit').text('Submitting.....');
+			
 			success3.show();
 			error3.hide();
 			form[0].submit();

@@ -219,7 +219,7 @@ class SaleTaxesController extends AppController
 		$query2 = $this->SaleTaxes->SaleTaxCompanies->query();
 		$query2->update()
 			->set(['freeze' => $freeze])
-			->where(['sale_taxe_id' => $saletax_id,'company_id'=>$company_id])
+			->where(['sale_tax_id' => $saletax_id,'company_id'=>$company_id])
 			->execute();
 
 		return $this->redirect(['action' => 'EditCompany/'.$saletax_id]);
@@ -233,7 +233,7 @@ class SaleTaxesController extends AppController
 		$ledgerexist = $this->SaleTaxes->Ledgers->exists(['ledger_account_id' => $employees_ledger->id]);
 		
 		if(!$ledgerexist){
-			$customer_Company_dlt= $this->SaleTaxes->SaleTaxCompanies->find()->where(['SaleTaxCompanies.sale_taxe_id'=>$saletax_id,'company_id'=>$company_id])->first();
+			$customer_Company_dlt= $this->SaleTaxes->SaleTaxCompanies->find()->where(['SaleTaxCompanies.sale_tax_id'=>$saletax_id,'company_id'=>$company_id])->first();
 
 			$customer_ledger_dlt= $this->SaleTaxes->LedgerAccounts->find()->where(['source_model' => 'SaleTaxes','source_id'=>$saletax_id,'company_id'=>$company_id])->first();
 
@@ -276,8 +276,8 @@ class SaleTaxesController extends AppController
 
 		$SaleTaxCompany = $this->SaleTaxes->SaleTaxCompanies->newEntity();
 		$SaleTaxCompany->company_id=$company_id;
-		$SaleTaxCompany->sale_taxe_id=$saletax_id;
-		$SaleTaxCompany->sale_taxe_id=$saletax_id;
+		$SaleTaxCompany->sale_tax_id=$saletax_id;
+		$SaleTaxCompany->sale_tax_id=$saletax_id;
 		//pr($SaleTaxCompany); exit;
 		$this->SaleTaxes->SaleTaxCompanies->save($SaleTaxCompany);
 		

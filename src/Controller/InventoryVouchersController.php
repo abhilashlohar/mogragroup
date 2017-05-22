@@ -295,6 +295,7 @@ class InventoryVouchersController extends AppController
 		
 		$InventoryVoucher = $this->InventoryVouchers->newEntity();
 		if ($this->request->is(['post','put','patch'])) {
+			
 			$q_serial_no=@$this->request->data['serial_numbers'];
 			
 			$InventoryVoucher=$this->InventoryVouchers->find()->where(['invoice_id'=>$invoice_id]);

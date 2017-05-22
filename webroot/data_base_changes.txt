@@ -3,3 +3,5 @@ Add New Field iun Ledger Account auto_inc int(10).
 
 <----------------Dimpal--------->
 create new table inventory_transfer_voucher & inventory_transfer_voucher_rows [see structure of webroot]
+
+

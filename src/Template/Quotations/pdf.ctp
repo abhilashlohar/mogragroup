@@ -41,6 +41,7 @@ $html = '
 	table.table_rows tr.odd{
 		page-break-inside: avoid;
 	}
+	
 	.table_rows, .table_rows th.main, .table_rows td.main {
 	   border: 1px solid  #000;border-collapse: collapse;padding:2px; 
 	}

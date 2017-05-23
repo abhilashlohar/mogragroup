@@ -155,7 +155,7 @@
 		</div>
 			<div class="form-actions">
 				
-				<?= $this->Form->button(__('ADD RECEIPT VOUCHER'),['class'=>'btn btn-primary','id'=>'add_submit','type'=>'Submit']) ?>
+				<?= $this->Form->button(__('ADD RECEIPT VOUCHER'),['class'=>'btn btn-primary add_submit','id'=>'add_submit','type'=>'Submit']) ?>
 			</div>
 		</div>
 		<?= $this->Form->end() ?>
@@ -432,11 +432,9 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) { 
-
-			$('#add_submit').prop('disabled', true);
-			$('#add_submit').text('Submitting.....');			
-
-		var amount=parseFloat($('input[name="amount"]').val());
+		$('.add_submit').prop('disabled', true);
+		$('.add_submit').text('Submitting.....');
+	      var amount=parseFloat($('input[name="amount"]').val());
 		
 				var debit=0;
 				$("[name^=debit]").each(function () {
@@ -460,11 +458,5 @@ $(document).ready(function() {
 		}
 
 	});
-	
-	
-	
-	
-	
-	
 });
 </script>

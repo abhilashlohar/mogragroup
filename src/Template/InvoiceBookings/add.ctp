@@ -194,7 +194,7 @@ foreach($grn->purchase_order->purchase_order_rows as $purchase_order_row){
 							</td>
 							
 							<td align="center">
-							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.sale_tax',['value'=>0,'type'=>'text','label'=>false,'class'=>'vattext form-control input-sm row_textbox ']); ?>
+							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.sale_tax',['value'=>0,'type'=>'text','label'=>false,'class'=>'vattext rmvcls form-control input-sm row_textbox ']); ?>
 							<span class="check_text">In percentages</span>
 							</td>
 							
@@ -345,11 +345,27 @@ $(document).ready(function() {
 		$('#main_tb thead th:eq(9)').text('CST');
 		$('input[name="cst_vat"]').val('CST');
 		$('#ledger_account_for_vat').hide();
-	}else{
+	}else if(purchase_ledger_account=="538"){
 		$('#main_tb thead th:eq(9)').text('VAT');
 		$('input[name="cst_vat"]').val('VAT');
 		$('#ledger_account_for_vat').show();
 		 
+	}else if(purchase_ledger_account=="161"){
+		$('#main_tb thead th:eq(9)').text('CST');
+		$('input[name="cst_vat"]').val('CST');
+		$('#ledger_account_for_vat').hide();
+	}else if(purchase_ledger_account=="160"){
+		$('#main_tb thead th:eq(9)').text('VAT');
+		$('input[name="cst_vat"]').val('VAT');
+		$('#ledger_account_for_vat').show();
+	}else if(purchase_ledger_account=="309"){
+		$('#main_tb thead th:eq(9)').text('CST');
+		$('input[name="cst_vat"]').val('CST');
+		$('#ledger_account_for_vat').hide();
+	}else if(purchase_ledger_account=="308"){
+		$('#main_tb thead th:eq(9)').text('VAT');
+		$('input[name="cst_vat"]').val('VAT');
+		$('#ledger_account_for_vat').show();
 	}
 
 	$('select[name="purchase_ledger_account"]').die().live("change",function() {
@@ -358,11 +374,47 @@ $(document).ready(function() {
 			$('#main_tb thead th:eq(9)').text('CST');
 			$('input[name="cst_vat"]').val('CST');
 			$('#ledger_account_for_vat').hide();
-			$(".vattext").removeClass("vattext");
-		}else{
+			$(".rmvcls").removeClass("vattext");
+		}else if(purchase_ledger_account=="538"){
 			$('#main_tb thead th:eq(9)').text('VAT');
 			$('input[name="cst_vat"]').val('VAT');
 			$('#ledger_account_for_vat').show();
+			$(".rmvcls").addClass("vattext");
+			$('.vattext').val(0);
+			$('.vattext').die().live("blur",function() {
+			var text = $(this).val();
+				if(text!="5" && text!="14.50" && text!="14.5" && text!="5.50" && text!="5.5"){
+					$(this).val(0);
+				}
+			});
+		}else if(purchase_ledger_account=="161"){
+			$('#main_tb thead th:eq(9)').text('CST');
+			$('input[name="cst_vat"]').val('CST');
+			$('#ledger_account_for_vat').hide();
+			$(".rmvcls").removeClass("vattext");
+		}else if(purchase_ledger_account=="160"){
+			$('#main_tb thead th:eq(9)').text('VAT');
+			$('input[name="cst_vat"]').val('VAT');
+			$('#ledger_account_for_vat').show();
+			$(".rmvcls").addClass("vattext");
+			$('.vattext').val(0);
+			$('.vattext').die().live("blur",function() {
+			var text = $(this).val();
+				if(text!="5" && text!="14.50" && text!="14.5" && text!="5.50" && text!="5.5"){
+					$(this).val(0);
+				}
+			});
+		}else if(purchase_ledger_account=="309"){
+			$('#main_tb thead th:eq(9)').text('CST');
+			$('input[name="cst_vat"]').val('CST');
+			$('#ledger_account_for_vat').hide();
+			$(".rmvcls").removeClass("vattext");
+		}else if(purchase_ledger_account=="308"){
+			$('#main_tb thead th:eq(9)').text('VAT');
+			$('input[name="cst_vat"]').val('VAT');
+			$('#ledger_account_for_vat').show();
+			$(".rmvcls").addClass("vattext");
+			$('.vattext').val(0);
 			$('.vattext').die().live("blur",function() {
 			var text = $(this).val();
 				if(text!="5" && text!="14.50" && text!="14.5" && text!="5.50" && text!="5.5"){
@@ -452,6 +504,30 @@ $(document).ready(function() {
 				total_cst=total_cst+(amount_after_ex*cst/100);
 				total_for_rate=total_for_rate+(amount_after_ex*cst/100);
 			}else if(vat_cst==538){
+				var cst=parseFloat($(this).find("td:nth-child(10) input").val());
+				if(!cst){ cst=0; }
+				var amount_after_cst=amount_after_ex*(100+cst)/100;
+				total_cst=total_cst+(amount_after_ex*cst/100);
+				total_for_rate=amount_after_ex;
+			}else if(vat_cst==161){
+				var cst=parseFloat($(this).find("td:nth-child(10) input").val());
+				if(!cst){ cst=0; }
+				var amount_after_cst=amount_after_ex*(100+cst)/100;
+				total_cst=total_cst+(amount_after_ex*cst/100);
+				total_for_rate=total_for_rate+(amount_after_ex*cst/100);
+			}else if(vat_cst==160){
+				var cst=parseFloat($(this).find("td:nth-child(10) input").val());
+				if(!cst){ cst=0; }
+				var amount_after_cst=amount_after_ex*(100+cst)/100;
+				total_cst=total_cst+(amount_after_ex*cst/100);
+				total_for_rate=amount_after_ex;
+			}else if(vat_cst==309){
+				var cst=parseFloat($(this).find("td:nth-child(10) input").val());
+				if(!cst){ cst=0; }
+				var amount_after_cst=amount_after_ex*(100+cst)/100;
+				total_cst=total_cst+(amount_after_ex*cst/100);
+				total_for_rate=total_for_rate+(amount_after_ex*cst/100);
+			}else if(vat_cst==308){
 				var cst=parseFloat($(this).find("td:nth-child(10) input").val());
 				if(!cst){ cst=0; }
 				var amount_after_cst=amount_after_ex*(100+cst)/100;
@@ -583,8 +659,7 @@ $(document).ready(function() {
 		
 
 		submitHandler: function (form) {
-			$('#add_submit').prop('disabled', true);
-			$('#add_submit').text('Submitting.....');
+			
 			success3.show();
 			error3.hide();
 			form[0].submit();

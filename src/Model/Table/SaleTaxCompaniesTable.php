@@ -36,7 +36,7 @@ class SaleTaxCompaniesTable extends Table
         $this->table('sale_tax_companies');
         $this->displayField('sale_tax_id');
        // $this->primaryKey(['company_id']);
-		$this->primaryKey(['sale_taxe_id', 'company_id']);
+		$this->primaryKey(['sale_tax_id', 'company_id']);
 
         $this->belongsTo('SaleTaxes', [
             'foreignKey' => 'sale_tax_id',

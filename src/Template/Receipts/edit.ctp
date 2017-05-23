@@ -160,7 +160,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 				<?php if($chkdate == 'Not Found'){  ?>
 					<label class="btn btn-danger"> You are not in Current Financial Year </label>
 				<?php } else { ?>
-					<button type="submit" class="btn btn-primary" >EDIT RECEIPT</button>
+					<button type="submit" id='submitbtn' class="btn btn-primary" >EDIT RECEIPT</button>
 				<?php } ?>	
 		
 		</div>
@@ -253,6 +253,8 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
+			$('#submitbtn').prop('disabled', true);
+			$('#submitbtn').text('Submitting.....');
 			success3.show();
 			error3.hide();
 			form[0].submit(); // submit the form

@@ -255,7 +255,7 @@ class InventoryVouchersController extends AppController
      * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit()
+    public function edit() 
     { 	$this->viewBuilder()->layout('index_layout');
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
@@ -295,6 +295,7 @@ class InventoryVouchersController extends AppController
 		
 		$InventoryVoucher = $this->InventoryVouchers->newEntity();
 		if ($this->request->is(['post','put','patch'])) {
+			
 			$q_serial_no=@$this->request->data['serial_numbers'];
 			
 			$InventoryVoucher=$this->InventoryVouchers->find()->where(['invoice_id'=>$invoice_id]);
@@ -618,8 +619,8 @@ class InventoryVouchersController extends AppController
 			$SerialNumbers=$this->InventoryVouchers->ItemSerialNumbers->find()->where(['item_id'=>$select_item_id,'status'=>'In','company_id'=>$st_company_id])->orWhere(['item_id'=>$select_item_id,'iv_invoice_id'=>$invoice_id,'q_item_id'=>$q_item_id,'status'=>'Out','company_id'=>$st_company_id]);
 			
 			$selectedSerialNumbers=$this->InventoryVouchers->ItemSerialNumbers->find()->where(['item_id'=>$select_item_id,'iv_invoice_id'=>$invoice_id,'q_item_id'=>$q_item_id,'status'=>'Out','company_id'=>$st_company_id]);
-			$falg=1;
+			$flag=1;
 		}
-		$this->set(compact('SerialNumbers','falg','select_item_id','invoice_id','q_item_id','selectedSerialNumbers'));
+		$this->set(compact('SerialNumbers','flag','select_item_id','invoice_id','q_item_id','selectedSerialNumbers'));
     }
 }

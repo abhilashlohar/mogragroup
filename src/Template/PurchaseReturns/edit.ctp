@@ -98,7 +98,7 @@ $this->Form->templates([
 							<? ?>
 						</div>
 					</div>
-					<?php if($ledger_account_details->id != 35) {?>
+					<?php if(($st_company_id==25 && $ledger_account_details->id != 35) || ($st_company_id==26 && $ledger_account_details->id != 161) || ($st_company_id==27 && $ledger_account_details->id != 309) ) {?>
 					<div class="col-md-3">
 						<div class="form-group" >
 							<label class="control-label">Ledger Account for VAT<span class="required" aria-required="true">*</span></label><br/>

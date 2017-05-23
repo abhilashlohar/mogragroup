@@ -1,4 +1,3 @@
-
 <style>
 table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table > thead > tr > td, table > tbody > tr > td, table > tfoot > tr > td{
 	vertical-align: top !important;
@@ -730,7 +729,7 @@ $(document).ready(function() {
 				
 				
 				$(this).css('background-color','#fffcda');
-				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]');
 				var s_tax=$(this).find('td:nth-child(6)').text();
 				
 				list.push(s_tax);

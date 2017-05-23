@@ -1,5 +1,5 @@
 <?php
-if(!empty($falg)){
+if(!empty($flag)){
 	$selected=[];
 	foreach($selectedSerialNumbers as $selectedSerialNumber){
 		 $selected[]=$selectedSerialNumber->id;

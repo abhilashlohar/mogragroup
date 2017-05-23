@@ -188,6 +188,16 @@ class InvoiceBookingsController extends AppController
 			$invoiceBooking->supplier_date=date("Y-m-d",strtotime($invoiceBooking->supplier_date)); 
 			$invoiceBooking->created_by=$this->viewVars['s_employee_id'];
 			$invoiceBooking->due_payment=$invoiceBooking->total;
+
+			$cst_purchase=0;
+			if($st_company_id=='25'){
+				$cst_purchase=35;
+			}else if($st_company_id=='26'){
+				$cst_purchase=161;
+			}else if($st_company_id=='27'){
+				$cst_purchase=309;
+			}
+			
 			
             if ($this->InvoiceBookings->save($invoiceBooking)) {
 				$i=0;
@@ -230,8 +240,7 @@ class InvoiceBookingsController extends AppController
 					$this->InvoiceBookings->Grns->save($grn);
 				}
 				$accountReferences = $this->InvoiceBookings->AccountReferences->get(2);
-				
-				if($invoiceBooking->purchase_ledger_account==35){
+				if($invoiceBooking->purchase_ledger_account==$cst_purchase){
 					//ledger posting for PURCHASE ACCOUNT
 					$ledger = $this->InvoiceBookings->Ledgers->newEntity();
 					$ledger->ledger_account_id = $invoiceBooking->purchase_ledger_account;
@@ -350,8 +359,15 @@ class InvoiceBookingsController extends AppController
 			return $q->where(['AccountFirstSubgroups.id'=>$AccountReference->account_first_subgroup_id]);
 		}]])->order(['LedgerAccounts.name' => 'ASC'])->where(['LedgerAccounts.company_id'=>$st_company_id]);
 		
+		$cst_purchase=0;
+			if($st_company_id=='25'){
+				$cst_purchase=35;
+			}else if($st_company_id=='26'){
+				$cst_purchase=161;
+			}else if($st_company_id=='27'){
+				$cst_purchase=309;
 		
-		
+			}	
 		$companies = $this->InvoiceBookings->Companies->find('all');
         $grns = $this->InvoiceBookings->Grns->find('list');
         $this->set(compact('invoiceBooking', 'grns','companies','ledger_account_details','v_LedgerAccount', 'ledger_account_vat'));
@@ -426,9 +442,17 @@ class InvoiceBookingsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $invoiceBooking = $this->InvoiceBookings->patchEntity($invoiceBooking, $this->request->data);
 			$invoiceBooking->supplier_date=date("Y-m-d",strtotime($invoiceBooking->supplier_date)); 
-            if ($this->InvoiceBookings->save($invoiceBooking)) {
-				$ref_rows=@$this->request->data['ref_rows'];
+			$cst_purchase=0;
+					if($st_company_id=='25'){
+						$cst_purchase=35;
+					}else if($st_company_id=='26'){
+						$cst_purchase=161;
+					}else if($st_company_id=='27'){
+						$cst_purchase=309;
+					}
 				
+            if ($this->InvoiceBookings->save($invoiceBooking)) { 
+				$ref_rows=@$this->request->data['ref_rows'];
 				$invoiceBookingId=$invoiceBooking->id;
 				$grn_id=$invoiceBooking->grn_id;
 				
@@ -439,6 +463,7 @@ class InvoiceBookingsController extends AppController
 				}
 				$this->InvoiceBookings->Ledgers->deleteAll(['voucher_id' =>$invoiceBookingId, 'voucher_source' => 'Invoice Booking']);
 				$i=0; 
+				
 				foreach($invoiceBooking->invoice_booking_rows as $invoice_booking_row)
 				{
 				$item_id=$invoice_booking_row->item_id;
@@ -469,7 +494,7 @@ class InvoiceBookingsController extends AppController
 				}
 				$accountReferences = $this->InvoiceBookings->AccountReferences->get(2);
 				
-				if($invoiceBooking->purchase_ledger_account==35){
+				if($invoiceBooking->purchase_ledger_account==$cst_purchase){ 
 					//ledger posting for PURCHASE ACCOUNT
 					$ledger = $this->InvoiceBookings->Ledgers->newEntity();
 					$ledger->ledger_account_id = $invoiceBooking->purchase_ledger_account;
@@ -480,6 +505,7 @@ class InvoiceBookingsController extends AppController
 					$ledger->voucher_source = 'Invoice Booking';
 					$ledger->transaction_date = $invoiceBooking->supplier_date;
 					$this->InvoiceBookings->Ledgers->save($ledger);
+					
 				}else{
 					//ledger posting for PURCHASE ACCOUNT
 					$ledger = $this->InvoiceBookings->Ledgers->newEntity();
@@ -518,7 +544,7 @@ class InvoiceBookingsController extends AppController
 				$ledger->company_id = $invoiceBooking->company_id;
 				$ledger->voucher_source = 'Invoice Booking';
 				$this->InvoiceBookings->Ledgers->save($ledger);
-				
+				//pr($invoiceBooking); exit;
 				//Reference Number coding 
 				if(sizeof(@$ref_rows)>0){
 						

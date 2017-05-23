@@ -33,7 +33,8 @@ class ItemsController extends AppController
 		$item_category=$this->request->query('item_category');
 		$item_group=$this->request->query('item_group');
 		$item_subgroup=$this->request->query('item_subgroup');
-		 
+		$page=$this->request->query('page');
+		 //pr($page);exit;
 		$this->set(compact('item_name','item_category','item_group','item_subgroup'));
 		
 		if(!empty($item_name)){

@@ -368,6 +368,9 @@ select
 					</ul>
 				</li>
 				<?php } ?>
+				<?php 
+						echo '<li>'.$this->Html->link( '<i class="icon-home"></i> Inventory Transfer Voucher', '/InventoryTransferVouchers/add',array('escape'=>false) ).'</li>';
+						 ?>
 				<?php if(in_array(9,$allowed_pages)){ ?>
 				<li>
 					<a href="javascript:;">

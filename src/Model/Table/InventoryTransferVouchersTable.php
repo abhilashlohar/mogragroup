@@ -41,10 +41,10 @@ class InventoryTransferVouchersTable extends Table
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
         ]);
-        $this->hasMany('InventoryTransferVoucherRows', [
-            'foreignKey' => 'inventory_transfer_voucher_id'
-        ]);
+        $this->belongsTo('InventoryTransferVoucherRows');
 		$this->belongsTo('Items');
+		$this->belongsTo('ItemLedgers');
+		$this->belongsTo('ItemSerialNumbers');
     }
 
     /**
@@ -59,15 +59,6 @@ class InventoryTransferVouchersTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-        $validator
-            ->integer('voucher_no')
-            ->requirePresence('voucher_no', 'create')
-            ->notEmpty('voucher_no');
-
-        $validator
-            ->integer('created_by')
-            ->requirePresence('created_by', 'create')
-            ->notEmpty('created_by');
 
         return $validator;
     }

@@ -59,19 +59,6 @@ class InventoryTransferVoucherRowsTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-        $validator
-            ->integer('quantity')
-            ->requirePresence('quantity', 'create')
-            ->notEmpty('quantity');
-
-        $validator
-            ->decimal('amount')
-            ->requirePresence('amount', 'create')
-            ->notEmpty('amount');
-
-        $validator
-            ->requirePresence('status', 'create')
-            ->notEmpty('status');
 
         return $validator;
     }

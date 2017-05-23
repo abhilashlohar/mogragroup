@@ -201,9 +201,16 @@ class PurchaseReturnsController extends AppController
 						->set(['invoice_booking_id'=>$invoiceBooking->id])
 						->where(['id' => $purchaseReturn->id])
 						->execute();
-					
+					$cst_purchase=0;
+					if($st_company_id=='25'){
+						$cst_purchase=35;
+					}else if($st_company_id=='26'){
+						$cst_purchase=161;
+					}else if($st_company_id=='27'){
+						$cst_purchase=309;
+					}
 				
-				if($invoiceBooking->purchase_ledger_account==35){
+				if($invoiceBooking->purchase_ledger_account==$cst_purchase){
 					//ledger posting for PURCHASE ACCOUNT
 					$ledger = $this->PurchaseReturns->Ledgers->newEntity();
 					$ledger->ledger_account_id = $invoiceBooking->purchase_ledger_account;
@@ -301,7 +308,7 @@ class PurchaseReturnsController extends AppController
 		$Em = new FinancialYearsController;
 	    $financial_year_data = $Em->checkFinancialYear($invoiceBooking->created_on);
         $companies = $this->PurchaseReturns->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('purchaseReturn', 'invoiceBooking', 'companies','financial_year_data','v_LedgerAccount','ledger_account_details','ledger_account_vat','chkdate'));
+        $this->set(compact('purchaseReturn', 'invoiceBooking', 'companies','financial_year_data','v_LedgerAccount','ledger_account_details','ledger_account_vat','chkdate','st_company_id'));
         $this->set('_serialize', ['purchaseReturn']);
     }
 
@@ -443,9 +450,16 @@ class PurchaseReturnsController extends AppController
 					->set(['invoice_booking_id'=>$invoiceBooking->id])
 					->where(['id' => $purchaseReturn->id])
 					->execute();
-					
+					$cst_purchase=0;
+					if($st_company_id=='25'){
+						$cst_purchase=35;
+					}else if($st_company_id=='26'){
+						$cst_purchase=161;
+					}else if($st_company_id=='27'){
+						$cst_purchase=309;
+					}
 				
-				if($invoiceBooking->purchase_ledger_account==35){
+				if($invoiceBooking->purchase_ledger_account==$cst_purchase){
 					//ledger posting for PURCHASE ACCOUNT
 					$ledger = $this->PurchaseReturns->Ledgers->newEntity();
 					$ledger->ledger_account_id = $invoiceBooking->purchase_ledger_account;
@@ -558,7 +572,7 @@ class PurchaseReturnsController extends AppController
 	    $financial_year_data = $Em->checkFinancialYear($invoiceBooking->created_on);			
         $invoiceBookings = $this->PurchaseReturns->InvoiceBookings->find('list', ['limit' => 200]);
         $companies = $this->PurchaseReturns->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('purchaseReturn', 'invoiceBookings', 'companies','invoiceBooking','v_LedgerAccount','financial_year_data','ReferenceDetails','ledger_account_details','ledger_account_vat','chkdate'));
+        $this->set(compact('purchaseReturn', 'invoiceBookings', 'companies','invoiceBooking','v_LedgerAccount','financial_year_data','ReferenceDetails','ledger_account_details','ledger_account_vat','chkdate','st_company_id'));
         $this->set('_serialize', ['purchaseReturn']);
     }
 

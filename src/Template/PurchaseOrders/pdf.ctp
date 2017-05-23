@@ -279,7 +279,7 @@ $html.='<td valign="top" colspan="2" style="font-size:'. h(($purchaseOrder->pdf_
 
 //echo $html; exit; 
 
-
+$name="po";
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();

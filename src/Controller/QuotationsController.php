@@ -420,6 +420,7 @@ class QuotationsController extends AppController
         $quotation = $this->Quotations->get($id, [
             'contain' => ['QuotationRows']
         ]);
+		$session = $this->request->session();
 		$st_year_id = $session->read('st_year_id');
 		$closed_month=$this->viewVars['closed_month'];
 		

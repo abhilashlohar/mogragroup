@@ -9,9 +9,9 @@ use Cake\Validation\Validator;
 /**
  * DebitNotes Model
  *
- * @property \Cake\ORM\Association\BelongsTo $PurchaseAccs
- * @property \Cake\ORM\Association\BelongsTo $Parties
+ * @property \Cake\ORM\Association\BelongsTo $CustomerSuppilers
  * @property \Cake\ORM\Association\BelongsTo $Companies
+ * @property \Cake\ORM\Association\HasMany $DebitNotesRows
  *
  * @method \App\Model\Entity\DebitNote get($primaryKey, $options = [])
  * @method \App\Model\Entity\DebitNote newEntity($data = null, array $options = [])
@@ -39,28 +39,30 @@ class DebitNotesTable extends Table
         $this->primaryKey('id');
 		$this->belongsTo('Ledgers');
 		$this->belongsTo('VouchersReferences');
-		$this->belongsTo('FinancialYears');
-		$this->belongsTo('SalesAccs', [
-			'className' => 'LedgerAccounts',
-            'foreignKey' => 'sales_acc_id',
-            'propertyName' => 'SalesAccs',
+		$this->belongsTo('FinancialYears');		
+		
+		
+		
+        $this->belongsTo('CustomerSuppilers', [
+			'className'=>'LedgerAccounts',
+            'foreignKey' => 'customer_suppiler_id',
+            'joinType' => 'INNER'
         ]);
-		$this->belongsTo('Parties', [
-			'className' => 'LedgerAccounts',
-            'foreignKey' => 'party_id',
-            'propertyName' => 'Parties',
+
+        $this->belongsTo('Heads', [
+			'className'=>'LedgerAccounts',
+            'foreignKey' => 'customer_suppiler_id',
+            'joinType' => 'INNER'
         ]);
-       
+
+		
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
         ]);
-		
-		$this->belongsTo('Creator', [
-			'className' => 'Employees',
-			'foreignKey' => 'created_by',
-			'propertyName' => 'creator',
-		]);
+        $this->hasMany('DebitNotesRows', [
+            'foreignKey' => 'debit_note_id'
+        ]);
     }
 
     /**
@@ -75,32 +77,38 @@ class DebitNotesTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-        
         $validator
-            ->requirePresence('payment_mode', 'create')
-            ->notEmpty('payment_mode');
-
-        $validator
-            ->requirePresence('narration', 'create')
-            ->notEmpty('narration');
-
-		$validator
-            ->requirePresence('sales_acc_id', 'create')
-            ->notEmpty('sales_acc_id');
-
-		$validator
-            ->requirePresence('party_id', 'create')
-            ->notEmpty('party_id');
+            ->requirePresence('voucher_no', 'create')
+            ->notEmpty('voucher_no');
 
         $validator
-            ->decimal('amount')
-            ->requirePresence('amount', 'create')
-            ->notEmpty('amount');
+            ->date('created_on')
+            ->requirePresence('created_on', 'create')
+            ->notEmpty('created_on');
+
+        $validator
+            ->date('transaction_date')
+            ->requirePresence('transaction_date', 'create')
+            ->notEmpty('transaction_date');
 
         $validator
             ->integer('created_by')
             ->requirePresence('created_by', 'create')
             ->notEmpty('created_by');
+		/*
+        $validator
+            ->integer('edited_by')
+            ->requirePresence('edited_by', 'create')
+            ->notEmpty('edited_by');
+
+        $validator
+            ->date('edited_on')
+            ->requirePresence('edited_on', 'create')
+            ->notEmpty('edited_on');
+
+        $validator
+            ->requirePresence('subject', 'create')
+            ->notEmpty('subject'); */
 
         return $validator;
     }
@@ -112,5 +120,11 @@ class DebitNotesTable extends Table
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
-    
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->existsIn(['customer_suppiler_id'], 'CustomerSuppilers'));
+        $rules->add($rules->existsIn(['company_id'], 'Companies'));
+
+        return $rules;
+    }
 }

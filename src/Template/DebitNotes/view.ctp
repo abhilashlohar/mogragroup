@@ -1,98 +1,87 @@
-<style>
-@media print{
-.maindiv{
-width:100% !important;
-}	
-	
-}
-</style>
-<a class="btn  blue hidden-print margin-bottom-5 pull-right" onclick="javascript:window.print();">Print <i class="fa fa-print"></i></a>
-
-<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 55%;font-size:14px;" class="maindiv">	
-<table width="100%" class="divHeader">
-		<tr>
-			<td width="30%"><?php echo $this->Html->image('/logos/'.$debitNote->company->logo, ['width' => '40%']); ?></td>
-			<td align="center" width="40%" style="font-size: 12px;"><div align="center" style="font-size: 16px;font-weight: bold;color: #0685a8;">DEBIT NOTE</div></td>
-			<td align="right" width="30%" style="font-size: 12px;">
-			<span style="font-size: 14px;"><?= h($debitNote->company->name) ?></span>
-			<span><?= $this->Text->autoParagraph(h($debitNote->company->address)) ?>
-			<?= h($debitNote->company->mobile_no) ?></span>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="3">
-				<div style="border:solid 2px #0685a8;margin-bottom:5px;margin-top: 5px;"></div>
-			</td>
-		</tr>
-	</table>
-	<table width="100%">
-		<tr>
-			<td width="50%" valign="top" align="left">
-				<table>
-					<tr>
-						<td>Voucher No</td>
-						<td width="20" align="center">:</td>
-						<td><?= h('#'.str_pad($debitNote->voucher_no, 4, '0', STR_PAD_LEFT)) ?></td>
-					</tr>
-				</table>
-			</td>
-			<td width="50%" valign="top" align="right">
-				<table>
-					<tr>
-						<td>Date.</td>
-						<td width="20" align="center">:</td>
-						<td><?= h(date("d-m-Y",strtotime($debitNote->transaction_date))) ?></td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-	
-	<div style="height:3px;" class="hdrmargin"></div>
-	<table class="table-advance itmtbl">
-		<tfoot>
-			<tr>
-				<td>Against <?= h($debitNote->Parties->name) ?> </td>
-			</tr>
-			<tr>
-				<td>Rupees <?php echo ucwords($this->NumberWords->convert_number_to_words($debitNote->amount)) ?> Only </td>
-			</tr>
-			<tr>
-				<td><?= $this->Text->autoParagraph(h($debitNote->narration)) ?> </td>
-			</tr>
-		</tfoot>
-	</table>
-	
-	<div style="border:solid 1px ;"></div>
-	<table width="100%" class="divFooter">
-		<tr>
-			<td align="left" valign="top">
-				<table>
-					<tr>
-						<td style="font-size: 16px;font-weight: bold;">
-						Rs: <?=h($debitNote->amount) ?>
-					</tr>
-				</table>
-			</td>
-			
-		</tr>
-	</table>
-	<br/>
-	<table width="100%" class="table_rows ">
-    <tr>
-	<td align="center" width="25%"> 
-	
-	</td>
-	   <td align="right" width="15%"> 
-	
-		 <?php 
-		 echo $this->Html->Image('/signatures/'.$debitNote->creator->signature,['height'=>'50px','style'=>'height:50px;']); 
-		 ?></br>
-		 </hr>
-		 <span><b>Prepared By</b></span><br/>
-		 <span><?= h($debitNote->creator->name) ?></span><br/>
-		</td>
-	 </tr>
-</table>
-</div>
+<nav class="large-3 medium-4 columns" id="actions-sidebar">
+    <ul class="side-nav">
+        <li class="heading"><?= __('Actions') ?></li>
+        <li><?= $this->Html->link(__('Edit Debit Note'), ['action' => 'edit', $debitNote->id]) ?> </li>
+        <li><?= $this->Form->postLink(__('Delete Debit Note'), ['action' => 'delete', $debitNote->id], ['confirm' => __('Are you sure you want to delete # {0}?', $debitNote->id)]) ?> </li>
+        <li><?= $this->Html->link(__('List Debit Notes'), ['action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__('New Debit Note'), ['action' => 'add']) ?> </li>
+        <li><?= $this->Html->link(__('List Companies'), ['controller' => 'Companies', 'action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__('New Company'), ['controller' => 'Companies', 'action' => 'add']) ?> </li>
+        <li><?= $this->Html->link(__('List Debit Notes Rows'), ['controller' => 'DebitNotesRows', 'action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__('New Debit Notes Row'), ['controller' => 'DebitNotesRows', 'action' => 'add']) ?> </li>
+    </ul>
+</nav>
+<div class="debitNotes view large-9 medium-8 columns content">
+    <h3><?= h($debitNote->id) ?></h3>
+    <table class="vertical-table">
+        <tr>
+            <th><?= __('Voucher No') ?></th>
+            <td><?= h($debitNote->voucher_no) ?></td>
+        </tr>
+        <tr>
+            <th><?= __('Company') ?></th>
+            <td><?= $debitNote->has('company') ? $this->Html->link($debitNote->company->name, ['controller' => 'Companies', 'action' => 'view', $debitNote->company->id]) : '' ?></td>
+        </tr>
+        <tr>
+            <th><?= __('Id') ?></th>
+            <td><?= $this->Number->format($debitNote->id) ?></td>
+        </tr>
+        <tr>
+            <th><?= __('Customer Suppiler Id') ?></th>
+            <td><?= $this->Number->format($debitNote->customer_suppiler_id) ?></td>
+        </tr>
+        <tr>
+            <th><?= __('Created By') ?></th>
+            <td><?= $this->Number->format($debitNote->created_by) ?></td>
+        </tr>
+        <tr>
+            <th><?= __('Edited By') ?></th>
+            <td><?= $this->Number->format($debitNote->edited_by) ?></td>
+        </tr>
+        <tr>
+            <th><?= __('Created On') ?></th>
+            <td><?= h($debitNote->created_on) ?></td>
+        </tr>
+        <tr>
+            <th><?= __('Transaction Date') ?></th>
+            <td><?= h($debitNote->transaction_date) ?></td>
+        </tr>
+        <tr>
+            <th><?= __('Edited On') ?></th>
+            <td><?= h($debitNote->edited_on) ?></td>
+        </tr>
+    </table>
+    <div class="row">
+        <h4><?= __('Subject') ?></h4>
+        <?= $this->Text->autoParagraph(h($debitNote->subject)); ?>
+    </div>
+    <div class="related">
+        <h4><?= __('Related Debit Notes Rows') ?></h4>
+        <?php if (!empty($debitNote->debit_notes_rows)): ?>
+        <table cellpadding="0" cellspacing="0">
+            <tr>
+                <th><?= __('Id') ?></th>
+                <th><?= __('Debit Note Id') ?></th>
+                <th><?= __('Head Id') ?></th>
+                <th><?= __('Amount') ?></th>
+                <th><?= __('Narration') ?></th>
+                <th class="actions"><?= __('Actions') ?></th>
+            </tr>
+            <?php foreach ($debitNote->debit_notes_rows as $debitNotesRows): ?>
+            <tr>
+                <td><?= h($debitNotesRows->id) ?></td>
+                <td><?= h($debitNotesRows->debit_note_id) ?></td>
+                <td><?= h($debitNotesRows->head_id) ?></td>
+                <td><?= h($debitNotesRows->amount) ?></td>
+                <td><?= h($debitNotesRows->narration) ?></td>
+                <td class="actions">
+                    <?= $this->Html->link(__('View'), ['controller' => 'DebitNotesRows', 'action' => 'view', $debitNotesRows->id]) ?>
+                    <?= $this->Html->link(__('Edit'), ['controller' => 'DebitNotesRows', 'action' => 'edit', $debitNotesRows->id]) ?>
+                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'DebitNotesRows', 'action' => 'delete', $debitNotesRows->id], ['confirm' => __('Are you sure you want to delete # {0}?', $debitNotesRows->id)]) ?>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+        <?php endif; ?>
+    </div>
 </div>

@@ -1,14 +1,22 @@
 <?php
-namespace App\Test\TestCase\Controller;
+namespace App\Test\TestCase\Model\Table;
 
-use App\Controller\DebitNotesController;
-use Cake\TestSuite\IntegrationTestCase;
+use App\Model\Table\DebitNotesRowsTable;
+use Cake\ORM\TableRegistry;
+use Cake\TestSuite\TestCase;
 
 /**
- * App\Controller\DebitNotesController Test Case
+ * App\Model\Table\DebitNotesRowsTable Test Case
  */
-class DebitNotesControllerTest extends IntegrationTestCase
+class DebitNotesRowsTableTest extends TestCase
 {
+
+    /**
+     * Test subject
+     *
+     * @var \App\Model\Table\DebitNotesRowsTable
+     */
+    public $DebitNotesRows;
 
     /**
      * Fixtures
@@ -16,23 +24,26 @@ class DebitNotesControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
+        'app.debit_notes_rows',
         'app.debit_notes',
-        'app.customer_suppilers',
-        'app.companies',
-        'app.company_groups',
-        'app.customers',
+        'app.ledgers',
         'app.ledger_accounts',
         'app.account_second_subgroups',
         'app.account_first_subgroups',
         'app.account_groups',
         'app.account_categories',
-        'app.ledgers',
-        'app.reference_details',
+        'app.customers',
+        'app.districts',
+        'app.company_groups',
+        'app.companies',
+        'app.item_used_by_companies',
+        'app.company_banks',
+        'app.quotations',
+        'app.financial_years',
+        'app.financial_months',
         'app.receipt_vouchers',
         'app.vouchers_references',
         'app.voucher_ledger_accounts',
-        'app.financial_years',
-        'app.financial_months',
         'app.invoices',
         'app.customer_groups',
         'app.item_ledgers',
@@ -53,10 +64,10 @@ class DebitNotesControllerTest extends IntegrationTestCase
         'app.sales_orders',
         'app.carrier',
         'app.customer_address',
-        'app.districts',
         'app.transporters',
         'app.courier',
-        'app.quotations',
+        'app.terms_conditions',
+        'app.tax_details',
         'app.employees',
         'app.departments',
         'app.designations',
@@ -68,11 +79,6 @@ class DebitNotesControllerTest extends IntegrationTestCase
         'app.employee_companies',
         'app.creator',
         'app.editor',
-        'app.terms_conditions',
-        'app.quotation_close_reasons',
-        'app.quotation_rows',
-        'app.customer_contacts',
-        'app.tax_details',
         'app.sales_order_rows',
         'app.sale_taxes',
         'app.sale_tax_companies',
@@ -91,75 +97,82 @@ class DebitNotesControllerTest extends IntegrationTestCase
         'app.invoice_booking_rows',
         'app.account_references',
         'app.reference_balances',
-        'app.inventory_transfer_vouchers',
-        'app.inventory_transfer_voucher_rows',
+        'app.reference_details',
+        'app.payment_vouchers',
+        'app.paid_tos',
+        'app.bank_cashes',
+        'app.payment_breakups',
+        'app.credit_notes',
         'app.challans',
         'app.challan_rows',
+        'app.purchase_accs',
+        'app.parties',
+        'app.inventory_transfer_vouchers',
+        'app.inventory_transfer_voucher_rows',
+        'app.quotation_rows',
         'app.invoice_breakups',
         'app.sale_returns',
         'app.sale_return_rows',
         'app.received_froms',
-        'app.bank_cashes',
         'app.receipt_breakups',
-        'app.payment_vouchers',
-        'app.paid_tos',
-        'app.payment_breakups',
-        'app.credit_notes',
-        'app.purchase_accs',
-        'app.parties',
-        'app.customer_segs',
+        'app.quotation_close_reasons',
+        'app.customer_contacts',
         'app.customer_companies',
-        'app.item_used_by_companies',
-        'app.company_banks',
-        'app.debit_notes_rows'
+        'app.customer_segs',
+        'app.sales_accs',
+        'app.heads'
     ];
 
     /**
-     * Test index method
+     * setUp method
      *
      * @return void
      */
-    public function testIndex()
+    public function setUp()
+    {
+        parent::setUp();
+        $config = TableRegistry::exists('DebitNotesRows') ? [] : ['className' => 'App\Model\Table\DebitNotesRowsTable'];
+        $this->DebitNotesRows = TableRegistry::get('DebitNotesRows', $config);
+    }
+
+    /**
+     * tearDown method
+     *
+     * @return void
+     */
+    public function tearDown()
+    {
+        unset($this->DebitNotesRows);
+
+        parent::tearDown();
+    }
+
+    /**
+     * Test initialize method
+     *
+     * @return void
+     */
+    public function testInitialize()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
 
     /**
-     * Test view method
+     * Test validationDefault method
      *
      * @return void
      */
-    public function testView()
+    public function testValidationDefault()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
 
     /**
-     * Test add method
+     * Test buildRules method
      *
      * @return void
      */
-    public function testAdd()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test edit method
-     *
-     * @return void
-     */
-    public function testEdit()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test delete method
-     *
-     * @return void
-     */
-    public function testDelete()
+    public function testBuildRules()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

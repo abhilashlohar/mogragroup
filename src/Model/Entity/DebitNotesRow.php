@@ -4,24 +4,18 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * DebitNote Entity
+ * DebitNotesRow Entity
  *
  * @property int $id
- * @property string $voucher_no
- * @property \Cake\I18n\Time $created_on
- * @property \Cake\I18n\Time $transaction_date
- * @property int $customer_suppiler_id
- * @property int $company_id
- * @property int $created_by
- * @property int $edited_by
- * @property \Cake\I18n\Time $edited_on
- * @property string $subject
+ * @property int $debit_note_id
+ * @property int $head_id
+ * @property float $amount
+ * @property string $narration
  *
- * @property \App\Model\Entity\CustomerSuppiler $customer_suppiler
- * @property \App\Model\Entity\Company $company
- * @property \App\Model\Entity\DebitNotesRow[] $debit_notes_rows
+ * @property \App\Model\Entity\DebitNote $debit_note
+ * @property \App\Model\Entity\Head $head
  */
-class DebitNote extends Entity
+class DebitNotesRow extends Entity
 {
 
     /**

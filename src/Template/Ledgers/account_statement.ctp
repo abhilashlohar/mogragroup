@@ -1,5 +1,4 @@
-<?php 
-
+<?php //pr($Ledgers->toArray());exit;
 	if(empty($transaction_from_date)){
 			$transaction_from_date=" ";
 		}else{
@@ -10,7 +9,25 @@
 			$transaction_to_date=" ";
 		}else{
 			$transaction_to_date=$transaction_to_date;
-		} 
+		}
+
+	$opening_balance_ar=[];
+	$closing_balance_ar=[];
+	foreach($Ledgers as $Ledger)
+	{
+		if($Ledger->voucher_source == 'Opening Balance')
+		{
+			@$opening_balance_ar['debit']+=$Ledger->debit;
+			@$opening_balance_ar['credit']+=$Ledger->credit;
+		}
+		else
+		{
+			@$opening_balance_total['debit']+=$Ledger->debit;
+			@$opening_balance_total['credit']+=$Ledger->credit;			
+		}
+		@$closing_balance_ar['debit']+=$Ledger->debit;
+		@$closing_balance_ar['credit']+=$Ledger->credit;
+	}
 ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
@@ -29,7 +46,7 @@
 					<td>
 						<div class="row">
 							<div class="col-md-4">
-									<?php echo $this->Form->input('ledger_account_id', ['empty'=>'--Select--','options' => $ledger,'empty' => "--Select Ledger Account--",'label' => false,'class' => 'form-control input-sm select2me','required','value'=>$ledger_account_id]); ?>
+									<?php echo $this->Form->input('ledger_account_id', ['empty'=>'--Select--','options' => $ledger,'empty' => "--Select Ledger Account--",'label' => false,'class' => 'form-control input-sm select2me','required','value'=>@$ledger_account_id]); ?>
 							</div>
 							<div class="col-md-4">
 								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo @date('1-4-Y', strtotime($transaction_from_date));  ?>" required data-date-format="dd-mm-yyyy" >
@@ -39,15 +56,13 @@
 							</div>
 						</div>
 					</td>
-					
-							
-						<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+					<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
 					</tr>
 				</tbody>
 			</table>
 	</form>
 		<!-- BEGIN FORM-->
-<?php if(!empty($Ledger_Account_data)){ ?>
+<?php if(!empty($Ledger_Account_data)){  ?>
 		<div class="row ">
 			<div class="col-md-12">
 				<div class="col-md-3"></div>
@@ -66,37 +81,36 @@
 		<div class="row ">
 		<div class="col-md-12">
 			<div class="col-md-8"></div>	
-			<div class="col-md-4 caption-subject " align="left" style="background-color:#E7E2CB; font-size: 16px;"><b>Opening Balance : </b>
-				<?php $opening_balance=0; 
-					
-					
-					$final_opening_blnc = 0;
-					if($total_opening_balance[0]->total_opening_debit > $total_opening_balance[0]->total_opening_credit)
-					{  
-						 $final_opening_blnc = $total_opening_balance[0]->total_opening_debit - $total_opening_balance[0]->total_opening_credit;
+			<div class="col-md-4 caption-subject " align="left" style="background-color:#E7E2CB; font-size: 16px;"><b>Opening Balance : 
+				<?php 
+						$opening_balance_ar=[];
 						
-					}
-					
-					
-					else if($total_opening_balance[0]->total_opening_debit < $total_opening_balance[0]->total_opening_credit)
-					{ 
-						 $final_opening_blnc = $total_opening_balance[0]->total_opening_credit - $total_opening_balance[0]->total_opening_debit;	
-					}
-					
-				
-				/////////////////
-				
-				if($total_balance[0]->total_debit> $total_balance[0]->total_credit){ 
-						$opening_balance=$total_balance[0]->total_debit-$total_balance[0]->total_credit + $final_opening_blnc ;?>
-						<?= $this->Number->format(abs($opening_balance),[ 'places' => 2])?>
-						<?php echo " Dr"; 
-					}else if($total_balance[0]->total_debit< $total_balance[0]->total_credit){ 
-						$opening_balance=$total_balance[0]->total_debit-$total_balance[0]->total_credit + $final_opening_blnc ;?>
-						<?= $this->Number->format(abs($opening_balance),[ 'places' => 2])?>
-						<?php echo " Cr"; } 
-					else{ 
-						  echo 0 + $final_opening_blnc; }
-					?>
+						
+						foreach($Ledgers as $Ledger)
+						{
+							if($Ledger->voucher_source == 'Opening Balance')
+							{
+								@$opening_balance_ar['debit']+=$Ledger->debit;
+								@$opening_balance_ar['credit']+=$Ledger->credit;
+							}
+						}
+						
+						if(!empty(@$opening_balance_ar)){
+						
+							if(@$opening_balance_ar['debit'] > @$opening_balance_ar['credit']){
+								echo @$opening_balance_ar['debit'].'Dr';		
+							}
+							else{
+								echo @$opening_balance_ar['credit'].'Cr';
+							}						
+						
+						}
+						else { echo '0'; }
+
+						
+				?>  
+			</b>
+			
 			</div>
 		</div>
 		<div class="col-md-12">
@@ -113,8 +127,8 @@
 					</tr>
 				</thead>
 				<tbody>
-				<?php $total_balance_acc=0; $total_debit=0; $total_credit=0;
-				foreach ($Ledgers_rows as $ledger): 
+				<?php  $total_balance_acc=0; $total_debit=0; $total_credit=0;
+				foreach($Ledgers as $ledger): 
 				$url_path="";
 				if($ledger->voucher_source=="Journal Voucher"){
 					$url_path="/JournalVouchers/view/".$ledger->voucher_id;
@@ -151,8 +165,8 @@
 				<?php } endforeach; ?>
 				<tr>
 					<td colspan="3" align="right">Total</td>
-					<td align="right" ><?= $this->Number->format( $total_debit,[ 'places' => 2])?> Dr</td>
-					<td align="right" ><?= $this->Number->format( $total_credit,[ 'places' => 2])?> Cr</td>
+					<td align="right" ><?= @$opening_balance_total['debit'] ;?> Dr</td>
+					<td align="right" ><?= @$opening_balance_total['credit']?> Cr</td>
 					
 				<tr>
 				</tbody>
@@ -162,26 +176,15 @@
 			<div class="col-md-12">
 				<div class="col-md-8"></div>	
 				<div class="col-md-4 caption-subject " align="left" style="background-color:#E3F2EE; font-size: 16px;"><b>Closing Balance:- </b>
-				<?php 
-				if($total_balance[0]->total_debit > $total_balance[0]->total_credit ){
-						$total_debit=$total_debit+$opening_balance;
-				}
-				else {
-						$total_credit=$total_credit + abs($opening_balance);
-						 
-				}
-				
-					if($total_debit>$total_credit){ 
-						//echo $opening_balance;
-						//$total_credit1=$total_credit+abs($opening_balance);
-						$total_balance_acc=$total_debit-$total_credit;?>
-						<?= $this->Number->format(abs($total_balance_acc),[ 'places' => 2])?>
-						<?php echo " Dr"; 
-					}else{ 
-						//$total_credit1=$total_credit+abs($opening_balance);
-						$total_balance_acc=$total_debit-$total_credit;?>
-						<?= $this->Number->format(abs($total_balance_acc),[ 'places' => 2])?>
-						<?php echo " Cr"; } ?>
+				<?php $closing_balance=@$closing_balance_ar['debit']-@$closing_balance_ar['credit'];
+						echo abs($closing_balance);
+						if($closing_balance>0){
+							echo 'Dr';
+						}else if($closing_balance <0){
+							echo 'Cr';
+						}
+						
+				?>
 				</div>
 			</div>
 			

@@ -286,37 +286,27 @@ class LedgersController extends AppController
 		
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-		
 		$ledger_account_id=$this->request->query('ledger_account_id');
-		if($ledger_account_id){
-		$transaction_from_date= date('Y-m-d', strtotime($this->request->query['From']));
-		$transaction_to_date= date('Y-m-d', strtotime($this->request->query['To']));
-		
-		
+
 		$Ledger_Account_data = $this->Ledgers->LedgerAccounts->get($ledger_account_id, [
             'contain' => ['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups'=>['AccountCategories']]]]
         ]);
-			
-			
-		$Ledgers_rows=$this->Ledgers->find()
-		->contain(['LedgerAccounts'])
-		->where(['ledger_account_id'=>$ledger_account_id])
-		->where(function($exp) use($transaction_from_date,$transaction_to_date) {
-			return $exp->between('transaction_date', $transaction_from_date, $transaction_to_date, 'date');
-		})->order(['transaction_date'=>'ASC']);
-
 		
+		//pr($Ledger_Account_data);exit;
 		
-		$query = $this->Ledgers->find();
-		$total_balance=$query->select(['total_debit' => $query->func()->sum('debit'),'total_credit' => $query->func()->sum('credit')])->where(['Ledgers.ledger_account_id' => $ledger_account_id,'Ledgers.transaction_date <'=>$transaction_from_date])->toArray();
+		if($ledger_account_id)
+		{
+			$transaction_from_date= date('Y-m-d', strtotime($this->request->query['From']));
+			$transaction_to_date= date('Y-m-d', strtotime($this->request->query['To']));
 
-		$query = $this->Ledgers->find();
-		$total_opening_balance=$query->select(['total_opening_debit' => $query->func()->sum('debit'),'total_opening_credit' => $query->func()->sum('credit')])->where(['Ledgers.ledger_account_id' => $ledger_account_id, 'Ledgers.voucher_source'=>'Opening Balance'])->where(function($exp) use($transaction_from_date,$transaction_to_date) {
-			return $exp->between('transaction_date', $transaction_from_date, $transaction_to_date, 'date');
-		})->toArray();
-	}
-		//pr($total_opening_balance); exit;
-		$ledger=$this->Ledgers->LedgerAccounts->find('list',
+			$Ledgers = $this->Ledgers->find()
+				->where(['ledger_account_id'=>$ledger_account_id,'company_id'=>$st_company_id])
+				->where(function($exp) use($transaction_from_date,$transaction_to_date){
+					return $exp->between('transaction_date', $transaction_from_date, $transaction_to_date, 'date');
+				});
+		}   
+
+			$ledger=$this->Ledgers->LedgerAccounts->find('list',
 				['keyField' => function ($row) {
 					return $row['id'];
 				},
@@ -328,10 +318,10 @@ class LedgersController extends AppController
 					}
 					
 				}])->where(['company_id'=>$st_company_id]);
-
-		$this->set(compact('ledger','Ledgers_rows','total_balance','ledger_account_id','transaction_from_date','transaction_to_date','Ledger_Account_data','total_opening_balance'));
+		
+			$this->set(compact('Ledgers','ledger','ledger_account_id','Ledger_Account_data'));		
+		
 	}
-	
 	
 	public function openingBalanceView (){
 		$this->viewBuilder()->layout('index_layout');

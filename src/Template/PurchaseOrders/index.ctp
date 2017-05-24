@@ -102,7 +102,7 @@
 										<ul class="dropdown-menu" role="menu" aria-labelledby="btnGroupVerticalDrop5">
 										<?php  foreach($purchaseOrder->purchase_order_rows as $purchase_order_row){ 
 											if($purchase_order_row->purchase_order_id == $purchaseOrder->id){?>
-											<li><a><?= h($purchase_order_row->item->name) ?></a></li>
+											<li><p><?= h($purchase_order_row->item->name) ?></p></li>
 											<?php }}?>
 										</ul>
 								</div>

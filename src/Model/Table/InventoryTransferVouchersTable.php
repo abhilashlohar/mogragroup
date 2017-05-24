@@ -41,7 +41,12 @@ class InventoryTransferVouchersTable extends Table
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('InventoryTransferVoucherRows');
+		$this->hasMany('InventoryTransferVoucherRows', [
+            'foreignKey' => 'inventory_transfer_voucher_id',
+            'saveStrategy' => 'replace'
+        ]);
+		
+        //$this->belongsTo('InventoryTransferVoucherRows');
 		$this->belongsTo('Items');
 		$this->belongsTo('ItemLedgers');
 		$this->belongsTo('ItemSerialNumbers');

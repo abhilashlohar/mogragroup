@@ -96,7 +96,7 @@
 										<ul class="dropdown-menu" role="menu" aria-labelledby="btnGroupVerticalDrop5">
 										<?php  foreach($invoice->invoice_rows as $invoice_row){
 											if($invoice_row->invoice_id == $invoice->id){?>
-											<li><a><?= h($invoice_row->item->name) ?></a></li>
+											<li><p><?= h($invoice_row->item->name) ?></p></li>
 											<?php }}?>
 										</ul>
 								</div>

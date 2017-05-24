@@ -14,6 +14,13 @@
 	</div>
 	<div class="portlet-body form">
 	<?= $this->Form->create($inventoryTransferVoucher,['id'=>'form_sample_3']) ?>
+	<div class="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-3">
+			
+				<input type="text" name="transaction_date" class="form-control input-sm date-picker" placeholder="Transaction Date" data-date-format="dd-mm-yyyy" >
+		</div>
+	</div>
 		<div class="row">
 		
 			<div class="col-md-6">
@@ -35,6 +42,7 @@
 			
 			<div class="col-md-6">
 			<h5>For In -</h5>
+
 				<table id="main_table_1" width="50%"  class="table table-condensed table-hover">
 					<thead>
 						<tr>
@@ -56,6 +64,7 @@
 </div>	
 
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+
 <script>
 $(document).ready(function() {
 	jQuery.validator.addMethod("notEqualToGroup", function (value, element, options) {
@@ -90,7 +99,12 @@ $(document).ready(function() {
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
-				
+				item_id :{
+							required: true,
+						  },
+				quantity :{
+							required: true,
+						  }
 			},
 
 		messages: { // custom messages for radio buttons and checkboxes
@@ -139,87 +153,105 @@ $(document).ready(function() {
 
 		submitHandler: function (form) {
 			validate_serial();
-			validate_serial_in();
 			success3.show();
 			error3.hide();
 			form[0].submit(); // submit the form
 		}
 
 	});
-	add_row();
-	add_row_1();
-	$('.addrow').die().live("click",function() { 
-		add_row();
-    });
+	
+	
+	add_row_in();
+	add_row_out();
+
 	$('.addrow_1').die().live("click",function() { 
-		add_row_1();
+		add_row_in();
 	});
 	
-	function add_row(){
-		var tr1=$("#sampletable tbody tr").clone();
-		$("#main_table tbody#maintbody").append(tr1);
-		rename_rows();
-	}
-	function add_row_1(){
+	$('.addrow').die().live("click",function() { 
+		add_row_out();
+	});
+	
+	$('.deleterow').live("click",function() {
+		var l=$(this).closest("table tbody").find("tr").length;
+		if (confirm("Are you sure to remove row ?") == true) {
+			if(l>1){
+				var row_no=$(this).closest("tr").attr("row_no");
+				var del=$(this).closest("tr");
+				$(del).remove();
+				rename_rows_out();
+			}
+		} 
+	});
+	
+	$('.deleterow_1').live("click",function() {
+		var l=$(this).closest("table tbody").find("tr").length;
+		if (confirm("Are you sure to remove row ?") == true) {
+			if(l>1){
+				var row_no=$(this).closest("tr").attr("row_no");
+				var del=$(this).closest("tr");
+				$(del).remove();
+				rename_rows_in();
+			}
+		} 
+	});
+	
+	function add_row_in(){
 		var tr2=$("#sampletable_1 tbody tr").clone();
 		$("#main_table_1 tbody#maintbody_1").append(tr2);
-		rename_rows_1();
-	}
-	rename_rows();
-	rename_rows_1();
-	$('.qty_bx_in').die().live("blur",function() {
-		validate_serial_in();
-		rename_rows_1();
+		rename_rows_in();
 		
-    });
+	}
 	
-	
-
-	function rename_rows(){
-		var i=0;
-		$("#main_table tbody#maintbody tr.main").each(function(){
-			$(this).find('span.help-block-error').remove();
-			$(this).attr('row_no',i);
-			$(this).find("td:nth-child(1) select").select2().attr({name:"inventory_transfer_voucher_rows[out]["+i+"][item_id]", id:"inventory_transfer_voucher_rows-"+i+"-item_id"}).rules("add", "required");
-			$(this).find('td:nth-child(2) input').attr({name:"inventory_transfer_voucher_rows[out]["+i+"][quantity]", id:"inventory_transfer_voucher_rows-"+i+"-quantity"}).rules("add", "required");
-			if($(this).find('td:nth-child(3) select').length>0){
-				$(this).find('td:nth-child(3) select').attr({name:"inventory_transfer_voucher_rows[out]["+i+"][serial_number_data][]", id:"inventory_transfer_voucher_rows-"+i+"-serial_number_data"}).rules("add", "required");
-			}
-		i++; });
+	function add_row_out(){
+		var tr2=$("#sampletable tbody tr").clone();
+		$("#main_table tbody#maintbody").append(tr2);
+		rename_rows_out();
+		
 	}
 	
 	$('.select_item_in').die().live("change",function() {
-		rename_rows_1();
+		rename_rows_in();
+		var tr_obj=$(this).closest('tr');
+		sr_nos(tr_obj);
 	});
-	$('.qty_bx_in').die().live("change",function() {
-		rename_rows_1();
+	
+	$('.qty_bx_in').die().live("blur",function() {
+		var tr_obj=$(this).closest('tr');
+		sr_nos(tr_obj);
     });
 	
+	function sr_nos(tr_obj){ 
+		var serial_number_enable=tr_obj.find('td:nth-child(1) select option:selected').attr('serial_number_enable');
+		if(serial_number_enable==1){
+			var qty=tr_obj.find('td:nth-child(2) input').val();
+			var row_no=tr_obj.attr('row_no');
+			tr_obj.find('td:nth-child(3) div.sr_container').html('');
+			for(var w=0; w<qty; w++){
+				tr_obj.find('td:nth-child(3) div.sr_container').append('<input type="text" name="inventory_transfer_voucher_rows[in]['+row_no+'][sr_no]['+w+']" id="inventory_transfer_voucher_rows-in-'+row_no+'-sr_no-'+w+'" required="required" placeholder="serial number '+w+'" />');
+			}
+		}else{
+			tr_obj.find('td:nth-child(3)').html('');
+		}
+	}
 	
-	function rename_rows_1(){
+
+	function rename_rows_in(){
 		var j=0;
 		$("#main_table_1 tbody#maintbody_1 tr.main").each(function(){
-			$(this).find('span.help-block-error').remove();
-			$(this).attr('row_no',j);
-			$(this).find("td:nth-child(1) select").select2().attr({name:"inventory_transfer_voucher_rows[in]["+j+"][item_id_in]", id:"inventory_transfer_voucher_rows-"+j+"-item_id_in"}).rules("add", "required");
-			$(this).find('td:nth-child(2) input').attr({name:"inventory_transfer_voucher_rows[in]["+j+"][quantity_in]", id:"inventory_transfer_voucher_rows-"+j+"-quantity_in"}).rules("add", "required");
-			var v = $(this).find('td:nth-child(1) option:selected').attr('serial_number_enable')
-			var qty=$(this).find('td:nth-child(2) input').val();
-			var d =$(this).find("td:nth-child(1) select").select2().attr({name:"inventory_transfer_voucher_rows[in]["+j+"][item_id_in]", id:"inventory_transfer_voucher_rows-"+j+"-item_id_in"}).val();
 			
-			if(v > 0){
-				var row_no=$(this).closest('tr').attr('row_no');
-				$(this).closest('tr').find('td:nth-child(3) div.sr_container').html('');
-				for(var i=0; i<qty; i++){
-				$(this).closest('tr').find('td:nth-child(3) div.sr_container').append('<input name="inventory_transfer_voucher_rows[in]['+j+'][sr_no][]" type="text" required="required" id="inventory_transfer_voucher_rows-'+i+'-sr_no-'+d+'" />');
-				}
-			}else if(v==0){
-				$(this).closest('tr').find('td:nth-child(3) div.sr_container').remove();
-			}
+			$(this).attr('row_no',j);
+			$(this).find("td:nth-child(1) select").select2().attr({name:"inventory_transfer_voucher_rows[in]["+j+"][item_id_in]", id:"inventory_transfer_voucher_rows-"+j+"-item_id_in"}).rules("add",
+					{ 
+						required: true
+					});
+			$(this).find('td:nth-child(2) input').attr({name:"inventory_transfer_voucher_rows[in]["+j+"][quantity_in]", id:"inventory_transfer_voucher_rows-"+j+"-quantity_in", row:j}).rules("add", "required");
+		
 			$(this).find('td:nth-child(4) input').attr({name:"inventory_transfer_voucher_rows[in]["+j+"][amount]", id:"inventory_transfer_voucher_rows-"+j+"-amount"}).rules("add", "required");
-		j++; });
-	}
-
+			j++; 
+	   });
+	}	
+	
 	$('.select_item_out').die().live("change",function() {
 		var t=$(this);
 		var row_no=t.closest('tr').attr('row_no');
@@ -236,35 +268,19 @@ $(document).ready(function() {
 		});
 	});
 	
-
-	
-	
-	
-	
-	$('.deleterow').die().live("click",function() {
-		var l=$(this).closest("table tbody").find("tr").length;
-		//alert(l);
-		if (confirm("Are you sure to remove row ?") == true) {
-			if(l>1){
-				//var row_no=$(this).closest("tr");
-				var del=$(this).closest("tr");
-				$(del).remove();
-				rename_rows();
+	function rename_rows_out(){
+		var i=0;
+		$("#main_table tbody#maintbody tr.main").each(function(){
+			
+			$(this).attr('row_no',i);
+			$(this).find("td:nth-child(1) select").select2().attr({name:"inventory_transfer_voucher_rows[out]["+i+"][item_id]", id:"inventory_transfer_voucher_rows-"+i+"-item_id"}).rules("add", "required");
+			$(this).find('td:nth-child(2) input').attr({name:"inventory_transfer_voucher_rows[out]["+i+"][quantity]", id:"inventory_transfer_voucher_rows-"+i+"-quantity"}).rules("add", "required");
+			if($(this).find('td:nth-child(3) select').length>0){
+				$(this).find('td:nth-child(3) select').attr({name:"inventory_transfer_voucher_rows[out]["+i+"][serial_number_data][]", id:"inventory_transfer_voucher_rows-"+i+"-serial_number_data"}).rules("add", "required");
 			}
-		} 
-    });
-	$('.deleterow_1').die().live("click",function() {
-		var l=$(this).closest("table tbody").find("tr").length;
-		if (confirm("Are you sure to remove row ?") == true) {
-			if(l>1){
-				//var row_no=$(this).closest("tr").attr("row_no");
-				var del=$(this).closest("tr");
-				$(del).remove();
-				rename_rows();
-			}
-		} 
-    });
-	
+			i++; 
+		});
+	}
 	
 	$('.qty_bx').die().live("keyup",function() {
 		validate_serial();
@@ -286,28 +302,11 @@ $(document).ready(function() {
 			}
 		});	
 	}
-	
-	
-	function validate_serial_in(){
-		$("#main_table_1 tbody#maintbody_1 tr.main").each(function(){
-			var qty=$(this).find('td:nth-child(2) input').val();
-			if($(this).find('td:nth-child(3) input').length>0){
-				$(this).find('td:nth-child(3) input').attr('test',qty).rules('add', {
-							required: true,
-							minlength: qty,
-							maxlength: qty,
-							messages: {
-								maxlength: " serial number equal to quantity.",
-								minlength: " serial number equal to quantity."
-							}
-					});
-			}
-		});	
-	}
 });
 
-
-</script>
+	
+	
+</script>	
 
 <table id="sampletable" style="display:none;">
 	<tbody>

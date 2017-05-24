@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\I18n\Time;
 
 /**
  * InventoryTransferVouchers Controller
@@ -19,12 +20,39 @@ class InventoryTransferVouchersController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-        $this->paginate = [
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		$where = [];
+        $vouch_no = $this->request->query('vouch_no');
+		$From = $this->request->query('From');
+		$To = $this->request->query('To');
+		//pr($vouch_no);exit;
+		
+		$this->set(compact('vouch_no','From','To'));
+		
+		if(!empty($vouch_no)){
+			$where['InventoryTransferVouchers.voucher_no LIKE']=$vouch_no;
+		}
+		
+		if(!empty($From)){
+			$From=date("Y-m-d",strtotime($this->request->query('From')));
+			$where['InventoryTransferVouchers.transaction_date >=']=$From;
+		}
+		if(!empty($To)){
+			$To=date("Y-m-d",strtotime($this->request->query('To')));
+			$where['InventoryTransferVouchers.transaction_date <=']=$To;
+		}
+		
+		$inventory_transfer_vouchs = $this->InventoryTransferVouchers->find()->where($where);
+		//pr($inventory_transfer_vouchs->toArray());exit;
+		
+		
+		$this->paginate = [
             'contain' => ['Companies']
         ];
         $inventoryTransferVouchers = $this->paginate($this->InventoryTransferVouchers);
 
-        $this->set(compact('inventoryTransferVouchers'));
+        $this->set(compact('inventoryTransferVouchers','inventory_transfer_vouchs'));
         $this->set('_serialize', ['inventoryTransferVouchers']);
     }
 
@@ -64,7 +92,9 @@ class InventoryTransferVouchersController extends AppController
 	
         if ($this->request->is('post')) {
             $inventoryTransferVoucher = $this->InventoryTransferVouchers->patchEntity($inventoryTransferVoucher, $this->request->data);
-			//pr($inventoryTransferVoucher);exit;
+			$inventoryTransferVoucher->transaction_date=date("Y-m-d",strtotime($inventoryTransferVoucher->transaction_date));
+			$inventoryTransferVoucher->created_on=date("Y-m-d");
+			//pr( date("Y-m-d",strtotime($transaction_date)));exit;
 			
 			$last_voucher_no=$this->InventoryTransferVouchers->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
 			if($last_voucher_no){
@@ -109,13 +139,16 @@ class InventoryTransferVouchersController extends AppController
 				}
 				
 				$per_unit_cost=$total_amount/$qty_total;
+				$today_date =  Time::now();
+				//pr($today_date);exit;
 				$query= $this->InventoryTransferVouchers->ItemLedgers->query();
-						$query->insert(['item_id','quantity' ,'rate', 'in_out','source_model','company_id','source_id'])
+						$query->insert(['item_id','quantity' ,'rate', 'in_out','source_model','processed_on','company_id','source_id'])
 							   ->values([
 											'item_id' => $inventory_voucher_out['item_id'],
 											'quantity' => $inventory_voucher_out['quantity'],
 											'rate' => $per_unit_cost,
 											'source_model' => 'Inventory Transfer Voucher',
+											'processed_on' => date("Y-m-d",strtotime($inventoryTransferVoucher->transaction_date)),
 											'in_out'=>'Out',
 											'company_id'=>$st_company_id,
 											'source_id'=>$inventoryTransferVoucher->id
@@ -124,7 +157,7 @@ class InventoryTransferVouchersController extends AppController
 			$InventoryTransferVoucherRow = $this->InventoryTransferVouchers->InventoryTransferVoucherRows->newEntity();
 						$InventoryTransferVoucherRow->item_id = $inventory_voucher_out['item_id'];
 						$InventoryTransferVoucherRow->quantity = $inventory_voucher_out['quantity'];
-						$InventoryTransferVoucherRow->status = 'Out';
+						$InventoryTransferVoucherRow->status = 'Out';						
 						$InventoryTransferVoucherRow->amount = $per_unit_cost*$inventory_voucher_out['quantity'];
 						$InventoryTransferVoucherRow->inventory_transfer_voucher_id = $inventoryTransferVoucher->id;
 						$this->InventoryTransferVouchers->InventoryTransferVoucherRows->save($InventoryTransferVoucherRow);
@@ -154,12 +187,13 @@ class InventoryTransferVouchersController extends AppController
 				
 				
 				$query= $this->InventoryTransferVouchers->ItemLedgers->query();
-						$query->insert(['item_id','quantity' ,'rate', 'in_out','source_model','company_id','source_id'])
+						$query->insert(['item_id','quantity' ,'rate', 'in_out','source_model','company_id','processed_on','source_id'])
 							   ->values([
 											'item_id' => $inventory_voucher_in['item_id_in'],
 											'quantity' => $inventory_voucher_in['quantity_in'],
 											'rate' =>$inventory_voucher_in['amount'],
 											'source_model' => 'Inventory Transfer Voucher',
+											'processed_on' => date("Y-m-d",strtotime($inventoryTransferVoucher->transaction_date)),
 											'in_out'=>'In',
 											'company_id'=>$st_company_id,
 											'source_id'=>$inventoryTransferVoucher->id
@@ -170,6 +204,8 @@ class InventoryTransferVouchersController extends AppController
 						$InventoryTransferVoucherRow->item_id = $inventory_voucher_in['item_id_in'];
 						$InventoryTransferVoucherRow->quantity = $inventory_voucher_in['quantity_in'];
 						$InventoryTransferVoucherRow->status = 'In';
+						$InventoryTransferVoucherRow->created_on = date("Y-m-d");
+						$InventoryTransferVoucherRow->transaction_date = date("Y-m-d",strtotime($transaction_date));
 						$InventoryTransferVoucherRow->amount = $inventory_voucher_in['amount'];
 						$InventoryTransferVoucherRow->inventory_transfer_voucher_id = $inventoryTransferVoucher->id;
 						$this->InventoryTransferVouchers->InventoryTransferVoucherRows->save($InventoryTransferVoucherRow); 
@@ -217,9 +253,19 @@ class InventoryTransferVouchersController extends AppController
 
     public function edit($id = null)
     {
-        $inventoryTransferVoucher = $this->InventoryTransferVouchers->get($id, [
-            'contain' => []
+		$this->viewBuilder()->layout('index_layout');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
+	
+        $inventoryTransferVouchersout = $this->InventoryTransferVouchers->get($id, [
+            'contain' => ['InventoryTransferVoucherRows'=>['Items'=>['ItemCompanies','ItemLedgers','ItemSerialNumbers'=>function($q) use($st_company_id,$id){
+					return $q->where(['company_id'=>$st_company_id,'inventory_transfer_voucher_id'=>$id,'status'=>'Out']);
+				}]]]
         ]);
+		//pr($inventoryTransferVouchersout->inventory_transfer_voucher_rows->item);exit;
+		
+		
         if ($this->request->is(['patch', 'post', 'put'])) {
             $inventoryTransferVoucher = $this->InventoryTransferVouchers->patchEntity($inventoryTransferVoucher, $this->request->data);
             if ($this->InventoryTransferVouchers->save($inventoryTransferVoucher)) {
@@ -231,7 +277,7 @@ class InventoryTransferVouchersController extends AppController
             }
         }
         $companies = $this->InventoryTransferVouchers->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('inventoryTransferVoucher', 'companies'));
+        $this->set(compact('inventoryTransferVoucher', 'companies','inventoryTransferVouchersout'));
         $this->set('_serialize', ['inventoryTransferVoucher']);
     }
 

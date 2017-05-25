@@ -1,5 +1,5 @@
 <?php //pr($Ledgers->toArray());exit;
-	if(empty($transaction_from_date)){
+	if(empty(@$transaction_from_date)){
 			$transaction_from_date=" ";
 		}else{
 			$transaction_from_date=$transaction_from_date;
@@ -13,21 +13,25 @@
 
 	$opening_balance_ar=[];
 	$closing_balance_ar=[];
-	foreach($Ledgers as $Ledger)
+	if(!empty(@$Ledgers))
 	{
-		if($Ledger->voucher_source == 'Opening Balance')
+		foreach($Ledgers as $Ledger)
 		{
-			@$opening_balance_ar['debit']+=$Ledger->debit;
-			@$opening_balance_ar['credit']+=$Ledger->credit;
-		}
-		else
-		{
-			@$opening_balance_total['debit']+=$Ledger->debit;
-			@$opening_balance_total['credit']+=$Ledger->credit;			
-		}
-		@$closing_balance_ar['debit']+=$Ledger->debit;
-		@$closing_balance_ar['credit']+=$Ledger->credit;
+			if($Ledger->voucher_source == 'Opening Balance')
+			{
+				@$opening_balance_ar['debit']+=$Ledger->debit;
+				@$opening_balance_ar['credit']+=$Ledger->credit;
+			}
+			else
+			{
+				@$opening_balance_total['debit']+=$Ledger->debit;
+				@$opening_balance_total['credit']+=$Ledger->credit;			
+			}
+			@$closing_balance_ar['debit']+=$Ledger->debit;
+			@$closing_balance_ar['credit']+=$Ledger->credit;
+		}		
 	}
+
 ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">

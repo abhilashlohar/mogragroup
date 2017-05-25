@@ -454,14 +454,15 @@ class LedgersController extends AppController
 		$st_company_id = $session->read('st_company_id');
 		$ledger_account_id=$this->request->query('ledger_account_id');
 
-		$Ledger_Account_data = $this->Ledgers->LedgerAccounts->get($ledger_account_id, [
-            'contain' => ['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups'=>['AccountCategories']]]]
-        ]);
+
 		
 		//pr($Ledger_Account_data);exit;
 		
 		if($ledger_account_id)
 		{
+					$Ledger_Account_data = $this->Ledgers->LedgerAccounts->get($ledger_account_id, [
+            'contain' => ['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups'=>['AccountCategories']]]]
+        ]);
 			$transaction_from_date= date('Y-m-d', strtotime($this->request->query['From']));
 			$transaction_to_date= date('Y-m-d', strtotime($this->request->query['To']));
 

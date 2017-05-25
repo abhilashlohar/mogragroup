@@ -514,25 +514,19 @@ class LedgersController extends AppController
 		$st_company_id = $session->read('st_company_id');
 		$ledger_account_id=$this->request->query('ledger_account_id');
 		$bankReconciliationAdd = $this->Ledgers->newEntity();
-		
 		if($ledger_account_id)
 		{
 			$transaction_from_date= date('Y-m-d', strtotime($this->request->query['From']));
 			$transaction_to_date= date('Y-m-d', strtotime($this->request->query['To']));
 
 			$Bank_Ledgers = $this->Ledgers->find()
-				->where(['ledger_account_id'=>$ledger_account_id,'company_id'=>$st_company_id])
+				->where(['ledger_account_id'=>$ledger_account_id,'company_id'=>$st_company_id,'reconciliation_date '=>0000-00-00])
 				->where(function($exp) use($transaction_from_date,$transaction_to_date){
 					return $exp->between('transaction_date', $transaction_from_date, $transaction_to_date, 'date');
 				});
 		}
-		
-		//pr($Bank_Ledgers->toArray()); exit;
-		
-		
-		
+
 		$vr=$this->Ledgers->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Bank Reconciliation Add','sub_entity'=>'Bank'])->first();
-		//pr($vr); exit;
 		$bankReconciliation=$vr->id;
 		$vouchersReferences = $this->Ledgers->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
@@ -559,9 +553,19 @@ class LedgersController extends AppController
 		}else{
 			$BankCashes_selected='no';
 		}
-		
-		//pr($bankCashes->toArray()); exit;
-		$this->set(compact('bankReconciliationAdd','banks','Bank_Ledgers'));
+		$bank_ledger_data=$this->Ledgers->LedgerAccounts->get($ledger_account_id);
+		$this->set(compact('bankReconciliationAdd','banks','Bank_Ledgers','ledger_account_id','bank_ledger_data'));
+	}
+	public function dateUpdate($ledger_id=null,$reconciliation_date=null){
+		$this->viewBuilder()->layout('');
+		//$ledger = $this->Ledgers->get($id);
+		$reconciliation_date=date("Y-m-d",strtotime($reconciliation_date));
+		$query = $this->Ledgers->query();
+		$query->update()
+		->set(['reconciliation_date' => $reconciliation_date])
+		->where(['id' => $ledger_id])
+		->execute();
+		$this->set(compact('reconciliation_date','ledger_id','reconciliation_date'));
 	}
 	
 }

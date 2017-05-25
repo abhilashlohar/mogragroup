@@ -16,7 +16,7 @@
 					<td>
 						<div class="row">
 							<div class="col-md-4">
-									<?php echo $this->Form->input('ledger_account_id', ['empty'=>'--Select--','options' => $banks,'empty' => "--Select Ledger Account--",'label' => false,'class' => 'form-control input-sm select2me','required','value'=>@$ledger_account_id]); ?>
+									<?php echo $this->Form->input('ledger_account_id', ['empty'=>'--Select--','options' => $banks,'empty' => "--Select Ledger Account--",'label' => false,'class' => 'bank_data form-control input-sm select2me','required','value'=>@$ledger_account_id]); ?>
 							</div>
 							<div class="col-md-4">
 								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo @date('01-04-Y');  ?>" required data-date-format="dd-mm-yyyy" >
@@ -31,10 +31,12 @@
 				</tbody>
 			</table>
 	</form>
+	
 		<!-- BEGIN FORM-->
 <?php if(!empty($Bank_Ledgers)){  ?>
-	<div class="row ">
-		<div class="col-md-12">
+	<div class="row " id="hide_div">
+	
+		<div class="col-md-12"> 
 			<table class="table table-bordered table-striped table-hover">
 				<thead>
 					<tr>
@@ -60,7 +62,7 @@
 							$total_debit+=$ledger->debit; ?></td>
 						<td align="right"><?= $this->Number->format($ledger->credit,[ 'places' => 2]); 
 							$total_credit+=$ledger->credit; ?></td>
-						<td><?php echo $this->Form->input('finalisation_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker finalisation_date','data-date-format' => 'dd-mm-yyyy','data-date-start-date' => '+0d','data-date-end-date' => '+60d','placeholder' => 'Reconcilation Date','ledger_id'=>$ledger->id]); ?></td>
+						<td class="reconciliation_date"><?php echo $this->Form->input('reconciliation_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker reconciliation_date','data-date-format' => 'dd-mm-yyyy','data-date-start-date' => '+0d','data-date-end-date' => '+60d','placeholder' => 'Reconcilation Date','ledger_id'=>$ledger->id]); ?></td>
 				</tr>
 				<?php  endforeach; ?>
 				<tr>
@@ -73,30 +75,33 @@
 			</table>
 			</div>
 			
-					<div class="form-actions">
-			<div class="row">
-				<div class="col-md-offset-9 col-md-3">
-					<button type="submit" class="btn btn-primary" id='submitbtn'>ADD</button>
-			</div>
-			</div>
-		</div>
 		</div>
 <?php } ?>
 </div></div>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
-	$('.finalisation_date').die().change("blur",function() { 
+	
+	
+	
+	
+	$('.reconciliation_date').die().change("blur",function() { 
+	var t=$(this);
 		var ledger_id=$(this).attr('ledger_id');
-		alert(ledger_id);
+		var reconciliation_date=$(this).val();
+		//alert(finalisation_date);
 		var url="<?php echo $this->Url->build(['controller'=>'Ledgers','action'=>'dateUpdate']); ?>";
-		url=url+'/'+customer_id,
+		url=url+'/'+ledger_id+'/'+reconciliation_date,
 		$.ajax({
 			url: url,
-		}).done(function(response) {
-			$("#qt3_div").html(response);
+		}).done(function(response) { 
+			$(this).html(response);
 		});
     });
+	
+	$('.bank_data').die().live("change",function() { 
+		$("#hide_div").hide();
+	});
 
 });
 </script>

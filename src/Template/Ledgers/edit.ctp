@@ -211,7 +211,14 @@ function rename_rows(){
 		var i=0;
 		$("#main_table tbody#main_tbody tr.tr1").each(function(){
 			$(this).attr("row_no",i);
-			$(this).find("td:nth-child(1) input").attr({name:"ledger_rows["+i+"][ref_no]", id:"ledger_rows-"+i+"-ref_no"}).rules("add", "required");
+			$(this).find("td:nth-child(1) input").attr({name:"ledger_rows["+i+"][ref_no]", id:"ledger_rows-"+i+"-ref_no",class:"ref_number"}).rules('add', {
+				required: true,
+				noSpace: true,
+				notEqualToGroup: ['.ref_number'],
+				messages: {
+					remote: "Not an unique."
+				}
+			});
 			$(this).find("td:nth-child(2) input:eq(0)").attr({name:"ledger_rows["+i+"][ledger_id]", id:"ledger_rows-"+i+"-ledger_id"}).rules("add", "required");
 			$(this).find("td:nth-child(2) input:eq(1)").attr({name:"ledger_rows["+i+"][credit]", id:"ledger_rows-"+i+"-credit"}).rules("add", "required");
 			$(this).find("td:nth-child(3) input").attr({name:"ledger_rows["+i+"][debit]", id:"ledger_rows-"+i+"-debit"}).rules("add", "required");

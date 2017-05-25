@@ -116,169 +116,140 @@ class LedgersController extends AppController
 		//pr($ledger_details->toArray()); exit;
 
 		
-	if ($this->request->is(['patch', 'post', 'put'])) {
-		$ledger = $this->Ledgers->patchEntity($ledger, $this->request->data);
-		//$total_row=sizeof($this->request->data['reference_no']);
-		//pr($ledger->ledger_rows); exit;
-		foreach($ledger->ledger_rows as $ledger_row){
-			//pr($ledger_row); exit;
-			if($ledger_row['ledger_id'] > 0){ 
-			$ledger_data = $this->Ledgers->get($ledger_row['ledger_id']);
-				if(@$ledger_row['debit']>0){ 
-				$Reference_detail_datas = $this->Ledgers->ReferenceDetails->find()->where(['reference_no'=>$ledger_data->ref_no,'reference_type'=>'Against Reference','ledger_account_id'=>$ledger_data->ledger_account_id]);
-				$flag=$Reference_detail_datas->count();
-				$total_amt=$ledger_row['debit']; 
-				$delete_status='no';
-					foreach($Reference_detail_datas as $Reference_detail_data){
-						$R=$total_amt-$Reference_detail_data->credit;
-						
-						if($R>0 && $delete_status=='no'){
-							$total_amt=$R;
-							$flag--;
-						}
-						else if($R<=0 && $delete_status=='no'){  
-							$delete_status='Deleted';
+		if ($this->request->is(['patch', 'post', 'put'])) {
+            $ledger = $this->Ledgers->patchEntity($ledger, $this->request->data);
+			//$total_row=sizeof($this->request->data['reference_no']);
+			//pr($ledger->ledger_rows); exit;
+				
+			foreach($ledger->ledger_rows as $ledger_row){
+				
+				if($ledger_row['ledger_id'] > 0){ 
+					$ledger_data = $this->Ledgers->get($ledger_row['ledger_id']);
+					//pr($ledger_data->ledger_account_id); exit;
+					$Reference_detail_data = $this->Ledgers->ReferenceDetails->exists(['reference_no'=>$ledger_data->ref_no,'reference_type'=>'Against Reference']);
+					if($Reference_detail_data==0){
+						$Reference_detail_data = $this->Ledgers->ReferenceDetails->find()->where(['reference_no'=>$ledger_data->ref_no,'reference_type'=>'New Reference'])->first();
+						if($ledger_row['credit']==0){
 							$query = $this->Ledgers->ReferenceDetails->query();
 							$query->update()
-							->set(['credit' => abs($total_amt)])
+							->set(['debit' => $ledger_row['debit'],'credit' => 0])
 							->where(['id' => $Reference_detail_data->id])
 							->execute();
 							
-							$new_Reference_detail = $this->Ledgers->ReferenceDetails->find()->where(['reference_no'=>$ledger_data->ref_no,'reference_type'=>'New Reference','ledger_account_id'=>$ledger_data->ledger_account_id])->first();
-								$query = $this->Ledgers->ReferenceDetails->query();
-								$query->update()
-								->set(['debit' => $ledger_row['debit']])
-								->where(['id' => $new_Reference_detail->id])
-								->execute();
-							//pr($flag); exit;
-							$total_amt=0;
-							$flag=0;
-						}else if($R<0 && $delete_status='Deleted'){ 
-							$this->Ledgers->ReferenceDetails->delete($Reference_detail_data);
+							$query = $this->Ledgers->ReferenceBalances->query();
+							$query->update()
+							->set(['debit' => $ledger_row['debit'],'credit' => 0])
+							->where(['reference_no'=>$ledger_data->ref_no,'ledger_account_id'=>$ledger_data->ledger_account_id])
+							->execute();
+						}else{
+							$query = $this->Ledgers->ReferenceDetails->query();
+							$query->update()
+							->set(['credit' => $ledger_row['credit'],'debit' => 0])
+							->where(['id' => $Reference_detail_data->id])
+							->execute();
+							
+							$query = $this->Ledgers->ReferenceBalances->query();
+							$query->update()
+							->set(['debit' => $ledger_row['debit'],'credit' => 0])
+							->where(['reference_no'=>$ledger_data->ref_no,'ledger_account_id'=>$ledger_data->ledger_account_id])
+							->execute();
 						}
-						  
-					}
-					$new_Reference_detail = $this->Ledgers->ReferenceDetails->find()->where(['reference_no'=>$ledger_data->ref_no,'reference_type'=>'New Reference','ledger_account_id'=>$ledger_data->ledger_account_id])->first();
-								$query = $this->Ledgers->ReferenceDetails->query();
-								$query->update()
-								->set(['debit' => $ledger_row['debit']])
-								->where(['id' => $new_Reference_detail->id])
-								->execute();
-					
-					$query = $this->Ledgers->query();
-								$query->update()
-								->set(['debit' => $ledger_row['debit'],'credit' => 0])
-								->where(['id' => $ledger_row['ledger_id']])
-								->execute();
-					$new_Reference_Balance = $this->Ledgers->ReferenceBalances->find()->where(['reference_no'=>$ledger_data->ref_no,'ledger_account_id'=>$ledger_data->ledger_account_id])->first();
-					if($ledger_row['debit'] >= $new_Reference_Balance->debit){ 
-										$query = $this->Ledgers->ReferenceBalances->query();
+					}else{ 
+						$Reference_detail_datas = $this->Ledgers->ReferenceDetails->find()->where(['reference_no'=>$ledger_data->ref_no,'reference_type'=>'Against Reference']);
+						$flag=$Reference_detail_datas->count();
+						 
+						foreach($Reference_detail_datas as $Reference_detail_data){
+								if($ledger_row['credit']==0){
+								$Reference_detail_against_datas = $this->Ledgers->ReferenceDetails->find()->where(['reference_no'=>$ledger_data->ref_no,'reference_type'=>'Against Reference','credit > '=>'0']);
+								
+								if($Reference_detail_against_datas){
+									$amt=$ledger_row['debit']; $due_amt=0;
+									
+									foreach($Reference_detail_against_datas as $Reference_detail_against_data){
+										
+										$amt=$amt-$Reference_detail_against_data->credit;
+										if($amt<0){
+										$flag--;
+										
+										if($flag==0){
+										$query = $this->Ledgers->ReferenceDetails->query();
+										$query->update()
+										->set(['credit' => $ledger_row['debit']])
+										->where(['id' => $Reference_detail_against_data->id])
+										->execute();
+										$new_Reference_detail = $this->Ledgers->ReferenceDetails->find()->where(['reference_no'=>$ledger_data->ref_no,'reference_type'=>'New Reference'])->first();
+										$query = $this->Ledgers->ReferenceDetails->query();
 										$query->update()
 										->set(['debit' => $ledger_row['debit']])
-										->where(['id' => $new_Reference_Balance->id])
+										->where(['id' => $new_Reference_detail->id])
 										->execute();
-					}
-					else if($ledger_row['debit'] < $new_Reference_Balance->debit && $ledger_row['debit'] > $new_Reference_Balance->credit){ 
-										$query = $this->Ledgers->ReferenceBalances->query();
-										$query->update()
-										->set(['debit' => $ledger_row['debit']])
-										->where(['id' => $new_Reference_Balance->id])
-										->execute();
-					}
-					else if($ledger_row['debit'] < $new_Reference_Balance->debit && $ledger_row['debit'] <= $new_Reference_Balance->credit){
+										
+										$new_Reference_Balance = $this->Ledgers->ReferenceBalances->find()->where(['reference_no'=>$ledger_data->ref_no,'ledger_account_id'=>$ledger_data->ledger_account_id])->first();
 										$query = $this->Ledgers->ReferenceBalances->query();
 										$query->update()
 										->set(['debit' => $ledger_row['debit'],'credit' => $ledger_row['debit']])
 										->where(['id' => $new_Reference_Balance->id])
 										->execute();
-					}
-					}else{
-						$Reference_detail_datas = $this->Ledgers->ReferenceDetails->find()->where(['reference_no'=>$ledger_data->ref_no,'reference_type'=>'Against Reference','ledger_account_id'=>$ledger_data->ledger_account_id]);
-						$flag=$Reference_detail_datas->count();
-						$total_amt=$ledger_row['credit']; 
-						$delete_status='no';
-						foreach($Reference_detail_datas as $Reference_detail_data){
-						
-						$R=$total_amt-$Reference_detail_data->debit;
-						//pr($R); exit;
-						if($R>=0 && $delete_status=='no'){
-							$total_amt=$R;
-							$flag--;
+											$flag--;
+										} else if($flag>0){
+											$this->Ledgers->ReferenceDetails->delete($Reference_detail_against_data);
+										}else if($flag<0){
+											$this->Ledgers->ReferenceDetails->delete($Reference_detail_against_data);
+										}
+										}else{
+											$flag--;
+											//pr($Reference_detail_against_data->credit);
+											if($flag==0){
+											$new_Reference_detail = $this->Ledgers->ReferenceDetails->find()->where(['reference_no'=>$ledger_data->ref_no,'reference_type'=>'New Reference'])->first();
+											$query = $this->Ledgers->ReferenceDetails->query();
+											$query->update()
+											->set(['debit' => $ledger_row['debit']])
+											->where(['id' => $new_Reference_detail->id])
+											->execute();
+											$new_Reference_Balance = $this->Ledgers->ReferenceBalances->find()->where(['reference_no'=>$ledger_data->ref_no,'ledger_account_id'=>$ledger_data->ledger_account_id])->first();
+											$query = $this->Ledgers->ReferenceBalances->query();
+											$query->update()
+											->set(['debit' => $ledger_row['debit']])
+											->where(['id' => $new_Reference_Balance->id])
+											->execute();
+											$query = $this->Ledgers->query();
+											$query->update()
+											->set(['debit' => $ledger_row['debit'],'credit' => 0])
+											->where(['id' => $ledger_row['ledger_id']])
+											->execute();
+											}else{
+											$query = $this->Ledgers->ReferenceDetails->query();
+											$query->update()
+											->set(['debit' => $Reference_detail_against_data->credit])
+											->where(['id' => $Reference_detail_against_data->id])
+											->execute();
+											}
+										}
+									} 
+								} 
+							}
 						}
-						else if($R<0 && $delete_status=='no'){ 
-							$query = $this->Ledgers->ReferenceDetails->query();
-							$query->update()
-							->set(['debit' => abs($total_amt)])
-							->where(['id' => $Reference_detail_data->id])
-							->execute();
-							
-							$new_Reference_detail = $this->Ledgers->ReferenceDetails->find()->where(['reference_no'=>$ledger_data->ref_no,'reference_type'=>'New Reference','ledger_account_id'=>$ledger_data->ledger_account_id])->first();
-								$query = $this->Ledgers->ReferenceDetails->query();
-								$query->update()
-								->set(['credit' => $ledger_row['credit']])
-								->where(['id' => $new_Reference_detail->id])
-								->execute();
-							$delete_status='Deleted';
-							$total_amt=0;
-						}else if($R<0 && $delete_status=='Deleted'){ 
-							$this->Ledgers->ReferenceDetails->delete($Reference_detail_data);
-						}
-						  
 					}
-					$new_Reference_detail = $this->Ledgers->ReferenceDetails->find()->where(['reference_no'=>$ledger_data->ref_no,'reference_type'=>'New Reference','ledger_account_id'=>$ledger_data->ledger_account_id])->first();
-								$query = $this->Ledgers->ReferenceDetails->query();
-								$query->update()
-								->set(['credit' => $ledger_row['credit']])
-								->where(['id' => $new_Reference_detail->id])
-								->execute();
 					
-					$query = $this->Ledgers->query();
-								$query->update()
-								->set(['credit' => $ledger_row['credit'],'debit' => 0])
-								->where(['id' => $ledger_row['ledger_id']])
-								->execute();
-					$new_Reference_Balance = $this->Ledgers->ReferenceBalances->find()->where(['reference_no'=>$ledger_data->ref_no,'ledger_account_id'=>$ledger_data->ledger_account_id])->first();
-					if($ledger_row['credit'] >= $new_Reference_Balance->credit){ 
-										$query = $this->Ledgers->ReferenceBalances->query();
-										$query->update()
-										->set(['credit' => $ledger_row['credit']])
-										->where(['id' => $new_Reference_Balance->id])
-										->execute();
-					}
-					else if($ledger_row['credit'] < $new_Reference_Balance->credit && $ledger_row['credit'] > $new_Reference_Balance->debit){ 
-										$query = $this->Ledgers->ReferenceBalances->query();
-										$query->update()
-										->set(['credit' => $ledger_row['credit']])
-										->where(['id' => $new_Reference_Balance->id])
-										->execute();
-					}
-					else if($ledger_row['credit'] < $new_Reference_Balance->credit && $ledger_row['credit'] <= $new_Reference_Balance->debit){
-										$query = $this->Ledgers->ReferenceBalances->query();
-										$query->update()
-										->set(['credit' => $ledger_row['credit'],'debit' => $ledger_row['credit']])
-										->where(['id' => $new_Reference_Balance->id])
-										->execute();
-					}
-					}
 				}
-				else{ 
+				else{
 					
 					//Posting in Ledger
-					$Ledger_data = $this->Ledgers->newEntity();
-					$Ledger_data->ledger_account_id=$ledger->ledger_account_id;
-					if($ledger_row['credit']==0){  
-						$Ledger_data->debit = $ledger_row['debit'];
-						$Ledger_data->credit = 0;
+					$Ledger = $this->Ledgers->newEntity();
+					$Ledger->ledger_account_id=$ledger->ledger_account_id;
+					if($ledger_row['credit']==0){
+						$ledger->debit = $ledger_row['debit'];
+						$ledger->credit = 0;
 					}
-					else { 
-						$Ledger_data->debit = 0;
-						$Ledger_data->credit = $ledger_row['credit'];
+					else {
+						$ledger->debit = 0;
+						$ledger->credit = $ledger_row['credit'];
 					}
-					$Ledger_data->voucher_source = 'Opening Balance';
-					$Ledger_data->ref_no = $ledger_row['ref_no'];
-					$Ledger_data->transaction_date = date("Y-m-d",strtotime($ledger->transaction_date));
-					$Ledger_data->company_id = $st_company_id;
-					$this->Ledgers->save($Ledger_data);
+					$ledger->voucher_source = 'Opening Balance';
+					$ledger->ref_no = $ledger_row['ref_no'];
+					$ledger->transaction_date = date("Y-m-d",strtotime($ledger->transaction_date));
+					$ledger->company_id = $st_company_id;
+					$this->Ledgers->save($ledger);
 					
 					//Posting in ReferenceDetails
 					$ReferenceDetail = $this->Ledgers->ReferenceDetails->newEntity();
@@ -309,9 +280,11 @@ class LedgersController extends AppController
 					$ReferenceBalance->reference_type = 'New Reference';
 					$ReferenceBalance->reference_no = $ledger_row['ref_no'];
 					$this->Ledgers->ReferenceBalances->save($ReferenceBalance);
-				}  
+					
+					
+				}
 			}
-		
+				
 		
 				
 	
@@ -454,28 +427,37 @@ class LedgersController extends AppController
 		
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
+		
 		$ledger_account_id=$this->request->query('ledger_account_id');
-
-
+		if($ledger_account_id){
+		$transaction_from_date= date('Y-m-d', strtotime($this->request->query['From']));
+		$transaction_to_date= date('Y-m-d', strtotime($this->request->query['To']));
 		
-		//pr($Ledger_Account_data);exit;
 		
-		if($ledger_account_id)
-		{
-					$Ledger_Account_data = $this->Ledgers->LedgerAccounts->get($ledger_account_id, [
+		$Ledger_Account_data = $this->Ledgers->LedgerAccounts->get($ledger_account_id, [
             'contain' => ['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups'=>['AccountCategories']]]]
         ]);
-			$transaction_from_date= date('Y-m-d', strtotime($this->request->query['From']));
-			$transaction_to_date= date('Y-m-d', strtotime($this->request->query['To']));
+			
+			
+		$Ledgers_rows=$this->Ledgers->find()
+		->contain(['LedgerAccounts'])
+		->where(['ledger_account_id'=>$ledger_account_id])
+		->where(function($exp) use($transaction_from_date,$transaction_to_date) {
+			return $exp->between('transaction_date', $transaction_from_date, $transaction_to_date, 'date');
+		})->order(['transaction_date'=>'ASC']);
 
-			$Ledgers = $this->Ledgers->find()
-				->where(['ledger_account_id'=>$ledger_account_id,'company_id'=>$st_company_id])
-				->where(function($exp) use($transaction_from_date,$transaction_to_date){
-					return $exp->between('transaction_date', $transaction_from_date, $transaction_to_date, 'date');
-				});
-		}   
+		
+		
+		$query = $this->Ledgers->find();
+		$total_balance=$query->select(['total_debit' => $query->func()->sum('debit'),'total_credit' => $query->func()->sum('credit')])->where(['Ledgers.ledger_account_id' => $ledger_account_id,'Ledgers.transaction_date <'=>$transaction_from_date])->toArray();
 
-			$ledger=$this->Ledgers->LedgerAccounts->find('list',
+		$query = $this->Ledgers->find();
+		$total_opening_balance=$query->select(['total_opening_debit' => $query->func()->sum('debit'),'total_opening_credit' => $query->func()->sum('credit')])->where(['Ledgers.ledger_account_id' => $ledger_account_id, 'Ledgers.voucher_source'=>'Opening Balance'])->where(function($exp) use($transaction_from_date,$transaction_to_date) {
+			return $exp->between('transaction_date', $transaction_from_date, $transaction_to_date, 'date');
+		})->toArray();
+	}
+		//pr($total_opening_balance); exit;
+		$ledger=$this->Ledgers->LedgerAccounts->find('list',
 				['keyField' => function ($row) {
 					return $row['id'];
 				},
@@ -487,10 +469,10 @@ class LedgersController extends AppController
 					}
 					
 				}])->where(['company_id'=>$st_company_id]);
-		
-			$this->set(compact('Ledgers','ledger','ledger_account_id','Ledger_Account_data'));		
-		
+
+		$this->set(compact('ledger','Ledgers_rows','total_balance','ledger_account_id','transaction_from_date','transaction_to_date','Ledger_Account_data','total_opening_balance'));
 	}
+	
 	
 	public function openingBalanceView (){
 		$this->viewBuilder()->layout('index_layout');
@@ -503,65 +485,9 @@ class LedgersController extends AppController
 			return $q->where(['LedgerAccounts.name LIKE'=>'%'.$ledger_name.'%']);
 		}])
 		->where(['Ledgers.company_id'=>$st_company_id,'Ledgers.voucher_source'=>'Opening Balance']));
-		
 		$this->set(compact('OpeningBalanceViews', 'ledger_name'));
 	}
 	
-	public function bankReconciliationAdd () {
-		
-		$this->viewBuilder()->layout('index_layout');
-		$session = $this->request->session();
-		$st_company_id = $session->read('st_company_id');
-		$ledger_account_id=$this->request->query('ledger_account_id');
-		$bankReconciliationAdd = $this->Ledgers->newEntity();
-		
-		if($ledger_account_id)
-		{
-			$transaction_from_date= date('Y-m-d', strtotime($this->request->query['From']));
-			$transaction_to_date= date('Y-m-d', strtotime($this->request->query['To']));
-
-			$Bank_Ledgers = $this->Ledgers->find()
-				->where(['ledger_account_id'=>$ledger_account_id,'company_id'=>$st_company_id])
-				->where(function($exp) use($transaction_from_date,$transaction_to_date){
-					return $exp->between('transaction_date', $transaction_from_date, $transaction_to_date, 'date');
-				});
-		}
-		
-		//pr($Bank_Ledgers->toArray()); exit;
-		
-		
-		
-		$vr=$this->Ledgers->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Bank Reconciliation Add','sub_entity'=>'Bank'])->first();
-		//pr($vr); exit;
-		$bankReconciliation=$vr->id;
-		$vouchersReferences = $this->Ledgers->VouchersReferences->get($vr->id, [
-            'contain' => ['VoucherLedgerAccounts']
-        ]);
-		
-		$where=[];
-		foreach($vouchersReferences->voucher_ledger_accounts as $data){
-			$where[]=$data->ledger_account_id;
-		}
-		$BankCashes_selected='yes';
-		if(sizeof($where)>0){
-			$banks = $this->Ledgers->LedgerAccounts->find('list',
-				['keyField' => function ($row) {
-					return $row['id'];
-				},
-				'valueField' => function ($row) {
-					if(!empty($row['alias'])){
-						return  $row['name'] . ' (' . $row['alias'] . ')';
-					}else{
-						return $row['name'];
-					}
-					
-				}])->where(['LedgerAccounts.id IN' => $where]);
-		}else{
-			$BankCashes_selected='no';
-		}
-		
-		//pr($bankCashes->toArray()); exit;
-		$this->set(compact('bankReconciliationAdd','banks','Bank_Ledgers'));
-	}
+	
 	
 }

@@ -71,7 +71,7 @@ class DebitNotesController extends AppController
 			}else{
 				$debitNote->voucher_no=1;
 			}
-			//pr($debitNote);exit;
+			//pr($debitNote->ref_rows);exit;
            if ($this->DebitNotes->save($debitNote)) {
 				$total_cr=0; $total_dr=0;
 				foreach($debitNote->debit_notes_rows as $debit_notes_row){
@@ -102,73 +102,133 @@ class DebitNotesController extends AppController
 			
 			//pr($debitNote); exit;
 		}
-		
-		$vr=$this->DebitNotes->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Debit Notes','sub_entity'=>'Customer-Suppiler'])->first();
-		$DebitNotesSalesAccount=$vr->id;
-		$vouchersReferences = $this->DebitNotes->VouchersReferences->get($vr->id, [
-            'contain' => ['VoucherLedgerAccounts']
-        ]);
-		
-	    $where=[];
-		foreach($vouchersReferences->voucher_ledger_accounts as $data){
-			$where[]=$data->ledger_account_id;
-		}
-		
-		if(sizeof($where)>0){
-			$customer_suppiler_id = $this->DebitNotes->CustomerSuppilers->find('list',
-				['keyField' => function ($row) {
-					return $row['id'];
-				},
-				'valueField' => function ($row) {
-					if(!empty($row['alias'])){
-						return  $row['name'] . ' (' . $row['alias'] . ')';
-					}else{
-						return $row['name'];
-					}
+
+		if(sizeof(@$debitNote->ref_rows)>0){
+			
+			foreach($debitNote->ref_rows as $ref_row){
+
+			//pr($ref_row); exit;
+			
+				$ref_row=(object)$ref_row;
+				if($ref_row->ref_type=='New Reference' or $ref_row->ref_type=='Advance Reference'){
+					$query = $this->DebitNotes->ReferenceBalances->query();
 					
-				}])->where(['CustomerSuppilers.id IN' => $where]);
-		}
-		else{
-			$ErrorsalesAccs='true';
-		}
-		
-		
-		
-		$vr=$this->DebitNotes->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Debit Notes','sub_entity'=>'Heads'])->first();	
-		$DebitNotesParty=$vr->id;
-		$vouchersReferences = $this->DebitNotes->VouchersReferences->get($vr->id, [
-            'contain' => ['VoucherLedgerAccounts']
-        ]);
-		$where=[];
-		foreach($vouchersReferences->voucher_ledger_accounts as $data){
-			  $where[]=$data->ledger_account_id;
-		
-		}
-		if(sizeof($where)>0){
-			$heads = $this->DebitNotes->Heads->find('list',
-				['keyField' => function ($row) {
-					return $row['id'];
-				},
-				'valueField' => function ($row) {
-					if(!empty($row['alias'])){
-						return  $row['name'] . ' (' . $row['alias'] . ')';
-					}else{
-						return $row['name'];
-					}
+					$query->insert(['ledger_account_id', 'reference_no', 'credit', 'debit'])
+					->values([
+						'ledger_account_id' => $debitNote->customer_suppiler_id,
+						'reference_no' => $ref_row->ref_no,
+						'credit' => 0,
+						'debit' => $ref_row->ref_amount
+					]);
+					$query->execute();
+				}else{
+					$ReferenceBalance=$this->DebitNotes->ReferenceBalances->find()->where(['ledger_account_id'=>$debitNote->customer_suppiler_id,'reference_no'=>$ref_row->ref_no])->first();
+					$ReferenceBalance=$this->DebitNotes->ReferenceBalances->get($ReferenceBalance->id);
+					$ReferenceBalance->debit=$ReferenceBalance->debit+$ref_row->ref_amount;
 					
-				}])->where(['Heads.id IN' => $where]);
-		
+					$this->DebitNotes->ReferenceBalances->save($ReferenceBalance);
+				}
+				
+				$query = $this->DebitNotes->ReferenceDetails->query();
+				$query->insert(['ledger_account_id', 'invoice_id', 'reference_no', 'credit', 'debit', 'reference_type'])
+				->values([
+					'ledger_account_id' => $debitNote->customer_suppiler_id,
+					'invoice_id' => $debitNote->id,
+					'reference_no' => $ref_row->ref_no,
+					'credit' => 0,
+					'debit' => $ref_row->ref_amount,
+					'reference_type' => $ref_row->ref_type
+				]);
+			
+				$query->execute();
+			}
 		}
-		else{
-			$Errorparties='true';
-		}
 		
 		
-		$companies = $this->DebitNotes->Companies->find('all');
-        $this->set(compact('debitNote', 'customer_suppiler_id', 'heads', 'companies','ErrorsalesAccs','Errorparties','financial_year','DebitNotesParty','DebitNotesSalesAccount'));
-        $this->set('_serialize', ['debitNote']);
+			$vr=$this->DebitNotes->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Debit Notes','sub_entity'=>'Customer-Suppiler'])->first();
+			$DebitNotesSalesAccount=$vr->id;
+			$vouchersReferences = $this->DebitNotes->VouchersReferences->get($vr->id, [
+				'contain' => ['VoucherLedgerAccounts']
+			]);
+			
+			$where=[];
+			foreach($vouchersReferences->voucher_ledger_accounts as $data){
+				$where[]=$data->ledger_account_id;
+			}
+			
+			if(sizeof($where)>0){
+				$customer_suppiler_id = $this->DebitNotes->CustomerSuppilers->find('list',
+					['keyField' => function ($row) {
+						return $row['id'];
+					},
+					'valueField' => function ($row) {
+						if(!empty($row['alias'])){
+							return  $row['name'] . ' (' . $row['alias'] . ')';
+						}else{
+							return $row['name'];
+						}
+						
+					}])->where(['CustomerSuppilers.id IN' => $where]);
+			}
+			else{
+				$ErrorsalesAccs='true';
+			}
+			
+		
+		
+			$vr=$this->DebitNotes->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Debit Notes','sub_entity'=>'Heads'])->first();	
+			$DebitNotesParty=$vr->id;
+			$vouchersReferences = $this->DebitNotes->VouchersReferences->get($vr->id, [
+				'contain' => ['VoucherLedgerAccounts']
+			]);
+			$where=[];
+			foreach($vouchersReferences->voucher_ledger_accounts as $data){
+				  $where[]=$data->ledger_account_id;
+			
+			}
+			if(sizeof($where)>0){
+				$heads = $this->DebitNotes->Heads->find('list',
+					['keyField' => function ($row) {
+						return $row['id'];
+					},
+					'valueField' => function ($row) {
+						if(!empty($row['alias'])){
+							return  $row['name'] . ' (' . $row['alias'] . ')';
+						}else{
+							return $row['name'];
+						}
+						
+					}])->where(['Heads.id IN' => $where]);
+			
+			}
+			else{
+				$Errorparties='true';
+			}
+
+			$companies = $this->DebitNotes->Companies->find('all');
+			$this->set(compact('debitNote', 'customer_suppiler_id', 'heads', 'companies','ErrorsalesAccs','Errorparties','financial_year','DebitNotesParty','DebitNotesSalesAccount'));
+			$this->set('_serialize', ['debitNote']);
     }
 
+		public function fetchRefNumbers($ledger_account_id){
+			$this->viewBuilder()->layout('');
+			$ReferenceBalances=$this->DebitNotes->ReferenceBalances->find()->where(['ledger_account_id'=>$ledger_account_id]);
+			$this->set(compact('ReferenceBalances','cr_dr'));
+		}		
+	
+		function checkRefNumberUnique($received_from_id,$i){
+			$reference_no=$this->request->query['ref_rows'][$i]['ref_no'];
+			$ReferenceBalances=$this->DebitNotes->ReferenceBalances->find()->where(['ledger_account_id'=>$received_from_id,'reference_no'=>$reference_no]);
+			if($ReferenceBalances->count()==0){
+				echo 'true';
+			}else{
+				echo 'false';
+			}
+			exit;
+		}	
+		
+	
+	
     /**
      * Edit method
      *

@@ -186,9 +186,7 @@ class InvoicesController extends AppController
         $invoice = $this->Invoices->get($id, [
             'contain' => ['Customers', 'Companies', 'InvoiceRows' => ['Items']]
         ]);
-		
-
-        $this->set('invoice', $invoice);
+	    $this->set('invoice', $invoice);
         $this->set('_serialize', ['invoice']);
     }
 	
@@ -1070,8 +1068,8 @@ class InvoicesController extends AppController
 			}
 		}
 
-		//$session = $this->request->session();
-		$st_year_id = $session->read('st_year_id');
+				//$session = $this->request->session();
+				$st_year_id = $session->read('st_year_id');
 		
 			   $SessionCheckDate = $this->FinancialYears->get($st_year_id);
 			   $fromdate1 = DATE("Y-m-d",strtotime($SessionCheckDate->date_from));   

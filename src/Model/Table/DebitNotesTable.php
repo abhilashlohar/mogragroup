@@ -40,8 +40,8 @@ class DebitNotesTable extends Table
 		$this->belongsTo('Ledgers');
 		$this->belongsTo('VouchersReferences');
 		$this->belongsTo('FinancialYears');		
-		
-		
+		$this->belongsTo('ReferenceBalances');
+		$this->belongsTo('ReferenceDetails');
 		
         $this->belongsTo('CustomerSuppilers', [
 			'className'=>'LedgerAccounts',

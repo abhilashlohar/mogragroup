@@ -1,4 +1,4 @@
-<?php if($allow=='YES'){ ?>
+<?php if($allow='YES'){ ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -30,14 +30,28 @@
 			<td>Ref. No.</td>
 			<td>Credit</td>
 			<td>Debit</td>
+			<td></td>
 		</tr>
-		
-		<tr>
-		<td><?= $this->Form->input('ref_no',['type'=>'text','label'=>false,'value'=>$ledger->ref_no]) ?></td>
-			<td><?= $this->Form->input('credit',['type'=>'text','class'=>'','label'=>false, 'value'=>$ledger->credit]) ?></td>
-			<td><?= $this->Form->input('debit',['type'=>'text','class'=>'','label'=>false, 'value'=>$ledger->debit]) ?></td>
-		</tr>
-	
+		<tbody id="main_tbody">
+			<?php foreach($ledger_details as $ledger_detail):?>
+				<tr class="tr1" row_no='<?php echo @$ledger_detail->id; ?>'>
+					<td><?= $this->Form->input('ref_no',['type'=>'text','label'=>false,'value'=>$ledger_detail->ref_no]) ?></td>
+					<?php if($ledger_detail->credit==0){ ?>
+					<td><?= $this->Form->input('id',['type'=>'hidden','class'=>'','label'=>false, 'value'=>$ledger_detail->id]) ?>
+					<?= $this->Form->input('credit',['type'=>'text','disabled'=>true,'class'=>'','label'=>false, 'value'=>$ledger_detail->credit]) ?></td>
+					
+					<td><?= $this->Form->input('debit',['type'=>'text','class'=>'','label'=>false, 'value'=>$ledger_detail->debit]) ?></td>
+					<?php }else{ ?>
+						<td><?= $this->Form->input('id',['type'=>'hidden','class'=>'','label'=>false, 'value'=>$ledger_detail->id]) ?>
+					<?= $this->Form->input('credit',['type'=>'text','class'=>'','label'=>false, 'value'=>$ledger_detail->credit]) ?></td>
+					
+					<td><?= $this->Form->input('debit',['type'=>'text','disabled'=>true,'class'=>'','label'=>false,'readonly', 'value'=>$ledger_detail->debit]) ?></td>
+					<?php } ?>
+					
+					<td><?= $this->Form->button(__('<i class="fa fa-plus"></i>'),['type'=>'button','class'=>'addrow','label'=>false]) ?></td>
+				</tr>
+			<?php endforeach ?>
+		</tbody>
 	</table>
 	</div>
     <?= $this->Form->button(__('Submit')) ?>
@@ -45,6 +59,19 @@
 	
 </div>
 </div>
+<table class="table table-bordered" id="temp_table" style="display:none;">
+	<tbody>
+	<tr class="tr1">
+	<td><?= $this->Form->input('reference_no',['type'=>'text','class'=>'distinctreference','label'=>false,'id'=>'reference_no_2']) ?></td>
+	<td>
+	<?= $this->Form->input('ledger_id',['type'=>'hidden','class'=>'','label'=>false, 'value'=>0]) ?>
+	<?= $this->Form->input('credit',['type'=>'text','class'=>'','label'=>false, 'value'=>0]) ?></td>
+	<td><?= $this->Form->input('debit',['type'=>'text','class'=>'','label'=>false, 'value'=>0]) ?></td>
+	<td><?= $this->Form->button(__('<i class="fa fa-plus"></i>'),['type'=>'button','class'=>'addrow','label'=>false]) ?><?= $this->Form->button(__('<i class="fa fa-minus"></i>'),['type'=>'button','class'=>'remove_row','label'=>false]) ?></td>
+	</tr>
+	</tbody>
+	</table>
+
 <?php }else{ ?>
 <span> The ref. no. has been used anywhere, so you can not edit this.</span>
 <?php } ?>
@@ -52,38 +79,6 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
-	
-	$( document ).on( 'click', '.add_row', function() {
-		var new_line=$('#temp_table').html();
-		$("#main_table").append(new_line);
-		var i=1;
-		var len=$("[name^=reference_no]").length;
-		
-		$("[name^=reference_no]").each(function () {
-			
-			$(this).attr('id','reference_no_'+i);
-			
-			$(this).rules("add", {
-				required: true,
-				noSpace: true,
-				notEqualToGroup: ['.distinctreference']
-			});
-			i++;
-		});
-	});
-	$( document ).on( 'click', '.remove_row', function() {
-		$(this).closest("#main_table tr").remove();
-		var i=1;
-		
-		$("[name^=reference_no]").each(function () {
-			
-			$(this).attr('id','reference_no_'+i);
-			i++;
-			$(this).rules("add", {
-				required: true,
-			});
-		});
-	});
 
 	
 	////////////////  Validation  ////////////////////////
@@ -202,6 +197,27 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
+	
+		$('.addrow').die().live("click",function() { 
+		add_row();
+    });
+	function add_row(){
+		var tr1=$("#temp_table tbody tr.tr1").clone();
+		$("#main_table tbody#main_tbody").append(tr1);
+		rename_rows();
+	}
+	rename_rows();	
+function rename_rows(){  
+		var i=0;
+		$("#main_table tbody#main_tbody tr.tr1").each(function(){
+			$(this).attr("row_no",i);
+			$(this).find("td:nth-child(1) input").attr({name:"ledger_rows["+i+"][ref_no]", id:"ledger_rows-"+i+"-ref_no"}).rules("add", "required");
+			$(this).find("td:nth-child(2) input:eq(0)").attr({name:"ledger_rows["+i+"][ledger_id]", id:"ledger_rows-"+i+"-ledger_id"}).rules("add", "required");
+			$(this).find("td:nth-child(2) input:eq(1)").attr({name:"ledger_rows["+i+"][credit]", id:"ledger_rows-"+i+"-credit"}).rules("add", "required");
+			$(this).find("td:nth-child(3) input").attr({name:"ledger_rows["+i+"][debit]", id:"ledger_rows-"+i+"-debit"}).rules("add", "required");
+			i++;
+			});
+}
 	
 });	
 </script>

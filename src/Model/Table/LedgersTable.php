@@ -60,12 +60,10 @@ class LedgersTable extends Table
 
         $validator
             ->decimal('debit')
-            ->requirePresence('debit', 'create')
             ->notEmpty('debit');
 
         $validator
             ->decimal('credit')
-            ->requirePresence('credit', 'create')
             ->notEmpty('credit');
 
         $validator

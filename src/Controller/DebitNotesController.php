@@ -18,6 +18,10 @@ class DebitNotesController extends AppController
      */
     public function index()
     {
+		 $this->viewBuilder()->layout('index_layout');
+        
+        $session = $this->request->session();
+        $st_company_id = $session->read('st_company_id');
         $this->paginate = [
             'contain' => ['CustomerSuppilers', 'Companies']
         ];

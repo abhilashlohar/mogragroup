@@ -52,6 +52,7 @@ class InventoryVoucherRowsTable extends Table
         ]);
 		$this->belongsTo('Invoices');
 		
+		
     }
 
     /**

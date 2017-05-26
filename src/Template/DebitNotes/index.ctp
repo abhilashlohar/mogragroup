@@ -5,42 +5,36 @@
             <i class="icon-globe font-blue-steel"></i>
             <span class="caption-subject font-blue-steel uppercase">Debit Note</span>
         </div>
-    
+    </div>
     <div class="portlet-body">
         <div class="row">
             <div class="col-md-12">
                 <?php $page_no=$this->Paginator->current('DebitNotes'); $page_no=($page_no-1)*20; ?>
-				 <table class='table table-hover'cellpadding="0" cellspacing="0">
-					<thead>
-						<tr>
-							<th><?= $this->Paginator->sort('id') ?></th>
-							<th><?= $this->Paginator->sort('voucher_no') ?></th>
-							<th><?= $this->Paginator->sort('created_on') ?></th>
-							<th><?= $this->Paginator->sort('transaction_date') ?></th>
-							<th><?= $this->Paginator->sort('customer_suppiler_id') ?></th>
-							<th class="actions"><?= __('Actions') ?></th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php foreach ($debitNotes as $debitNote): ?>
-						<tr>
-							<td><?= $this->Number->format($debitNote->id) ?></td>
-							<td><?= h($debitNote->voucher_no) ?></td>
-							<td><?= h($debitNote->created_on) ?></td>
-							<td><?= h($debitNote->transaction_date) ?></td>
-							<td><?= $this->Number->format($debitNote->customer_suppiler_id) ?></td>
-						    <td class="actions">
-								<?= $this->Html->link(__('View'), ['action' => 'view', $debitNote->id]) ?>
-								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $debitNote->id]) ?>
-								<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $debitNote->id], ['confirm' => __('Are you sure you want to delete # {0}?', $debitNote->id)]) ?>
-							</td>
-						</tr>
-						<?php endforeach; ?>
-					</tbody>
-				</table>
-                </div>
-            </div>
-        </div>
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Sr. No.</th>
+                            <th>Transaction Date</th>
+                            <th>Vocher No</th>
+                         
+                            <th class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $i=0; foreach ($debitNotes as $debitNote): $i++;  ?>
+                        <tr>
+                            <td><?= h(++$page_no) ?></td>
+                            <td><?= h(date("d-m-Y",strtotime($debitNote->transaction_date)))?></td>
+                            <td><?= h('#'.str_pad($debitNote->voucher_no, 4, '0', STR_PAD_LEFT)) ?></td>
+						
+                            <td class="actions">
+                            <?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $debitNote->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View ')); ?>
+                             <?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $debitNote->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
                 <div class="paginator">
                     <ul class="pagination">
                         <?= $this->Paginator->prev('< ' . __('previous')) ?>
@@ -51,3 +45,5 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>

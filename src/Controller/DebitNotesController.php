@@ -23,13 +23,17 @@ class DebitNotesController extends AppController
         $session = $this->request->session();
         $st_company_id = $session->read('st_company_id');
         $this->paginate = [
-            'contain' => ['CustomerSuppilers', 'Companies']
+            'contain' => []
         ];
-        $debitNotes = $this->paginate($this->DebitNotes);
-
-        $this->set(compact('debitNotes'));
+        
+		$debitNotes = $this->paginate($this->DebitNotes->find()->where(['company_id'=>$st_company_id])->order(['voucher_no'=>'DESC']));
+        
+		//pr($debitNotes->toArray());exit;
+		
+		$this->set(compact('debitNotes'));
         $this->set('_serialize', ['debitNotes']);
-    }
+
+	}
 
     /**
      * View method
@@ -40,13 +44,18 @@ class DebitNotesController extends AppController
      */
     public function view($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
         $debitNote = $this->DebitNotes->get($id, [
-            'contain' => ['CustomerSuppilers', 'Companies', 'DebitNotesRows']
+            'contain' => ['CustomerSuppilers', 'Companies','Creator','DebitNotesRows'=>['Heads']]
         ]);
-
-        $this->set('debitNote', $debitNote);
+		
+		//pr($debitNote);exit;
+		
+		$this->set('debitNote', $debitNote);
         $this->set('_serialize', ['debitNote']);
-    }
+
+
+		}
 
     /**
      * Add method
@@ -454,7 +463,7 @@ class DebitNotesController extends AppController
 			$this->DebitNotes->ReferenceBalances->deleteAll(['ledger_account_id'=>$old_received_from_id,'reference_no'=>$old_ref]);
 			$this->DebitNotes->ReferenceDetails->deleteAll(['ledger_account_id'=>$old_received_from_id,'reference_no'=>$old_ref]);
 		}elseif($old_ref_type=="Against Reference"){
-			$ReferenceDetail=$this->DebitNotes->ReferenceDetails->find()->where(['ledger_account_id'=>$old_received_from_id,'debitNote_id'=>$debitNote_id,'reference_no'=>$old_ref])->first();
+			$ReferenceDetail=$this->DebitNotes->ReferenceDetails->find()->where(['ledger_account_id'=>$old_received_from_id,'debit_note_id'=>$debitNote_id,'reference_no'=>$old_ref])->first();
 			if(!empty($ReferenceDetail->credit)){
 				$ReferenceBalance=$this->DebitNotes->ReferenceBalances->find()->where(['ledger_account_id' => $ReferenceDetail->ledger_account_id, 'reference_no' => $ReferenceDetail->reference_no])->first();
 				$ReferenceBalance=$this->DebitNotes->ReferenceBalances->get($ReferenceBalance->id);

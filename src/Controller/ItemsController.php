@@ -492,9 +492,8 @@ class ItemsController extends AppController
 public function SerialNumberEnabled($company_id=null,$item_id=null,$item_serial_no=null)
 	{
 		if($item_serial_no == 0){
-			$ItemSerialNumbers = $this->Items->ItemSerialNumbers->exists(['item_id'=>$item_id
-								 ,'company_id'=>$company_id]);
-			if($ItemSerialNumbers){
+			$ItemSerialNumbers = $this->Items->ItemSerialNumbers->exists(['item_id'=>$item_id,'company_id'=>$company_id]);
+			if($ItemSerialNumbers){ echo ("if"); exit;
 				$this->Flash->error(__('Item Can not Disabled.These Item has Serial Number , Firstly, you can delete serial number then you can disabled'));
 			}else{
 				$query2 = $this->Items->ItemCompanies->query();
@@ -505,6 +504,12 @@ public function SerialNumberEnabled($company_id=null,$item_id=null,$item_serial_
 				$this->Flash->success(__('Item Serial Number Disabled Successfully '));		
 			}
 		}else{
+				$Item_ledger_out = $this->Items->Itemledgers->exists(['item_id'=>$item_id,'company_id'=>$company_id,'in_out'=>'In']);
+				if($Item_ledger_out){
+					return $this->redirect(['action' => 'ItemSerialNo/'.$item_id,$company_id]);
+				}
+			
+			
 				$query2 = $this->Items->ItemCompanies->query();
 				$query2->update()
 						->set(['serial_number_enable' => $item_serial_no])
@@ -548,6 +553,32 @@ public function CheckCompany($company_id=null,$item_id=null)
 			return $this->redirect(['action' => 'EditCompany/'.$item_id]);
 		}
 	}
+	public function ItemSerialNo($item_id=null,$company_id=null){
+		$this->viewBuilder()->layout('index_layout');	
+		$having=['total_rows' => 0];
+		$item = $this->Items->newEntity();
+		$ledger_data=
+		$this->Items->ItemLedgers->find()->select(['total_rows' => 
+			$this->Items->find()->func()->sum('ItemLedgers.quantity')])
+				->where(['item_id' => $item_id,'company_id' => $company_id,'in_out'=>'In'])->first();
+				
+		if ($this->request->is('post')) {
+			$data=$this->request->data();
+			pr($data); exit;
+			$query = $this->Items->ItemCompanies->query();
+			$query->update()
+				->set(['dynamic_cost' => $this->request->data['dynamic_cost'],'minimum_selling_price_factor' => $this->request->data['minimum_selling_price_factor']])
+				->where(['item_id' => $this->request->data['Item_id'],'company_id'=>$st_company_id])
+				->execute();
+			$this->Flash->success(__('Dynamic cost & Minimum selling price factor has been saved.'));
+			return $this->redirect(['action' => 'cost']);
+		}	
+				
+			
+		$this->set(compact('ledger_data','item'));
+		//pr($ledger_data['total_rows']); exit;
+	}
+    
 	
 	
 }

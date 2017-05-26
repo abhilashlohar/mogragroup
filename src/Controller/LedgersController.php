@@ -514,7 +514,7 @@ class LedgersController extends AppController
 		$st_company_id = $session->read('st_company_id');
 		$ledger_account_id=$this->request->query('ledger_account_id');
 		$bankReconciliationAdd = $this->Ledgers->newEntity();
-		if($ledger_account_id)
+		if(@$ledger_account_id)
 		{
 			$transaction_from_date= date('Y-m-d', strtotime($this->request->query['From']));
 			$transaction_to_date= date('Y-m-d', strtotime($this->request->query['To']));
@@ -553,7 +553,10 @@ class LedgersController extends AppController
 		}else{
 			$BankCashes_selected='no';
 		}
+		if(@$ledger_account_id)
+		{
 		$bank_ledger_data=$this->Ledgers->LedgerAccounts->get($ledger_account_id);
+		}
 		$this->set(compact('bankReconciliationAdd','banks','Bank_Ledgers','ledger_account_id','bank_ledger_data'));
 	}
 	public function dateUpdate($ledger_id=null,$reconciliation_date=null){
@@ -566,6 +569,60 @@ class LedgersController extends AppController
 		->where(['id' => $ledger_id])
 		->execute();
 		$this->set(compact('reconciliation_date','ledger_id','reconciliation_date'));
+	}
+	
+	public function bankReconciliationView () {
+		
+		$this->viewBuilder()->layout('index_layout');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		$ledger_account_id=$this->request->query('ledger_account_id');
+		$bankReconciliationAdd = $this->Ledgers->newEntity();
+		if($ledger_account_id)
+		{
+			$transaction_from_date= date('Y-m-d', strtotime($this->request->query['From']));
+			$transaction_to_date= date('Y-m-d', strtotime($this->request->query['To']));
+
+			$Bank_Ledgers = $this->Ledgers->find()
+				->where(['ledger_account_id'=>$ledger_account_id,'company_id'=>$st_company_id,'reconciliation_date >'=>0000-00-00])
+				->where(function($exp) use($transaction_from_date,$transaction_to_date){
+					return $exp->between('transaction_date', $transaction_from_date, $transaction_to_date, 'date');
+				});
+				//pr($Bank_Ledgers->toArray()); exit;
+		}
+
+		$vr=$this->Ledgers->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Bank Reconciliation Add','sub_entity'=>'Bank'])->first();
+		$bankReconciliation=$vr->id;
+		$vouchersReferences = $this->Ledgers->VouchersReferences->get($vr->id, [
+            'contain' => ['VoucherLedgerAccounts']
+        ]);
+		
+		$where=[];
+		foreach($vouchersReferences->voucher_ledger_accounts as $data){
+			$where[]=$data->ledger_account_id;
+		}
+		$BankCashes_selected='yes';
+		if(sizeof($where)>0){
+			$banks = $this->Ledgers->LedgerAccounts->find('list',
+				['keyField' => function ($row) {
+					return $row['id'];
+				},
+				'valueField' => function ($row) {
+					if(!empty($row['alias'])){
+						return  $row['name'] . ' (' . $row['alias'] . ')';
+					}else{
+						return $row['name'];
+					}
+					
+				}])->where(['LedgerAccounts.id IN' => $where]);
+		}else{
+			$BankCashes_selected='no';
+		}
+		if(@$ledger_account_id)
+		{
+		$bank_ledger_data=$this->Ledgers->LedgerAccounts->get($ledger_account_id);
+		}
+		$this->set(compact('bankReconciliationAdd','banks','Bank_Ledgers','ledger_account_id','bank_ledger_data'));
 	}
 	
 }

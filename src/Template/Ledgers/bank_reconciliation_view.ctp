@@ -3,11 +3,11 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Bank Reconciliation Add</span>
+			<span class="caption-subject font-blue-steel uppercase">Bank Reconciliation View</span>
 		</div>
 		<div align="right">
 			<?php $today =date('d-m-Y');
-						echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Bank Reconciliation View',array('controller'=>'Ledgers','action'=>'bankReconciliationView','From'=>$today,'To'=>$today),array('escape'=>false)); ?>
+						echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Bank Reconciliation Add',array('controller'=>'Ledgers','action'=>'bankReconciliationAdd','From'=>$today,'To'=>$today),array('escape'=>false)); ?>
 		</div>
 	
 	
@@ -65,7 +65,7 @@
 							$total_debit+=$ledger->debit; ?></td>
 						<td align="right"><?= $this->Number->format($ledger->credit,[ 'places' => 2]); 
 							$total_credit+=$ledger->credit; ?></td>
-						<td class="reconciliation_date"><?php echo $this->Form->input('reconciliation_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker reconciliation_date','data-date-format' => 'dd-mm-yyyy','data-date-start-date' => '+0d','data-date-end-date' => '+60d','placeholder' => 'Reconcilation Date','ledger_id'=>$ledger->id]); ?></td>
+						<td class="reconciliation_date"><?php echo $this->Form->input('reconciliation_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker reconciliation_date','data-date-format' => 'dd-mm-yyyy','data-date-start-date' => '+0d','data-date-end-date' => '+60d','placeholder' => 'Reconcilation Date','ledger_id'=>$ledger->id,'value'=>date("d-m-Y",strtotime($ledger->reconciliation_date))]); ?></td>
 				</tr>
 				<?php  endforeach; ?>
 				<tr>

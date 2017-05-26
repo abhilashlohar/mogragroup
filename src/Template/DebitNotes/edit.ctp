@@ -149,7 +149,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 									</td>
 									<td>
 									<?php  
-											echo $this->Form->input('old_amount', ['label' => false,'class' => '','type'=>'hidden','value'=>$old_ref_row->debit]);
+											echo $this->Form->input('old_amount', ['label' => false,'class' => 'old_amount','type'=>'hidden','value'=>$old_ref_row->debit]);
 											echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm ref_amount_textbox','placeholder'=>'Amount','value'=>$old_ref_row->debit]);
 									?>
 									</td>
@@ -394,12 +394,17 @@ $(document).ready(function() {
 				$(this).find("td:nth-child(2) input").attr({name:"ref_rows["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no", class:"form-control input-sm ref_number"});
 			}
 
-			var is_ref_old_amount=$(this).find("td:nth-child(3) input:eq(0)").length;
-			if(is_ref_old_amount){
+			$(this).find("td:nth-child(3) input").attr({name:"ref_rows["+i+"][ref_amount]", id:"ref_rows-"+i+"-ref_amount"}).rules("add", "required");
+			
+			var is_ref_old_amount=$(this).find("td:nth-child(3) input:eq(0)").val();
+			
+			//alert(is_ref_old_amount);
+			
+			if(is_ref_old_amount){				
 				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"ref_rows["+i+"][ref_old_amount]", id:"ref_rows-"+i+"-ref_old_amount"});
 			}
 			
-			$(this).find("td:nth-child(3) input").attr({name:"ref_rows["+i+"][ref_amount]", id:"ref_rows-"+i+"-ref_amount"}).rules("add", "required");
+			
 			i++;
 		});
 		

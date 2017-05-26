@@ -388,7 +388,7 @@ $(document).ready(function() {
 			if(is_select){
 				$(this).find("td:nth-child(2) select").attr({name:"ref_rows["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no"}).rules("add", "required");
 			}else if(is_input){
-				var url='<?php echo $this->Url->build(['controller'=>'Invoices','action'=>'checkRefNumberUnique']); ?>';
+				var url='<?php echo $this->Url->build(['controller'=>'DebitNotes','action'=>'checkRefNumberUnique']); ?>';
 				url=url+'/'+customer_suppiler_id+'/'+i;
 				
 				$(this).find("td:nth-child(2) input").attr({name:"ref_rows["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no", class:"form-control input-sm ref_number"});

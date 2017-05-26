@@ -53,9 +53,7 @@ class DebitNotesController extends AppController
 		
 		$this->set('debitNote', $debitNote);
         $this->set('_serialize', ['debitNote']);
-
-
-		}
+	}
 
     /**
      * Add method
@@ -392,9 +390,7 @@ class DebitNotesController extends AppController
 			else{
 				$ErrorsalesAccs='true';
 			}
-			
-		
-		
+
 			$vr=$this->DebitNotes->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Debit Notes','sub_entity'=>'Heads'])->first();	
 			$DebitNotesParty=$vr->id;
 			$vouchersReferences = $this->DebitNotes->VouchersReferences->get($vr->id, [

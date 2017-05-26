@@ -130,7 +130,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 
 			
 			<div class="form-actions">
-				<button type="submit" id='submitbtn' class="btn btn-primary">ADD DEBIT NOTE</button>
+				<button type="submit" id='submitbtn' class="btn btn-primary">ADD CREDIT NOTE</button>
 			</div>
 		</div>
 		<?= $this->Form->end() ?>
@@ -341,7 +341,7 @@ $(document).ready(function() {
 			if(is_select){
 				$(this).find("td:nth-child(2) select").attr({name:"ref_rows["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no"}).rules("add", "required");
 			}else if(is_input){
-				var url='<?php echo $this->Url->build(['controller'=>'Invoices','action'=>'checkRefNumberUnique']); ?>';
+				var url='<?php echo $this->Url->build(['controller'=>'DebitNotes','action'=>'checkRefNumberUnique']); ?>';
 				url=url+'/'+customer_suppiler_id+'/'+i;
 				
 				$(this).find("td:nth-child(2) input").attr({name:"ref_rows["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no", class:"form-control input-sm ref_number"});

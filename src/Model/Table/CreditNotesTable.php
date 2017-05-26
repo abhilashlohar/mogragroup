@@ -9,9 +9,10 @@ use Cake\Validation\Validator;
 /**
  * CreditNotes Model
  *
- * @property \Cake\ORM\Association\BelongsTo $SalesAccs
- * @property \Cake\ORM\Association\BelongsTo $Parties
+ * @property \Cake\ORM\Association\BelongsTo $CustomerSuppilers
  * @property \Cake\ORM\Association\BelongsTo $Companies
+ * @property \Cake\ORM\Association\HasMany $CreditNotesRows
+ * @property \Cake\ORM\Association\HasMany $ReferenceDetails
  *
  * @method \App\Model\Entity\CreditNote get($primaryKey, $options = [])
  * @method \App\Model\Entity\CreditNote newEntity($data = null, array $options = [])
@@ -36,33 +37,40 @@ class CreditNotesTable extends Table
 
         $this->table('credit_notes');
         $this->displayField('id');
-        $this->primaryKey('id');$this->belongsTo('Ledgers');
+        $this->primaryKey('id');
+		$this->belongsTo('Ledgers');
 		$this->belongsTo('VouchersReferences');
-		$this->belongsTo('FinancialYears');
-		$this->belongsTo('Challans');
+		$this->belongsTo('FinancialYears');		
+		$this->belongsTo('ReferenceBalances');
+		$this->belongsTo('ReferenceDetails');
 		
-		$this->belongsTo('PurchaseAccs', [
-			'className' => 'LedgerAccounts',
-            'foreignKey' => 'purchase_acc_id',
-            'propertyName' => 'PurchaseAccs',
-        ]);
-		$this->belongsTo('Parties', [
-			'className' => 'LedgerAccounts',
-            'foreignKey' => 'party_id',
-            'propertyName' => 'Parties',
-        ]);
-        $this->belongsTo('Companies', [
-            'foreignKey' => 'company_id',
+        $this->belongsTo('CustomerSuppilers', [
+			'className'=>'LedgerAccounts',
+            'foreignKey' => 'customer_suppiler_id',
             'joinType' => 'INNER'
         ]);
-		
+
+        $this->belongsTo('Heads', [
+			'className'=>'LedgerAccounts',
+            'foreignKey' => 'customer_suppiler_id',
+            'joinType' => 'INNER'
+        ]);
+
 		$this->belongsTo('Creator', [
 			'className' => 'Employees',
 			'foreignKey' => 'created_by',
 			'propertyName' => 'creator',
 		]);
-		$this->belongsTo('ReferenceDetails');
-		$this->belongsTo('ReferenceBalances');
+		
+        $this->belongsTo('Companies', [
+            'foreignKey' => 'company_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->hasMany('CreditNotesRows', [
+            'foreignKey' => 'credit_note_id',
+			'saveStrategy' => 'replace'
+        ]);
+		
     }
 
     /**
@@ -73,38 +81,44 @@ class CreditNotesTable extends Table
      */
     public function validationDefault(Validator $validator)
     {
-        $validator
-            ->integer('id')
-            ->allowEmpty('id', 'create');
+		   $validator
+				->integer('id')
+				->allowEmpty('id', 'create');
 
-        $validator
-            
-            ->requirePresence('purchase_acc_id')
-            ->notEmpty('purchase_acc_id');
+			$validator
+				->requirePresence('voucher_no', 'create')
+				->notEmpty('voucher_no');
 
-        $validator
-            ->requirePresence('party_id', 'create')
-            ->notEmpty('party_id');
+			$validator
+				->date('created_on')
+				->requirePresence('created_on', 'create')
+				->notEmpty('created_on');
 
-        $validator
-            ->requirePresence('payment_mode', 'create')
-            ->notEmpty('payment_mode');
+			$validator
+				->date('transaction_date')
+				->requirePresence('transaction_date', 'create')
+				->notEmpty('transaction_date');
 
-        $validator
-            ->requirePresence('narration', 'create')
-            ->notEmpty('narration');
+			$validator
+				->integer('created_by')
+				->requirePresence('created_by', 'create')
+				->notEmpty('created_by');
+			/*
+			$validator
+				->integer('edited_by')
+				->requirePresence('edited_by', 'create')
+				->notEmpty('edited_by');
 
-        $validator
-            ->decimal('amount')
-            ->requirePresence('amount', 'create')
-            ->notEmpty('amount');
+			$validator
+				->date('edited_on')
+				->requirePresence('edited_on', 'create')
+				->notEmpty('edited_on');
 
-        $validator
-            ->integer('created_by')
-            ->requirePresence('created_by', 'create')
-            ->notEmpty('created_by');
+			$validator
+				->requirePresence('subject', 'create')
+				->notEmpty('subject'); */
 
-        return $validator;
+			return $validator;
     }
 
     /**
@@ -114,5 +128,11 @@ class CreditNotesTable extends Table
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
-   
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->existsIn(['customer_suppiler_id'], 'CustomerSuppilers'));
+        $rules->add($rules->existsIn(['company_id'], 'Companies'));
+
+        return $rules;
+    }
 }

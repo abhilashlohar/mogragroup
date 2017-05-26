@@ -18,11 +18,11 @@
 					</tr>
 				</thead>
 				<tbody>
-				<?php for($i=0; $i<=$ledger_data['total_rows'] ;$i++){ ?>
+				<?php $sr=0; for($i=0; $i<=$ledger_data['total_rows'] ;$i++){  $sr++; ?>
 					<tr>
-							<td><?= h(++$i) ?></td>
+							<td><?= h($sr) ?></td>
 							<td><?php echo $this->Form->input(
-							'item_serial_numbers.'.--$i.'.serial_no', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Name']); ?></td>
+							'item_serial_numbers.'.$i.'.serial_no', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Name']); ?></td>
 							
 					</tr>
 				<?php  } ?>

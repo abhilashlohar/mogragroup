@@ -564,7 +564,6 @@ public function CheckCompany($company_id=null,$item_id=null)
 				
 		if ($this->request->is('post')) {
 			$data=$this->request->data();
-			pr($data); exit;
 			$query = $this->Items->ItemCompanies->query();
 			$query->update()
 				->set(['dynamic_cost' => $this->request->data['dynamic_cost'],'minimum_selling_price_factor' => $this->request->data['minimum_selling_price_factor']])
@@ -577,6 +576,19 @@ public function CheckCompany($company_id=null,$item_id=null)
 			
 		$this->set(compact('ledger_data','item'));
 		//pr($ledger_data['total_rows']); exit;
+	}
+	
+	public function ItemSerialNumberManage(){
+		$this->viewBuilder()->layout('index_layout');	
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
+		$Items=$this->Items->find()->where(['ItemCompanies', function ($q) use($st_company_id) {
+			return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0,'serial_number_enable'=>1]);
+			 
+		}]);
+		pr($Items); exit;
+		
 	}
     
 	

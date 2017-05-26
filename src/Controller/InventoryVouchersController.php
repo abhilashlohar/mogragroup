@@ -565,6 +565,8 @@ class InventoryVouchersController extends AppController
 			$InventoryVoucherRows=$this->InventoryVouchers->SalesOrderRows->JobCardRows->find()->contain(['Items'])->where(['sales_order_row_id'=>$SalesOrderRow->id]);
 
 			$sor=$this->InventoryVouchers->SalesOrderRows->JobCardRows->find()->contain(['Items'])->where(['sales_order_row_id'=>$SalesOrderRow->id])->first();
+			//pr($sor); exit;
+			
 			$sales_order_row=$this->InventoryVouchers->SalesOrderRows->get($sor->sales_order_row_id);
 			//pr($sales_order_row->quantity); exit;
 			

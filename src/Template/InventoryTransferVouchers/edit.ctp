@@ -7,13 +7,12 @@
 	vertical-align: top !important;
 }
 </style>
-</style>
 
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption" >
 			<i class="icon-globe font-blue-steel"></i>
-				<span class="caption-subject font-blue-steel uppercase">Create Inventory Transfer Voucher</span>
+				<span class="caption-subject font-blue-steel uppercase">Update Inventory Transfer Voucher</span>
 		</div>
 	</div>
 	<div class="portlet-body form">
@@ -25,25 +24,13 @@
 		</div>
 	</div>
 		<div class="row">
-			<div class="col-md-12">
-				<div class="tabbable tabbable-custom boxless tabbable-reversed">
-						<ul class="nav nav-tabs">
-							<li class="active">
-								<a href="#tab_0" data-toggle="tab" aria-expanded="true">
-								For Out</a>
-							</li>
-							<li class="">
-								<a href="#tab_1" data-toggle="tab" aria-expanded="false">
-								For In </a>
-							</li>
-						</ul>
-						<div class="tab-content">
-							<div class="tab-pane active" id="tab_0">
-								<table id="main_table" width="100%"  class="table table-condensed table-hover">
+			<div class="col-md-6">
+			<h5>For Out</h5>
+					<table id="main_table" width="50%"  class="table table-condensed table-hover">
 									<thead>
 										<tr>
 											<th>Item</th>
-											<th >Quantity</th>
+											<th >Qty</th>
 											<th >Serial Number</th>
 											<th></th>
 											<th></th>
@@ -53,26 +40,36 @@
 						<?php $options1= [];	foreach($inventoryTransferVouchersout->inventory_transfer_voucher_rows as $inventory_transfer_voucher_row){ 
 										?>
 								<tr class="main">
-									<td width="20%">
+									<td width="30%">
 										<?php echo $inventory_transfer_voucher_row->item->name;
 										echo $this->Form->input('q', ['type'=>'hidden','readonly','value'=>$inventory_transfer_voucher_row->item->id,'label' => false,'class' => 'form-control input-sm  ']); ?>
 									</td>
-									<td>
+									<td width="15%">
 										<?php echo $this->Form->input('q', ['type' => 'text','label' => false,'value'=>$inventory_transfer_voucher_row->quantity,'class' => 'form-control input-sm qty_bx','placeholder' => 'Quantity']); ?>
 									</td>
 									<td>
 									<?php
 									$selected=[]; $options=[];
+									
 									foreach($inventory_transfer_voucher_row->item->item_serial_numbers as $item_serial_number){
-										if($item_serial_number->inventory_transfer_voucher_id==$id){
+									
+										if($item_serial_number->inventory_transfer_voucher_id == $id &&$item_serial_number->item_id == $inventory_transfer_voucher_row->item_id 
+										&&$item_serial_number->status=='Out'){
+										
 										$selected[$item_serial_number->id]=$item_serial_number->id;
 										}
 									} 
+								
 									foreach($inventory_transfer_voucher_row->item->item_serial_numbers as $item_serial_number){
 										$options[]=['text' =>$item_serial_number->serial_no, 'value' => $item_serial_number->id];
 									}
-									//pr($selected); exit;
-									 echo $this->Form->input('q', ['label'=>false,'options' => $options,'multiple' => 'multiple','class'=>'form-control input-sm select2me','required ','style'=>'width:100%','value'=>$selected]); ?>
+									if(!empty($options)){
+									 echo $this->Form->input('q', ['label'=>false,'options' => $options,'multiple' => 'multiple','class'=>'form-control input-sm select2me','required ','style'=>'width:100%','value'=>$selected]); 
+									}else{
+										//echo "Serial No Not Selected";
+									} 
+									 ?>
+										
 									</td>
 									<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 							</tr>
@@ -80,14 +77,15 @@
 						</tbody>
 				</table>
 			</div>
-			<div class="tab-pane" id="tab_1">
-				<table id="main_table_1" width="100%"  class="table table-condensed table-hover">
+			<div class="col-md-6">
+			<h5>For In</h5>
+				<table id="main_table_1" width="50%"  class="table table-condensed table-hover">
 					<thead>
 						<tr>
 							<th>Item</th>
-							<th >Quantity</th>
-							<th >Serial Number</th>
-							<th >Amount</th>
+							<th >Qty</th>
+							<th>Serial Number</th>
+							<th >Rate</th>
 							<th></th>
 							<th></th>
 						</tr>
@@ -96,33 +94,31 @@
 						<?php $options1= [];	foreach($inventoryTransferVouchersins->inventory_transfer_voucher_rows as $inventory_transfer_voucher_row_in){ 
 									?>
 							<tr class="main">
-								<td >
+								<td  width="25%">
 									<?php echo $inventory_transfer_voucher_row_in->item->name;
 									echo $this->Form->input('q', ['type'=>'hidden','readonly','value'=>$inventory_transfer_voucher_row_in->item->id,'label' => false,'item_sr'=>$inventory_transfer_voucher_row_in->item->item_companies[0]->serial_number_enable,'class' => 'form-control input-sm  ']); ?>
 								</td>
-								<td > 
+								<td  width="15%"> 
 									<?php echo $this->Form->input('q', ['type' => 'text','label' => false,'value'=>$inventory_transfer_voucher_row_in->quantity,'class' => 'form-control input-sm qty_bx_in','placeholder' => 'Quantity','old_qty'=>$inventory_transfer_voucher_row_in->quantity]); ?>
 								</td>
 								
-								<td width="40%">
+								<td width="30%">
 									<div class="row">
-										<div class="col-md-6 offset sr_container">
-										
-										</div>
+										<div class="col-md-6 offset sr_container"></div>
 										<div class="col-md-6">
-											<table>
+											<table width="20%">
 												<tbody>
 													<tr>
 														<td>
 															<?php 
 									//pr($inventory_transfer_voucher_row_in); exit;
 									$i=1; foreach($inventory_transfer_voucher_row_in->item->item_serial_numbers as $item_serial_number){
-										if($item_serial_number->item_id == $inventory_transfer_voucher_row_in->item_id && $item_serial_number->inventory_transfer_voucher_id == $inventoryTransferVouchersins->id ){ ?>
+										if($item_serial_number->item_id == $inventory_transfer_voucher_row_in->item_id && $item_serial_number->inventory_transfer_voucher_id == $inventoryTransferVouchersins->id && $item_serial_number->status=='In' ){ ?>
 											<?php if($item_serial_number->status=='Out'){  ?>
-											<?php echo $this->Form->input('q', ['label' => false,'type'=>'text','value' => $item_serial_number->serial_no,'disabled'=>true]); ?>
+											<?php echo $this->Form->input('q', ['label' => false,'type'=>'text','style'=>'width: 65px;','value' => $item_serial_number->serial_no,'disabled'=>true]); ?>
 											
 											<?php  } else {?>
-											<?php echo $this->Form->input('q', ['label' => false,'type'=>'text','value' => $item_serial_number->serial_no,'disabled'=>true]); ?>
+											<?php echo $this->Form->input('q', ['label' => false,'type'=>'text','style'=>'width: 65px;','value' => $item_serial_number->serial_no,'disabled'=>true]); ?>
 											
 											
 												<?= $this->Html->link('<i class="fa fa-trash"></i> ',
@@ -144,25 +140,22 @@
 									
 								</td>
 								
-								<td >
-									<?php echo $this->Form->input('amount', ['type' => 'text','label' => false,'value'=>$inventory_transfer_voucher_row->amount,'class' => 'form-control input-sm ','placeholder' => 'Amount']); ?>
+								<td width="20%">
+									<?php echo $this->Form->input('amount', ['type' => 'text','label' => false,'style'=>'width: 79px;','value'=>$inventory_transfer_voucher_row->amount,'class' => 'form-control input-sm ','placeholder' => 'Rate']); ?>
 								</td>
-								<td ><a class="btn btn-xs btn-default addrow_1" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow_1" href="#" role='button'><i class="fa fa-times"></i></a></td>
+								<td><a class="btn btn-xs btn-default addrow_1" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow_1" href="#" role='button'><i class="fa fa-times"></i></a></td>
 							</tr>
 						<?php }?>
 						</tbody>
 					</table>
 				
-				
 			</div>
-		 </div>	
-		<button type="submit" class="btn btn-primary">Submit</button>
-		</div>
 		
-		</div>
 		
-		<?= $this->Form->end(); ?>
 	</div>
+	<button type="submit" class="btn btn-primary">Submit</button>	
+	<?= $this->Form->end(); ?>
+</div>
 </div>
 		
 		
@@ -344,7 +337,7 @@ $(document).ready(function() {
 			var row_no=tr_obj.attr('row_no');
 			tr_obj.find('td:nth-child(3) div.sr_container').html('');
 			for(var w=0; w < (qty-old_qty); w++){
-				tr_obj.find('td:nth-child(3) div.sr_container').append('<input type="text" name="inventory_transfer_voucher_rows[in]['+row_no+'][sr_no]['+w+']" id="inventory_transfer_voucher_rows-in-'+row_no+'-sr_no-'+w+'" required="required" placeholder="serial number '+w+'" /><br/>');
+				tr_obj.find('td:nth-child(3) div.sr_container').append('<input type="text" name="inventory_transfer_voucher_rows[in]['+row_no+'][sr_no]['+w+']" id="inventory_transfer_voucher_rows-in-'+row_no+'-sr_no-'+w+'" style=" width: 92px;" required="required" placeholder="serial number '+w+'" /><br/>');
 			}
 		}else{
 			tr_obj.find('td:nth-child(3)').html('');
@@ -466,7 +459,7 @@ $(document).ready(function() {
 			</td>
 			<td width="20%" ><div class="offset sr_container"></div></td>
 			<td width="20%">
-				<?php echo $this->Form->input('amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Amount']); ?>
+				<?php echo $this->Form->input('amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Rate']); ?>
 			</td>
 			<td width="20%"><a class="btn btn-xs btn-default addrow_1" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow_1" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>

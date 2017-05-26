@@ -37,6 +37,7 @@ class InventoryTransferVoucherRowsTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 
+		
         $this->belongsTo('InventoryTransferVouchers', [
             'foreignKey' => 'inventory_transfer_voucher_id',
             'joinType' => 'INNER'

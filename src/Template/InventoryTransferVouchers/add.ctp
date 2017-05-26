@@ -23,7 +23,7 @@
 		<div class="col-md-4"></div>
 		<div class="col-md-3">
 			
-				<input type="text" name="transaction_date" class="form-control input-sm date-picker" placeholder="Transaction Date" data-date-format="dd-mm-yyyy" >
+				<input type="text" name="transaction_date" required="required" class="form-control input-sm date-picker" placeholder="Transaction Date" data-date-format="dd-mm-yyyy" >
 		</div>
 	</div>
 		<div class="row">
@@ -54,7 +54,7 @@
 							<th>Item</th>
 							<th >Quantity</th>
 							<th >Serial Number</th>
-							<th >Amount</th>
+							<th >Rate</th>
 							<th></th>
 							<th></th>
 						</tr>
@@ -104,6 +104,9 @@ $(document).ready(function() {
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
+				transaction_date:{
+					required: true,
+				},
 				item_id :{
 							required: true,
 						  },
@@ -348,7 +351,7 @@ $(document).ready(function() {
 			</td>
 			<td width="20%" ><div class="sr_container"></div></td>
 			<td width="20%">
-				<?php echo $this->Form->input('amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Amount']); ?>
+				<?php echo $this->Form->input('amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Rate']); ?>
 			</td>
 			<td width="20%"><a class="btn btn-xs btn-default addrow_1" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow_1" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>

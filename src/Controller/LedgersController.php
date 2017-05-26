@@ -355,7 +355,7 @@ class LedgersController extends AppController
 		if ($this->request->is('post')) {
 			
 			$total_row=sizeof($this->request->data['reference_no']);
-			$Ledgersexists = $this->Ledgers->exists(['ledger_account_id' => $this->request->data['ledger_account_id'],'company_id'=>$company_id]);
+			$Ledgersexists = $this->Ledgers->exists(['ledger_account_id' => $this->request->data['ledger_account_id'],'company_id'=>$company_id,'voucher_source'=>'Opening Balance']);
 			if($Ledgersexists){
 				$this->Flash->error(__('Opening Balance already exists'));
 				return $this->redirect(['action' => 'openingBalance']);

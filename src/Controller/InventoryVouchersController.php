@@ -343,7 +343,6 @@ class InventoryVouchersController extends AppController
 				'contain' => ['InvoiceRows'=> function ($q) {
 				return $q->where(['InvoiceRows.inventory_voucher_applicable'=>'Yes']);
 				}]]);
-
 			$invoice_row = @$Invoice->invoice_rows[0];
 			$item_id=$invoice_row->item_id;
 			$invoice_row_id=$invoice_row->id;
@@ -566,7 +565,7 @@ class InventoryVouchersController extends AppController
 			$InventoryVoucherRows=$this->InventoryVouchers->SalesOrderRows->JobCardRows->find()->contain(['Items'])->where(['sales_order_row_id'=>$SalesOrderRow->id]);
 			
 			
-			if(empty($InventoryVoucherRows)){    pr($InventoryVoucherRows->toArray()); exit;
+			if(empty($InventoryVoucherRows)){    //pr($InventoryVoucherRows->toArray()); exit;
 			//pr($InventoryVoucherRows->toArray()); exit;
 			$sor=$this->InventoryVouchers->SalesOrderRows->JobCardRows->find()->contain(['Items'])->where(['sales_order_row_id'=>$SalesOrderRow->id])->first();
 			$sales_order_row=$this->InventoryVouchers->SalesOrderRows->get($sor->sales_order_row_id);

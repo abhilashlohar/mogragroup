@@ -88,7 +88,16 @@ class InventoryTransferVouchersController extends AppController
 		
 		
 		
-		$inventory_vouchers = [$this->request->data['inventory_transfer_voucher_rows']];
+		
+		
+		//pr($inventory_voucher_data);
+			
+		$inventoryTransferVoucher = $this->InventoryTransferVouchers->newEntity();
+		
+		$inventory_vouchers = [];
+        if ($this->request->is('post')) {
+			
+					$inventory_vouchers = [$this->request->data['inventory_transfer_voucher_rows']];
 	  
 		//pr($inventory_vouchers);exit;
 	  
@@ -108,14 +117,9 @@ class InventoryTransferVouchersController extends AppController
 		{
 			$out_data['status'] = 'In';
 			$inventory_voucher_data[] = $out_data;
-		}		
-		
-		//pr($inventory_voucher_data);
+		}
 			
-		$inventoryTransferVoucher = $this->InventoryTransferVouchers->newEntity();
-		
-		$inventory_vouchers = [];
-        if ($this->request->is('post')) {
+			
 			$inventoryTransferVoucher = $this->InventoryTransferVouchers->patchEntity($inventoryTransferVoucher, $this->request->data);
 			$inventoryTransferVoucher->transaction_date=date("Y-m-d",strtotime($inventoryTransferVoucher->transaction_date));
 			$inventoryTransferVoucher->created_on=date("Y-m-d");
@@ -128,7 +132,7 @@ class InventoryTransferVouchersController extends AppController
 			}
 			$inventoryTransferVoucher->company_id=$st_company_id;
 			$inventoryTransferVoucher->created_by=$s_employee_id;
-			pr($inventoryTransferVoucher); exit;
+			//pr($inventoryTransferVoucher); exit;
 			if ($this->InventoryTransferVouchers->save($inventoryTransferVoucher)) {
 							
 			foreach($inventory_voucher_data as $inventory_voucher_out){

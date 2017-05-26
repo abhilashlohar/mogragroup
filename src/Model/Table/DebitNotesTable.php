@@ -61,7 +61,8 @@ class DebitNotesTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->hasMany('DebitNotesRows', [
-            'foreignKey' => 'debit_note_id'
+            'foreignKey' => 'debit_note_id',
+			'saveStrategy' => 'replace'
         ]);
     }
 

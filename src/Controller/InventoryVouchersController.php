@@ -559,23 +559,29 @@ class InventoryVouchersController extends AppController
 			$status='Exist';
 			//pr($SalesOrderRow); exit;
 			}else{
-			$Invoices=$this->InventoryVouchers->Invoices->get($invoice_id);	
+			$Invoices=$this->InventoryVouchers->Invoices->get($invoice_id);
+			
 			$SalesOrderRow=$this->InventoryVouchers->SalesOrderRows->find()->where(['SalesOrderRows.sales_order_id'=>$Invoices->sales_order_id,'SalesOrderRows.item_id'=>$q_item_id])->first();
-			//pr($SalesOrderRow); exit;
+			//pr($SalesOrderRow->quantity); exit;
 			$InventoryVoucherRows=$this->InventoryVouchers->SalesOrderRows->JobCardRows->find()->contain(['Items'])->where(['sales_order_row_id'=>$SalesOrderRow->id]);
-
+			
+			
+			if(empty($InventoryVoucherRows)){    pr($InventoryVoucherRows->toArray()); exit;
+			//pr($InventoryVoucherRows->toArray()); exit;
 			$sor=$this->InventoryVouchers->SalesOrderRows->JobCardRows->find()->contain(['Items'])->where(['sales_order_row_id'=>$SalesOrderRow->id])->first();
-			//pr($sor); exit;
-			
 			$sales_order_row=$this->InventoryVouchers->SalesOrderRows->get($sor->sales_order_row_id);
-			//pr($sales_order_row->quantity); exit;
+			$job_card_qty=$sales_order_row->quantity;
 			
+			$status='FisrtTime';
+			}  
 			$Invoice_qty=$this->InventoryVouchers->Invoices->InvoiceRows->find()->where(['InvoiceRows.invoice_id'=>$invoice_id,'InvoiceRows.item_id'=>$q_item_id])->first();
 			$q_qty=$Invoice_qty->quantity;
+			//pr($q_qty); exit;
 			$q_item_sr=$this->InventoryVouchers->Items->get($q_item_id);
 			$q_sno=$q_item_sr->serial_number_enable;
-			$job_card_qty=$sales_order_row->quantity;
+			$job_card_qty=$SalesOrderRow->quantity;
 			$status='FisrtTime';
+			///$status='FisrtTime';
 
 			
 			}

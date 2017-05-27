@@ -2,8 +2,9 @@
 $options=[];
 foreach($ReferenceBalances as $ReferenceBalance){
 	
-		$due_amount=$ReferenceBalance->credit-$ReferenceBalance->debit;
-		$total=$ReferenceBalance->credit;
+		$due_amount=$ReferenceBalance->debit-$ReferenceBalance->credit;
+		//$due_amount=$ReferenceBalance->credit-$ReferenceBalance->debit;
+		$total=$ReferenceBalance->debit;
 	
 	
 	if($due_amount>0){

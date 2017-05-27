@@ -77,7 +77,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 							<tbody id="main_tbody">
 							<?php 
 							//pr($debitNote->debit_notes_rows); exit;
-							foreach($creditNote->credit_note_rows as $credit_note_row ) { ?>
+							foreach($creditNote->credit_notes_rows as $credit_note_row ) { ?>
 								<tr class="main_tr">
 									<td>
 										<div class="row">
@@ -314,7 +314,7 @@ $(document).ready(function() {
 		
 		var total_ref=0;
 		$("table.main_ref_table tbody tr").each(function(){
-			var am=parseFloat($(this).find('td:nth-child(3) input').val());
+			var am=parseFloat($(this).find('td:nth-child(3) input:eq(1)').val());
 			if(!am){ am=0; }
 			total_ref=total_ref+am;
 		});
@@ -394,21 +394,20 @@ $(document).ready(function() {
 				$(this).find("td:nth-child(2) input").attr({name:"ref_rows["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no", class:"form-control input-sm ref_number"});
 			}
 
-			$(this).find("td:nth-child(3) input").attr({name:"ref_rows["+i+"][ref_amount]", id:"ref_rows-"+i+"-ref_amount"}).rules("add", "required");
+			var is_ref_old_amount=$(this).find("td:nth-child(3) input:eq(0)").length;
 			
-			var is_ref_old_amount=$(this).find("td:nth-child(3) input:eq(0)").val();
-			
-			//alert(is_ref_old_amount);
-			
-			if(is_ref_old_amount){				
+			if(is_ref_old_amount){
 				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"ref_rows["+i+"][ref_old_amount]", id:"ref_rows-"+i+"-ref_old_amount"});
 			}
+			$(this).find("td:nth-child(3) input:eq(1)").attr({name:"ref_rows["+i+"][ref_amount]",
+			id:"ref_rows-"+i+"-ref_amount"}).rules("add", "required");
 			
 			
 			i++;
 		});
 		
 		var is_tot_input=$("table.main_ref_table tfoot tr:eq(1) td:eq(1) input").length;
+		
 		if(is_tot_input){
 			$("table.main_ref_table tfoot tr:eq(1) td:eq(1) input").attr({name:"ref_rows_total", id:"ref_rows_total"});
 		}
@@ -522,7 +521,9 @@ $(document).ready(function() {
 				<tr>
 					<td><?php echo $this->Form->input('ref_types', ['empty'=>'--Select-','options'=>$ref_types,'label' => false,'class' => 'form-control input-sm ref_type']); ?></td>
 					<td class="ref_no"></td>
-					<td><?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm ref_amount_textbox','placeholder'=>'Amount']); ?></td>
+					<td>
+					<?php echo $this->Form->input('old_amount', ['label' => false,'class' => '','type'=>'hidden']); ?>
+					<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm ref_amount_textbox','placeholder'=>'Amount']); ?></td>
 					<td><a class="btn btn-xs btn-default deleterefrow" href="#" role="button"><i class="fa fa-times"></i></a></td>
 				</tr>
 			</tbody>

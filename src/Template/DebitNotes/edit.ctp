@@ -314,7 +314,7 @@ $(document).ready(function() {
 		
 		var total_ref=0;
 		$("table.main_ref_table tbody tr").each(function(){
-			var am=parseFloat($(this).find('td:nth-child(3) input').val());
+			var am=parseFloat($(this).find('td:nth-child(3) input:eq(1)').val());
 			if(!am){ am=0; }
 			total_ref=total_ref+am;
 		});
@@ -396,13 +396,13 @@ $(document).ready(function() {
 
 			$(this).find("td:nth-child(3) input").attr({name:"ref_rows["+i+"][ref_amount]", id:"ref_rows-"+i+"-ref_amount"}).rules("add", "required");
 			
-			var is_ref_old_amount=$(this).find("td:nth-child(3) input:eq(0)").val();
+			var is_ref_old_amount=$(this).find("td:nth-child(3) input:eq(0)").length;
 			
-			//alert(is_ref_old_amount);
-			
-			if(is_ref_old_amount){				
+			if(is_ref_old_amount){
 				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"ref_rows["+i+"][ref_old_amount]", id:"ref_rows-"+i+"-ref_old_amount"});
 			}
+			$(this).find("td:nth-child(3) input:eq(1)").attr({name:"ref_rows["+i+"][ref_amount]",
+			id:"ref_rows-"+i+"-ref_amount"}).rules("add", "required");
 			
 			
 			i++;
@@ -523,7 +523,8 @@ $(document).ready(function() {
 				<tr>
 					<td><?php echo $this->Form->input('ref_types', ['empty'=>'--Select-','options'=>$ref_types,'label' => false,'class' => 'form-control input-sm ref_type']); ?></td>
 					<td class="ref_no"></td>
-					<td><?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm ref_amount_textbox','placeholder'=>'Amount']); ?></td>
+					<td><?php echo $this->Form->input('old_amount', ['label' => false,'class' => '','type'=>'hidden']); ?>
+					<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm ref_amount_textbox','placeholder'=>'Amount']); ?></td>
 					<td><a class="btn btn-xs btn-default deleterefrow" href="#" role="button"><i class="fa fa-times"></i></a></td>
 				</tr>
 			</tbody>

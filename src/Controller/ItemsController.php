@@ -582,8 +582,7 @@ public function CheckCompany($company_id=null,$item_id=null)
 		$this->viewBuilder()->layout('index_layout');	
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-		
-		
+
 		$Items=$this->Items->find()->matching('ItemCompanies', function ($q) use($st_company_id) {
 			return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze'=>0,'ItemCompanies.serial_number_enable'=>1]);
 		});
@@ -602,8 +601,56 @@ public function CheckCompany($company_id=null,$item_id=null)
 		}
 		
 		exit;
+	}
+	
+	public function askSerialNumber($item_id=null,$company_id=null){
+		$this->viewBuilder()->layout('index_layout');
+		
+		$item = $this->Items->newEntity();
+		if ($this->request->is('post')) {
+			foreach($this->request->data['serial_numbers'] as $serial_number){
+				$query = $this->Items->ItemSerialNumbers->query();
+				$query->insert(['item_id', 'serial_no', 'status', 'master_item_id', 'company_id'])
+					->values([
+						'item_id' => $item_id,
+						'serial_no' => $serial_number,
+						'status' => 'In',
+						'master_item_id' => $item_id,
+						'company_id' => $company_id
+					]);
+				$query->execute();
+			}
+			$query = $this->Items->ItemCompanies->query();
+			$query->update()
+				->set(['serial_number_enable' => 1])
+				->where(['item_id' => $item_id,'company_id'=>$company_id])
+				->execute();
+			
+			return $this->redirect(['action' => 'edit-company',$item_id]);
+		}
 		
 		
+		$ItemLedgers=$this->Items->ItemLedgers->find()->where(['item_id'=>$item_id,'company_id'=>$company_id]);
+		$item_qty=[];
+		foreach($ItemLedgers as $ItemLedger){
+			if($ItemLedger->in_out=='Out'){
+				@$item_qty['Out']+=$ItemLedger->quantity;
+			}else{
+				@$item_qty['In']+=$ItemLedger->quantity;
+			}
+		}
+		
+		$current_qty=@$item_qty['In']-@$item_qty['Out'];
+		if($current_qty==0){
+			$query = $this->Items->ItemCompanies->query();
+			$query->update()
+				->set(['serial_number_enable' => 1])
+				->where(['item_id' => $item_id,'company_id'=>$company_id])
+				->execute();
+			return $this->redirect(['action' => 'edit-company',$item_id]);
+		}
+		$this->set(compact('current_qty', 'item'));
+
 	}
 	
 	

@@ -578,19 +578,33 @@ public function CheckCompany($company_id=null,$item_id=null)
 		//pr($ledger_data['total_rows']); exit;
 	}
 	
-	public function ItemSerialNumberManage(){
+	public function itemSerialNumberManage(){
 		$this->viewBuilder()->layout('index_layout');	
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		
-		$Items=$this->Items->find()->where(['ItemCompanies', function ($q) use($st_company_id) {
-			return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0,'serial_number_enable'=>1]);
-			 
-		}]);
-		pr($Items); exit;
+		
+		$Items=$this->Items->find()->matching('ItemCompanies', function ($q) use($st_company_id) {
+			return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze'=>0,'ItemCompanies.serial_number_enable'=>1]);
+		});
+		foreach($Items as $Item){
+			$ItemLedgers=$this->Items->ItemLedgers->find()
+				->select(['total_quantity' => $this->Items->find()->func()->sum('ItemLedgers.quantity')])
+				->where(['item_id'=>$Item->id,'company_id'=>$st_company_id,'in_out'=>'In'])
+				->group(['item_id']);
+				
+			$ItemSerialNumbers=$this->Items->ItemSerialNumbers->find()->where(['item_id'=>$Item->id,'company_id'=>$st_company_id]);
+			
+			$ItemLedgers= (Array)$ItemLedgers->toArray();
+			if($ItemSerialNumbers->count()!=@$ItemLedgers[0]->total_quantity){
+				echo $Item->id.'-';
+			}
+		}
+		
+		exit;
+		
 		
 	}
-    
 	
 	
 }

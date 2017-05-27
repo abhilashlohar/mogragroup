@@ -35,16 +35,16 @@
 		</form>
 		
 		<?php $page_no=$this->Paginator->current('ItemLedgers'); $page_no=($page_no-1)*20; ?>
-		<table class="table table-bordered table-striped" id="main_tble">
-			<thead>
+		<table class="table table-condensed table-bordered table-hover" id="main_tble">
+			<thead >
 				<tr>
 					<th>Sr. No.</th>
-					<th>Date</th>
+					<th width="100">Date</th>
 					<th>Item</th>
 					<th>Quantity</th>
 					<th>Rate</th>
 					<th>Amout</th>
-					<th>Serial Number Enable</th>
+					<th width="50" style="font-size: 9px !important;">Serial Number Enable</th>
 					<th>Action</th>
 				</tr>
 			</thead>

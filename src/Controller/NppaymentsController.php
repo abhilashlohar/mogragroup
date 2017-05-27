@@ -43,8 +43,6 @@ class NppaymentsController extends AppController
             $where['Nppayments.transaction_date <=']=$To;
         }
         
-        
-        
         $this->paginate = [
             'contain' => []
         ];

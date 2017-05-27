@@ -1,22 +1,22 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\CreditNotesTable;
+use App\Model\Table\CreditNotesRowsTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\CreditNotesTable Test Case
+ * App\Model\Table\CreditNotesRowsTable Test Case
  */
-class CreditNotesTableTest extends TestCase
+class CreditNotesRowsTableTest extends TestCase
 {
 
     /**
      * Test subject
      *
-     * @var \App\Model\Table\CreditNotesTable
+     * @var \App\Model\Table\CreditNotesRowsTable
      */
-    public $CreditNotes;
+    public $CreditNotesRows;
 
     /**
      * Fixtures
@@ -24,25 +24,24 @@ class CreditNotesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
+        'app.credit_notes_rows',
         'app.credit_notes',
-        'app.ledgers',
+        'app.customer_suppilers',
+        'app.companies',
+        'app.company_groups',
+        'app.customers',
         'app.ledger_accounts',
         'app.account_second_subgroups',
         'app.account_first_subgroups',
         'app.account_groups',
         'app.account_categories',
-        'app.customers',
-        'app.districts',
-        'app.company_groups',
-        'app.companies',
-        'app.item_used_by_companies',
-        'app.company_banks',
-        'app.quotations',
-        'app.financial_years',
-        'app.financial_months',
+        'app.ledgers',
+        'app.reference_details',
         'app.receipt_vouchers',
         'app.vouchers_references',
         'app.voucher_ledger_accounts',
+        'app.financial_years',
+        'app.financial_months',
         'app.invoices',
         'app.customer_groups',
         'app.item_ledgers',
@@ -63,10 +62,10 @@ class CreditNotesTableTest extends TestCase
         'app.sales_orders',
         'app.carrier',
         'app.customer_address',
+        'app.districts',
         'app.transporters',
         'app.courier',
-        'app.terms_conditions',
-        'app.tax_details',
+        'app.quotations',
         'app.employees',
         'app.departments',
         'app.designations',
@@ -78,6 +77,11 @@ class CreditNotesTableTest extends TestCase
         'app.employee_companies',
         'app.creator',
         'app.editor',
+        'app.terms_conditions',
+        'app.quotation_close_reasons',
+        'app.quotation_rows',
+        'app.customer_contacts',
+        'app.tax_details',
         'app.sales_order_rows',
         'app.sale_taxes',
         'app.sale_tax_companies',
@@ -96,27 +100,24 @@ class CreditNotesTableTest extends TestCase
         'app.invoice_booking_rows',
         'app.account_references',
         'app.reference_balances',
-        'app.reference_details',
-        'app.payment_vouchers',
-        'app.paid_tos',
-        'app.bank_cashes',
-        'app.payment_breakups',
         'app.inventory_transfer_vouchers',
         'app.inventory_transfer_voucher_rows',
-        'app.quotation_rows',
         'app.challans',
         'app.challan_rows',
         'app.invoice_breakups',
         'app.sale_returns',
         'app.sale_return_rows',
         'app.received_froms',
+        'app.bank_cashes',
         'app.receipt_breakups',
-        'app.quotation_close_reasons',
-        'app.customer_contacts',
-        'app.customer_companies',
+        'app.payment_vouchers',
+        'app.paid_tos',
+        'app.payment_breakups',
         'app.customer_segs',
-        'app.purchase_accs',
-        'app.parties'
+        'app.customer_companies',
+        'app.item_used_by_companies',
+        'app.company_banks',
+        'app.heads'
     ];
 
     /**
@@ -127,8 +128,8 @@ class CreditNotesTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('CreditNotes') ? [] : ['className' => 'App\Model\Table\CreditNotesTable'];
-        $this->CreditNotes = TableRegistry::get('CreditNotes', $config);
+        $config = TableRegistry::exists('CreditNotesRows') ? [] : ['className' => 'App\Model\Table\CreditNotesRowsTable'];
+        $this->CreditNotesRows = TableRegistry::get('CreditNotesRows', $config);
     }
 
     /**
@@ -138,7 +139,7 @@ class CreditNotesTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->CreditNotes);
+        unset($this->CreditNotesRows);
 
         parent::tearDown();
     }
@@ -159,6 +160,16 @@ class CreditNotesTableTest extends TestCase
      * @return void
      */
     public function testValidationDefault()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test buildRules method
+     *
+     * @return void
+     */
+    public function testBuildRules()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

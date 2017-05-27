@@ -497,7 +497,7 @@ class JournalVouchersController extends AppController
 				
 		
         $companies = $this->JournalVouchers->Companies->find('all');
-        $this->set(compact('journalVoucher','receivedFroms','ReceivedFroms_selected', 'companies','ledgers','financial_year','financial_year_data','old_ref_rows'));
+        $this->set(compact('journalVoucher','receivedFroms','ReceivedFroms_selected', 'companies','ledgers','financial_year','financial_year_data','old_ref_rows','chkdate'));
         $this->set('_serialize', ['journalVoucher']);
     }
 

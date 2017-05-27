@@ -55,13 +55,19 @@ class DebitNotesTable extends Table
             'joinType' => 'INNER'
         ]);
 
+		$this->belongsTo('Creator', [
+			'className' => 'Employees',
+			'foreignKey' => 'created_by',
+			'propertyName' => 'creator',
+		]);
 		
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
         ]);
         $this->hasMany('DebitNotesRows', [
-            'foreignKey' => 'debit_note_id'
+            'foreignKey' => 'debit_note_id',
+			'saveStrategy' => 'replace'
         ]);
     }
 

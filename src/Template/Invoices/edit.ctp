@@ -1070,7 +1070,7 @@ $(document).ready(function() {
 	}
 	rename_ref_rows();
 	function rename_ref_rows(){
-		var i=0;
+		var i=0; var customer_suppiler_id = $('#customer_suppiler_id').val();
 		$("table.main_ref_table tbody tr").each(function(){
 			$(this).find("td:nth-child(1) select").attr({name:"ref_rows["+i+"][ref_type]", id:"ref_rows-"+i+"-ref_type"}).rules("add", "required");
 			var is_select=$(this).find("td:nth-child(2) select").length;
@@ -1080,7 +1080,7 @@ $(document).ready(function() {
 				$(this).find("td:nth-child(2) select").attr({name:"ref_rows["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no"}).rules("add", "required");
 			}else if(is_input){
 				var url='<?php echo $this->Url->build(['controller'=>'Invoices','action'=>'checkRefNumberUnique']); ?>';
-				url=url+'/<?php echo $c_LedgerAccount->id; ?>/'+i;
+				url=url+'/'+customer_suppiler_id+'/'+i;
 				$(this).find("td:nth-child(2) input").attr({name:"ref_rows["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no", class:"form-control input-sm ref_number"}).rules('add', {
 							required: true,
 							noSpace: true,

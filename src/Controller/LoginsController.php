@@ -28,12 +28,14 @@ class LoginsController extends AppController
 				 $employee_id=$row["employee_id"]; 
 				
 				
+			
 			}
 			
-			if($number==1 && !empty($login_id)){
+			if($number==1 && !empty($login_id)){ 
+			
+				$this->request->session()->write('st_login_id',$login_id);
 				return $this->redirect(['controller'=>'Logins', 'action' => 'generateOtp',$employee_id]);
 		 
-				$this->request->session()->write('st_login_id',$login_id);
 				$Employee=$this->Logins->Employees->get($employee_id, [
 					'contain' => ['Companies']
 				]);
@@ -109,6 +111,7 @@ class LoginsController extends AppController
     }
 	
 	function SwitchCompany($company_id=null){
+		
 		$this->viewBuilder()->layout('login_layout');
 		$session = $this->request->session();
 		$st_login_id = $session->read('st_login_id');
@@ -137,13 +140,11 @@ class LoginsController extends AppController
 		$this->request->session()->write('otp_confirm',$otp_allow_page);
 		$otp_confirm = $this->request->session()->read('otp_confirm');
 		$Employee=$this->Logins->Employees->get($employee_id);
-		if($otp_confirm == 'yes'){
-			
 		
+		if($otp_confirm == 'yes'){
 			if ($this->request->is('put')) 
 			{ 
 				$randomString =substr( rand(), 0, 7);
-				//pr($randomString);
 				$query = $this->Logins->Employees->query();
 					$query->update()
 						->set(['otp_no' => $randomString])
@@ -152,20 +153,14 @@ class LoginsController extends AppController
 				$otp_no=$this->request->data["otp_no"];
 				if($Employee['otp_no'] == $otp_no){
 					return $this->redirect(['action' => 'Switch-Company']);
+				}else{
 					
+					$this->Flash->error(__('Enter Correct OTP Code'));
+				
 				}
-					
-					
 			}
-			 				
-						
-		}else{
-			pr("not session");
 		}
 					
-				
-				
-		
 		$this->set(compact('st_login_id','Employee'));
 		$this->set('_serialize', ['Employee']);
 
@@ -177,7 +172,7 @@ class LoginsController extends AppController
 		$session = $this->request->session();
 		$st_login_id = $session->read('st_login_id');
 		$Employee=$this->Logins->Employees->get($employee_id);
-		pr($Employee->otp_no); exit;
+		//pr($Employee->otp_no); exit;
 		$this->set(compact('st_login_id','Employee'));
 	}
 	

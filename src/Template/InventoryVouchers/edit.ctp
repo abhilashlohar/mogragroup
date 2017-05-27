@@ -60,9 +60,9 @@
 					</thead>
 					<tbody id="maintbody">
 					<?php 
-					
+					$status_1=$status;
 					foreach($InventoryVoucherRows as $InventoryVoucherRow){ 
-					
+					//pr($status); exit;
 					?>
 					
 					
@@ -75,7 +75,7 @@
 									} 
 								echo $this->Form->input('q', ['empty'=>'Select','options' => $item_option,'label' => false,'class' => 'form-control input-sm select_item item_id','value'=>$InventoryVoucherRow->item_id]); ?>
 							</td>
-							<td><?php if($status=='FisrtTime'){ $total_quant=($q_qty*$InventoryVoucherRow->quantity)/$job_card_qty; ?>
+							<td><?php if($status_1=='FisrtTime'){ $total_quant=($q_qty*$InventoryVoucherRow->quantity)/$job_card_qty; ?>
 								<?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm qty_bx ','placeholder' => 'Quantity','value'=>$total_quant]);}else{
 								echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm qty_bx ','placeholder' => 'Quantity','value'=>$InventoryVoucherRow->quantity]);
 								}?>

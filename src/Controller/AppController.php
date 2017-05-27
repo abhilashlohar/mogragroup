@@ -131,9 +131,7 @@ class AppController extends Controller
 			$this -> render('/Error/not_allow'); 
 		}
 		
-		if(!empty($st_opt_confirm)){
-			echo"dfd";exit;
-		}
+		
 
 
 		

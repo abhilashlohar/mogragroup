@@ -7,19 +7,26 @@ use Cake\ORM\Entity;
  * CreditNote Entity
  *
  * @property int $id
+ * @property string $voucher_no
  * @property \Cake\I18n\Time $created_on
  * @property \Cake\I18n\Time $transaction_date
- * @property int $sales_acc_id
- * @property string $payment_mode
- * @property int $party_id
- * @property string $narration
- * @property float $amount
+ * @property int $customer_suppiler_id
  * @property int $company_id
  * @property int $created_by
+ * @property int $edited_by
+ * @property \Cake\I18n\Time $edited_on
+ * @property string $subject
  *
- * @property \App\Model\Entity\SalesAcc $sales_acc
- * @property \App\Model\Entity\Party $party
+ * @property \App\Model\Entity\Ledger $ledger
+ * @property \App\Model\Entity\VouchersReference $vouchers_reference
+ * @property \App\Model\Entity\FinancialYear $financial_year
+ * @property \App\Model\Entity\Challan $challan
+ * @property \App\Model\Entity\LedgerAccount $PurchaseAccs
+ * @property \App\Model\Entity\LedgerAccount $Parties
  * @property \App\Model\Entity\Company $company
+ * @property \App\Model\Entity\Employee $creator
+ * @property \App\Model\Entity\ReferenceDetail $reference_detail
+ * @property \App\Model\Entity\ReferenceBalance $reference_balance
  */
 class CreditNote extends Entity
 {

@@ -16,13 +16,13 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 <?php if(@$ErrorsalesAccs){
 		?> 
 		<div class="actions">
-				<?php echo $this->Html->link('Create Ledger Account For Credit Notes -> Customer/Suppiler','/VouchersReferences/edit/'.$DebitNotesSalesAccount,array('escape'=>false,'class'=>'btn btn-primary')); ?>
+				<?php echo $this->Html->link('Create Ledger Account For Credit Notes -> Customer/Suppiler','/VouchersReferences/edit/'.$CreditNotesSalesAccount,array('escape'=>false,'class'=>'btn btn-primary')); ?>
 		</div>
 		<?php } 
 		 else if(@$Errorparties){
 		?> 
 		<div class="actions">
-				<?php echo $this->Html->link('Create Ledger Account For Credit Notes -> Heads','/VouchersReferences/edit/'.$DebitNotesParty,array('escape'=>false,'class'=>'btn btn-primary')); ?>
+				<?php echo $this->Html->link('Create Ledger Account For Credit Notes -> Heads','/VouchersReferences/edit/'.$CreditNotesParty,array('escape'=>false,'class'=>'btn btn-primary')); ?>
 		</div>
 		<?php }  else { ?>
 <div class="portlet light bordered">
@@ -36,7 +36,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 		<!-- BEGIN FORM-->
 		 <?= //pr($debitNote->toArray());exit;
 		 
-		 $this->Form->create($debitNote,['type' => 'file','id'=>'form_sample_3']) ?>
+		 $this->Form->create($creditNote,['type' => 'file','id'=>'form_sample_3']) ?>
 			<div class="form-body">
 				<div class="row">
 					<div class="col-md-4">
@@ -77,7 +77,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 							<tbody id="main_tbody">
 							<?php 
 							//pr($debitNote->debit_notes_rows); exit;
-							foreach($creditNote->credit_note_rows as $credit_note_row ) { ?>
+							foreach($creditNote->credit_notes_rows as $credit_note_row ) { ?>
 								<tr class="main_tr">
 									<td>
 										<div class="row">
@@ -352,11 +352,11 @@ $(document).ready(function() {
 		
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
 			
-			$(this).find("td:eq(0) select").attr({name:"debit_notes_rows["+i+"][head_id]", id:"debit_notes_rows-"+i+"-head_id"}).select2().rules("add", "required");			
+			$(this).find("td:eq(0) select").attr({name:"credit_notes_rows["+i+"][head_id]", id:"credit_notes_rows-"+i+"-head_id"}).select2().rules("add", "required");			
 
-			$(this).find("td:eq(1) input").attr({name:"debit_notes_rows["+i+"][amount]", id:"debit_notes_rows-"+i+"-amount"}).rules("add", "required");
+			$(this).find("td:eq(1) input").attr({name:"credit_notes_rows["+i+"][amount]", id:"credit_notes_rows-"+i+"-amount"}).rules("add", "required");
 		    
-			$(this).find("td:eq(2) textarea").attr({name:"debit_notes_rows["+i+"][narration]", id:"debit_notes_rows-"+i+"-narration"}).rules("add", "required");
+			$(this).find("td:eq(2) textarea").attr({name:"credit_notes_rows["+i+"][narration]", id:"credit_notes_rows-"+i+"-narration"}).rules("add", "required");
 		 	i++;
 		});
 	}
@@ -394,15 +394,13 @@ $(document).ready(function() {
 				$(this).find("td:nth-child(2) input").attr({name:"ref_rows["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no", class:"form-control input-sm ref_number"});
 			}
 
-			$(this).find("td:nth-child(3) input").attr({name:"ref_rows["+i+"][ref_amount]", id:"ref_rows-"+i+"-ref_amount"}).rules("add", "required");
+			var is_ref_old_amount=$(this).find("td:nth-child(3) input:eq(0)").length;
 			
-			var is_ref_old_amount=$(this).find("td:nth-child(3) input:eq(0)").val();
-			
-			//alert(is_ref_old_amount);
-			
-			if(is_ref_old_amount){				
+			if(is_ref_old_amount){
 				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"ref_rows["+i+"][ref_old_amount]", id:"ref_rows-"+i+"-ref_old_amount"});
 			}
+			$(this).find("td:nth-child(3) input:eq(1)").attr({name:"ref_rows["+i+"][ref_amount]",
+			id:"ref_rows-"+i+"-ref_amount"}).rules("add", "required");
 			
 			
 			i++;
@@ -522,7 +520,9 @@ $(document).ready(function() {
 				<tr>
 					<td><?php echo $this->Form->input('ref_types', ['empty'=>'--Select-','options'=>$ref_types,'label' => false,'class' => 'form-control input-sm ref_type']); ?></td>
 					<td class="ref_no"></td>
-					<td><?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm ref_amount_textbox','placeholder'=>'Amount']); ?></td>
+					<td>
+					<?php echo $this->Form->input('old_amount', ['label' => false,'class' => '','type'=>'hidden']); ?>
+					<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm ref_amount_textbox','placeholder'=>'Amount']); ?></td>
 					<td><a class="btn btn-xs btn-default deleterefrow" href="#" role="button"><i class="fa fa-times"></i></a></td>
 				</tr>
 			</tbody>

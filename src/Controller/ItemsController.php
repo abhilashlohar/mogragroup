@@ -583,11 +583,14 @@ public function CheckCompany($company_id=null,$item_id=null)
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		
-		$Items=$this->Items->find()->where(['ItemCompanies', function ($q) use($st_company_id) {
-			return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0,'serial_number_enable'=>1]);
-			 
-		}]);
-		pr($Items); exit;
+		
+		
+			$Items = $this->Items->find()->contain(['ItemSerialNumbers','ItemLedgers','ItemCompanies'=>function($q) use($st_company_id){
+									return $q->where(['ItemCompanies.serial_number_enable'=>1,'ItemCompanies.company_id' => $st_company_id]);
+								}]
+        );
+		
+		pr($Items->toArray()); exit;
 		
 	}
     

@@ -74,7 +74,7 @@
 						<td class="actions">
 						 	<?php if($item_serial_no ==0 && $Company_array=='Yes') { ?>
 							 <?= $this->Html->link('Disabled ',
-								['action' => 'askSerialNumber',$item_id],
+								['action' => 'askSerialNumber',$item_id,$key],
 								[
 									'escape' => false,
 									'class'=>' blue tooltips','data-original-title'=>'Click To Enable'

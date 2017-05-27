@@ -604,10 +604,8 @@ public function CheckCompany($company_id=null,$item_id=null)
 		exit;
 	}
 	
-	public function askSerialNumber($item_id=null){
+	public function askSerialNumber($item_id=null,$company_id=null){
 		$this->viewBuilder()->layout('index_layout');
-		$session = $this->request->session();
-		$st_company_id = $session->read('st_company_id');
 		
 		$item = $this->Items->newEntity();
 		if ($this->request->is('post')) {
@@ -619,19 +617,21 @@ public function CheckCompany($company_id=null,$item_id=null)
 						'serial_no' => $serial_number,
 						'status' => 'In',
 						'master_item_id' => $item_id,
-						'company_id' => $st_company_id
+						'company_id' => $company_id
 					]);
 				$query->execute();
 			}
 			$query = $this->Items->ItemCompanies->query();
 			$query->update()
 				->set(['serial_number_enable' => 1])
-				->where(['item_id' => $item_id,'company_id'=>$st_company_id])
+				->where(['item_id' => $item_id,'company_id'=>$company_id])
 				->execute();
+			
+			return $this->redirect(['action' => 'edit-company',$item_id]);
 		}
 		
 		
-		$ItemLedgers=$this->Items->ItemLedgers->find()->where(['item_id'=>$item_id,'company_id'=>$st_company_id]);
+		$ItemLedgers=$this->Items->ItemLedgers->find()->where(['item_id'=>$item_id,'company_id'=>$company_id]);
 		$item_qty=[];
 		foreach($ItemLedgers as $ItemLedger){
 			if($ItemLedger->in_out=='Out'){
@@ -646,8 +646,9 @@ public function CheckCompany($company_id=null,$item_id=null)
 			$query = $this->Items->ItemCompanies->query();
 			$query->update()
 				->set(['serial_number_enable' => 1])
-				->where(['item_id' => $item_id,'company_id'=>$st_company_id])
+				->where(['item_id' => $item_id,'company_id'=>$company_id])
 				->execute();
+			return $this->redirect(['action' => 'edit-company',$item_id]);
 		}
 		$this->set(compact('current_qty', 'item'));
 	}

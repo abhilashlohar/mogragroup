@@ -117,7 +117,6 @@ class CreditNotesController extends AppController
 			
 			foreach($creditNote->ref_rows as $ref_row){
 
-			//pr($ref_row); exit;
 			
 				$ref_row=(object)$ref_row;
 				if($ref_row->ref_type=='New Reference' or $ref_row->ref_type=='Advance Reference'){
@@ -285,25 +284,29 @@ class CreditNotesController extends AppController
 						
 					
 					$ref_rows=@$this->request->data['ref_rows'];
-					
+					$i=0;
 					//pr($ref_rows); exit;
 					if(sizeof(@$ref_rows)>0){
 						foreach($ref_rows as $ref_row){
 							$ref_row=(object)$ref_row;
-							$ReferenceDetail=$this->CreditNotes->ReferenceDetails->find()->where(['ledger_account_id'=>$creditNote->customer_suppiler_id,'reference_no'=>$ref_row->ref_no])->first();
-							 
-							if($ReferenceDetail){
+							$ReferenceDetail=$this->CreditNotes->ReferenceDetails->find()->where(['ledger_account_id'=>$creditNote->customer_suppiler_id,'reference_no'=>$ref_row->ref_no,'credit_note_id'=>$creditNote->id])->first();
+							
+							if($ReferenceDetail){   
 								$ReferenceBalance=$this->CreditNotes->ReferenceBalances->find()->where(['ledger_account_id'=>$creditNote->customer_suppiler_id,'reference_no'=>$ref_row->ref_no])->first();
 								
 								$ReferenceBalance=$this->CreditNotes->ReferenceBalances->get($ReferenceBalance->id);
-								pr($ref_row->ref_amount); exit;
+								//pr($ref_row->ref_amount); exit;
 								$ReferenceBalance->credit=$ReferenceBalance->credit-$ref_row->ref_old_amount+$ref_row->ref_amount;
 								
 								$this->CreditNotes->ReferenceBalances->save($ReferenceBalance);
 								
-								$ReferenceDetail=$this->CreditNotes->ReferenceDetails->find()->where(['ledger_account_id'=>$creitNote->customer_suppiler_id,'reference_no'=>$ref_row->ref_no,'credit_note_id'=>$creditNote->id])->first();
+								$ReferenceDetail=$this->CreditNotes->ReferenceDetails->find()->where(['ledger_account_id'=>$creditNote->customer_suppiler_id,'reference_no'=>$ref_row->ref_no,'credit_note_id'=>$creditNote->id])->first();
+								
+								
 								$ReferenceDetail=$this->CreditNotes->ReferenceDetails->get($ReferenceDetail->id);
+								
 								$ReferenceDetail->credit=$ReferenceDetail->credit-$ref_row->ref_old_amount+$ref_row->ref_amount;
+								
 								$this->CreditNotes->ReferenceDetails->save($ReferenceDetail);
 							}else{  //pr($ref_row); exit;
 								if($ref_row->ref_type=='New Reference' or $ref_row->ref_type=='Advance Reference'){

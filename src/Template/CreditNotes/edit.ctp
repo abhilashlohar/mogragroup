@@ -314,7 +314,7 @@ $(document).ready(function() {
 		
 		var total_ref=0;
 		$("table.main_ref_table tbody tr").each(function(){
-			var am=parseFloat($(this).find('td:nth-child(3) input').val());
+			var am=parseFloat($(this).find('td:nth-child(3) input:eq(1)').val());
 			if(!am){ am=0; }
 			total_ref=total_ref+am;
 		});
@@ -407,6 +407,7 @@ $(document).ready(function() {
 		});
 		
 		var is_tot_input=$("table.main_ref_table tfoot tr:eq(1) td:eq(1) input").length;
+		
 		if(is_tot_input){
 			$("table.main_ref_table tfoot tr:eq(1) td:eq(1) input").attr({name:"ref_rows_total", id:"ref_rows_total"});
 		}

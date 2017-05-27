@@ -582,8 +582,7 @@ public function CheckCompany($company_id=null,$item_id=null)
 		$this->viewBuilder()->layout('index_layout');	
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-		
-		
+
 		$Items=$this->Items->find()->matching('ItemCompanies', function ($q) use($st_company_id) {
 			return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze'=>0,'ItemCompanies.serial_number_enable'=>1]);
 		});
@@ -651,6 +650,7 @@ public function CheckCompany($company_id=null,$item_id=null)
 			return $this->redirect(['action' => 'edit-company',$item_id]);
 		}
 		$this->set(compact('current_qty', 'item'));
+
 	}
 	
 	

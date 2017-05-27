@@ -91,6 +91,22 @@ class InventoryTransferVouchersController extends AppController
 		$inventoryTransferVoucher = $this->InventoryTransferVouchers->newEntity();
 	
         if ($this->request->is('post')) {
+			$inventory_transfer_voucher_rows=[];
+			foreach($this->request->data['inventory_transfer_voucher_rows']['out'] as $inventory_transfer_voucher_row){
+				$inventory_transfer_voucher_row['status']='out';
+				$inventory_transfer_voucher_rows[]=$inventory_transfer_voucher_row;
+			}
+			foreach($this->request->data['inventory_transfer_voucher_rows']['in'] as $inventory_transfer_voucher_row){
+				$inventory_transfer_voucher_row['status']='in';
+				$inventory_transfer_voucher_row['item_id']=$inventory_transfer_voucher_row['item_id_in'];
+				$inventory_transfer_voucher_row['quantity']=$inventory_transfer_voucher_row['quantity_in'];
+				unset($inventory_transfer_voucher_row['item_id_in']);
+				unset($inventory_transfer_voucher_row['quantity_in']);
+				$inventory_transfer_voucher_rows[]=$inventory_transfer_voucher_row;
+				
+			}
+			$this->request->data['inventory_transfer_voucher_rows']=$inventory_transfer_voucher_rows;
+			
             $inventoryTransferVoucher = $this->InventoryTransferVouchers->patchEntity($inventoryTransferVoucher, $this->request->data);
 			$inventoryTransferVoucher->transaction_date=date("Y-m-d",strtotime($inventoryTransferVoucher->transaction_date));
 			$inventoryTransferVoucher->created_on=date("Y-m-d");
@@ -105,15 +121,10 @@ class InventoryTransferVouchersController extends AppController
 			$inventoryTransferVoucher->company_id=$st_company_id;
 			$inventoryTransferVoucher->created_by=$s_employee_id;
 
-			
-			
-			$inventory_voucher_outs = $this->request->data['inventory_transfer_voucher_rows']['out'];
-			$inventory_voucher_ins = $this->request->data['inventory_transfer_voucher_rows']['in'];
-			//pr($inventory_voucher_ins);exit;
-			//$serial_data=sizeof(@$inventory_voucher_outs[0]['serial_number_data']);
-			
+		
+			//pr($inventoryTransferVoucher); exit;
 			if ($this->InventoryTransferVouchers->save($inventoryTransferVoucher)) {
-			
+			exit;
 			foreach($inventory_voucher_outs as $inventory_voucher_out){
 				$serial_data=0;
 				$serial_data=sizeof(@$inventory_voucher_out['serial_number_data']);

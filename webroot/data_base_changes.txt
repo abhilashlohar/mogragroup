@@ -15,3 +15,8 @@ create new field in item_serial_ number table => inventory_transfer_voucher_id (
 <!----- Shailendra ------>
 need to import debit_note & debit_note_rows table
 you can the file in web root (debit_note.sql)
+
+
+<!-----Dimpal ---- 27/5/2017--->
+create new field in employee table => otp_no (int)
+

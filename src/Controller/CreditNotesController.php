@@ -155,7 +155,7 @@ class CreditNotesController extends AppController
 		}
 		
 		
-			$vr=$this->CreditNotes->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Credit Notes','sub_entity'=>'Customer-Suppiler'])->first();
+			$vr=$this->CreditNotes->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Credit Notes','sub_entity'=>'Purchase Account'])->first();
 			$CreditNotesSalesAccount=$vr->id;
 			$vouchersReferences = $this->CreditNotes->VouchersReferences->get($vr->id, [
 				'contain' => ['VoucherLedgerAccounts']
@@ -186,7 +186,7 @@ class CreditNotesController extends AppController
 			
 		
 		
-			$vr=$this->CreditNotes->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Credit Notes','sub_entity'=>'Heads'])->first();	
+			$vr=$this->CreditNotes->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Credit Notes','sub_entity'=>'Party'])->first();	
 			$CreditNotesParty=$vr->id;
 			$vouchersReferences = $this->CreditNotes->VouchersReferences->get($vr->id, [
 				'contain' => ['VoucherLedgerAccounts']

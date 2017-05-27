@@ -16,13 +16,13 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 <?php if(@$ErrorsalesAccs){
 		?> 
 		<div class="actions">
-				<?php echo $this->Html->link('Create Ledger Account For Credit Notes -> Customer/Suppiler','/VouchersReferences/edit/'.$DebitNotesSalesAccount,array('escape'=>false,'class'=>'btn btn-primary')); ?>
+				<?php echo $this->Html->link('Create Ledger Account For Credit Notes -> Customer/Suppiler','/VouchersReferences/edit/'.$CreditNotesSalesAccount,array('escape'=>false,'class'=>'btn btn-primary')); ?>
 		</div>
 		<?php } 
 		 else if(@$Errorparties){
 		?> 
 		<div class="actions">
-				<?php echo $this->Html->link('Create Ledger Account For Credit Notes -> Heads','/VouchersReferences/edit/'.$DebitNotesParty,array('escape'=>false,'class'=>'btn btn-primary')); ?>
+				<?php echo $this->Html->link('Create Ledger Account For Credit Notes -> Heads','/VouchersReferences/edit/'.$CreditNotesParty,array('escape'=>false,'class'=>'btn btn-primary')); ?>
 		</div>
 		<?php }  else { ?>
 <div class="portlet light bordered">
@@ -36,7 +36,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 		<!-- BEGIN FORM-->
 		 <?= //pr($debitNote->toArray());exit;
 		 
-		 $this->Form->create($debitNote,['type' => 'file','id'=>'form_sample_3']) ?>
+		 $this->Form->create($creditNote,['type' => 'file','id'=>'form_sample_3']) ?>
 			<div class="form-body">
 				<div class="row">
 					<div class="col-md-4">
@@ -352,11 +352,11 @@ $(document).ready(function() {
 		
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
 			
-			$(this).find("td:eq(0) select").attr({name:"debit_notes_rows["+i+"][head_id]", id:"debit_notes_rows-"+i+"-head_id"}).select2().rules("add", "required");			
+			$(this).find("td:eq(0) select").attr({name:"credit_notes_rows["+i+"][head_id]", id:"credit_notes_rows-"+i+"-head_id"}).select2().rules("add", "required");			
 
-			$(this).find("td:eq(1) input").attr({name:"debit_notes_rows["+i+"][amount]", id:"debit_notes_rows-"+i+"-amount"}).rules("add", "required");
+			$(this).find("td:eq(1) input").attr({name:"credit_notes_rows["+i+"][amount]", id:"credit_notes_rows-"+i+"-amount"}).rules("add", "required");
 		    
-			$(this).find("td:eq(2) textarea").attr({name:"debit_notes_rows["+i+"][narration]", id:"debit_notes_rows-"+i+"-narration"}).rules("add", "required");
+			$(this).find("td:eq(2) textarea").attr({name:"credit_notes_rows["+i+"][narration]", id:"credit_notes_rows-"+i+"-narration"}).rules("add", "required");
 		 	i++;
 		});
 	}

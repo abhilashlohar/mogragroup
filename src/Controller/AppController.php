@@ -56,11 +56,13 @@ class AppController extends Controller
 		
 		$controller = $this->request->params['controller'];
 		$action = $this->request->params['action']; 
-		if (in_array($controller, ['Logins']) and in_array($action, ['index'])) {
-		}else{ 
+		if (in_array($controller, ['Logins']) and in_array($action, ['index','generateOtp'])) {
+		}else{
 			$st_login_id = $session->read('st_login_id');
 			$st_company_id = $session->read('st_company_id');
 			$st_year_id =  $session->read('st_year_id');
+			$st_opt_confirm =  $session->read('st_opt_confirm');
+			
 			if(empty($st_login_id)){
 				return $this->redirect('/logins'); exit;
 				//return $this->redirect(['controller'=>'Homes','action'>'logins']); 
@@ -127,6 +129,10 @@ class AppController extends Controller
 			$this->set(compact('pages'));
 			$this->viewBuilder()->layout('index_layout');
 			$this -> render('/Error/not_allow'); 
+		}
+		
+		if(!empty($st_opt_confirm)){
+			echo"dfd";exit;
 		}
 
 

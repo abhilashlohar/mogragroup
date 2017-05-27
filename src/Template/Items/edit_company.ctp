@@ -73,8 +73,8 @@
 						</td>
 						<td class="actions">
 						 	<?php if($item_serial_no ==0 && $Company_array=='Yes') { ?>
-							 <?= $this->Form->postLink('Disabled ',
-								['action' => 'SerialNumberEnabled', $key,$item_id,$item_serial_no="1"],
+							 <?= $this->Html->link('Disabled ',
+								['action' => 'askSerialNumber',$item_id],
 								[
 									'escape' => false,
 									'class'=>' blue tooltips','data-original-title'=>'Click To Enable'

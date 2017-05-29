@@ -16,7 +16,7 @@
 			<table width="50%" class="table table-bordered table-striped"  id="main_tble">
 					 <thead>
 						<tr>
-							<th>Range TO</th>
+							<th>Range To</th>
 							<th>Range From</th>
 						</tr>
 					 </thead>

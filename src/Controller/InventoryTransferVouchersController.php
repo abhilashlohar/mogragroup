@@ -108,6 +108,7 @@ class InventoryTransferVouchersController extends AppController
             $inventoryTransferVoucher = $this->InventoryTransferVouchers->patchEntity($inventoryTransferVoucher, $this->request->data);
 			$inventoryTransferVoucher->transaction_date=date("Y-m-d",strtotime($inventoryTransferVoucher->transaction_date));
 			$inventoryTransferVoucher->created_on=date("Y-m-d");
+			//pr($inventoryTransferVoucher->transaction_date);exit;
 			//pr( date("Y-m-d",strtotime($transaction_date)));exit;
 			
 			$last_voucher_no=$this->InventoryTransferVouchers->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
@@ -177,9 +178,12 @@ class InventoryTransferVouchersController extends AppController
 										])
 					    ->execute();
 						
+						$avg_cost_data = $per_unit_cost*$inventory_transfer_voucher_row_data['quantity'];
+						
+						
 						$query21 = $this->InventoryTransferVouchers->InventoryTransferVoucherRows->query();
 						$query21->update()
-							->set(['amount' => $per_unit_cost*$inventory_transfer_voucher_row_data['quantity'],])
+							->set(['amount' => $avg_cost_data])
 							->where(['inventory_transfer_voucher_id'=>$inventoryTransferVoucher->id,'item_id' => $inventory_transfer_voucher_row_data['item_id'],'status' => 'Out'])
 							->execute();
 							

@@ -221,14 +221,19 @@ $(document).ready(function() {
 	}
 	
 	$('.select_item_in').die().live("change",function() {
-		rename_rows_in();
 		var tr_obj=$(this).closest('tr');
 		sr_nos(tr_obj);
+		rename_rows_in();
 	});
 	
 	$('.qty_bx_in').die().live("blur",function() {
-		var tr_obj=$(this).closest('tr');
+		var tr_obj=$(this).closest('tr');  
+		var item_id=tr_obj.find('td:nth-child(1) select option:selected').val()
+		if(item_id > 0){ alert(item_id);
 		sr_nos(tr_obj);
+		}else{
+			alert("Select Item First");
+		}
     });
 	
 	function sr_nos(tr_obj){ 
@@ -243,6 +248,7 @@ $(document).ready(function() {
 		}else{
 			tr_obj.find('td:nth-child(3)').html('');
 		}
+		
 	}
 	
 

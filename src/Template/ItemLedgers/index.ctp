@@ -62,7 +62,7 @@
 						else if($source_model=='Purchase Return')
 						{
 							$party_name=$itemLedger->party_info->company_name;
-							$voucher_no='-';
+							$voucher_no= '#'.str_pad($itemLedger->voucher_info->voucher_no, 4, '0', STR_PAD_LEFT);
 						}
 						else{
 							$party_name='-';

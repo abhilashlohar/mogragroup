@@ -94,7 +94,7 @@
 						<td>
 						 	
 							<?= $this->Html->link('<i class="fa fa-trash"></i> ',
-									['action' => 'DeleteSerialNumbers', $ItemSerialNumber->id, $ItemSerialNumber->item_id], 
+									['action' => 'DeleteSerialNumbers', $ItemSerialNumber->id, $ItemSerialNumber->item_id,$ItemLedger->id], 
 									[
 										'escape' => false,
 										'class' => 'btn btn-xs red',

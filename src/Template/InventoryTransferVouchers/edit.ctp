@@ -26,7 +26,7 @@
 		<div class="row">
 			<div class="col-md-6">
 			<h5>For Out</h5>
-					<table id="main_table" width="50%"  class="table table-condensed table-hover">
+					<table id="main_table" width="50%"  class="table table-condensed">
 									<thead>
 										<tr>
 											<th>Item</th>
@@ -79,7 +79,7 @@
 			</div>
 			<div class="col-md-6">
 			<h5>For In</h5>
-				<table id="main_table_1" width="50%"  class="table table-condensed table-hover">
+				<table id="main_table_1" width="50%"  class="table table-condensed">
 					<thead>
 						<tr>
 							<th>Item</th>

@@ -244,33 +244,57 @@ class CustomersController extends AppController
 		die($result);
     }
 	
-	public function OverDueReport()
+	public function BreakupRangeOverdue(){
+		$this->viewBuilder()->layout('index_layout');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		$range_data=[];
+		if ($this->request->is(['post'])) {
+			$range_data['range0']=$this->request->data['range_0']; 
+			$range_data['range1']=$this->request->data['range_1']; 
+			$range_data['range2']=$this->request->data['range_2']; 
+			$range_data['range3']=$this->request->data['range_3']; 
+			$range_data['range4']=$this->request->data['range_4']; 
+			$range_data['range5']=$this->request->data['range_5']; 
+			$range_data['range6']=$this->request->data['range_6']; 
+			$range_data['range7']=$this->request->data['range_7']; 
+			
+		$to=json_encode($range_data);  
+		$this->redirect(['action' => 'OverDueReport/'.$to.'']);
+		 }
+		
+		
+	}
+	
+	public function OverDueReport($to_send = null)
     {
 		$this->viewBuilder()->layout('index_layout');
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-		//$customers = $this->paginate($this->Customers->find());
+		$to_range_datas =json_decode($to_send);
 		$LedgerAccounts =$this->Customers->LedgerAccounts->find()
 			->where(['LedgerAccounts.company_id'=>$st_company_id,'source_model'=>'Customers']);
-		//pr($LedgerAccounts->toArray());exit;
+	
 		$custmer_payment = [];
 		
         
 		foreach ($LedgerAccounts as $LedgerAccount){
 		$Customers = $this->Customers->find()->where(['id'=>$LedgerAccount->source_id])->first();
-		$custmer_payment[$LedgerAccount->id] = $Customers->payment_terms;
+		$custmer_payment[$LedgerAccount->id] =$to_range_datas;
 		$custmer_name[$LedgerAccount->id] = $Customers->customer_name;
 		$custmer_alise[$LedgerAccount->id] = $Customers->alias;
 		$custmer_payment_ctp[$LedgerAccount->id] = $Customers->payment_terms;
+		$custmer_payment_range_ctp =$to_range_datas;
 		}
-		//pr($custmer_payment);exit;
+		
 		$over_due_report = [];
 		foreach ($custmer_payment as $key=>$custmer_payment){
-			$total_debit=0;$total_credit=0;$due=0;
+		$total_debit=0;$total_credit=0;$due=0;
 			$now=Date::now();
-			$over_date=$now->subDays($custmer_payment);
+			$over_date=$now->subDays($custmer_payment->range1);
 			$custmer_ledgers =$this->Customers->Ledgers->find()->where(['ledger_account_id'=>$key])->toArray();
-			 foreach($custmer_ledgers as $custmer_ledger){
+			
+			foreach($custmer_ledgers as $custmer_ledger){
 					if($custmer_ledger->transaction_date<=$over_date){
 						if($custmer_ledger->debit==0){
 							$total_credit=$total_credit+$custmer_ledger->credit;
@@ -278,14 +302,12 @@ class CustomersController extends AppController
 							$total_debit=$total_debit+$custmer_ledger->debit;
 						}
 					}
+					
 				}
-				$due=$total_debit-$total_credit; //pr($due); exit;
-				$Customers_name =$custmer_name[$key];
-				//$Customers_payment=$custmer_payment[$key];
-				$over_due_report[$key]=$due;	
+				$due=$total_debit-$total_credit; 
 			}
-//pr($custmer_payment_ctp);exit;
-        $this->set(compact('LedgerAccounts','Ledgers','over_due_report','custmer_name','custmer_payment','custmer_alise','custmer_payment_ctp'));
+
+        $this->set(compact('LedgerAccounts','Ledgers','over_due_report','custmer_name','custmer_payment','custmer_alise','custmer_payment_ctp','custmer_payment_range_ctp'));
         $this->set('_serialize', ['customers']);
     }
 	

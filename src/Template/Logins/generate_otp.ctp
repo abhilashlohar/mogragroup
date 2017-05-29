@@ -23,7 +23,7 @@ $this->Form->templates([
       
        <div class="form-group">
 			<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-			<label class="control-label visible-ie8 visible-ie9">Please Enter OTP Number you received </label>
+			<label class="control-label">Please Enter OTP Number you received </label>
 			<div class="input-icon">
 				<i class="fa fa-user"></i>
 				<?php echo $this->Form->input('otp_no', ['label'=>false,'class' => 'form-control','placeholder'=>'OTP Number','value'=>'']); ?>
@@ -33,7 +33,7 @@ $this->Form->templates([
 			<button type="submit" class="btn green-haze pull-right">
 			LOGIN <i class="m-icon-swapright m-icon-white"></i>
 			</button>
-			<?php echo $this->Html->link('Resend code','/Logins/generateOtp/'.$Employee->id,array('escape'=>false)); ?>
+			<?php echo $this->Html->link('Resend code','/Logins/resendOtp/'.$Employee->id,array('escape'=>false)); ?>
 			
 		</div>
 	<?= $this->Form->end() ?>

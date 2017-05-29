@@ -373,13 +373,20 @@ class ItemsController extends AppController
     }
 	
 	
-	public function DeleteSerialNumbers($id=null,$item_id=null){
+	public function DeleteSerialNumbers($id=null,$item_id=null,$item_ledger=null){
 		
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		$ItemLedger=$this->Items->ItemLedgers->find()->where(['item_id'=>$item_id,'source_model'=>'Items'])->first();
-		
+		//pr($ItemLedger);exit;
 		$ItemSerialNumber = $this->Items->ItemSerialNumbers->get($id);
+		$ItemSerialNumber_invoice_id= $this->Items->ItemSerialNumbers->Invoices->find()->where(['id'=>$ItemSerialNumber->invoice_id])->first();
+		
+		$ItemSerialNumber_inventory_vouch__id= $this->Items->ItemSerialNumbers->InventoryVouchers->find()->where(['id'=>$ItemSerialNumber->in_inventory_voucher_id])->first();
+		
+		$ItemSerialNumber_inventory_transfer_vouch= $this->Items->ItemSerialNumbers->InventoryTransferVouchers->find()->where(['id'=>$ItemSerialNumber->inventory_transfer_voucher_id])->first();
+		
+		$ItemSerialNumber_purchase_return= $this->Items->ItemSerialNumbers->PurchaseReturns->find()->where(['id'=>$ItemSerialNumber->purchase_return_id])->first();
 		
 		if($ItemSerialNumber->status=='In'){
 			$ItemQuantity = $ItemLedger->quantity-1;
@@ -400,12 +407,19 @@ class ItemsController extends AppController
 			$this->Flash->success(__('The Serial Number has been deleted.'));
 			}
 		}else{ 
-			if($ItemSerialNumber->invoice_id != 0){
-				$this->Flash->error(__('The Serial Number could not be deleted. These item out from invoice number: '.$ItemSerialNumber->invoice_id));
+			if($ItemSerialNumber_invoice_id->id != 0){
+				$this->Flash->error(__('The Serial Number could not be deleted. These item out from invoice number: '.$ItemSerialNumber_invoice_id->in1.'-'.$ItemSerialNumber_invoice_id->in2.'/'.$ItemSerialNumber_invoice_id->in4.'/'.$ItemSerialNumber_invoice_id->in3));
+			}else if($ItemSerialNumber_inventory_vouch__id->id != 0){
+				$this->Flash->error(__('The Serial Number could not be deleted. These item out from Inventory Voucher number: '.str_pad($ItemSerialNumber_inventory_vouch__id->iv_number, 3, '0', STR_PAD_LEFT)));
+			}else if($ItemSerialNumber_inventory_transfer_vouch->id !=0){
+				$this->Flash->error(__('The Serial Number could not be deleted. These item out from Inventory Transfer Voucher number: '.str_pad($ItemSerialNumber_inventory_transfer_vouch->voucher_no, 3, '0', STR_PAD_LEFT)));
+			}else if($ItemSerialNumber_purchase_return->id !=0){
+				$this->Flash->error(__('The Serial Number could not be deleted. These item out from Inventory Transfer Voucher number: '.str_pad($ItemSerialNumber_purchase_return->voucher_no, 3, '0', STR_PAD_LEFT)));
 			}
 		}
 		
-		return $this->redirect(['action' => 'EditItemOpeningBalance/'.$ItemLedger->id]);
+		
+		return $this->redirect(['action' => 'EditItemOpeningBalance/'.$item_ledger]);
 	}
 	
 	

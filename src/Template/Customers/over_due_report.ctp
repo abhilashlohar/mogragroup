@@ -15,6 +15,10 @@
 					<tr>
 						<th>Sr. No.</th>
 						<th>Customer Name</th>
+						<th><?php echo $custmer_payment_range_ctp->range0.'-'.$custmer_payment_range_ctp->range1?></th>
+						<th><?php echo $custmer_payment_range_ctp->range2.'-'.$custmer_payment_range_ctp->range3?></th>
+						<th><?php echo $custmer_payment_range_ctp->range4.'-'.$custmer_payment_range_ctp->range5?></th>
+						<th><?php echo $custmer_payment_range_ctp->range6.'-'.$custmer_payment_range_ctp->range7?></th>
 						<th style="text-align:center">Payment Terms</th>
 						<th style="text-align: right;">Over-Due</th>
 					</tr>

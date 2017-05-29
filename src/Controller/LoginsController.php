@@ -26,9 +26,6 @@ class LoginsController extends AppController
 			foreach ($query as $row) {
 				  $login_id=$row["id"];
 				 $employee_id=$row["employee_id"]; 
-				
-				
-			
 			}
 			
 			if($number==1 && !empty($login_id)){ 
@@ -45,7 +42,6 @@ class LoginsController extends AppController
 				
 				$user_logs->login_id = $login_id;
 				$user_logs->datetime = $time;
-				//pr($user_logs);exit;
 				$this->Logins->UserLogs->save($user_logs);
 				
 				$count=0;
@@ -140,16 +136,21 @@ class LoginsController extends AppController
 		$this->request->session()->write('otp_confirm',$otp_allow_page);
 		$otp_confirm = $this->request->session()->read('otp_confirm');
 		$Employee=$this->Logins->Employees->get($employee_id);
-		
+		 $i = 1;
+				while($i<=$employee_id )
+				{
+					$randomString = rand(1000, 9999);
+					$i++;
+				}
+				
 		if($otp_confirm == 'yes'){
-			if ($this->request->is('put')) 
-			{ 
-				$randomString =substr( rand(), 0, 7);
-				$query = $this->Logins->Employees->query();
+			$query = $this->Logins->Employees->query();
 					$query->update()
 						->set(['otp_no' => $randomString])
 						->where(['id' => $Employee->id])
 						->execute();
+			if ($this->request->is('put')) 
+			{ 
 				$otp_no=$this->request->data["otp_no"];
 				if($Employee['otp_no'] == $otp_no){
 					return $this->redirect(['action' => 'Switch-Company']);
@@ -166,14 +167,42 @@ class LoginsController extends AppController
 
 	}
 	
-	function ResendOtp($employee_id=null){
+	function resendOtp($employee_id=null){
+		$otp_allow_page = 'yes';
 		$this->viewBuilder()->layout('login_layout');
-		
 		$session = $this->request->session();
 		$st_login_id = $session->read('st_login_id');
+		$this->request->session()->write('otp_confirm',$otp_allow_page);
+		$otp_confirm = $this->request->session()->read('otp_confirm');
 		$Employee=$this->Logins->Employees->get($employee_id);
-		//pr($Employee->otp_no); exit;
+		 $i = 1;
+				while($i<=$employee_id )
+				{
+					$randomString = rand(1000, 9999);
+					$i++;
+				}
+				
+		if($otp_confirm == 'yes'){
+			$query = $this->Logins->Employees->query();
+					$query->update()
+						->set(['otp_no' => $randomString])
+						->where(['id' => $Employee->id])
+						->execute();
+			if ($this->request->is('put')) 
+			{ 
+				$otp_no=$this->request->data["otp_no"];
+				if($Employee['otp_no'] == $otp_no){
+					return $this->redirect(['action' => 'Switch-Company']);
+				}else{
+					
+					$this->Flash->error(__('Enter Correct OTP Code'));
+				
+				}
+			}
+		}
+			
 		$this->set(compact('st_login_id','Employee'));
+		$this->set('_serialize', ['Employee']);
 	}
 	
 	function ErrorOtp($employee_id=null){
@@ -182,7 +211,7 @@ class LoginsController extends AppController
 		$session = $this->request->session();
 		$st_login_id = $session->read('st_login_id');
 		$Employee=$this->Logins->Employees->get($employee_id);
-		pr($Employee->otp_no); exit;
+		
 		$this->set(compact('st_login_id','Employee'));
 	}
 

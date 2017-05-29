@@ -4,7 +4,7 @@ $this->Form->templates([
 ]);
 ?>
 <!-- BEGIN LOGIN FORM -->
-	<?= $this->Form->create($Employee,['url'=>'/Logins/index']) ?>
+	<?= $this->Form->create($Employee) ?>
 		<h3 class="form-title">Login</h3>
        
        <div class="form-group">

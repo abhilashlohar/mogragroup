@@ -15,28 +15,34 @@
 					<tr>
 						<th>Sr. No.</th>
 						<th>Customer Name</th>
-						<th><?php echo $custmer_payment_range_ctp->range0.'-'.$custmer_payment_range_ctp->range1?></th>
-						<th><?php echo $custmer_payment_range_ctp->range2.'-'.$custmer_payment_range_ctp->range3?></th>
-						<th><?php echo $custmer_payment_range_ctp->range4.'-'.$custmer_payment_range_ctp->range5?></th>
-						<th><?php echo $custmer_payment_range_ctp->range6.'-'.$custmer_payment_range_ctp->range7?></th>
 						<th style="text-align:center">Payment Terms</th>
-						<th style="text-align: right;">Over-Due</th>
+						<th style="text-align:center"><?php echo $custmer_payment_range_ctp->range0.'-'.$custmer_payment_range_ctp->range1?></th>
+						<th style="text-align:center"><?php echo $custmer_payment_range_ctp->range2.'-'.$custmer_payment_range_ctp->range3?></th>
+						<th style="text-align:center"><?php echo $custmer_payment_range_ctp->range4.'-'.$custmer_payment_range_ctp->range5?></th>
+						<th style="text-align:center"><?php echo $custmer_payment_range_ctp->range6.'-'.$custmer_payment_range_ctp->range7?></th>
+						
+						<th style="text-align: right;">Total Over-Due</th>
 					</tr>
 				</thead>
 				<tbody>
-					<?php  $page_no=0;
+					<?php  $page_no=0; 
 					foreach ($over_due_report as $key=>$over_due_reports){ 
-						//pr($custmer_payment);
-						if($over_due_reports>0){
+						 
+						if($over_due_reports>0){ 
 					?>
 					<tr>
 						<td><?= h(++$page_no) ?></td>
 						<td><?php echo $custmer_name[$key]."(". $custmer_alise[$key].")"?></td>
 						<td style="text-align:center"><?php echo $custmer_payment_ctp[$key] ?></td>
-						<td align="right"><?= h($over_due_reports) ?></td>
+						<td align="right"><?php echo $over_due_report1[$key][1] ?></td>
+						<td align="right"><?= h($over_due_report1[$key][2]) ?></td>
+						<td align="right"><?= h($over_due_report1[$key][3]) ?></td>
+						<td align="right"><?= h($over_due_report1[$key][4]) ?></td>
+						
+						<td align="right"><?= h($total_overdue[$key])  ?></td>
 						
 					</tr>
-					<?php }} ?>
+					<?php }}?>
 				</tbody>
 			</table>
 		</div>

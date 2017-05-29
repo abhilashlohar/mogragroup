@@ -149,9 +149,23 @@ class LoginsController extends AppController
 						->set(['otp_no' => $randomString])
 						->where(['id' => $Employee->id])
 						->execute();
+						 $user_id = 'sfdf';
+		$Emp_name = $Employee->name;		
+		$mobile_no = $Employee->mobile;	
+		
+		$sms=str_replace(' ', '+', 'Dear '.$Emp_name.', Your one time password is '.$randomString.'.');
+        $working_key='A7a76ea72525fc05bbe9963267b48dd96';
+        $sms_sender='MOGRAG';
+        $ch = curl_init('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile_no.'&message='.$sms.'');
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$response = json_decode(curl_exec($ch));
+		curl_close($ch);			
+						
 			if ($this->request->is('put')) 
 			{ 
 				$otp_no=$this->request->data["otp_no"];
+			
+				
 				if($Employee['otp_no'] == $otp_no){
 					return $this->redirect(['action' => 'Switch-Company']);
 				}else{
@@ -160,8 +174,8 @@ class LoginsController extends AppController
 				
 				}
 			}
-		}
-					
+		 }
+			
 		$this->set(compact('st_login_id','Employee'));
 		$this->set('_serialize', ['Employee']);
 
@@ -205,7 +219,7 @@ class LoginsController extends AppController
 		$this->set('_serialize', ['Employee']);
 	}
 	
-	function ErrorOtp($employee_id=null){
+	function errorOtp($employee_id=null){
 		$this->viewBuilder()->layout('login_layout');
 		
 		$session = $this->request->session();

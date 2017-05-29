@@ -288,10 +288,25 @@ class CustomersController extends AppController
 		}
 		
 		$over_due_report = [];
+		$over_due_report1 = [];
 		foreach ($custmer_payment as $key=>$custmer_payment){
+			
 		$total_debit=0;$total_credit=0;$due=0;
+		$total_debit_1=0;$total_credit_1=0;$due_1=0;
+		$total_debit_2=0;$total_credit_2=0;$due_2=0;
+		$total_debit_3=0;$total_credit_3=0;$due_3=0;
 			$now=Date::now();
 			$over_date=$now->subDays($custmer_payment->range1);
+			$now=Date::now();
+			$over_date_1=$now->subDays($custmer_payment->range3);
+			$now=Date::now();
+			$over_date_2=$now->subDays($custmer_payment->range5);
+			$now=Date::now();
+			$over_date_3=$now->subDays($custmer_payment->range7);
+			//pr($over_date_2);exit;
+			//$now=Date::now();
+			//$over_date_1=$now->subDays($custmer_payment->range3);
+			
 			$custmer_ledgers =$this->Customers->Ledgers->find()->where(['ledger_account_id'=>$key])->toArray();
 			
 			foreach($custmer_ledgers as $custmer_ledger){
@@ -302,12 +317,52 @@ class CustomersController extends AppController
 							$total_debit=$total_debit+$custmer_ledger->debit;
 						}
 					}
-					
-				}
+					if($custmer_ledger->transaction_date<=$over_date_1){
+						if($custmer_ledger->debit==0){
+							$total_credit_1=$total_credit_1+$custmer_ledger->credit;
+						}else{
+							$total_debit_1=$total_debit_1+$custmer_ledger->debit;
+						}
+					}
+					if($custmer_ledger->transaction_date<=$over_date_2){
+						if($custmer_ledger->debit==0){
+							$total_credit_2=$total_credit_2+$custmer_ledger->credit;
+						}else{
+							$total_debit_2=$total_debit_2+$custmer_ledger->debit;
+						}
+					}
+					if($custmer_ledger->transaction_date<=$over_date_3){
+						if($custmer_ledger->debit==0){
+							$total_credit_3=$total_credit_3+$custmer_ledger->credit;
+						}else{
+							$total_debit_3=$total_debit_3+$custmer_ledger->debit;
+						}
+					}
+				//pr($total_credit_1);
+				//pr($total_debit_1);
+				} 
 				$due=$total_debit-$total_credit; 
-			}
-
-        $this->set(compact('LedgerAccounts','Ledgers','over_due_report','custmer_name','custmer_payment','custmer_alise','custmer_payment_ctp','custmer_payment_range_ctp'));
+				$due_1=$total_debit_1-$total_credit_1; 
+				$due_2=$total_debit_2-$total_credit_2; 
+				$due_3=$total_debit_3-$total_credit_3; 
+				
+				
+				$Customers_name =$custmer_name[$key];
+				
+				$total_overdue[$key] = $due + $due_1 +$due_2 +$due_3;
+				
+				$over_due_report[$key]=$due;	
+				$over_due_report1[$key][1]=$due;	
+				$over_due_report[$key]=$due_1;
+				$over_due_report1[$key][2]=$due_1;
+				$over_due_report[$key]=$due_2;	
+				$over_due_report1[$key][3]=$due_2;	
+				$over_due_report[$key]=$due_3;	
+				$over_due_report1[$key][4]=$due_3;	
+				
+				
+			} 
+        $this->set(compact('LedgerAccounts','Ledgers','over_due_report','custmer_name','custmer_payment','custmer_alise','custmer_payment_ctp','custmer_payment_range_ctp','over_due_report1','total_overdue'));
         $this->set('_serialize', ['customers']);
     }
 	

@@ -75,10 +75,14 @@ class GrnsController extends AppController
     public function view($id = null)
     {
 		$this->viewBuilder()->layout('index_layout');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
 		$grn = $this->Grns->get($id, [
-            'contain' => ['PurchaseOrders', 'Companies', 'GrnRows'=>['Items'], 'InvoiceBookings','Creator']
-        ]);
-		
+            'contain' => ['Companies','ItemSerialNumbers','Creator','Vendors','PurchaseOrders'=>['PurchaseOrderRows','Grns'=>['GrnRows']],'GrnRows'=>['Items' => ['ItemSerialNumbers','ItemCompanies' =>function($q) use($st_company_id){
+									return $q->where(['company_id'=>$st_company_id]);
+								}]]
+        ]]);
+		//pr($grn->grn_rows->item); exit;
 
         $this->set('grn', $grn);
         $this->set('_serialize', ['grn']);
@@ -336,81 +340,7 @@ class GrnsController extends AppController
      * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
-    {
-	
-		$this->viewBuilder()->layout('index_layout');
-			$grn = $this->Grns->get($id, [
-				'contain' => [
-						'Companies','ItemSerialNumbers','Vendors','PurchaseOrders'=>['PurchaseOrderRows','Grns'=>['GrnRows']],'GrnRows'=>['Items']
-					]
-			]);
-			
-			   $session = $this->request->session();
-			   $st_year_id = $session->read('st_year_id');
 
-			   $SessionCheckDate = $this->FinancialYears->get($st_year_id);
-			   $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
-			   $todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
-			   $tody1 = date("Y-m-d");
-
-			   $fromdate = strtotime($fromdate1);
-			   $todate = strtotime($todate1); 
-			   $tody = strtotime($tody1);
-
-			  if($fromdate < $tody || $todate > $tody)
-			   {
-				 if($SessionCheckDate['status'] == 'Open')
-				 { $chkdate = 'Found'; }
-				 else
-				 { $chkdate = 'Not Found'; }
-
-			   }
-			   else
-				{
-					$chkdate = 'Not Found';	
-				}
-
-		
-			if ($this->request->is(['patch', 'post', 'put'])) {
-			$serial_numbers=$this->request->data['serial_numbers']; 
-			$item_serial_numbers=[];
-			foreach($serial_numbers as $item_id=>$data){
-				foreach($data as $sr)
-				$item_serial_numbers[]=['item_id'=>$item_id,'serial_no'=>$sr,'status'=>'In'];
-			}
-			//pr($item_serial_numbers); exit;
-			$this->request->data['item_serial_numbers']=$item_serial_numbers;
-			//
-            $grn = $this->Grns->patchEntity($grn, $this->request->data);
-				if ($this->Grns->save($grn)) {
-					foreach($grn->grn_rows as $grn_row){
-							$qty=$grn_row->quantity;
-							$item_id=$grn_row->item_id;
-							$query = $this->Grns->ItemLedgers->query();
-							$query->update()
-							->set(['quantity' => $qty])
-							->where(['item_id' => $item_id, 'source_id' => $grn->id, 'source_model'=> 'Grns'])
-							->execute();
-					}
-					$qq=0; foreach($grn->grn_rows as $grn_row){
-						//pr($grn->purchase_order_id); exit;
-						$purchaseorderrow=$this->Grns->PurchaseOrderRows->find()->where(['purchase_order_id'=>$grn->purchase_order_id,'item_id'=>$grn_row->item_id])->first();
-						$purchaseorderrow->processed_quantity=$purchaseorderrow->processed_quantity-@$grn->getOriginal('grn_rows')[$qq]->quantity+$grn_row->quantity;
-						$this->Grns->PurchaseOrderRows->save($purchaseorderrow);
-						$qq++; 
-					} 
-					$this->Flash->success(__('The grn has been saved.'));
-					return $this->redirect(['action' => 'index']);
-				} else {
-					$this->Flash->error(__('The grn could not be saved. Please, try again.'));
-				}
-			}
-        $purchaseOrders = $this->Grns->PurchaseOrders->find('list', ['limit' => 200]);
-        $companies = $this->Grns->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('grn', 'purchaseOrders', 'companies','chkdate'));
-        $this->set('_serialize', ['grn']);
-    }
 	////
 	
 	

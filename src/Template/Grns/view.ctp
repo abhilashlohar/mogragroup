@@ -75,14 +75,29 @@
 	<tr>
 		<th width="20%">S.No</th>
 		<th>Item Name</th>
+		
+		<th>Item Serial No</th>
+		
 		<th width="28%">Quantity</th>
 	</tr>
 </thead>
 <tbody>
-<?php foreach ($grn->grn_rows as $grn_row): ?>
+<?php foreach ($grn->grn_rows as $grn_row): 
+?>
 	<tr>
 		<td><?= h(++$page_no) ?></td>
 		<td><?= $grn_row->item->name; ?></td>
+		<?php  if($grn_row->item->item_companies[0]->serial_number_enable == 1) { ?>
+		<td><table>
+		<?php foreach ($grn_row->item->item_serial_numbers as  $item_serial_number){ 
+			if($item_serial_number->grn_id == $grn->id){ ?>
+				<tr>
+						<td><?php echo $item_serial_number->serial_no ?></td>
+				</tr>
+			<?php }} ?>
+			</table>
+		</td>
+		<?php } ?>
 		<td><?= $grn_row->quantity; ?></td>
 	</tr>
 <?php endforeach; ?>

@@ -33,9 +33,9 @@
 						$party=$itemLedger->party_type;
 						
 						$source_model=$itemLedger->source_model;
+						
 						if($source_model=='Challan')
 						{
-							//pr($itemLedger->party_info); exit;
 							if($itemLedger->party_type=='Vendor'){
 								$party_name=$itemLedger->party_info->company_name;
 							}else{
@@ -57,6 +57,11 @@
 						else if($party=='Item')
 						{
 							$party_name='-';
+							$voucher_no='-';
+						}
+						else if($source_model=='Purchase Return')
+						{
+							$party_name=$itemLedger->party_info->company_name;
 							$voucher_no='-';
 						}
 						else{

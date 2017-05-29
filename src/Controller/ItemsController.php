@@ -493,7 +493,7 @@ public function SerialNumberEnabled($company_id=null,$item_id=null,$item_serial_
 	{
 		if($item_serial_no == 0){
 			$ItemSerialNumbers = $this->Items->ItemSerialNumbers->exists(['item_id'=>$item_id,'company_id'=>$company_id]);
-			if($ItemSerialNumbers){ echo ("if"); exit;
+			if($ItemSerialNumbers){ 
 				$this->Flash->error(__('Item Can not Disabled.These Item has Serial Number , Firstly, you can delete serial number then you can disabled'));
 			}else{
 				$query2 = $this->Items->ItemCompanies->query();

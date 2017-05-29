@@ -50,7 +50,7 @@ class ItemLedgersController extends AppController
     {
 		
 		//return $source_model.$source_id;
-		
+		//pr($source_model); exit;
 		if($source_model=="Grns"){
 			$Grn=$this->ItemLedgers->Grns->get($source_id);
 			
@@ -77,6 +77,11 @@ class ItemLedgersController extends AppController
 			$Party=$this->ItemLedgers->Vendors->get($Challan->vendor_id);
 			}
 			return ['voucher_info'=>$Challan,'party_type'=>$Challan->challan_for,'party_info'=>$Party];
+		}
+		if($source_model=="Purchase Return"){
+			$PurchaseReturn=$this->ItemLedgers->PurchaseReturns->get($source_id);
+			$Vendor=$this->ItemLedgers->Vendors->get($PurchaseReturn->vendor_id);
+			return ['voucher_info'=>$PurchaseReturn,'party_type'=>'Vendor','party_info'=>$Vendor];
 		}
 		/* if($source_model=="Items"){ 
 			$Item=$this->ItemLedgers->Items->get($source_id);

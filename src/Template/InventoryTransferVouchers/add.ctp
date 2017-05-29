@@ -229,10 +229,8 @@ $(document).ready(function() {
 	$('.qty_bx_in').die().live("blur",function() {
 		var tr_obj=$(this).closest('tr');  
 		var item_id=tr_obj.find('td:nth-child(1) select option:selected').val()
-		if(item_id > 0){ alert(item_id);
+		if(item_id > 0){ 
 		sr_nos(tr_obj);
-		}else{
-			alert("Select Item First");
 		}
     });
 	

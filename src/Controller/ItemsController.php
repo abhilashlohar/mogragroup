@@ -24,9 +24,7 @@ class ItemsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
        
-		$this->paginate = [
-            'contain' => ['ItemCategories','ItemGroups','ItemSubGroups','Units']
-        ];
+		
 		
 		$where=[];
 		$item_name=$this->request->query('item_name');
@@ -54,7 +52,7 @@ class ItemsController extends AppController
 			$where['ItemSubGroups.name LIKE']='%'.$item_subgroup.'%';
 		}
 		
-        $items = $this->paginate($this->Items->find()->where($where)->order(['Items.name' => 'ASC']));
+        $items = $this->Items->find()->where($where)->order(['Items.name' => 'ASC'])->contain(['ItemCategories','ItemGroups','ItemSubGroups','Units']);
 
 
         $this->set(compact('items'));

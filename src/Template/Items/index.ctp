@@ -3,40 +3,10 @@
 		<div class="caption">
 			<i class="fa fa-comments"></i>Items
 		</div>
-		<div class="portlet-title pull-right"><p><?= $this->Paginator->counter() ?></p></div>
 	
 	<div class="portlet-body">
 		<div class="table-scrollable">
-			<form method="GET" >
-			<table class="table table-bordered table-striped">
-				<thead>
-					
-				</thead>
-				<tbody>
-					<tr>
-						<td><input type="text" name="item_name" class="form-control input-sm" placeholder="Item Name" value="<?php echo @$item_name; ?>"></td>
-						
-						<td><input type="text" name="item_category" class="form-control input-sm" placeholder="Item Category" value="<?php echo @$item_category; ?>"></td>
-						
-						<td><input type="text" name="item_group" class="form-control input-sm" placeholder="Item Group" value="<?php echo @$item_group; ?>"></td>
-						
-						<td><input type="text" name="item_subgroup" class="form-control input-sm" placeholder="Item Subgroup" value="<?php echo @$item_subgroup; ?>"></td>
-						
-						
-						<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
-						<td align="right"><label>Page Number</label></td>
-						<td align="right" width="5%"> 
-								<select class="form-control input-sm select2me" name='page'>
-										<?= $this->Paginator->numbers(array('modulus'=>PHP_INT_MAX,'separator'=>'&nbsp;&nbsp;&nbsp;</b>|<b>&nbsp;&nbsp;&nbsp;')); ?>
-									</select>
-						</td>
-						<td ><button type="submit" class="btn btn-primary btn-sm">Go</button>						
-						
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			</form>
+			
 			<?php $page_no=$this->Paginator->current('Items'); $page_no=($page_no-1)*20; ?>
 			 <table class="table table-bordered table-striped table-hover">
 				 <thead>

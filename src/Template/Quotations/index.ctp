@@ -129,7 +129,7 @@ if(!empty($status)){
 							<button type="button" class="btn btn-xs tooltips revision_hide" id="revision_hide" value="<?=$quotation->id ?>" style="margin-left:5px; display:none;"><i class="fa fa-minus-circle"></i></button><?php } ?></td>
 							
 							<td><?= h(($quotation->qt1.'/QT-'.str_pad($quotation->qt2, 3, '0', STR_PAD_LEFT).'/'.$quotation->qt3.'/'.$quotation->qt4)) ?><?php if($quotation->revision > 0) { ?><?php echo ' (#R'.$quotation->revision.' )'; ?><?php } ?></td>
-							<td><?= h($quotation->customer->customer_name) ?></td>
+							<td><?= h($quotation->customer->customer_name).'('.h($quotation->customer->alias).')' ?></td>
 							<td><?= h($quotation->employee->name) ?></td>
 							<td><?= h($quotation->item_group->name) ?></td>
 							

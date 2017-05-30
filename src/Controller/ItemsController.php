@@ -23,6 +23,8 @@ class ItemsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
        
 		$this->paginate = [
             'contain' => ['ItemCategories','ItemGroups','ItemSubGroups','Units']
@@ -34,14 +36,14 @@ class ItemsController extends AppController
 		$item_group=$this->request->query('item_group');
 		$item_subgroup=$this->request->query('item_subgroup');
 		$page=$this->request->query('page');
-		 //pr($page);exit;
+		
 		$this->set(compact('item_name','item_category','item_group','item_subgroup'));
 		
-		if(!empty($item_name)){
+		if(!empty($item_name)){ 
 			$where['Items.name LIKE']='%'.$item_name.'%';
 		}
 		
-				if(!empty($item_category)){
+		if(!empty($item_category)){
 			$where['ItemCategories.name LIKE']='%'.$item_category.'%';
 		}
 		
@@ -54,8 +56,12 @@ class ItemsController extends AppController
 			$where['ItemSubGroups.name LIKE']='%'.$item_subgroup.'%';
 		}
 		
-        $items = $this->paginate($this->Items->find()->where($where)->order(['Items.name' => 'ASC']));
-
+        $items = $this->paginate($this->Items->find()->contain([
+				'ItemCompanies'=> function ($q)use($st_company_id) {
+				return $q->where(['company_id'=>$st_company_id]);
+				}])
+				->where($where)->order(['Items.name' => 'ASC']));
+		//pr( $items); exit;
 
         $this->set(compact('items'));
         $this->set('_serialize', ['items']);

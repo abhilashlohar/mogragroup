@@ -58,13 +58,19 @@
 				if($ledger->voucher_source=="Journal Voucher"){
 					$url_path="/JournalVouchers/view/".$ledger->voucher_id;
 				}else if($ledger->voucher_source=="Payment Voucher"){
-					$url_path="/PaymentVouchers/view/".$ledger->voucher_id;
-				}else if($ledger->voucher_source=="PettyCashReceipt Voucher"){
-					$url_path="/petty-cash-receipt-vouchers/view/".$ledger->voucher_id;
+					$url_path="/Payments/view/".$ledger->voucher_id;
+				}else if($ledger->voucher_source=="Petty Cash Payment Voucher"){
+					$url_path="/petty-cash-vouchers/view/".$ledger->voucher_id;
 				}else if($ledger->voucher_source=="Contra Voucher"){
 					$url_path="/contra-vouchers/view/".$ledger->voucher_id;
 				}else if($ledger->voucher_source=="Receipt Voucher"){
-					$url_path="/receipt-vouchers/view/".$ledger->voucher_id;
+					$url_path="/receipts/view/".$ledger->voucher_id;
+				}else if($ledger->voucher_source=="Invoice"){
+					$url_path="/invoices/confirm/".$ledger->voucher_id;
+				}else if($ledger->voucher_source=="Invoice Booking"){
+					$url_path="/invoice-bookings/view/".$ledger->voucher_id;
+				}else if($ledger->voucher_source=="Non Print Payment Voucher"){
+					$url_path="/nppayments/view/".$ledger->voucher_id;
 				}
 				
 				?>

@@ -64,6 +64,13 @@
 							$party_name=$itemLedger->party_info->company_name;
 							$voucher_no= '#'.str_pad($itemLedger->voucher_info->voucher_no, 4, '0', STR_PAD_LEFT);
 						}
+						else if($source_model=='Sale Return')
+						{ 
+							$party_name=$itemLedger->party_info->customer_name;
+							
+							$voucher_no=$itemLedger->voucher_info->sr1.'/SR-'.str_pad($itemLedger->voucher_info->sr2, 3, '0', STR_PAD_LEFT).'/'.$itemLedger->voucher_info->sr3.'/'.$itemLedger->voucher_info->sr4;
+							
+						}
 						else{
 							$party_name='-';
 							$voucher_no=$itemLedger->voucher_info->iv_number;

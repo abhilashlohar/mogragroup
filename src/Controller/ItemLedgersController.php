@@ -81,7 +81,13 @@ class ItemLedgersController extends AppController
 		if($source_model=="Purchase Return"){
 			$PurchaseReturn=$this->ItemLedgers->PurchaseReturns->get($source_id);
 			$Vendor=$this->ItemLedgers->Vendors->get($PurchaseReturn->vendor_id);
-			return ['voucher_info'=>$PurchaseReturn,'party_type'=>'Vendor','party_info'=>$Vendor];
+			return ['voucher_info'=>$PurchaseReturn,'party_type'=>'Purchase','party_info'=>$Vendor];
+		}
+		if($source_model=="Sale Return"){ 
+			$SaleReturn=$this->ItemLedgers->SaleReturns->get($source_id);
+			//pr($SaleReturn); exit;
+			$Customer=$this->ItemLedgers->Customers->get($SaleReturn->customer_id);
+			return ['voucher_info'=>$SaleReturn,'party_type'=>'Sale','party_info'=>$Customer];
 		}
 		/* if($source_model=="Items"){ 
 			$Item=$this->ItemLedgers->Items->get($source_id);

@@ -47,6 +47,7 @@
 						<th>Group</th>
 						<th>Sub-Group</th>
 						<th>Unit</th>
+						<th>Serial No</th>
 						<th>Actions</th>
 					</tr>
 				</thead>
@@ -59,6 +60,11 @@
 						<td><?= $item->item_group->name ?></td>
 						<td><?= $item->item_sub_group->name ?></td>
 						<td><?= $item->unit->name ?></td>
+						<?php if(@$item->item_companies[0]->serial_number_enable==1){ ?>
+						<td>Enable</td>
+						<?php } else { ?>
+						<td>Disable</td>						
+						<?php }  ?>
 						<td class="actions">
 							<?php if(in_array(52,$allowed_pages)){ ?>
 							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $item->id],array('escape'=>false,'class'=>'btn btn-xs blue')); ?>

@@ -26,9 +26,9 @@
 				</thead>
 				<tbody>
 					<?php  $page_no=0; 
+					if($over_due_report>0){ 
 					foreach ($over_due_report as $key=>$over_due_reports){ 
-						 
-						if($over_due_reports>0){ 
+					if($over_due_reports>0){
 					?>
 					<tr>
 						<td><?= h(++$page_no) ?></td>
@@ -42,7 +42,10 @@
 						<td align="right"><?= h($total_overdue[$key])  ?></td>
 						
 					</tr>
-					<?php }}?>
+					<?php }}
+					}else{
+						echo "NO DATA FOUND";
+					}?>
 				</tbody>
 			</table>
 		</div>

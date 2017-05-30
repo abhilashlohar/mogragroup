@@ -26,9 +26,7 @@ class ItemsController extends AppController
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
        
-		$this->paginate = [
-            'contain' => ['ItemCategories','ItemGroups','ItemSubGroups','Units']
-        ];
+		
 		
 		$where=[];
 		$item_name=$this->request->query('item_name');
@@ -56,7 +54,7 @@ class ItemsController extends AppController
 			$where['ItemSubGroups.name LIKE']='%'.$item_subgroup.'%';
 		}
 		
-        $items = $this->paginate($this->Items->find()->contain([
+        $items = $this->paginate($this->Items->find()->contain(['ItemCategories','ItemGroups','ItemSubGroups','Units',
 				'ItemCompanies'=> function ($q)use($st_company_id) {
 				return $q->where(['company_id'=>$st_company_id]);
 				}])

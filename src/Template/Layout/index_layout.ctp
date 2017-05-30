@@ -641,8 +641,8 @@ select
 							<span class="arrow "></span>
 							</a>
 							<ul class="sub-menu">
-								<?php echo '<li>'.$this->Html->link( 'Overdue Report for Customers', '/Customers/Breakup-Range-Overdue' ).'</li>';?>
-								<?php echo '<li>'.$this->Html->link( 'Overdue Report for Supplier', '/Vendors/Over-Due-Report' ).'</li>';?>
+								<?php echo '<li>'.$this->Html->link( 'Overdue Report for Customers', '/Customers/Breakup-Range-Overdue?request=customer' ).'</li>';?>
+								<?php echo '<li>'.$this->Html->link( 'Overdue Report for Supplier', '/Customers/Breakup-Range-Overdue?request=vendor' ).'</li>';?>
 							</ul>
 						</li>
 						<li><?php $today =date('d-m-Y');

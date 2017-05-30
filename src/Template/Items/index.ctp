@@ -3,12 +3,12 @@
 		<div class="caption">
 			<i class="fa fa-comments"></i>Items
 		</div>
-	
+	<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3"  style="width: 20%;">
 	<div class="portlet-body">
 		<div class="table-scrollable">
 			
 			<?php $page_no=$this->Paginator->current('Items'); $page_no=($page_no-1)*20; ?>
-			 <table class="table table-bordered table-striped table-hover">
+			 <table class="table table-bordered table-striped table-hover" id="main_tble">
 				 <thead>
 					<tr>
 						<th>Sr. No.</th>
@@ -59,3 +59,24 @@
 		</div>
 	</div>
 </div>
+<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+<script>
+$(document).ready(function() {
+var $rows = $('#main_tble tbody tr');
+	$('#search3').on('keyup',function() {
+	
+			var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+    		var v = $(this).val();
+    		if(v){ 
+    			$rows.show().filter(function() {
+    				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+		
+    				return !~text.indexOf(val);
+    			}).hide();
+    		}else{
+    			$rows.show();
+    		}
+    	});
+});
+		
+</script>

@@ -119,7 +119,7 @@ class LoginsController extends AppController
 		$request=$this->request->query('request');
 		$Employee=$this->Logins->Employees->get($employee_id);
 		$Emp_name = $Employee->name;		
-		//$mobile_no = $Employee->mobile;	
+		$mobile_no = $Employee->mobile;	
 		
 		 $i = 1;
 				while($i<=$employee_id )
@@ -133,7 +133,7 @@ class LoginsController extends AppController
 						->set(['otp_no' => $randomString])
 						->where(['id' => $Employee->id])
 						->execute();
-		$mobile_no=9001855886;
+		
 		 $sms=str_replace(' ', '+', 'Dear '.$Emp_name.', Your one time password is '.$randomString.'.');
         $working_key='A7a76ea72525fc05bbe9963267b48dd96';
         $sms_sender='MOGRAG';

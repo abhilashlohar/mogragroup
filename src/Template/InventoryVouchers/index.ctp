@@ -23,7 +23,9 @@
 						<tr>
 							<td><?= h(++$page_no) ?></td>
 							<td><?= h('#'.str_pad($inventoryVoucher->iv_number, 4, '0', STR_PAD_LEFT)) ?></td>
-							<td><?= h(($inventoryVoucher->invoice->in1.'/IN-'.str_pad($inventoryVoucher->invoice->in2, 3, '0', STR_PAD_LEFT).'/'.$inventoryVoucher->invoice->in3.'/'.$inventoryVoucher->invoice->in4)) ?></td>
+
+							<td><?php echo $this->Html->link($inventoryVoucher->invoice->in1.'/IN-'.str_pad($inventoryVoucher->invoice->in2, 3, '0', STR_PAD_LEFT).'/'.$inventoryVoucher->invoice->in3.'/'.$inventoryVoucher->invoice->in4,[
+							'controller'=>'Invoices','action' => 'confirm',$inventoryVoucher->invoice->id],array('target'=>'_blank')); ?>
 							<?php if(in_array(10,$allowed_pages)){  ?>
 							<td>
 							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit?invoice='.$inventoryVoucher->invoice_id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>

@@ -303,6 +303,7 @@ class VendorsController extends AppController
 			$total_debit_1=0;$total_credit_1=0;$due_1=0;
 			$total_debit_2=0;$total_credit_2=0;$due_2=0;
 			$total_debit_3=0;$total_credit_3=0;$due_3=0;
+			$total_debit_4=0;$total_credit_4=0;$due_4=0;
 			
 			$now=Date::now();
 			$over_date=$now->subDays($vendor_payment->range1);
@@ -314,21 +315,22 @@ class VendorsController extends AppController
 			$over_date_3=$now->subDays($vendor_payment->range7);//pr($over_date_3);exit;
 			$vendor_ledgers =$this->Vendors->Ledgers->find()->where(['ledger_account_id'=>$key])->toArray();
 			 foreach($vendor_ledgers as $vendor_ledger){
-					if($vendor_ledger->transaction_date<=$over_date){
+				 $now=Date::now();
+					if($vendor_ledger->transaction_date >= $over_date && $vendor_ledger->transaction_date <= $now){
 						if($vendor_ledger->debit==0){
 							$total_credit=$total_credit+$vendor_ledger->credit;
 						}else{
 							$total_debit=$total_debit+$vendor_ledger->debit;
 						}
 					}
-					if($vendor_ledger->transaction_date<=$over_date_1){
+					elseif($vendor_ledger->transaction_date >= $over_date_1 && $vendor_ledger->transaction_date <= $now){
 						if($vendor_ledger->debit==0){
 							$total_credit_1=$total_credit_1+$vendor_ledger->credit;
 						}else{
 							$total_debit_1=$total_debit_1+$vendor_ledger->debit;
 						}
 					}
-					if($vendor_ledger->transaction_date<=$over_date_2){
+					elseif($vendor_ledger->transaction_date >= $over_date_2 && $vendor_ledger->transaction_date <= $now){
 						if($vendor_ledger->debit==0){
 							$total_credit_2=$total_credit_2+$vendor_ledger->credit;
 							
@@ -336,24 +338,32 @@ class VendorsController extends AppController
 							$total_debit_2=$total_debit_2+$vendor_ledger->debit;
 						}
 					}
-					if($vendor_ledger->transaction_date<=$over_date_3){
+					elseif($vendor_ledger->transaction_date >= $over_date_3 && $vendor_ledger->transaction_date <= $now){
 						if($vendor_ledger->debit==0){
 							$total_credit_3=$total_credit_3+$vendor_ledger->credit;
 						}else{
 							$total_debit_3=$total_debit_3+$vendor_ledger->debit;
 						}
 					}	
+					else{
+						if($vendor_ledger->debit==0){
+							$total_credit_4=$total_credit_4+$vendor_ledger->credit;
+						}else{
+							$total_debit_4=$total_debit_4+$vendor_ledger->debit;
+						}
+					}
 					
 				}
 				$due=$total_credit-$total_debit; 
 				$due_1=$total_credit_1-$total_debit_1; 
 				$due_2=$total_credit_2-$total_debit_2; 
 				$due_3=$total_credit_3-$total_debit_3;
+				$due_4=$total_credit_4-$total_debit_4;
 				
 				$Company_name =$company_name[$key];
 					
 				
-				$total_overdue[$key] = $due + $due_1 +$due_2 +$due_3;
+				$total_overdue[$key] = $due + $due_1 +$due_2 +$due_3 +$due_4;
 				
 				$over_due_report[$key]=$due;	
 				$over_due_report1[$key][1]=$due;	
@@ -362,7 +372,9 @@ class VendorsController extends AppController
 				$over_due_report[$key]=$due_2;	
 				$over_due_report1[$key][3]=$due_2;	
 				$over_due_report[$key]=$due_3;	
-				$over_due_report1[$key][4]=$due_3;	
+				$over_due_report1[$key][4]=$due_3;
+				$over_due_report[$key]=$due_4;	
+				$over_due_report1[$key][5]=$due_4;				
 				
 			}
 

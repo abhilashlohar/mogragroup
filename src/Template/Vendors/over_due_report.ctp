@@ -20,15 +20,15 @@
 						<th style="text-align:center"><?php echo $vendor_payment_range_ctp->range2.'-'.$vendor_payment_range_ctp->range3?></th>
 						<th style="text-align:center"><?php echo $vendor_payment_range_ctp->range4.'-'.$vendor_payment_range_ctp->range5?></th>
 						<th style="text-align:center"><?php echo $vendor_payment_range_ctp->range6.'-'.$vendor_payment_range_ctp->range7?></th>
-						
+						<th style="text-align:center"><?php echo $vendor_payment_range_ctp->range7?> ></th>
 						<th style="text-align: right">Total Over-Due</th>
 					</tr>
 				</thead>
 				<tbody>
 					<?php $page_no=0;
-					if($over_due_report>0){
+					if($over_due_report>=0){
 					foreach ($over_due_report as $key=>$over_due_reports){
-					if($over_due_reports>0){						
+					if($over_due_reports > 0 || $over_due_reports < 0 ){					
 					?>
 					<tr>
 						<td><?= h(++$page_no) ?></td>
@@ -38,6 +38,7 @@
 						<td align="right"><?= h($over_due_report1[$key][2]) ?></td>
 						<td align="right"><?= h($over_due_report1[$key][3]) ?></td>
 						<td align="right"><?= h($over_due_report1[$key][4]) ?></td>
+						<td align="right"><?= h($over_due_report1[$key][5]) ?></td>
 						<td align="right"><?= h($total_overdue[$key]) ?></td>
 					</tr>
 					<?php }}}else{

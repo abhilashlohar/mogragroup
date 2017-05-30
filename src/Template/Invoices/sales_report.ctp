@@ -66,7 +66,7 @@
 						<td><?= h(++$page_no) ?></td>
 							<td><?= h(($invoice->in1.'/IN-'.str_pad($invoice->in2, 3, '0', STR_PAD_LEFT).'/'.$invoice->in3.'/'.$invoice->in4)) ?></td>
 							<td><?php echo date("d-m-Y",strtotime($invoice->date_created)); ?></td>
-							<td><?= h($invoice->customer->customer_name) ?></td>
+							<td><?php echo $invoice->customer->customer_name.'('.$invoice->customer->alias.')'?></td>
 							<td><?php if($invoice->sale_tax_per==5.50){
 								echo $invoice->total;
 								$sales5=$sales5+$invoice->total;

@@ -17,6 +17,9 @@ $this->Form->templates([
 			
 		
 <!-- BEGIN LOGIN FORM -->
+	<form method="get">
+	<input type="hidden" name="request" value="<?php echo @$request; ?>">
+	</form>
 	<?= $this->Form->create($Employee) ?>
 	 
 		<h3 class="form-title">Login Using Mobile</h3>
@@ -33,7 +36,7 @@ $this->Form->templates([
 			<button type="submit" class="btn green-haze pull-right">
 			LOGIN <i class="m-icon-swapright m-icon-white"></i>
 			</button>
-			<?php echo $this->Html->link('Resend code','/Logins/resendOtp/'.$Employee->id,array('escape'=>false)); ?>
+			<?php echo $this->Html->link('Resend code','/Logins/otpCodeConfirm/'.$Employee->id.'/?request=resendotp',array('escape'=>false)); ?>
 			
 		</div>
 	<?= $this->Form->end() ?>

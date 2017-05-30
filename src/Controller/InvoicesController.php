@@ -93,14 +93,14 @@ class InvoicesController extends AppController
 		
 		else if($inventory_voucher=='true'){
 			$invoices=[];
-			$invoices=$this->paginate($this->Invoices->find()->where($where)->contain(['InvoiceRows'=>['Items'=>function ($q) {
+			$invoices=$this->paginate($this->Invoices->find()->where($where)->contain(['SalesOrders','InvoiceRows'=>['Items'=>function ($q) {
 				return $q->where(['source !='=>'Purchessed']);
-				}]])->where(['company_id'=>$st_company_id,'inventory_voucher_status'=>'Pending','inventory_voucher_create'=>'Yes'])->order(['Invoices.id' => 'DESC']));
+				}]])->where(['Invoices.company_id'=>$st_company_id,'inventory_voucher_status'=>'Pending','inventory_voucher_create'=>'Yes'])->order(['Invoices.id' => 'DESC']));
 		}else if($sales_return=='true'){
 			
-			$invoices = $this->paginate($this->Invoices->find()->contain(['InvoiceRows'])->where($where)->where(['company_id'=>$st_company_id])->order(['Invoices.id' => 'DESC']));
+			$invoices = $this->paginate($this->Invoices->find()->contain(['SalesOrders','InvoiceRows'])->where($where)->where(['Invoices.company_id'=>$st_company_id])->order(['Invoices.id' => 'DESC']));
 		} else{
-			$invoices = $this->paginate($this->Invoices->find()->contain(['InvoiceRows'=>['Items']])->where($where)->where(['company_id'=>$st_company_id])->order(['Invoices.id' => 'DESC']));
+			$invoices = $this->paginate($this->Invoices->find()->contain(['SalesOrders','InvoiceRows'=>['Items']])->where($where)->where(['Invoices.company_id'=>$st_company_id])->order(['Invoices.id' => 'DESC']));
 		}
 		
 		$this->set(compact('invoices','status','inventory_voucher','sales_return','InvoiceRows'));
@@ -1305,15 +1305,17 @@ class InvoicesController extends AppController
 		
 		if(!empty($From)){
 			$From=date("Y-m-d",strtotime($this->request->query('From')));
-			$where['transaction_date >=']=$From;
+			$where['Invoices.date_created >=']=$From;
 		}
 		if(!empty($To)){
 			$To=date("Y-m-d",strtotime($this->request->query('To')));
-			$where['transaction_date <=']=$To;
+			$where['Invoices.date_created <=']=$To;
 		}
+		$this->set(compact('From','To'));
+		
 		
 		$this->viewBuilder()->layout('index_layout');
-		$invoices = $this->Invoices->find()->contain(['InvoiceRows','Customers'])->order(['Invoices.id' => 'DESC'])->where(['Invoices.company_id'=>$st_company_id]);
+		$invoices = $this->Invoices->find()->where($where)->contain(['InvoiceRows','Customers'])->order(['Invoices.id' => 'DESC'])->where(['Invoices.company_id'=>$st_company_id]);
 		//pr($invoices->toArray()); exit;
 		$this->set(compact('invoices'));
 	}

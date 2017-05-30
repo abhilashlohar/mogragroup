@@ -78,6 +78,7 @@ class SalesOrdersController extends AppController
 			$having=['total_rows =' => 0];
 		}
 		
+		
 		if(!empty($items)){
 			
 			$salesOrders=$this->paginate($this->SalesOrders->find()
@@ -90,7 +91,7 @@ class SalesOrdersController extends AppController
 				);
 		}else{
 		$salesOrders=$this->paginate(
-			$this->SalesOrders->find()->contain(['SalesOrderRows'=>['Items']])->select(['total_rows' => 
+			$this->SalesOrders->find()->contain(['Quotations','SalesOrderRows'=>['Items']])->select(['total_rows' => 
 				$this->SalesOrders->find()->func()->count('SalesOrderRows.id')])
 					->leftJoinWith('SalesOrderRows', function ($q) {
 						return $q->where(['SalesOrderRows.processed_quantity < SalesOrderRows.quantity']);
@@ -99,11 +100,11 @@ class SalesOrdersController extends AppController
 					->autoFields(true)
 					->having($having)
 					->where($where)
-					->where(['company_id'=>$st_company_id])
+					->where(['SalesOrders.company_id'=>$st_company_id])
 					->order(['SalesOrders.id' => 'DESC'])
 			);
 			
-		}	
+		}//pr($salesOrders);exit;	
 		if(!empty($job_card)){
 			$salesOrders=$this->paginate(
 				$this->SalesOrders->find()->contain(['SalesOrderRows'])

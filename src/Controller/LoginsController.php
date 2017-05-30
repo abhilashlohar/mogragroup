@@ -31,34 +31,16 @@ class LoginsController extends AppController
 			if($number==1 && !empty($login_id)){ 
 			
 				$this->request->session()->write('st_login_id',$login_id);
-				return $this->redirect(['controller'=>'Logins', 'action' => 'generateOtp',$employee_id]);
-		 
-				$Employee=$this->Logins->Employees->get($employee_id, [
-					'contain' => ['Companies']
-				]);
 				
-				$time = Time::now();
-				$user_logs = $this->Logins->UserLogs->newEntity();
+				$Employee=$this->Logins->Employees->get($employee_id);
 				
-				$user_logs->login_id = $login_id;
-				$user_logs->datetime = $time;
-				$this->Logins->UserLogs->save($user_logs);
+				$emp_mobile = $Employee->mobile;
+				if(!empty($emp_mobile)){
+					return $this->redirect(['controller'=>'Logins', 'action' => 'otpCodeConfirm',$employee_id,$login_id]);
+				}else{
+					return $this->redirect(['controller'=>'Logins', 'action' => 'errorOtp',$employee_id]);
+				}
 				
-				$count=0;
-				foreach($Employee->companies as $company){
-					$count++;
-				}
-				if($count==1){
-					foreach($Employee->companies as $company){
-						$this->request->session()->write('st_company_id',$company->id);
-						break;
-					}
-					return $this->redirect(['controller'=>'Financial-Years','action' => 'selectCompanyYear']);
-				}
-				else
-				{
-					return $this->redirect(['action' => 'Switch-Company']);
-				}
 			}
 		}
 		
@@ -127,39 +109,68 @@ class LoginsController extends AppController
 		$this->set(compact('st_login_id','Employee'));
 	}
 	
-	function generateOtp($employee_id=null){ 
-	
+	function otpCodeConfirm($employee_id=null,$login_id=null)
+	{
 		$otp_allow_page = 'yes';
-		$this->viewBuilder()->layout('login_layout');
+		$this->viewBuilder()->layout('');
 		$session = $this->request->session();
-		$st_login_id = $session->read('st_login_id');
 		$this->request->session()->write('otp_confirm',$otp_allow_page);
-		$otp_confirm = $this->request->session()->read('otp_confirm');
+		$otp_confirm = $this->request->session()->read('otp_confirm');	
+		$request=$this->request->query('request');
 		$Employee=$this->Logins->Employees->get($employee_id);
+		$Emp_name = $Employee->name;		
+		//$mobile_no = $Employee->mobile;	
+		
 		 $i = 1;
 				while($i<=$employee_id )
 				{
 					$randomString = rand(1000, 9999);
 					$i++;
 				}
-				
 		if($otp_confirm == 'yes'){
 			$query = $this->Logins->Employees->query();
 					$query->update()
 						->set(['otp_no' => $randomString])
 						->where(['id' => $Employee->id])
 						->execute();
-						 
-		$Emp_name = $Employee->name;		
-		$mobile_no = $Employee->mobile;	
-		
+		$mobile_no=9001855886;
 		 $sms=str_replace(' ', '+', 'Dear '.$Emp_name.', Your one time password is '.$randomString.'.');
         $working_key='A7a76ea72525fc05bbe9963267b48dd96';
         $sms_sender='MOGRAG';
         $ch = curl_init('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile_no.'&message='.$sms.'');
+		
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		$response = json_decode(curl_exec($ch));
-		curl_close($ch);	 	
+		 $response = json_decode(curl_exec($ch));
+		/////echo///response/// 
+		$response2=curl_exec($ch);
+		if(!empty($response2)){
+		 
+		}else if(empty($response2)){
+			return $this->redirect(['controller'=>'Logins', 'action' => 'errorOtp',$employee_id]);
+		}
+		curl_close($ch);
+		$session = $this->request->session();
+		$session->delete('otp_confirm');
+		if($request == 'resendotp'){
+						return $this->redirect(['controller'=>'Logins', 'action' => 'resendOtp',$employee_id]);
+
+		}else{
+						return $this->redirect(['controller'=>'Logins', 'action' => 'generateOtp',$employee_id,$login_id]);
+
+		}
+		
+		
+		
+		}
+	}
+	
+	
+	function generateOtp($employee_id=null,$login_id=null){ 
+	
+		$this->viewBuilder()->layout('login_layout');
+		$Employee=$this->Logins->Employees->get($employee_id, [
+					'contain' => ['Companies']
+				]);
 						
 			if ($this->request->is('put')) 
 			{ 
@@ -167,14 +178,35 @@ class LoginsController extends AppController
 			
 				
 				if($Employee['otp_no'] == $otp_no){
+					$time = Time::now();
+					$user_logs = $this->Logins->UserLogs->newEntity();
+					$user_logs->login_id = $login_id;
+					$user_logs->datetime = $time;
+					$this->Logins->UserLogs->save($user_logs);
+					$count=0;
+						
+					foreach($Employee->companies as $company){
+						$count++;
+					}
+					if($count==1){
+					foreach($Employee->companies as $company){
+						$this->request->session()->write('st_company_id',$company->id);
+						break;
+					}
+					return $this->redirect(['controller'=>'Financial-Years','action' => 'selectCompanyYear']);
+				}
+				else
+				{
 					return $this->redirect(['action' => 'Switch-Company']);
+				}
+					
 				}else{
 					
-					$this->Flash->error(__('Enter Correct OTP Code'));
+					$this->Flash->error(__('Please Enter Correct OTP Code'));
 				
 				}
 			}
-		 }
+		
 			
 		$this->set(compact('st_login_id','Employee'));
 		$this->set('_serialize', ['Employee']);
@@ -182,37 +214,10 @@ class LoginsController extends AppController
 	}
 	
 	function resendOtp($employee_id=null){
-		$otp_allow_page = 'yes';
-		$this->viewBuilder()->layout('login_layout');
-		$session = $this->request->session();
-		$st_login_id = $session->read('st_login_id');
-		$this->request->session()->write('otp_confirm',$otp_allow_page);
-		$otp_confirm = $this->request->session()->read('otp_confirm');
 		$Employee=$this->Logins->Employees->get($employee_id);
-		 $i = 1;
-				while($i<=$employee_id )
-				{
-					$randomString = rand(1000, 9999);
-					$i++;
-				}
-				
-		if($otp_confirm == 'yes'){
-			$query = $this->Logins->Employees->query();
-					$query->update()
-						->set(['otp_no' => $randomString])
-						->where(['id' => $Employee->id])
-						->execute();
-			$Emp_name = $Employee->name;		
-		$mobile_no = $Employee->mobile;	
+		$this->viewBuilder()->layout('login_layout');
 		
-		$sms=str_replace(' ', '+', 'Dear '.$Emp_name.', Your one time password is '.$randomString.'.');
-        $working_key='A7a76ea72525fc05bbe9963267b48dd96';
-        $sms_sender='MOGRAG';
-        $ch = curl_init('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile_no.'&message='.$sms.'');
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		$response = json_decode(curl_exec($ch));
-		curl_close($ch);			
-			if ($this->request->is('put')) 
+		if ($this->request->is('put')) 
 			{ 
 				$otp_no=$this->request->data["otp_no"];
 				if($Employee['otp_no'] == $otp_no){
@@ -223,7 +228,7 @@ class LoginsController extends AppController
 				
 				}
 			}
-		}
+		
 			
 		$this->set(compact('st_login_id','Employee'));
 		$this->set('_serialize', ['Employee']);

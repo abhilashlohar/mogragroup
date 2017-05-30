@@ -74,6 +74,7 @@
 						<tr>
 							<th width="5%">Sr. No.</th>
 							<th width="10%">Invoice No.</th>
+							<th width="10%">Sales Order No.</th>
 							<th width="12%">Customer</th>
 							<th width="8%">Items</th>
 							<th width="8%">Date</th>
@@ -82,13 +83,22 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ($invoices as $invoice): 
+						<?php foreach ($invoices as $invoice): //pr($invoice);exit;
 						if($invoice->status=='Pending'){ $tr_color='#FFF'; }
 						if($invoice->status=='Cancel'){ $tr_color='#FFF'; }
 						?>
 						<tr>
 							<td><?= h(++$page_no) ?></td>
 							<td><?= h(($invoice->in1.'/IN-'.str_pad($invoice->in2, 3, '0', STR_PAD_LEFT).'/'.$invoice->in3.'/'.$invoice->in4)) ?></td>
+							<?php if($invoice->sales_order_id != 0){ ?>
+							<td>
+							<?php echo $this->Html->link( $invoice->sales_order->so1.'/SO-'.str_pad($invoice->sales_order->so2, 3, '0', STR_PAD_LEFT).'/'.$invoice->sales_order->so3.'/'.$invoice->sales_order->so4,[
+							'controller'=>'SalesOrders','action' => 'confirm',$invoice->sales_order->id],array('target'=>'_blank')); ?>
+							</td>
+							<?php }else{?>
+							<td></td><?php } ?>
+							
+							
 							<td><?= h($invoice->customer->customer_name) ?></td>
 							<td>
 								<div class="btn-group">

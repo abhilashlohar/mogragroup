@@ -88,6 +88,7 @@
 						<tr>
 							<th width="5%" >S. No.</th>
 							<th width="15%" >Sales Order No</th>
+							<th width="15%" >Quotation No</th>
 							<th width="15%">Customer</th>
 							<th width="10%">PO No.</th>
 							<th width="10%">Items Name</th>
@@ -96,10 +97,17 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ($salesOrders as $salesOrder): ?>
+						<?php 
+						//pr($salesOrders);exit;
+						foreach ($salesOrders as $salesOrder): ?>
 						<tr <?php if($status=='Converted Into Invoice'){ echo 'style="background-color:#f4f4f4"'; } ?> >
 							<td><?= h(++$page_no) ?></td>
 							<td><?= h(($salesOrder->so1.'/SO-'.str_pad($salesOrder->so2, 3, '0', STR_PAD_LEFT).'/'.$salesOrder->so3.'/'.$salesOrder->so4)) ?></td>
+							<?php if($salesOrder->quotation_id != 0){ ?>
+							<td>
+							<?php echo $this->Html->link( $salesOrder->quotation->qt1.'/QT-'.str_pad($salesOrder->quotation->qt2, 3, '0', STR_PAD_LEFT).'/'.$salesOrder->quotation->qt3.'/'.$salesOrder->quotation->qt4,[
+							'controller'=>'Quotations','action' => 'confirm', $salesOrder->quotation->id],array('target'=>'_blank')); ?>
+							</td><?php }else{ ?><td></td><?php } ?>
 							<td><?= h($salesOrder->customer->customer_name) ?></td>
 							<td><?= h($salesOrder->customer_po_no); ?></td>
 							<td>

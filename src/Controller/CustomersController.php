@@ -248,8 +248,25 @@ class CustomersController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
+		$request=$this->request->query('request');
 		$range_data=[];
-		if ($this->request->is(['post'])) {
+		if($request == 'vendor'){
+				if ($this->request->is(['post'])) {
+			$range_data['range0']=$this->request->data['range_0']; 
+			$range_data['range1']=$this->request->data['range_1']; 
+			$range_data['range2']=$this->request->data['range_2']; 
+			$range_data['range3']=$this->request->data['range_3']; 
+			$range_data['range4']=$this->request->data['range_4']; 
+			$range_data['range5']=$this->request->data['range_5']; 
+			$range_data['range6']=$this->request->data['range_6']; 
+			$range_data['range7']=$this->request->data['range_7']; 
+			
+			$to=json_encode($range_data);  
+			$this->redirect(['controller'=>'Vendors','action' => 'OverDueReport/'.$to.'']);
+		 }
+		}
+		if($request == 'customer'){
+			if ($this->request->is(['post'])) {
 			$range_data['range0']=$this->request->data['range_0']; 
 			$range_data['range1']=$this->request->data['range_1']; 
 			$range_data['range2']=$this->request->data['range_2']; 
@@ -260,10 +277,9 @@ class CustomersController extends AppController
 			$range_data['range7']=$this->request->data['range_7']; 
 			
 		$to=json_encode($range_data);  
-		$this->redirect(['action' => 'OverDueReport/'.$to.'']);
+		$this->redirect(['controller'=>'Customers','action' => 'OverDueReport/'.$to.'']);
 		 }
-		
-		
+		}
 	}
 	
 	public function OverDueReport($to_send = null)
@@ -359,8 +375,6 @@ class CustomersController extends AppController
 				$over_due_report1[$key][3]=$due_2;	
 				$over_due_report[$key]=$due_3;	
 				$over_due_report1[$key][4]=$due_3;	
-				
-				
 			} 
         $this->set(compact('LedgerAccounts','Ledgers','over_due_report','custmer_name','custmer_payment','custmer_alise','custmer_payment_ctp','custmer_payment_range_ctp','over_due_report1','total_overdue'));
         $this->set('_serialize', ['customers']);

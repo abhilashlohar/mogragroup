@@ -8,6 +8,10 @@
 	</div>
 
 	<div class="portlet-body">
+	<form method="get">
+	<input type="hidden" name="request" value="<?php echo @$request; ?>">
+	</form>
+	
 		<?= $this->Form->create() ?>
 	<div class="row">
 	 <div class="col-md-3"></div>

@@ -106,6 +106,8 @@ class VendorsController extends AppController
         $this->set('_serialize', ['vendor']);
     }
 
+	
+	
     /**
      * Edit method
      *
@@ -273,12 +275,13 @@ class VendorsController extends AppController
 		return $this->redirect(['action' => 'EditCompany/'.$vendor_id]);
 	}
 	
-	public function OverDueReport()
+	public function OverDueReport($to_send=null)
     {
+		
 		$this->viewBuilder()->layout('index_layout');
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-		
+		$to_range_datas =json_decode($to_send);
 		$LedgerAccounts =$this->Vendors->LedgerAccounts->find()
 			->where(['LedgerAccounts.company_id'=>$st_company_id,'source_model'=>'Vendors']);
 			
@@ -289,29 +292,81 @@ class VendorsController extends AppController
 		$Vendors = $this->Vendors->find()->where(['id'=>$LedgerAccount->source_id])->first();
 		$vendor_payment[$LedgerAccount->id] = $Vendors->payment_terms;
 		$company_name[$LedgerAccount->id] = $Vendors->company_name;
+		$vendor_payment[$LedgerAccount->id] =$to_range_datas;
 		$vendor_payment_ctp[$LedgerAccount->id] = $Vendors->payment_terms;
+		$vendor_payment_range_ctp =$to_range_datas;
 		}
 		$over_due_report = [];
+		$over_due_report1 = [];
 		foreach ($vendor_payment as $key=>$vendor_payment){
 			$total_debit=0;$total_credit=0;$due=0;
+			$total_debit_1=0;$total_credit_1=0;$due_1=0;
+			$total_debit_2=0;$total_credit_2=0;$due_2=0;
+			$total_debit_3=0;$total_credit_3=0;$due_3=0;
+			
 			$now=Date::now();
-			$over_date=$now->subDays($vendor_payment);
+			$over_date=$now->subDays($vendor_payment->range1);
+			$now=Date::now();
+			$over_date_1=$now->subDays($vendor_payment->range3);
+			$now=Date::now();
+			$over_date_2=$now->subDays($vendor_payment->range5);//pr($over_date_2);exit;
+			$now=Date::now();
+			$over_date_3=$now->subDays($vendor_payment->range7);//pr($over_date_3);exit;
 			$vendor_ledgers =$this->Vendors->Ledgers->find()->where(['ledger_account_id'=>$key])->toArray();
-			 foreach($vendor_ledgers as $vendor_ledgers){
-					if($vendor_ledgers->transaction_date<=$over_date){
-						if($vendor_ledgers->debit==0){
-							$total_credit=$total_credit+$vendor_ledgers->credit;
+			 foreach($vendor_ledgers as $vendor_ledger){
+					if($vendor_ledger->transaction_date<=$over_date){
+						if($vendor_ledger->debit==0){
+							$total_credit=$total_credit+$vendor_ledger->credit;
 						}else{
-							$total_debit=$total_debit+$vendor_ledgers->debit;
+							$total_debit=$total_debit+$vendor_ledger->debit;
 						}
 					}
+					if($vendor_ledger->transaction_date<=$over_date_1){
+						if($vendor_ledger->debit==0){
+							$total_credit_1=$total_credit_1+$vendor_ledger->credit;
+						}else{
+							$total_debit_1=$total_debit_1+$vendor_ledger->debit;
+						}
+					}
+					if($vendor_ledger->transaction_date<=$over_date_2){
+						if($vendor_ledger->debit==0){
+							$total_credit_2=$total_credit_2+$vendor_ledger->credit;
+							
+						}else{
+							$total_debit_2=$total_debit_2+$vendor_ledger->debit;
+						}
+					}
+					if($vendor_ledger->transaction_date<=$over_date_3){
+						if($vendor_ledger->debit==0){
+							$total_credit_3=$total_credit_3+$vendor_ledger->credit;
+						}else{
+							$total_debit_3=$total_debit_3+$vendor_ledger->debit;
+						}
+					}	
+					
 				}
-				$due=$total_credit-$total_debit; //pr($due); exit;
+				$due=$total_credit-$total_debit; 
+				$due_1=$total_credit_1-$total_debit_1; 
+				$due_2=$total_credit_2-$total_debit_2; 
+				$due_3=$total_credit_3-$total_debit_3;
+				
 				$Company_name =$company_name[$key];
+					
+				
+				$total_overdue[$key] = $due + $due_1 +$due_2 +$due_3;
+				
 				$over_due_report[$key]=$due;	
+				$over_due_report1[$key][1]=$due;	
+				$over_due_report[$key]=$due_1;
+				$over_due_report1[$key][2]=$due_1;
+				$over_due_report[$key]=$due_2;	
+				$over_due_report1[$key][3]=$due_2;	
+				$over_due_report[$key]=$due_3;	
+				$over_due_report1[$key][4]=$due_3;	
+				
 			}
 
-        $this->set(compact('LedgerAccounts','Ledgers','over_due_report','company_name','vendor_payment_ctp'));
+        $this->set(compact('LedgerAccounts','Ledgers','over_due_report','company_name','vendor_payment_ctp','total_overdue','over_due_report1','vendor_payment_range_ctp'));
         $this->set('_serialize', ['Vendors']);
     }
 }

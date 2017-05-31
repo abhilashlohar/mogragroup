@@ -35,7 +35,9 @@ class PurchaseOrdersController extends AppController
 		$vendor=$this->request->query('vendor');
 		$total=$this->request->query('total');
 		$items=$this->request->query('items');
-		$this->set(compact('purchase_no','vendor','total','file','items'));
+		$From=$this->request->query('From');
+		$To=$this->request->query('To');
+		$this->set(compact('purchase_no','vendor','From','To','total','file','items'));
 		if(!empty($purchase_no)){
 			$where['po2 LIKE']=$purchase_no;
 		}
@@ -48,7 +50,14 @@ class PurchaseOrdersController extends AppController
 		if(!empty($vendor)){
 			$where['Vendors.company_name LIKE']='%'.$vendor.'%';
 		}
-		
+		if(!empty($From)){
+			$From=date("Y-m-d",strtotime($this->request->query('From')));
+			$where['PurchaseOrders.date_created >=']=$From;
+		}
+		if(!empty($To)){
+			$To=date("Y-m-d",strtotime($this->request->query('To')));
+			$where['PurchaseOrders.date_created <=']=$To;
+		}
 		
 		
 		if($status==null or $status=='Pending'){

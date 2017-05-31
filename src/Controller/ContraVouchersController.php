@@ -68,7 +68,15 @@ class ContraVouchersController extends AppController
         $contravoucher = $this->ContraVouchers->get($id, [
             'contain' => ['BankCashes', 'Companies', 'ContraVoucherRows' => ['ReceivedFroms'], 'Creator']
         ]);
-
+		//pr($contravoucher);exit;
+		$ref_bal=[];
+		foreach($contravoucher->contra_voucher_rows as $contra_voucher_row){
+			$ReferenceBalancess=$this->ContraVouchers->ReferenceDetails->find()->where(['ledger_account_id'=>$contra_voucher_row->received_from_id,'contra_voucher_id'=>$contra_voucher_row->id]);
+			$ref_bal[$contra_voucher_row->received_from_id]=$ReferenceBalancess->toArray();
+		}
+		//pr($ref_bal);exit;
+										
+		$this->set(compact('ref_bal'));
         $this->set('contravoucher', $contravoucher);
         $this->set('_serialize', ['contravoucher']);
     }

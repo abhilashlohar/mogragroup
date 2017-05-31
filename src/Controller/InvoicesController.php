@@ -81,7 +81,7 @@ class InvoicesController extends AppController
 		if(!empty($items)){ 
 		
 			$invoices=$this->paginate($this->Invoices->find()
-			->contain(['InvoiceRows'=>['Items']])
+			->contain(['SalesOrders','InvoiceRows'=>['Items']])
 			->matching(
 					'InvoiceRows.Items', function ($q) use($items) {
 						return $q->where(['Items.name LIKE' =>'%'.$items.'%']);

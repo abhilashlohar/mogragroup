@@ -22,7 +22,7 @@ class InventoryVouchersController extends AppController
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
         $this->paginate = [
-            'contain' => ['InventoryVoucherRows']
+            'contain' => ['Invoices'=>['Customers'],'InventoryVoucherRows']
         ];
         $inventoryVouchers = $this->paginate($this->InventoryVouchers->find()->contain(['Invoices'])->where(['InventoryVouchers.company_id'=>$st_company_id])->order(['InventoryVouchers.id' => 'DESC']));
 

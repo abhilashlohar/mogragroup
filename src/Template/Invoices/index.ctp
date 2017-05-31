@@ -77,7 +77,7 @@
 							<th width="10%">Sales Order No.</th>
 							<th width="12%">Customer</th>
 							<th width="8%">Items</th>
-							<th width="8%">Date</th>
+							<th width="8%">Created Date</th>
 							<th width="10%">Total</th>
 							<th width="10%">Actions</th>
 						</tr>

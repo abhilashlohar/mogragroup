@@ -92,7 +92,7 @@
 							<th width="15%">Customer</th>
 							<th width="10%">PO No.</th>
 							<th width="10%">Items Name</th>
-							<th width="10%">Date</th>
+							<th width="10%">Created Date</th>
 							<th width="10%">Actions</th>
 						</tr>
 					</thead>

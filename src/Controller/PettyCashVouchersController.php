@@ -43,6 +43,15 @@ class PettyCashVouchersController extends AppController
         $pettycashvoucher = $this->PettyCashVouchers->get($id, [
             'contain' => ['BankCashes', 'Companies', 'PettyCashVoucherRows' => ['ReceivedFroms'], 'Creator']
         ]);
+		//pr($pettycashvoucher);exit;
+		$ref_bal=[];
+		foreach($pettycashvoucher->petty_cash_voucher_rows as $petty_cash_voucher_row){
+			$ReferenceBalancess=$this->PettyCashVouchers->ReferenceDetails->find()->where(['ledger_account_id'=>$petty_cash_voucher_row->received_from_id,'petty_cash_voucher_id'=>$pettycashvoucher->id]);
+			$ref_bal[$petty_cash_voucher_row->received_from_id]=$ReferenceBalancess->toArray();
+		}
+		//pr($ref_bal);exit;
+										
+		$this->set(compact('ref_bal'));
 
         $this->set('pettycashvoucher', $pettycashvoucher);
         $this->set('_serialize', ['pettycashvoucher']);

@@ -60,8 +60,14 @@
 							<td width="22%">
 							      <input type="text" name="vendor" class="form-control input-sm" placeholder="Supplier" value="<?php echo @$vendor; ?>">
 							</td>
-							<td width="19%">
+							<td width="12%">
 							      <input type="text" name="items" class="form-control input-sm" placeholder="Items" value="<?php echo @$items; ?>">
+							</td>
+							<td width="9%">
+								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="From" value="<?php echo @$From; ?>" data-date-format="dd-mm-yyyy" >
+							</td>
+							<td width="9%">
+								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="To" value="<?php echo @$To; ?>" data-date-format="dd-mm-yyyy" >
 							</td>
 							
 							<input type="hidden" name="pull-request" value='<?php echo $pull_request; ?>'  />
@@ -81,6 +87,7 @@
 								<th>Purchase No.</th>
 								<th>Supplier Name</th>
 								<th>Items Name</th>
+								<th>Created Date</th>
 								<th style="text-align:right">Total</th>
 								
 								<th class="actions"><?= __('Actions') ?></th>
@@ -107,6 +114,7 @@
 										</ul>
 								</div>
 							</td>
+							<td><?php echo date("d-m-Y",strtotime( $purchaseOrder->date_created)) 	 ?></td>
 							<td align="right"><?= $this->Number->format($purchaseOrder->total) ?></td>
 						
 							<td class="actions">

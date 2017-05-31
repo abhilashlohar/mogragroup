@@ -86,6 +86,27 @@ margin-bottom: 0;
             <td style="white-space: nowrap;"><?= h($this->Number->format($contra_voucher_row->amount,[ 'places' => 2])) ?> <?= h($contra_voucher_row->cr_dr) ?></td>
             <td><?= h($contra_voucher_row->narration) ?></td>
         </tr>
+		<?php if(!empty($ref_bal[$contra_voucher_row->received_from_id])):?>
+		<tr >
+		
+		<td colspan="3" style="border-top:none !important;">
+			<table width="100%">
+			
+			<?php foreach($ref_bal[$contra_voucher_row->received_from_id] as $refbal): ?>
+			<tr>
+					<td style="width :180px !important;"> <?= h($refbal->reference_type). '-' .h($refbal->reference_no) ?></td>
+					
+					<td > <?php if($refbal->credit != '0' ){ ?> 
+					<?= h($refbal->credit) ?> Cr 
+					<?php } elseif( $refbal->debit != '0'){?>
+					<?= h($refbal->debit) ?> Dr
+					<?php } ?></td>
+					</tr>
+			<?php endforeach; ?>
+			</table>
+		</td>
+		
+		</tr><?php endif; ?>
         <?php if($contra_voucher_row->cr_dr=="Cr"){
             $total_cr=$total_cr+$contra_voucher_row->amount;
         }else{

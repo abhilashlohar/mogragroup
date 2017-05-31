@@ -101,7 +101,7 @@ margin-bottom: 0;
 			<?php foreach($ref_details[$paymentRows->received_from_id] as $refdetail): ?>
 			<tr>
 					<td style="width :180px !important;"> <?= h($refdetail->reference_type). '-' .h($refdetail->reference_no) ?></td>
-					
+					<td>:</td>
 					<td > <?php if($refdetail->credit != '0' ){ ?> 
 					<?= h($refdetail->credit) ?> Cr 
 					<?php } elseif( $refdetail->debit != '0'){?>

@@ -91,7 +91,7 @@ class InvoicesController extends AppController
 			
 		}
 		
-		else if($inventory_voucher=='true'){
+		else if($inventory_voucher=='true'){ 
 			$invoices=[];
 			$invoices=$this->paginate($this->Invoices->find()->where($where)->contain(['SalesOrders','InvoiceRows'=>['Items'=>function ($q) {
 				return $q->where(['source !='=>'Purchessed']);
@@ -786,9 +786,12 @@ class InvoicesController extends AppController
 				$flag=0;
 				foreach($invoice->invoice_rows as $invoice_row){
 					$SalesOrderRow=$this->Invoices->SalesOrderRows->find()->where(['sales_order_id'=>$invoice->sales_order_id,'item_id'=>$invoice_row->item_id])->first();
+					
 					$items_source=$this->Invoices->Items->get($invoice_row->item_id);
+					
 						if($items_source->source=='Purchessed/Manufactured'){ 
-							if($SalesOrderRow->source_type=="Manufactured"){
+						
+							if($SalesOrderRow->source_type=="Manufactured" || $SalesOrderRow->source_type==""){
 								$query = $this->Invoices->query();
 								$query->update()
 									->set(['inventory_voucher_create' => 'Yes'])
@@ -806,7 +809,7 @@ class InvoicesController extends AppController
 								  $flag=1;
 						}
 						
-				}
+				} //pr($flag); exit;
 				if($flag==0){
 					$query = $this->Invoices->query();
 					$query->update()
@@ -977,7 +980,6 @@ class InvoicesController extends AppController
 				
 				
 				//Reference Number coding 
-				pr($ref_rows); exit;
 					if(sizeof(@$ref_rows)>0){
 						foreach($ref_rows as $ref_row){
 							$ref_row=(object)$ref_row;

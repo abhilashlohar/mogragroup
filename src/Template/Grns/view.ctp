@@ -72,16 +72,25 @@
 <?php $page_no=$this->Paginator->current('Grns'); $page_no=($page_no-1)*20; ?>
 <table width="100%" class="table tableitm"  border="0">	
 <thead>
+<?php $flag=0;
+foreach ($grn->grn_rows as $grn_row){ 
+if($grn_row->item->item_companies[0]->serial_number_enable == 1) {
+	$flag=1;
+}
+}
+?>
 	<tr>
 		<th width="20%">S.No</th>
 		<th>Item Name</th>
-		
+		<?php if($flag==1) { ?>
 		<th>Item Serial No</th>
-		
+		<?php } ?>
 		<th width="28%">Quantity</th>
 	</tr>
 </thead>
 <tbody>
+
+
 <?php foreach ($grn->grn_rows as $grn_row): 
 ?>
 	<tr>

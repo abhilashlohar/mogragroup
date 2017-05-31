@@ -23,10 +23,10 @@
 					<td>
 						<div class="row">
 							<div class="col-md-3">
-								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo @$From; ?>"  data-date-format="dd-mm-yyyy" >
+								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo @date('1-4-Y', strtotime($From));  ?>"  data-date-format="dd-mm-yyyy" >
 							</div>
 							<div class="col-md-3">
-								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Transaction To" value="<?php echo @$To; ?>"  data-date-format="dd-mm-yyyy" >
+								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Transaction To" value="<?php echo @date('1-4-Y', strtotime($To));  ?>"  data-date-format="dd-mm-yyyy" >
 							</div>
 							<div class="col-md-3">
 								<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button>

@@ -134,21 +134,21 @@ class LoginsController extends AppController
 						->where(['id' => $Employee->id])
 						->execute();
 		
-		 $sms=str_replace(' ', '+', 'Dear '.$Emp_name.', Your one time password is '.$randomString.'.');
-        $working_key='A7a76ea72525fc05bbe9963267b48dd96';
-        $sms_sender='MOGRAG';
-        $ch = curl_init('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile_no.'&message='.$sms.'');
+		 //$sms=str_replace(' ', '+', 'Dear '.$Emp_name.', Your one time password is '.$randomString.'.');
+        //$working_key='A7a76ea72525fc05bbe9963267b48dd96';
+        //$sms_sender='MOGRAG';
+        //$ch = curl_init('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile_no.'&message='.$sms.'');
 		
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		 $response = json_decode(curl_exec($ch));
+		//curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		 //$response = json_decode(curl_exec($ch));
 		/////echo///response/// 
-		$response2=curl_exec($ch);
-		if(!empty($response2)){
+		//$response2=curl_exec($ch);
+		//if(!empty($response2)){
 		 
-		}else if(empty($response2)){
-			return $this->redirect(['controller'=>'Logins', 'action' => 'errorOtp',$employee_id]);
-		}
-		curl_close($ch);
+		//}else if(empty($response2)){
+			//return $this->redirect(['controller'=>'Logins', 'action' => 'errorOtp',$employee_id]);
+		//}
+		//curl_close($ch);
 		$session = $this->request->session();
 		$session->delete('otp_confirm');
 		if($request == 'resendotp'){

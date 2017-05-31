@@ -93,8 +93,8 @@
 			<td><?= h(++$page_no) ?></td>
 			<td><?= $invoice_booking_row->item->name; ?></td>
 			<td align="center"><?= $invoice_booking_row->quantity; ?></td>
-			<td align="right"><?= $invoice_booking_row->rate; ?></td>
-			<td align="right"><?= $invoice_booking_row->quantity*$invoice_booking_row->rate; ?></td>
+			<td align="right"><?=  number_format($invoice_booking_row->rate, 2, '.', '');?></td>
+			<td align="right"><?= number_format($invoice_booking_row->quantity*$invoice_booking_row->rate, 2, '.', '');?></td>
 		</tr>
 		<?php 
 		$amount_after_misc=($invoice_booking_row->quantity*$invoice_booking_row->unit_rate_from_po)+$invoice_booking_row->misc;
@@ -139,7 +139,9 @@
 		<tr>
 			<td colspan="3"></td>
 			<td style="font-size:14px; font-weight:bold;"  align="right"> Total</td>
-			<td style="font-size:14px; font-weight:bold; "  align="right"><?= $invoiceBooking->total ?></td>
+			<td style="font-size:14px; font-weight:bold; "  align="right"><?= 
+			number_format($invoiceBooking->total, 2, '.', '');
+			 ?></td>
 		</tr>
 	</tfoot>
 </table>

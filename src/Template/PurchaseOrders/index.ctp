@@ -48,19 +48,19 @@
 				<table class="table table-condensed">
 					<tbody>
 						<tr>
-							<td>
+							<td width="19%">
 								<div class="input-group" style="" id="pnf_text">
 								  <span class="input-group-addon">PO-</span><input type="text" name="purchase_no" class="form-control input-sm" placeholder="Purchase No" value="<?php echo @$purchase_no; ?>">
 								</div>
 							</td>
-						    <td>	
+						    <td width="16%">	
 							     <input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
 									
 							</td>
-							<td>
+							<td width="22%">
 							      <input type="text" name="vendor" class="form-control input-sm" placeholder="Supplier" value="<?php echo @$vendor; ?>">
 							</td>
-							<td>
+							<td width="19%">
 							      <input type="text" name="items" class="form-control input-sm" placeholder="Items" value="<?php echo @$items; ?>">
 							</td>
 							
@@ -79,7 +79,7 @@
 							<tr>
 								<th>S.No</th>
 								<th>Purchase No.</th>
-								<th>Party Name</th>
+								<th>Supplier Name</th>
 								<th>Items Name</th>
 								<th style="text-align:right">Total</th>
 								

@@ -31,7 +31,8 @@ class QuotationsController extends AppController
 		$q_dateTo=$this->request->query('q_dateTo');
 		$pull_request=$this->request->query('pull-request');
 		$close_status=$this->request->query('status');
-		$this->set(compact('qt2','customer','salesman','product','From','To','q_dateFrom','q_dateTo','company_id','file','pull_request','close_status'));
+		$items=$this->request->query('items');
+		$this->set(compact('qt2','customer','salesman','product','From','To','q_dateFrom','q_dateTo','company_id','file','pull_request','close_status','items'));
 		if(!empty($company_id)){
 			$where['company_id']=$company_id;
 		}
@@ -77,10 +78,10 @@ class QuotationsController extends AppController
 			$where['status']='Closed';
 		}
 		
-        $quotations = $this->paginate($this->Quotations->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Quotations.id' => 'DESC']));
 		
-		
-		
+		//pr($quotations);exit;
+										
+										
 		$subquery=$this->Quotations->find();
 		$subquery->select(['max_id' => $subquery->func()->max('id')])->group('quotation_id');
 		$max_ids=[];
@@ -89,13 +90,31 @@ class QuotationsController extends AppController
 		} 
 		
 		if(sizeof($max_ids)>0){
-			$quotations = $this->paginate($this->Quotations->find()->where(['Quotations.id IN' =>$max_ids])->where($where)->where(['company_id'=>$st_company_id])->order(['Quotations.id' => 'DESC']));
+			$quotations = $this->paginate($this->Quotations->find()->contain(['QuotationRows'=>['Items']])->where($where)->where(['Quotations.id IN' =>$max_ids])->where(['company_id'=>$st_company_id])->order(['Quotations.id' => 'DESC']));
 		}else{
-			$quotations = $this->paginate($this->Quotations->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Quotations.id' => 'DESC']));
+			$quotations = $this->paginate($this->Quotations->find()->contain(['QuotationRows'=>['Items']])->where($where)->where(['company_id'=>$st_company_id])->order(['Quotations.id' => 'DESC']));
 		}
 		
 		if(sizeof($max_ids)>0){
-			$quotations = $this->paginate($this->Quotations->find()->where(['Quotations.id IN' =>$max_ids])->where($where)->where(['company_id'=>$st_company_id])->order(['Quotations.id' => 'DESC']));
+			$quotations = $this->paginate($this->Quotations->find()->contain(['QuotationRows'=>['Items']])->where($where)->where(['Quotations.id IN' =>$max_ids])->where(['company_id'=>$st_company_id])->order(['Quotations.id' => 'DESC']));
+		}
+		if(!empty($items)){ 
+			
+			$quotations=$this->paginate($this->Quotations->find()
+			->contain(['QuotationRows'=>['Items']])
+			->matching(
+					'QuotationRows.Items', function ($q) use($items) {
+						return $q->where(['Items.name LIKE' =>'%'.$items.'%']);
+					}
+				)
+				);
+				//pr($quotations);exit;
+				
+		}else{
+		
+        $quotations = $this->paginate($this->Quotations->find()->contain(['QuotationRows'=>['Items']])->where($where)->where(['company_id'=>$st_company_id])->order(['Quotations.id' => 'DESC']));
+		
+										
 		}
 		
 		$companies = $this->Quotations->Companies->find('list');

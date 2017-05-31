@@ -51,27 +51,27 @@
 				<table class="table table-condensed">
 					<tbody>
 						<tr>
-							<td width="16%">
+							<td width="20%">
 								<div class="input-group" id="pnf_text">
 									<span class="input-group-addon">SO-</span><input type="text" name="sales_order_no" class="form-control input-sm" placeholder="Sales Order No" value="<?php echo @$sales_order_no; ?>">
 								</div>
 							</td>
-							<td width="13%">
+							<td width="20%">
 								<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
 							</td>
-							<td width="22%">
+							<td width="17%">
 								<input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>">
 							</td>
-							<td width="17%">
+							<td width="16%">
 								<input type="text" name="po_no" class="form-control input-sm" placeholder="PO No." value="<?php echo @$po_no; ?>">
 							</td>
-							<td width="17%">
+							<td width="12%">
 								<input type="text" name="items" class="form-control input-sm" placeholder="Item" value="<?php echo @$items; ?>">
 							</td>
-							<td width="10%">
+							<td width="9%">
 								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="From" value="<?php echo @$From; ?>" data-date-format="dd-mm-yyyy" >
 							</td>
-							<td width="8%">
+							<td width="9%">
 								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="To" value="<?php echo @$To; ?>" data-date-format="dd-mm-yyyy" >
 							</td>
 							
@@ -108,7 +108,7 @@
 							<?php echo $this->Html->link( $salesOrder->quotation->qt1.'/QT-'.str_pad($salesOrder->quotation->qt2, 3, '0', STR_PAD_LEFT).'/'.$salesOrder->quotation->qt3.'/'.$salesOrder->quotation->qt4,[
 							'controller'=>'Quotations','action' => 'confirm', $salesOrder->quotation->id],array('target'=>'_blank')); ?>
 							</td><?php }else{ ?><td></td><?php } ?>
-							<td><?= h($salesOrder->customer->customer_name) ?></td>
+							<td><?php echo $salesOrder->customer->customer_name.'('.$salesOrder->customer->alias.')' ?></td>
 							<td><?= h($salesOrder->customer_po_no); ?></td>
 							<td>
 								<div class="btn-group">

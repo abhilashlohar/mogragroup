@@ -37,32 +37,32 @@
 				<table class="table table-bordered table-striped table-hover">
 					<tbody>
 						<tr>
-							<td>
+							<td width="18%">  
 								<input type='hidden' name='sales_return' value='<?php echo $sales_return; ?>' />
 								<div class="input-group" style="" id="pnf_text">
 									<span class="input-group-addon">IN-</span><input type="text" name="invoice_no" class="form-control input-sm" placeholder="Invoice No" value="<?php echo @$invoice_no; ?>">
 								</div>
 							</td>
-							<td>
+							<td width="15%">
 								<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
 							</td>
-							<td>
+							<td width="18%">
 								<input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>">
 							</td>
-							<td>
+							<td width="10%">
 								<input type="text" name="items" class="form-control input-sm" placeholder="Items" value="<?php echo @$items; ?>">
 							</td>
-							<td>
+							<td width="10%">
 								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Date From" value="<?php echo @$From; ?>" data-date-format="dd-mm-yyyy">
 							</td>
-							<td>
+							<td width="10%">
 								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Date To" value="<?php echo @$To; ?>" data-date-format="dd-mm-yyyy" >
 							</td>
-							<td>
+							<td width="10%">
 								<input type="text" name="total_From" class="form-control input-sm" placeholder="Total" value="<?php echo @$total_From; ?>">
 							</td>
 								
-							</td>
+							</td >
 							<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
 						</tr>
 					</tbody>
@@ -99,7 +99,7 @@
 							<td></td><?php } ?>
 							
 							
-							<td><?= h($invoice->customer->customer_name) ?></td>
+							<td><?php echo $invoice->customer->customer_name.'('.$invoice->customer->alias.')' ?></td>
 							<td>
 								<div class="btn-group">
 									<button id="btnGroupVerticalDrop5" type="button" class="btn  btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Items <i class="fa fa-angle-down"></i></button>

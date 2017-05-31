@@ -32,8 +32,9 @@ class InvoiceBookingsController extends AppController
 		$in_no = $this->request->query('in_no');
 		$From = $this->request->query('From');
 		$To = $this->request->query('To');
+		$vendor_name = $this->request->query('vendor_name');
 		
-		$this->set(compact('book_no','grn_no','From','To','in_no','file_grn_no','file'));
+		$this->set(compact('book_no','grn_no','From','To','in_no','file_grn_no','file','vendor_name'));
 		
 		if(!empty($book_no)){
 			$where['InvoiceBookings.ib2 LIKE']=$book_no;
@@ -54,6 +55,10 @@ class InvoiceBookingsController extends AppController
 		if(!empty($in_no)){
 			$where['InvoiceBookings.invoice_no LIKE']='%'.$in_no.'%';
 		}
+		
+		if(!empty($vendor_name)){
+			$where['Vendors.company_name LIKE']='%'.$vendor_name.'%';
+		}
 		if(!empty($From)){
 			$From=date("Y-m-d",strtotime($this->request->query('From')));
 			$where['InvoiceBookings.created_on >=']=$From;
@@ -64,7 +69,7 @@ class InvoiceBookingsController extends AppController
 		}
 		
         $this->paginate = [
-            'contain' => ['Grns']
+            'contain' => ['Grns','Vendors']
         ];
 		
 		if($purchase_return=='true'){
@@ -73,6 +78,7 @@ class InvoiceBookingsController extends AppController
 		}else{
 			$invoiceBookings = $this->paginate($this->InvoiceBookings->find()->where($where)->where(['InvoiceBookings.company_id'=>$st_company_id])->order(['InvoiceBookings.id' => 'DESC']));
 		}
+		//pr($invoiceBookings);exit;
         $this->set(compact('invoiceBookings','status','purchase_return'));
         $this->set('_serialize', ['invoiceBookings']);
 		$this->set(compact('url'));

@@ -82,7 +82,7 @@ class SalesOrdersController extends AppController
 		if(!empty($items)){
 			
 			$salesOrders=$this->paginate($this->SalesOrders->find()
-			->contain(['SalesOrderRows'=>['Items']])
+			->contain(['Quotations','SalesOrderRows'=>['Items']])
 			->matching(
 					'SalesOrderRows.Items', function ($q) use($items) {
 						return $q->where(['Items.name LIKE' =>'%'.$items.'%']);

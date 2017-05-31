@@ -31,34 +31,26 @@
 		<div class="row">
 		<div class="col-md-12">
 			<form method="GET" >
-				<input type="hidden">
 				<table class="table table-condensed">
-					
 					<tbody>
-					
 						<tr>
-							<td>
-										<div class="input-group" >
-											<span class="input-group-addon">GRN-</span><input type="text" name="grn_no" class="form-control input-sm" placeholder="GRN No" value="<?php echo @$grn_no; ?>">
-										</div>
-									</td>
-									<td>
-										<input type="text" name="po_no" class="form-control input-sm" placeholder="PO No" value="<?php echo @$po_no; ?>">
-									
+							<td width="31%">
+								<div class="input-group" >
+									<span class="input-group-addon">GRN-</span><input type="text" name="grn_no" class="form-control input-sm" placeholder="GRN No" value="<?php echo @$grn_no; ?>">
+								</div>
 							</td>
-							<td>
-							
-							<input type="text" name="vendor" class="form-control input-sm" placeholder="Supplier Name" value="<?php echo @$vendor; ?>">
+							<td width="20%">
+								<input type="text" name="po_no" class="form-control input-sm" placeholder="PO No" value="<?php echo @$po_no; ?>">
 							</td>
-							<td>
-								
-										<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Date From" value="<?php echo @$From; ?>" data-date-format="dd-mm-yyyy" >
-									</td>
-									<td>
-										<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Date To" value="<?php echo @$To; ?>" data-date-format="dd-mm-yyyy" >
-									
+							<td width="20%">
+								<input type="text" name="vendor" class="form-control input-sm" placeholder="Supplier Name" value="<?php echo @$vendor; ?>">
 							</td>
-							
+							<td width="15%">
+								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Date From" value="<?php echo @$From; ?>" data-date-format="dd-mm-yyyy" >
+							</td>
+							<td width="19%">
+								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Date To" value="<?php echo @$To; ?>" data-date-format="dd-mm-yyyy" >
+							</td>
 							<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
 						</tr>
 					</tbody>
@@ -69,11 +61,11 @@
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
 						<tr>
-							<th>Sr. No.</th>
-							<th width="20%">GRN No.</th>
-							<th width="20%">PO No.</th>
-							<th>Supplier</th>
-							<th>Date Created</th>
+							<th width="9%">Sr. No.</th>
+							<th width="19%" >GRN No.</th>
+							<th width="19%" >PO No.</th>
+							<th width="19%">Supplier</th>
+							<th width="19%" >Date Created</th>
 							<th class="actions"><?= __('Actions') ?></th>
 						</tr>
 					</thead>

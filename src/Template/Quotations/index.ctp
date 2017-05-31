@@ -1,4 +1,4 @@
-<?php 
+<?php  
 if(!empty($status)){
 		$url_excel=$status."/?".$url;
 	}else{
@@ -61,13 +61,21 @@ if(!empty($status)){
 											<span class="input-group-addon">QT-</span><input type="text" name="qt2" class="form-control input-sm" placeholder="Quotation No" value="<?php echo @$qt2; ?>">
 								</div>
 							</td>
-							<td width="10%">
-										<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
-									
+							<td width="8%">
+								<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
 							</td>
-							<td width="17%"><input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>"></td>
-							<td width="18%"><input type="text" name="salesman" class="form-control input-sm" placeholder="Salesman" value="<?php echo @$salesman; ?>"></td>
-							<td width="18%"><input type="text" name="product" class="form-control input-sm" placeholder="Product" value="<?php echo @$product; ?>"></td>
+							<td width="15%">
+								<input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>">
+							</td>
+							<td width="16%">
+								<input type="text" name="salesman" class="form-control input-sm" placeholder="Salesman" value="<?php echo @$salesman; ?>">
+							</td>
+							<td width="15%">
+								<input type="text" name="product" class="form-control input-sm" placeholder="Product" value="<?php echo @$product; ?>">
+							</td>
+							<td width="12%">
+								<input type="text" name="items" class="form-control input-sm" placeholder="Item" value="<?php echo @$items; ?>">
+							</td>
 							<?php if($pull_request=="true"){ ?>
 							<td >
 								<input type="text" name="q_dateFrom" class="form-control input-sm date-picker" placeholder="From" value="<?php echo @$q_dateFrom; ?>"  data-date-format="dd-mm-yyyy" >
@@ -104,6 +112,7 @@ if(!empty($status)){
 							<th width="15%">Customer</th>
 							<th width="15%">Salesman</th>
 							<th width="15%">Product</th>
+							<th width="10%">Items Name</th>
 							<?php if($pull_request=="true"){ ?>
 							<th width="10%">Quotation Date</th>
 							<?php }else{ ?>
@@ -132,7 +141,17 @@ if(!empty($status)){
 							<td><?= h($quotation->customer->customer_name).'('.h($quotation->customer->alias).')' ?></td>
 							<td><?= h($quotation->employee->name) ?></td>
 							<td><?= h($quotation->item_group->name) ?></td>
-							
+							<td>
+								<div class="btn-group">
+									<button id="btnGroupVerticalDrop5" type="button" class="btn  btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Items <i class="fa fa-angle-down"></i></button>
+										<ul class="dropdown-menu" role="menu" aria-labelledby="btnGroupVerticalDrop5">
+										<?php foreach($quotation->quotation_rows as $quotation_rows){ 
+											if($quotation_rows->quotation_id == $quotation->id){?>
+											<li><p><?= h($quotation_rows->item->name) ?></p></li>
+											<?php }}?>
+										</ul>
+								</div>
+							</td>
 							<?php if($pull_request=="true"){ ?>
 							<td><?php echo date("d-m-Y",strtotime($quotation->created_on)); ?></td>
 							<?php }else{ ?>

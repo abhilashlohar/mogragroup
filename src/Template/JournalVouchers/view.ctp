@@ -94,7 +94,7 @@ margin-bottom: 0;
 			<?php $sr=0; $dr=0; $cr=0; foreach ($journalVoucher->journal_voucher_rows as $journal_voucher_row): $sr++; ?>
 			<tr>
 				<td><?= h($journal_voucher_row->ReceivedFrom->name) ?></td>
-				<td><?= h($journal_voucher_row->narration) ?></td>
+				<td><?=$this->Text->autoParagraph(h($journal_voucher_row->narration)) ?></td>
 				<td>
 				<?php if($journal_voucher_row->cr_dr=="Dr")
 					{ 
@@ -112,7 +112,31 @@ margin-bottom: 0;
 					}else{ echo "-";} ?>
 				</td>
 			</tr>
-			<?php endforeach ?>
+			
+			<?php if(!empty($ref_bal[$journal_voucher_row->received_from_id])):?>
+			<tr>
+			<td colspan="3" style="border-top:none !important;">
+			<table width="100%">
+			
+			<?php foreach($ref_bal[$journal_voucher_row->received_from_id] as $refbal): ?>
+			<tr>
+					<td style="width :180px !important;"> <?= h($refbal->reference_type). '-' .h($refbal->reference_no) ?></td>
+					
+					<td > <?php if($refbal->credit != '0' ){ ?> 
+					<?= h($refbal->credit) ?> Cr 
+					<?php } elseif( $refbal->debit != '0'){?>
+					<?= h($refbal->debit) ?> Dr
+					<?php } ?></td>
+					</tr>
+			<?php endforeach; ?>
+			</table>
+		</td>
+		
+		</tr><?php endif; ?>
+<?php endforeach ?>
+			
+			
+			
 			<tr>
 			<td></td>
 			<td align="right"><b>Total</b></td>
@@ -122,6 +146,7 @@ margin-bottom: 0;
 			</tr>
 		
 	</table>
+	
 	<div style="border:solid 1px ;"></div>
 	<table width="100%" class="divFooter">
 		<tr>

@@ -67,8 +67,15 @@ class JournalVouchersController extends AppController
         $journalVoucher = $this->JournalVouchers->get($id, [
             'contain' => ['Companies','JournalVoucherRows'=>['ReceivedFroms'],'Companies','Creator']
         ]);
-
+		//pr($journalVoucher);exit;
+		$ref_bal=[];
+		foreach($journalVoucher->journal_voucher_rows as $journal_voucher_row){
+			$ReferenceBalancess=$this->JournalVouchers->ReferenceDetails->find()->where(['ledger_account_id'=>$journal_voucher_row->received_from_id,'journal_voucher_id'=>$journalVoucher->id]);
+			$ref_bal[$journal_voucher_row->received_from_id]=$ReferenceBalancess->toArray();
+		}
+		//pr($ref_bal);exit;
         $this->set('journalVoucher', $journalVoucher);
+		$this->set(compact('ref_bal'));
         $this->set('_serialize', ['journalVoucher']);
     }
 

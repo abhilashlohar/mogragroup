@@ -77,7 +77,10 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
                 <th width="3%"></th>
             </thead>
             <tbody id="main_tbody">
-            <?php foreach($nppayment->nppayment_rows as $nppayment_row){ ?> 
+            <?php
+
+			//pr($nppayment->nppayment_rows);exit;
+			foreach($nppayment->nppayment_rows as $nppayment_row){ ?> 
                 <tr class="main_tr" old_received_from_id="<?php echo $nppayment_row->received_from_id; ?>">
                     <td><?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','options'=>$receivedFroms,'label' => false,'class' => 'form-control input-sm received_from','value'=>$nppayment_row->received_from_id]); ?></td>
                     <td>

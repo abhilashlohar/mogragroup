@@ -296,6 +296,7 @@ class InventoryVouchersController extends AppController
 		$invoice_data=$this->InventoryVouchers->Invoices->get($invoice_id,[
 			'contain'=>['InvoiceRows'=>['Items']]
 		]);
+		
 		$display_items=[];
 		$sales_order_id=$invoice_data->sales_order_id;
 		foreach($invoice_data->invoice_rows as $invoice_row){ 
@@ -323,7 +324,8 @@ class InventoryVouchersController extends AppController
 				'contain' => ['InvoiceRows'=> function ($q) {
 				return $q->where(['InvoiceRows.inventory_voucher_applicable'=>'Yes','InvoiceRows.inventory_voucher_status'=>'Pending']);
 				}]]);
-	
+		
+			
 		if(sizeof($Invoice->invoice_rows)==0){
 			$query = $this->InventoryVouchers->query();
 			$query->update()
@@ -395,11 +397,12 @@ class InventoryVouchersController extends AppController
 				->execute();
 			
 			$this->InventoryVouchers->ItemLedgers->deleteAll(['left_item_id' => $q_item_id,'source_id' => $inventory_voucher_id,'source_model' => 'Inventory Vouchers','company_id' => $st_company_id]);	
-			
+
 			$inventory_voucher_rows=$this->request->data['inventory_voucher_rows'];
 			$total_rate=0;
 			foreach($inventory_voucher_rows as $inventory_voucher_row){
-				
+			
+
 				$query3 = $this->InventoryVouchers->InventoryVoucherRows->query();
 				$query3->insert(['inventory_voucher_id', 'item_id', 'quantity', 'left_item_id', 'invoice_id'])
 				->values([
@@ -513,6 +516,34 @@ class InventoryVouchersController extends AppController
 					->execute();
 				}
 			}
+			$Invoices=$this->InventoryVouchers->Invoices->find()
+			->contain(['InvoiceRows'])
+			->where(['Invoices.sales_order_id'=>$Invoice->sales_order_id])
+				->toArray();
+			$total=0;
+			foreach($Invoices as $Invoice){
+				foreach($Invoice->invoice_rows as $invoice_row){
+					$total=$total+$invoice_row->quantity;
+				}
+			}
+			$SalesOrders=$this->InventoryVouchers->SalesOrders->find()->contain(['SalesOrderRows' => function($q) use($q_item_id) {
+                                    return $q
+                                       ->where([
+                                            'SalesOrderRows.item_id'=> $q_item_id,
+                                        ]);
+                                    }
+			])->where(['id'=>$Invoices[0]->sales_order_id])->first();
+			
+			$sales_qty=$SalesOrders->sales_order_rows[0]->quantity;
+			if($total==$sales_qty){
+				$query = $this->InventoryVouchers->SalesOrders->query();
+				$query->update()
+				->set(['job_card_status' => 'Converted'])
+				->where(['id' => $SalesOrders->id])
+				->execute();
+			}
+			
+			
 		}
 		
 		$InventoryVoucherRows=$this->InventoryVouchers->InventoryVoucherRows->find()->where(['invoice_id'=>$invoice_id,'left_item_id'=>$q_item_id])->first();

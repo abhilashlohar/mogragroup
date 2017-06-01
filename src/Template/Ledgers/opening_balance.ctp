@@ -58,8 +58,8 @@
 <table class="table table-bordered" id="temp_table" style="display:none;">
 	<tr>
 	<td><?= $this->Form->input('reference_no[]',['type'=>'text','class'=>'distinctreference','label'=>false,'id'=>'reference_no_2']) ?></td>
-	<td><?= $this->Form->input('credit[]',['type'=>'text','class'=>'','label'=>false, 'value'=>0]) ?></td>
-	<td><?= $this->Form->input('debit[]',['type'=>'text','class'=>'','label'=>false, 'value'=>0]) ?></td>
+	<td><?= $this->Form->input('credit[]',['type'=>'text','class'=>'credit','label'=>false, 'value'=>0]) ?></td>
+	<td><?= $this->Form->input('debit[]',['type'=>'text','class'=>'debit','label'=>false, 'value'=>0]) ?></td>
 	<td><?= $this->Form->button(__('<i class="fa fa-plus"></i>'),['type'=>'button','class'=>'add_row','label'=>false]) ?><?= $this->Form->button(__('<i class="fa fa-minus"></i>'),['type'=>'button','class'=>'remove_row','label'=>false]) ?></td>
 	</tr>
 	</table>
@@ -217,6 +217,8 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
+	
+	
 	
 });	
 </script>

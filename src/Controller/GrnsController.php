@@ -449,6 +449,10 @@ class GrnsController extends AppController
 		
 		$GrnRow=$this->Grns->GrnRows->find()->where(['item_id'=>$item_id,'grn_id'=>$grn_id])->first();
 		
+		$GRN=$this->Grns->get($grn_id);
+		$PO=$this->Grns->PurchaseOrders->get($GRN->purchase_order_id);
+		$PurchaseOrderRow=$this->Grns->PurchaseOrderRows->find()->where(['item_id'=>$item_id,'purchase_order_id'=>$GRN->purchase_order_id])->first();
+		
 		$ItemSerialNumber = $this->Grns->ItemSerialNumbers->get($id);
 		
 		if($ItemSerialNumber->status=='In'){
@@ -461,6 +465,11 @@ class GrnsController extends AppController
 			$query1->update()
 				->set(['quantity' => $GrnRow->quantity-1])
 				->where(['item_id'=>$item_id,'grn_id'=>$grn_id])
+				->execute();
+			$query2 = $this->Grns->PurchaseOrderRows->query();
+			$query2->update()
+				->set(['processed_quantity' => $PurchaseOrderRow->processed_quantity-1])
+				->where(['item_id' => $item_id,'purchase_order_id'=>$PO->id])
 				->execute();
 						
 			$this->Grns->ItemSerialNumbers->delete($ItemSerialNumber);

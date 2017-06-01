@@ -659,7 +659,7 @@ public function CheckCompany($company_id=null,$item_id=null)
 		}
 		
 		$current_qty=@$item_qty['In']-@$item_qty['Out'];
-		if($current_qty==0){
+		if($current_qty <= 0){
 			$query = $this->Items->ItemCompanies->query();
 			$query->update()
 				->set(['serial_number_enable' => 1])

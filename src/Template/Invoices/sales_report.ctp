@@ -116,13 +116,13 @@
 				<?php endforeach; ?>
 				<tr>
 					<td colspan="4" align="right">Total</td>
-					<td><?php echo $sales5; ?></td>
-					<td><?php echo $vat5; ?></td>
-					<td><?php echo $sales14; ?></td>
-					<td><?php echo $vat14; ?></td>
-					<td><?php echo $sales2; ?></td>
-					<td><?php echo $vat2; ?></td>
-					<td><?php echo $sales0; ?></td>
+					<td><?php echo number_format($sales5,2,'.',','); ?></td>
+					<td><?php echo number_format($vat5,2,'.',','); ?></td>
+					<td><?php echo number_format($sales14,2,'.',','); ?></td>
+					<td><?php echo number_format($vat14,2,'.',','); ?></td>
+					<td><?php echo number_format($sales2,2,'.',','); ?></td>
+					<td><?php echo number_format($vat2,2,'.',','); ?></td>
+					<td><?php echo number_format($sales0,2,'.',','); ?></td>
 				</tr>
 				</tbody>
 			</table>

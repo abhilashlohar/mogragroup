@@ -34,12 +34,12 @@
 						<td><?= h(++$page_no) ?></td>
 						<td><?php echo $custmer_name[$key]."(". $custmer_alise[$key].")"?></td>
 						<td style="text-align:center"><?php echo $custmer_payment_ctp[$key] ?></td>
-						<td align="right"><?= h($over_due_report1[$key][1])?></td>
-						<td align="right"><?= h($over_due_report1[$key][2]) ?></td>
-						<td align="right"><?= h($over_due_report1[$key][3]) ?></td>
-						<td align="right"><?= h($over_due_report1[$key][4]) ?></td>
-						<td align="right"><?= h($over_due_report1[$key][5]) ?></td>
-						<td align="right"><?= h($total_overdue[$key])  ?></td>
+						<td align="right"><?= h(number_format($over_due_report1[$key][1],2,',',''))?></td>
+						<td align="right"><?= h(number_format($over_due_report1[$key][2],2,'.',',')) ?></td>
+						<td align="right"><?= h(number_format($over_due_report1[$key][3],2,'.',',')) ?></td>
+						<td align="right"><?= h(number_format($over_due_report1[$key][4],2,'.',',')) ?></td>
+						<td align="right"><?= h(number_format($over_due_report1[$key][5],2,'.',',')) ?></td>
+						<td align="right"><?= h(number_format($total_overdue[$key],2,'.',','))  ?></td>
 						
 					</tr>
 					<?php }}

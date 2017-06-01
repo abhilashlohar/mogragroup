@@ -103,9 +103,9 @@ margin-bottom: 0;
 					<td style="width :180px !important;"> <?= h($refdetail->reference_type). '-' .h($refdetail->reference_no) ?></td>
 					<td>:</td>
 					<td > <?php if($refdetail->credit != '0' ){ ?> 
-					<?= h($refdetail->credit) ?> Cr 
+					<?php echo number_format($refdetail->credit,2,',','') ?> Cr 
 					<?php } elseif( $refdetail->debit != '0'){?>
-					<?= h($refdetail->debit) ?> Dr
+					<?php echo number_format($refdetail->debit,2,',','') ?> Dr
 					<?php } ?></td>
 					</tr>
 			<?php endforeach; ?>

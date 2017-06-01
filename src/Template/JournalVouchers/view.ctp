@@ -141,8 +141,8 @@ margin-bottom: 0;
 			<td></td>
 			<td align="right"><b>Total</b></td>
 			
-			<td > <?php echo $dr;?></td>
-			<td > <?php echo $cr;?></td>
+			<td > <?php echo number_format($dr,2,'.',',');?></td>
+			<td > <?php echo number_format($cr,2,'.',',');?></td>
 			</tr>
 		
 	</table>

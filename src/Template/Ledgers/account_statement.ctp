@@ -179,8 +179,8 @@
 				<?php } endforeach; ?>
 				<tr>
 					<td colspan="3" align="right">Total</td>
-					<td align="right" ><?= @$opening_balance_total['debit'] ;?> Dr</td>
-					<td align="right" ><?= @$opening_balance_total['credit']?> Cr</td>
+					<td align="right" ><?= number_format(@$opening_balance_total['debit'],2,'.',',') ;?> Dr</td>
+					<td align="right" ><?= number_format(@$opening_balance_total['credit'],2,'.',',')?> Cr</td>
 					
 				<tr>
 				</tbody>

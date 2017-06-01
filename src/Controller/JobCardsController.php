@@ -313,7 +313,7 @@ class JobCardsController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$sales_order_id=$this->request->query('sales-order');
 		$sales_order_id=$this->request->query('sales-order');
-		$count_sales_item == 0;   
+		$count_sales_item = 0;   
 		$jobCard = $this->JobCards->SalesOrders->get($sales_order_id, [
             'contain' => ['Customers','SalesOrderRows'=>['Items'=>function ($q){
 					return $q->where(['Items.source' => 'Purchessed/Manufactured']);

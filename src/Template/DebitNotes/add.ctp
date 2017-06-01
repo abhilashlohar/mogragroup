@@ -130,7 +130,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 
 			
 			<div class="form-actions">
-				<button type="submit" id='submitbtn' class="btn btn-primary">ADD CREDIT NOTE</button>
+				<button type="submit" id='submitbtn' class="btn btn-primary">ADD Debit NOTE</button>
 			</div>
 		</div>
 		<?= $this->Form->end() ?>

@@ -150,6 +150,10 @@
 					$url_path="/invoice-bookings/view/".$ledger->voucher_id;
 				}else if($ledger->voucher_source=="Non Print Payment Voucher"){
 					$url_path="/nppayments/view/".$ledger->voucher_id;
+				}else if($ledger->voucher_source=="Debit Note"){
+					$url_path="/DebitNotes/view/".$ledger->voucher_id;
+				}else if($ledger->voucher_source=="Credit Note"){
+					$url_path="/credit-notes/view/".$ledger->voucher_id;
 				}
 				
 				if($ledger->voucher_source != 'Opening Balance')	

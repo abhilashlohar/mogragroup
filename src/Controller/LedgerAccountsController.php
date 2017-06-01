@@ -278,13 +278,16 @@ class LedgerAccountsController extends AppController
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		$date=$this->request->query('date');
+		$to_date=$this->request->query('to_date');
 		if($date){
 			$query=$this->LedgerAccounts->Ledgers->find();
 			$Ledgers_Expense=$query->select(['total_debit' => $query->func()->sum('debit'),'total_credit' => $query->func()->sum('credit')])
 			->matching('LedgerAccounts.AccountSecondSubgroups.AccountFirstSubgroups.AccountGroups.AccountCategories', function ($q) {
 				return $q->where(['AccountCategories.id' => 4]);
 			})
-			->where(['transaction_date <='=>date('Y-m-d',strtotime($date)),'Ledgers.company_id'=>$st_company_id])
+			->where(['transaction_date >='=>date('Y-m-d',strtotime($date)),'transaction_date <='=>date('Y-m-d',strtotime($to_date)),
+			
+			'Ledgers.company_id'=>$st_company_id])
 			->contain(['LedgerAccounts'])
 			->group(['ledger_account_id'])
 			->autoFields(true)->toArray();
@@ -294,13 +297,14 @@ class LedgerAccountsController extends AppController
 			->matching('LedgerAccounts.AccountSecondSubgroups.AccountFirstSubgroups.AccountGroups.AccountCategories', function ($q) {
 				return $q->where(['AccountCategories.id' => 3]);
 			})
-			->where(['transaction_date <='=>date('Y-m-d',strtotime($date)),'Ledgers.company_id'=>$st_company_id])
+			->where(['transaction_date >='=>date('Y-m-d',strtotime($date)),
+			'transaction_date <='=>date('Y-m-d',strtotime($to_date)),'Ledgers.company_id'=>$st_company_id])
 			->contain(['LedgerAccounts'])
 			->group(['ledger_account_id'])
 			->autoFields(true)->toArray();
 			$this->set(compact('Ledgers_Expense','Ledgers_Income'));
 		}
-		$this->set(compact('date'));
+		$this->set(compact('date','to_date'));
 	}
 	
 	function checkBillToBillAccountingStatus($received_from_id){

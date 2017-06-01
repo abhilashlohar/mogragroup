@@ -50,8 +50,10 @@ class DebitNotesController extends AppController
         ]);
 		
 		//pr($debitNote);exit;
+		$ReferenceDetails=$this->DebitNotes->ReferenceDetails->find()->where(['ReferenceDetails.debit_note_id' => $id])->toArray();
 		
 		$this->set('debitNote', $debitNote);
+		 $this->set(compact('ReferenceDetails'));
         $this->set('_serialize', ['debitNote']);
 	}
 

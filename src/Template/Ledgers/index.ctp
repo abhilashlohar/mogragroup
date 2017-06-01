@@ -1,3 +1,8 @@
+<?php 
+
+		$url_excel="/?".$url;
+?>
+
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -22,14 +27,19 @@
 						<td>
 							<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button>
 						</td>
-						<td align="right"><label>Page Number</label></td>
-						<td align="right" width="5%"> 
+						<td width="5%"></td>
+						<td width="5%"></td>
+						<td width="5%"></td>
+						<td width="12%"></td>
+						<td><label>Page Number</label></td>
+						<td> 
 								<select class="form-control input-sm select2me" name='page'>
 										<?= $this->Paginator->numbers(array('modulus'=>PHP_INT_MAX,'separator'=>'&nbsp;&nbsp;&nbsp;</b>|<b>&nbsp;&nbsp;&nbsp;')); ?>
 									</select>
 						</td>
-						<td ><button type="submit" class="btn btn-primary btn-sm">Go</button>						
-						
+						<td ><button type="submit" class="btn btn-primary btn-sm">Go</button></td>
+						<td align="right">
+						<?php echo $this->Html->link( '<i class="fa fa-file-excel-o"></i> Excel', '/Ledgers/Export-Excel/'.$url_excel.'',['class' =>'btn btn-sm green tooltips','target'=>'_blank','escape'=>false,'data-original-title'=>'Download as excel']); ?>
 						</td>
 					</tr>
 				</tbody>

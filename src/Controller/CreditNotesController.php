@@ -49,8 +49,10 @@ class CreditNotesController extends AppController
         ]);
 		
 		//pr($debitNote);exit;
+		$ReferenceDetails=$this->CreditNotes->ReferenceDetails->find()->where(['ReferenceDetails.credit_note_id' => $id])->toArray();
 		
 		$this->set('creditNotes', $creditNotes);
+		 $this->set(compact('ReferenceDetails'));
         $this->set('_serialize', ['creditNotes']);
     }
 

@@ -27,12 +27,12 @@ margin-bottom: 0;
 <div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 55%;font-size: 12px;" class="maindiv">	
 	<table width="100%" class="divHeader">
 		<tr>
-			<td width="30%"><?php echo $this->Html->image('/logos/'.$creditNote->company->logo, ['width' => '40%']); ?></td>
+			<td width="30%"><?php echo $this->Html->image('/logos/'.$creditNotes->company->logo, ['width' => '40%']); ?></td>
 			<td align="center" width="40%" style="font-size: 12px;"><div align="center" style="font-size: 16px;font-weight: bold;color: #0685a8;">CREDIT NOTE</div></td>
 			<td align="right" width="40%" style="font-size: 12px;">
-			<span style="font-size: 14px;"><?= h($creditNote->company->name) ?></span>
-			<span><?= $this->Text->autoParagraph(h($creditNote->company->address)) ?>
-			<?= h($creditNote->company->mobile_no) ?></span>
+			<span style="font-size: 14px;"><?= h($creditNotes->company->name) ?></span>
+			<span><?= $this->Text->autoParagraph(h($creditNotes->company->address)) ?>
+			<?= h($creditNotes->company->mobile_no) ?></span>
 			</td>
 		</tr>
 		<tr>
@@ -48,7 +48,7 @@ margin-bottom: 0;
 					<tr>
 						<td>Voucher No</td>
 						<td width="20" align="center">:</td>
-						<td><?= h('#'.str_pad($creditNote->voucher_no, 4, '0', STR_PAD_LEFT)) ?></td>
+						<td><?= h('#'.str_pad($creditNotes->voucher_no, 4, '0', STR_PAD_LEFT)) ?></td>
 					</tr>
 				</table>
 			</td>
@@ -57,7 +57,7 @@ margin-bottom: 0;
 					<tr>
 						<td>Transaction Date</td>
 						<td width="20" align="center">:</td>
-						<td><?= h(date("d-m-Y",strtotime($creditNote->transaction_date))) ?></td>
+						<td><?= h(date("d-m-Y",strtotime($creditNotes->transaction_date))) ?></td>
 					</tr>
 				</table>
 			</td>
@@ -72,7 +72,7 @@ margin-bottom: 0;
 					<tr>
 						<td>Created On</td>
 						<td width="20" align="center">:</td>
-						<td><?= h(date("d-m-Y",strtotime($creditNote->created_on))) ?></td>
+						<td><?= h(date("d-m-Y",strtotime($creditNotes->created_on))) ?></td>
 					</tr>
 				</table>
 			</td>
@@ -84,16 +84,29 @@ margin-bottom: 0;
 			<th><?= __('Received From') ?></th>
 			<th style="text-align: right;">Amount</th>
 		</tr>
-		<?php $total_cr=0; $total_dr=0; foreach ($creditNote->credit_notes_rows as $credit_notes_row): ?>
+		<?php $total_cr=0; $total_dr=0; foreach ($creditNotes->credit_notes_rows as $credit_notes_row): ?>
 		<tr>
 			<td><?= h($credit_notes_row->heads->name) ?></td>
 			<td align="right"><?= h($this->Number->format($credit_notes_row->amount,[ 'places' => 2])) ?> </td>
 		</tr>
 		<?php endforeach; ?>
 	</table>
+	<table width="100%">
+		<tr>
+			<th>Ref Type</th>
+			<th>Ref No</th>
+			<th>Credit</th>
+		</tr>
+		<?php  foreach($ReferenceDetails as $ReferenceDetail){   ?>
+		<tr>
+			<td width="30%"><?=h($ReferenceDetail->reference_type) ?></td>
+			<td><?=h($ReferenceDetail->reference_no) ?></td>
+			<td>Rs.<?=h($ReferenceDetail->credit) ?></td>
+		</tr>
+		<?php  } ?>
+	</table>
 	
-	
-	
+	<br/>
 	<div style="border:solid 1px ;"></div>
 	<table width="100%" class="divFooter">
 		<tr>
@@ -102,11 +115,11 @@ margin-bottom: 0;
 					<tr>
 					   <td width="100%" align="center" style="float: right;"> 
 						<?php 
-						 echo $this->Html->Image('/signatures/'.$debitNote->creator->signature,['height'=>'40px','style'=>'height:40px;']); 
+						 echo $this->Html->Image('/signatures/'.$creditNotes->creator->signature,['height'=>'40px','style'=>'height:40px;']); 
 						 ?></br>
 						 </hr>
 						 <span><b>Prepared By</b></span><br/>
-						 <span><?= h($creditNote->company->name) ?></span><br/>
+						 <span><?= h($creditNotes->company->name) ?></span><br/>
 						</td>
 					</tr>
 				</table>

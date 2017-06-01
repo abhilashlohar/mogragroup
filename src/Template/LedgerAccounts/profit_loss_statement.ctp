@@ -1,7 +1,7 @@
 <?php //pr($Ledgers_Assets); exit; ?>
 <div class="row">
 	<div class="col-md-12">
-		<div class="portlet box blue">
+		<div class="portlet light bordered">
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="fa fa-cogs"></i>Profit & Loss Statement
@@ -9,12 +9,21 @@
 			</div>
 			<div class="portlet-body">
 				<form method="get">
-					<div class="input-group input-medium">
-						<input type="text" name="date" class="form-control date-picker" placeholder="Date" data-date-format='dd-mm-yyyy' data-date-end-date='0d' value="<?php  echo $date; ?>">
-						<span class="input-group-btn">
-						<button class="btn blue" type="submit">Go</button>
-						</span>
-					</div>
+					
+						<div class="row">
+							<div class="col-md-3">
+								<input type="text" name="date" class="form-control date-picker" placeholder="From Date" data-date-format='dd-mm-yyyy' data-date-end-date='0d' value="<?php  echo $date; ?>">
+							</div>
+							<div class="col-md-3">
+								<input type="text" name="to_date" class="form-control date-picker" placeholder="To Date" data-date-format='dd-mm-yyyy' data-date-end-date='0d' value="<?php  echo $to_date; ?>">
+							</div>
+							<div class="col-md-3">
+								<span class="input-group-btn">
+								<button class="btn blue" type="submit">Go</button>
+								</span>
+							</div>	
+						</div>
+					
 				</form>
 				<?php if($date){ ?>
 				<div class="row">

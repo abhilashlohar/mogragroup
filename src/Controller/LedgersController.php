@@ -21,6 +21,8 @@ class LedgersController extends AppController
      */
     public function index($status=null)
     {
+		$url=$this->request->here();
+		$url=parse_url($url,PHP_URL_QUERY);
 		$this->viewBuilder()->layout('index_layout');
 		$where=[];
 		$ledger=$this->request->query('ledger');
@@ -51,6 +53,7 @@ class LedgersController extends AppController
         $ledgerAccounts = $this->Ledgers->LedgerAccounts->find('list');
         $this->set(compact('ledgers','ledgerAccounts'));
         $this->set('_serialize', ['ledgers']);
+		$this->set(compact('url'));
     }
 
     /**
@@ -60,6 +63,44 @@ class LedgersController extends AppController
      * @return \Cake\Network\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
+	 public function exportExcel()
+    {
+		$this->viewBuilder()->layout('');
+		$where=[];
+		$ledger=$this->request->query('ledger');
+		$From=$this->request->query('From');
+		$To=$this->request->query('To');
+		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
+		$this->set(compact('ledger','From','To'));
+		if(!empty($ledger)){
+			$where['ledger_account_id']=$ledger;
+		}
+		if(!empty($From)){
+			$From=date("Y-m-d",strtotime($this->request->query('From')));
+			$where['transaction_date >=']=$From;
+		}
+		if(!empty($To)){
+			$To=date("Y-m-d",strtotime($this->request->query('To')));
+			$where['transaction_date <=']=$To;
+		}
+		
+		$where['Ledgers.company_id']=$st_company_id;
+       
+		
+		$ledgers = $this->Ledgers->find()->contain(['LedgerAccounts'])->where($where)->order(['transaction_date'=>'DESC']);
+		
+		//pr($ledgers->toArray());exit;
+		
+        $ledgerAccounts = $this->Ledgers->LedgerAccounts->find('list');
+         $this->set(compact('ledgers','ledgerAccounts'));
+        $this->set('_serialize', ['ledgers']);
+    }
+	
+	 
+	 
     public function view($id = null)
     {
         $ledger = $this->Ledgers->get($id, [

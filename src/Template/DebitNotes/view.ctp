@@ -92,8 +92,21 @@ margin-bottom: 0;
 		<?php endforeach; ?>
 	</table>
 	
-	
-	
+	<table width="100%">
+		<tr>
+			<th>Ref Type</th>
+			<th>Ref No</th>
+			<th>Debit</th>
+		</tr>
+		<?php  foreach($ReferenceDetails as $ReferenceDetail){   ?>
+		<tr>
+			<td width="30%"><?=h($ReferenceDetail->reference_type) ?></td>
+			<td><?=h($ReferenceDetail->reference_no) ?></td>
+			<td>Rs.<?=h($ReferenceDetail->debit) ?></td>
+		</tr>
+		<?php  } ?>
+	</table>
+	</br>
 	<div style="border:solid 1px ;"></div>
 	<table width="100%" class="divFooter">
 		<tr>

@@ -54,11 +54,11 @@ class ItemsController extends AppController
 			$where['ItemSubGroups.name LIKE']='%'.$item_subgroup.'%';
 		}
 		
-        $items = $this->paginate($this->Items->find()->contain(['ItemCategories','ItemGroups','ItemSubGroups','Units',
+        $items =$this->Items->find()->contain(['ItemCategories','ItemGroups','ItemSubGroups','Units',
 				'ItemCompanies'=> function ($q)use($st_company_id) {
 				return $q->where(['company_id'=>$st_company_id]);
 				}])
-				->where($where)->order(['Items.name' => 'ASC']));
+				->where($where)->order(['Items.name' => 'ASC']);
 		//pr( $items); exit;
 
         $this->set(compact('items'));

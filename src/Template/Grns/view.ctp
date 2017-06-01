@@ -7,6 +7,12 @@
 		display:none;
 	}
 }
+p{
+margin-bottom: 0;
+}
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    padding: 5px !important;
+}
 </style>
 <style type="text/css" media="print">
 @page {
@@ -112,6 +118,7 @@ if($grn_row->item->item_companies[0]->serial_number_enable == 1) {
 <?php endforeach; ?>
 </tbody>
 </table>
+<div style="border:solid 1px ;"></div>
 <table width="100%" class="divFooter">
 	<tr>
 		<td align="right">

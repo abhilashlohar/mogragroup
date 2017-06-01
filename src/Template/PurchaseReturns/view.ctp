@@ -7,6 +7,12 @@
 		display:none;
 	}
 }
+p{
+margin-bottom: 0;
+}
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    padding: 5px !important;
+}
 </style>
 <style type="text/css" media="print">
 @page {
@@ -96,8 +102,8 @@
 			<td><?= $purchase_return_row->item->name; ?></td>
 			<td align="center"><?= $purchase_return_row->quantity; ?></td>
 			
-			<td align="right"><?=  number_format($item_ledger->rate, 2, '.', '');?></td>
-			<td align="right"><?= number_format($purchase_return_row->quantity*$item_ledger->rate, 2, '.', '');?></td>
+			<td align="right"><?=  number_format($item_ledger->rate, 2, '.', ',');?></td>
+			<td align="right"><?= number_format($purchase_return_row->quantity*$item_ledger->rate, 2, '.', ',');?></td>
 		</tr>
 		<?php $total=$total+($purchase_return_row->quantity*$item_ledger->rate); endforeach; endforeach; ?>
 	</tbody>
@@ -122,11 +128,12 @@
 			<td colspan="3"></td>
 			<td style="font-size:14px; font-weight:bold;"  align="right"> Total</td>
 			<td style="font-size:14px; font-weight:bold; "  align="right"><?= 
-			number_format($total, 2, '.', '');
+			number_format($total, 2, '.', ',');
 			 ?></td>
 		</tr>
 	</tfoot>
 </table>
+<div style="border:solid 1px ;"></div>
 <table width="100%" class="divFooter">
 	<tr>
 		<td style="vertical-align: top !important;">

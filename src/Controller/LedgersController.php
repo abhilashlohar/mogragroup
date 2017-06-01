@@ -406,6 +406,17 @@ class LedgersController extends AppController
 		    for($row=0; $row<$total_row; $row++)
 		    {
 			 ////////////////  Ledger ////////////////////////////////
+			 //pr($total_row); exit;
+			if($total_row==1){
+					if($this->request->data['credit'][$row]==0 && $this->request->data['debit'][$row]==0){
+					$this->Flash->error(__('Please can not enter Zero value , try again.'));
+					return $this->redirect(['action' => 'Opening_balance']);
+				}
+			}
+				 
+			 if($this->request->data['credit'][$row]==0 && $this->request->data['debit'][$row]==0){
+				 
+			 }else{
 				$query = $this->Ledgers->query();
 				$query->insert(['transaction_date', 'ledger_account_id', 'voucher_source', 'credit', 'debit','company_id','ref_no'])
 				->values([
@@ -418,6 +429,7 @@ class LedgersController extends AppController
 					'ref_no' => $this->request->data['reference_no'][$row]
 				])
 				->execute();
+			 
 			
 				////////////////  ReferenceDetails ////////////////////////////////
 				$query1 = $this->Ledgers->ReferenceDetails->query();
@@ -441,8 +453,9 @@ class LedgersController extends AppController
 					'debit' => $this->request->data['debit'][$row]
 				])
 				->execute();
-		   }
+		   }//exit;
 		   return $this->redirect(['action' => 'Opening_balance']);
+			}
         }
 		
 		

@@ -49,8 +49,10 @@
 	<td><?= $this->Form->button(__('<i class="fa fa-plus"></i>'),['type'=>'button','class'=>'add_row','label'=>false]) ?></td>
 	</tr>
 	</table>
+	<button class="btn btn-sm btn-primary" name="submit" value="save" type="submit">Submit</button>
 	</div>
-    <?= $this->Form->button(__('Submit')) ?>
+    
+    <?= $this->Form->end() ?>
     <?= $this->Form->end() ?>
 	
 </div>

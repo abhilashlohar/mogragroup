@@ -352,11 +352,12 @@ class CreditNotesController extends AppController
 			}
 
 			$vr=$this->CreditNotes->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Credit Notes','sub_entity'=>'Purchase Account'])->first();
+			
 			$CreditNotesSalesAccount=$vr->id;
 			$vouchersReferences = $this->CreditNotes->VouchersReferences->get($vr->id, [
 				'contain' => ['VoucherLedgerAccounts']
 			]);
-			
+			//pr($vouchersReferences); exit;
 			$where=[];
 			foreach($vouchersReferences->voucher_ledger_accounts as $data){
 				$where[]=$data->ledger_account_id;
@@ -379,7 +380,7 @@ class CreditNotesController extends AppController
 			else{
 				$ErrorsalesAccs='true';
 			}
-
+			
 			$vr=$this->CreditNotes->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Credit Notes','sub_entity'=>'Party'])->first();	
 			$CreditNotesParty=$vr->id;
 			$vouchersReferences = $this->CreditNotes->VouchersReferences->get($vr->id, [

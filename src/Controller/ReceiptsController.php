@@ -117,7 +117,7 @@ class ReceiptsController extends AppController
 				->group('receipt_id')
 				->autoFields(true);
 			
-		}]));
+		}])->order(['transaction_date' => 'DESC']));
 		
 		
         $this->set(compact('receipts'));

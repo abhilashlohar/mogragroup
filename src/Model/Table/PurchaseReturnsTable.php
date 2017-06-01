@@ -52,6 +52,12 @@ class PurchaseReturnsTable extends Table
             'foreignKey' => 'purchase_return_id',
 			'saveStrategy' => 'replace'
         ]);
+		$this->belongsTo('Creator', [
+			'className' => 'Employees',
+			'foreignKey' => 'created_by',
+			'propertyName' => 'creator',
+		]);
+		
 		$this->belongsTo('ReferenceDetails');
 		$this->belongsTo('ReferenceBalances');
 		$this->belongsTo('Ledgers');

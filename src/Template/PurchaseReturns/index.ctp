@@ -47,11 +47,9 @@
 							
 							<td><?php echo date("d-m-Y",strtotime($purchaseReturn->created_on)); ?></td>
 						<td class="actions">
-								<?php
-								echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'Edit?invoiceBooking='.$purchaseReturn->invoice_booking_id,],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); 
-								 ?>
-								
-							</td>
+							<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $purchaseReturn->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View ')); 
+							echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'Edit?invoiceBooking='.$purchaseReturn->invoice_booking_id,],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
+						</td>
 						</tr>
 						<?php endforeach; ?>
 					</tbody>

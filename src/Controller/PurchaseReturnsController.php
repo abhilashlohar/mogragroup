@@ -62,14 +62,35 @@ class PurchaseReturnsController extends AppController
      */
     public function view($id = null)
     {
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
+		$this->viewBuilder()->layout('index_layout');
+		
         $purchaseReturn = $this->PurchaseReturns->get($id, [
-            'contain' => ['InvoiceBookings', 'Companies']
+            'contain' => ['InvoiceBookings','Creator','Companies','PurchaseReturnRows'=>['Items'=>['ItemLedgers'=>function ($q) use($id) {
+				return $q->where(['source_model'=>'Purchase Return','in_out'=>'Out','source_id'=>$id]);
+				}]]]
         ]);
+		
+		if($purchaseReturn->invoice_booking->ledger_account_for_vat>0){
+			$LedgerAccount=$this->PurchaseReturns->InvoiceBookings->LedgerAccounts->get($purchaseReturn->invoice_booking->ledger_account_for_vat);
+		}
+		
+		$c_LedgerAccount=$this->PurchaseReturns->InvoiceBookings->LedgerAccounts->find()->where(['company_id'=>$st_company_id,'source_model'=>'Vendors','source_id'=>$purchaseReturn->invoice_booking->vendor_id])->first();
+		
+		
+		$ReferenceDetails=$this->PurchaseReturns->InvoiceBookings->ReferenceDetails->find()->where(['ledger_account_id'=>$c_LedgerAccount->id,'invoice_booking_id'=>$purchaseReturn->invoice_booking->id]);
+		
+		//pr($LedgerAccount );
+		//pr($purchaseReturn );exit;
 
         $this->set('purchaseReturn', $purchaseReturn);
+		$this->set(compact('LedgerAccount','ReferenceDetails'));
         $this->set('_serialize', ['purchaseReturn']);
     }
 
+	
     /**
      * Add method
      *

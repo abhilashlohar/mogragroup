@@ -163,6 +163,7 @@
 						<td><?php echo date("d-m-Y",strtotime($ledger->transaction_date)); ?></td>
 						<td><?= h($ledger->voucher_source); ?></td>
 						<td>
+						
 						<?php if(!empty($url_path)){
 								echo $this->Html->link(str_pad($ledger->voucher_id,4,'0',STR_PAD_LEFT),$url_path,['target' => '_blank']);
 							}else{

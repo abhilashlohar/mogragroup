@@ -35,7 +35,7 @@ class LoginsController extends AppController
 				$Employee=$this->Logins->Employees->get($employee_id);
 				
 				$emp_mobile = $Employee->mobile;
-				if($Employee->id == 25){
+				if($Employee->id == 23){
 					return $this->redirect(['action' => 'Switch-Company']);
 				}
 				if(!empty($emp_mobile)){
@@ -122,7 +122,8 @@ class LoginsController extends AppController
 		$request=$this->request->query('request');
 		$Employee=$this->Logins->Employees->get($employee_id);
 		$Emp_name = $Employee->name;		
-		$mobile_no = $Employee->mobile;	
+		//$mobile_no = $Employee->mobile;	
+		//$mobile_no = $Employee->mobile;	
 		
 		 $i = 1;
 				while($i<=$employee_id )

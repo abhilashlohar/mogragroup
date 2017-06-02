@@ -239,7 +239,7 @@ $html .= '	<table width="100%" class="table_rows table3">
 	$html.='<td valign="top" style="font-size:'. h(($purchaseOrder->pdf_font_size)) .';" >
 		<b style="text-decoration: underline;">Excise Invoice Required in Favour of Consignee:</b>
 				'. h($purchaseOrder->customer->customer_name) .'<br/>
-				'. h($purchaseOrder->customer_address) .'<br/>
+				'. h($purchaseOrder->customer->customer_address[0]->address) .'<br/>
 				ECC : '. h($purchaseOrder->customer->ecc_no) .'<br/>
 				TIN : '. h($purchaseOrder->customer->tin_no) .'<br/>
 		</td>';

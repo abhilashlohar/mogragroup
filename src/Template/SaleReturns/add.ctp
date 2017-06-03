@@ -323,16 +323,13 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 		<div class="form-actions">
 			<div class="row">
 				<div class="col-md-offset-3 col-md-9">
-<<<<<<< HEAD
-					<?= $this->Form->button(__('SALE RETURN'),['class'=>'btn btn-primary','type'=>'Submit']) ?>
-=======
+
 					<?php if($chkdate == 'Not Found'){  ?>
 						<label class="btn btn-danger"> You are not in Current Financial Year </label>
 					<?php } else { ?>
 					<?= $this->Form->button(__('SALE RETURN'),['class'=>'btn btn-primary','id'=>'add_submit','type'=>'Submit']) ?>
 					<?php } ?>						
 
->>>>>>> origin/master
 				</div>
 			</div>
 		</div>

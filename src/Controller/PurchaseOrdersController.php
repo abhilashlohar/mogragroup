@@ -517,7 +517,7 @@ class PurchaseOrdersController extends AppController
          $purchaseOrder = $this->PurchaseOrders->get($id, [
             'contain' => ['Companies','Customers'=>['CustomerAddress'],'Vendors','PurchaseOrderRows'=> ['Items'=>['Units']],'Transporters','Creator']
 			]);
-
+		//pr($purchaseOrder); exit;
         $this->set('purchaseOrder', $purchaseOrder);
         $this->set('_serialize', ['purchaseOrder']);
     }

@@ -122,6 +122,7 @@ class LoginsController extends AppController
 		$request=$this->request->query('request');
 		$Employee=$this->Logins->Employees->get($employee_id);
 		$Emp_name = $Employee->name;		
+
 		$mobile_no = $Employee->mobile;	
 		//$mobile_no = ;
 		 $i = 1;

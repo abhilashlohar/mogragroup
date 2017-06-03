@@ -20,3 +20,7 @@ you can the file in web root (debit_note.sql)
 <!-----Dimpal ---- 27/5/2017--->
 create new field in employee table => otp_no (int)
 
+
+<!----Dimpal--- 3/6/2017--->
+create new field in quotation_rows => proceed_qty(int)
+

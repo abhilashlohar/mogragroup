@@ -221,7 +221,7 @@ class CustomersController extends AppController
     }
 	
 	public function defaultAddress($id = null)
-    {
+    { 
 		$this->viewBuilder()->layout('');
 		
 		if(empty($id)){

@@ -92,17 +92,17 @@ class InvoicesController extends AppController
 		}
 		
 		else if($inventory_voucher=='true'){ 
-			$invoices=[];
+			$invoices=[]; 
 			$invoices=$this->paginate($this->Invoices->find()->where($where)->contain(['SalesOrders','InvoiceRows'=>['Items'=>function ($q) {
 				return $q->where(['source !='=>'Purchessed']);
 				}]])->where(['Invoices.company_id'=>$st_company_id,'inventory_voucher_status'=>'Pending','inventory_voucher_create'=>'Yes'])->order(['Invoices.id' => 'DESC']));
 		}else if($sales_return=='true'){
 			
-			$invoices = $this->paginate($this->Invoices->find()->contain(['SalesOrders','InvoiceRows'])->where($where)->where(['Invoices.company_id'=>$st_company_id])->order(['Invoices.id' => 'DESC']));
-		} else{
+			$invoices = $this->paginate($this->Invoices->find()->contain(['SalesOrders','InvoiceRows'=>['Items']])->where($where)->where(['Invoices.company_id'=>$st_company_id])->order(['Invoices.id' => 'DESC']));
+		} else{ 
 			$invoices = $this->paginate($this->Invoices->find()->contain(['SalesOrders','InvoiceRows'=>['Items']])->where($where)->where(['Invoices.company_id'=>$st_company_id])->order(['Invoices.id' => 'DESC']));
 		}
-		
+		//pr($invoices); exit;
 		$this->set(compact('invoices','status','inventory_voucher','sales_return','InvoiceRows'));
         $this->set('_serialize', ['invoices']);
 		$this->set(compact('url'));

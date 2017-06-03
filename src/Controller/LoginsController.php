@@ -114,24 +114,24 @@ class LoginsController extends AppController
 	
 	function otpCodeConfirm($employee_id=null,$login_id=null)
 	{
-		$otp_allow_page = 'yes';
+		
 		$this->viewBuilder()->layout('');
 		$session = $this->request->session();
-		$this->request->session()->write('otp_confirm',$otp_allow_page);
-		$otp_confirm = $this->request->session()->read('otp_confirm');	
+		$this->request->session()->write('st_opt_confirm','yes');
+		$st_opt_confirm = $this->request->session()->read('st_opt_confirm');	
 		$request=$this->request->query('request');
 		$Employee=$this->Logins->Employees->get($employee_id);
 		$Emp_name = $Employee->name;		
 
 		$mobile_no = $Employee->mobile;	
-		//$mobile_no = ;
-		 $i = 1;
-				while($i<=$employee_id )
+		$i = 0;
+				while($i<1)
 				{
 					$randomString = rand(1000, 9999);
 					$i++;
+					
 				}
-		if($otp_confirm == 'yes'){
+		if(!empty($st_opt_confirm)){
 			$query = $this->Logins->Employees->query();
 					$query->update()
 						->set(['otp_no' => $randomString])
@@ -140,32 +140,26 @@ class LoginsController extends AppController
 						
 		
 		 $sms=str_replace(' ', '+', 'Dear '.$Emp_name.', Your one time password is '.$randomString.'.');
-        $working_key='A7a76ea72525fc05bbe9963267b48dd96';
+         $working_key='A7a76ea72525fc05bbe9963267b48dd96';
         $sms_sender='MOGRAG';
         $ch = curl_init('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile_no.'&message='.$sms.'');
-		
+		 
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		 $response = json_decode(curl_exec($ch));
-		/////echo///response/// 
+		
 		$response2=curl_exec($ch);
 		if(!empty($response2)){
-		 
+		
 		}else if(empty($response2)){
 			return $this->redirect(['controller'=>'Logins', 'action' => 'errorOtp',$employee_id]);
 		}
 		curl_close($ch);
-		$session = $this->request->session();
-		$session->delete('otp_confirm');
-		if($request == 'resendotp'){
+		 if($request == 'resendotpcode'){
 						return $this->redirect(['controller'=>'Logins', 'action' => 'resendOtp',$employee_id]);
 
 		}else{
 						return $this->redirect(['controller'=>'Logins', 'action' => 'generateOtp',$employee_id,$login_id]);
 
 		}
-		
-		
-		
 		}
 	}
 	

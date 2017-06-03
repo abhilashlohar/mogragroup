@@ -36,7 +36,7 @@ $this->Form->templates([
 			<button type="submit" class="btn green-haze pull-right">
 			LOGIN <i class="m-icon-swapright m-icon-white"></i>
 			</button>
-			<?php echo $this->Html->link('Resend code','/Logins/otpCodeConfirm/'.$Employee->id.'/?request=resendotp',array('escape'=>false)); ?>
+			<?php echo $this->Html->link('Resend code','/Logins/otpCodeConfirm/'.$Employee->id.'/?request=resendotpcode',array('escape'=>false)); ?>
 			
 		</div>
 	<?= $this->Form->end() ?>

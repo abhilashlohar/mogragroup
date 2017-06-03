@@ -36,7 +36,7 @@ $this->Form->templates([
 			<button type="submit" class="btn green-haze pull-right">
 			LOGIN <i class="m-icon-swapright m-icon-white"></i>
 			</button>
-			<?php echo $this->Html->link('Resend code',array('class' =>'resendotp','escape'=>false)); ?>
+			<a class="resendotp">Resend Otp</a>
 			
 		</div>
 	<?= $this->Form->end() ?>
@@ -45,16 +45,19 @@ $this->Form->templates([
 <script>
 $(document).ready(function() {
 $('.resendotp').die().live("click",function() {
-	
-		var emp_id=<?php echo $Employee->id; ?>
+var emp_id=<?php echo $Employee->id ?>;
+
 		var url1="<?php echo $this->Url->build(['controller'=>'Logins','action'=>'resendOtp']); ?>";
+		
 		url1=url1+'/'+emp_id,
+		
 		$.ajax({
 			url: url1,
 		}).done(function(response) { 
 		
-  			
+  			//alert(response);
 		});
+		
 	});	
 });
-</script>
+</script>	

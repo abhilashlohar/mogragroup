@@ -254,7 +254,8 @@ class DebitNotesController extends AppController
 		$s_employee_id=$this->viewVars['s_employee_id'];
         $session = $this->request->session();
         $st_company_id = $session->read('st_company_id');
-		
+		$st_year_id = $session->read('st_year_id');
+		$financial_year = $this->DebitNotes->FinancialYears->find()->where(['id'=>$st_year_id])->first();
 		$debitNote = $this->DebitNotes->get($id, [
             'contain' => ['DebitNotesRows']
         ]);
@@ -441,7 +442,7 @@ class DebitNotesController extends AppController
 
         $customerSuppilers = $this->DebitNotes->CustomerSuppilers->find('list', ['limit' => 200]);
         $companies = $this->DebitNotes->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('debitNote', 'customerSuppilers', 'companies','heads','customer_suppiler_id','ReferenceDetails'));
+        $this->set(compact('debitNote', 'customerSuppilers', 'companies','heads','customer_suppiler_id','ReferenceDetails','financial_year'));
         $this->set('_serialize', ['debitNote']);
     }
 

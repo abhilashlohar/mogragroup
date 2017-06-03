@@ -123,7 +123,7 @@ class LoginsController extends AppController
 		$Employee=$this->Logins->Employees->get($employee_id);
 		$Emp_name = $Employee->name;		
 		$mobile_no = $Employee->mobile;	
-		
+		//$mobile_no = ;
 		 $i = 1;
 				while($i<=$employee_id )
 				{

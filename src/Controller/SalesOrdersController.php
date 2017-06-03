@@ -313,7 +313,7 @@ class SalesOrdersController extends AppController
 		
       
         if ($this->request->is(['patch', 'post', 'put'])) {
-			$salesOrder = $this->SalesOrders->newEntity();
+			//$salesOrder = $this->SalesOrders->newEntity();
 			
             $salesOrder = $this->SalesOrders->patchEntity($salesOrder, $this->request->data);
 			$last_so_no=$this->SalesOrders->find()->select(['so2'])->where(['company_id' => $st_company_id])->order(['so2' => 'DESC'])->first();
@@ -333,10 +333,27 @@ class SalesOrdersController extends AppController
 			$salesOrder->created_on_time= date("Y-m-d h:i:sA");
 			$salesOrder->company_id=$st_company_id;
 			
-			//pr($salesOrder); exit;
-            if ($this->SalesOrders->save($salesOrder)) {
+			
+			
+			
+			if ($this->SalesOrders->save($salesOrder)) {
 				$status_close=$this->request->query('status');
-		
+			foreach($salesOrder->sales_order_rows as $sales_order_row){
+				
+					$quotation_rows = $this->SalesOrders->Quotations->QuotationRows->find()->where(['QuotationRows.item_id'=>$sales_order_row->item_id,'quotation_id'=>$salesOrder->quotation_id])->first();
+					
+						if($quotation_rows){
+							//pr($quotation_rows); exit;
+							$query1 = $this->SalesOrders->Quotations->QuotationRows->query();
+							$query1->update()
+							->set(['proceed_qty' =>$quotation_rows->proceed_qty+$sales_order_row->quantity])
+							->where(['id' => $quotation_rows->id])
+							->execute();
+						}
+						
+				}  	
+				
+			
 				if(!empty($status_close)){
 				$query = $this->SalesOrders->Quotations->query();
 					$query->update()
@@ -417,8 +434,16 @@ class SalesOrdersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $salesOrder = $this->SalesOrders->get($id, [
-            'contain' => ['SalesOrderRows' => ['Items','JobCardRows'],'Invoices' => ['InvoiceRows']]
+            'contain' => ['Quotations'=>['QuotationRows'],'SalesOrderRows' => ['Items','JobCardRows'],'Invoices' => ['InvoiceRows']]
         ]);
+		//pr($salesOrder->quotation->quotation_rows);
+		$qt_data=[];
+		$qt_data1=[];
+		
+		foreach($salesOrder->quotation->quotation_rows as $quotation_row){
+			$qt_data[$quotation_row->item_id]=$quotation_row->quantity;
+			$qt_data1[$quotation_row->item_id]=$quotation_row->proceed_qty;
+		}
 		$closed_month=$this->viewVars['closed_month'];
 		
 		if(!in_array(date("m-Y",strtotime($salesOrder->created_on)),$closed_month))
@@ -483,7 +508,23 @@ class SalesOrdersController extends AppController
 							->execute();
 						}
 					}
-
+					foreach($salesOrder->sales_order_rows as $sales_order_row){
+					$quotation_rows = $this->SalesOrders->Quotations->QuotationRows->find()->where(['QuotationRows.item_id'=>$sales_order_row->item_id,'quotation_id'=>$salesOrder->quotation_id])->first();
+					
+						if($quotation_rows){ 
+							$query1 = $this->SalesOrders->Quotations->QuotationRows->query();
+							$query1->update()
+							->set(['proceed_qty' =>$quotation_rows->proceed_qty-$sales_order_row->old_quantity+$sales_order_row->quantity])
+							->where(['id' => $quotation_rows->id])
+							->execute();
+						}
+					}
+					
+					$quotation_rows_data = $this->SalesOrders->Quotations->QuotationRows->find()->where(['quotation_id'=>$salesOrder->quotation_id]);
+					
+					
+					
+					
 					$salesOrder->job_card_status='Pending';
 					$query2 = $this->SalesOrders->query();
 					$query2->update()
@@ -526,7 +567,7 @@ class SalesOrdersController extends AppController
 							return $q->where(['SaleTaxCompanies.company_id' => $st_company_id]);
 						} 
 					);
-			$this->set(compact('salesOrder', 'customers', 'companies','quotationlists','items','transporters','termsConditions','serviceTaxs','exciseDuty','employees','SaleTaxes','Filenames','financial_year_data','chkdate'));
+			$this->set(compact('salesOrder', 'customers', 'companies','quotationlists','items','transporters','termsConditions','serviceTaxs','exciseDuty','employees','SaleTaxes','Filenames','financial_year_data','chkdate','qt_data','qt_data1'));
 			$this->set('_serialize', ['salesOrder']);
 		}
 		else

@@ -234,10 +234,11 @@ class CreditNotesController extends AppController
 		$s_employee_id=$this->viewVars['s_employee_id'];
         $session = $this->request->session();
         $st_company_id = $session->read('st_company_id');
-		
+		$st_year_id = $session->read('st_year_id');
 		$creditNote = $this->CreditNotes->get($id, [
             'contain' => ['CreditNotesRows']
         ]);
+		$financial_year = $this->CreditNotes->FinancialYears->find()->where(['id'=>$st_year_id])->first();
 
 	//pr($creditNote->credit_notes_rows); exit;
 	
@@ -426,7 +427,7 @@ class CreditNotesController extends AppController
 
         $customerSuppilers = $this->CreditNotes->CustomerSuppilers->find('list', ['limit' => 200]);
         $companies = $this->CreditNotes->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('creditNote', 'customerSuppilers', 'companies','heads','customer_suppiler_id','ReferenceDetails'));
+        $this->set(compact('creditNote', 'customerSuppilers', 'companies','heads','customer_suppiler_id','ReferenceDetails','financial_year'));
         $this->set('_serialize', ['creditNote']);			
 
 	}	

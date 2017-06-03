@@ -63,6 +63,8 @@ class AppController extends Controller
 			$st_year_id =  $session->read('st_year_id');
 			$st_opt_confirm =  $session->read('st_opt_confirm');
 			
+			//pr($st_opt_confirm);exit;
+			
 			if(empty($st_login_id)){
 				return $this->redirect('/logins'); exit;
 				//return $this->redirect(['controller'=>'Homes','action'>'logins']); 
@@ -70,6 +72,7 @@ class AppController extends Controller
 				$this->loadModel('Logins');
 				$login=$this->Logins->get($st_login_id);
 				$this->set('s_employee_id',$login->employee_id);
+				
 				
 				$this->loadModel('Employees');
 				$sessionEmployee=$this->Employees->get($login->employee_id);
@@ -85,6 +88,7 @@ class AppController extends Controller
 					$this->set('s_year_from',date("Y",strtotime($sessionYears->date_from)));
 					$this->set('s_year_to',date("Y",strtotime($sessionYears->date_to)));
 				}
+				
 				
 				$this->set('s_employee_name',$sessionEmployee->name);
 				

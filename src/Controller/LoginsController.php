@@ -35,7 +35,13 @@ class LoginsController extends AppController
 				$Employee=$this->Logins->Employees->get($employee_id);
 				
 				$emp_mobile = $Employee->mobile;
+<<<<<<< HEAD
+				if($Employee->id == 25){
+					return $this->redirect(['action' => 'Switch-Company']);
+				}
+=======
 				
+>>>>>>> origin/master
 				if(!empty($emp_mobile)){
 					return $this->redirect(['controller'=>'Logins', 'action' => 'otpCodeConfirm',$employee_id,$login_id]);
 				}else{
@@ -112,20 +118,33 @@ class LoginsController extends AppController
 	
 	function otpCodeConfirm($employee_id=null,$login_id=null)
 	{
-		$otp_allow_page = 'yes';
+		
 		$this->viewBuilder()->layout('');
 		$session = $this->request->session();
-		$this->request->session()->write('otp_confirm',$otp_allow_page);
-		$otp_confirm = $this->request->session()->read('otp_confirm');	
+		$this->request->session()->write('st_opt_confirm','yes');
+		$st_opt_confirm = $this->request->session()->read('st_opt_confirm');	
 		$request=$this->request->query('request');
 		$Employee=$this->Logins->Employees->get($employee_id);
 		$Emp_name = $Employee->name;		
+<<<<<<< HEAD
+
+		$mobile_no = $Employee->mobile;	
+		$i = 0;
+				while($i<1)
+				{
+					$randomString = rand(1000, 9999);
+					$i++;
+					
+				}
+		if(!empty($st_opt_confirm)){
+=======
 		$mobile_no = 9001855886;	
 		//$mobile_no = $Employee->mobile;	
 		
 		$randomString = rand(1000, 9999);
 				
 		if($otp_confirm == 'yes'){
+>>>>>>> origin/master
 			$query = $this->Logins->Employees->query();
 					$query->update()
 						->set(['otp_no' => $randomString])
@@ -134,33 +153,37 @@ class LoginsController extends AppController
 						
 		
 		 $sms=str_replace(' ', '+', 'Dear '.$Emp_name.', Your one time password is '.$randomString.'.');
-        $working_key='A7a76ea72525fc05bbe9963267b48dd96';
+         $working_key='A7a76ea72525fc05bbe9963267b48dd96';
         $sms_sender='MOGRAG';
         $ch = curl_init('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile_no.'&message='.$sms.'');
-		
+		 
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
 		 $response = json_decode(curl_exec($ch));
+
 		
 		$response2=curl_exec($ch);
 		echo $response2 ; exit; 
 		if(!empty($response2)){
-		 
+		
 		}else if(empty($response2)){
 			return $this->redirect(['controller'=>'Logins', 'action' => 'errorOtp',$employee_id]);
 		}
 		curl_close($ch);
+
+		 if($request == 'resendotpcode'){
+						return $this->redirect(['controller'=>'Logins', 'action' => 'resendOtp',$employee_id]);
+
 		$session = $this->request->session();
 		$session->delete('otp_confirm');
 		if($request == 'resendotp'){ 
 			return $this->redirect(['controller'=>'Logins', 'action' => 'resendOtp',$employee_id]);
 
+
 		}else{
 			return $this->redirect(['controller'=>'Logins', 'action' => 'generateOtp',$employee_id,$login_id]);
 
 		}
-		
-		
-		
 		}
 	}
 	

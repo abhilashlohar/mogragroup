@@ -483,9 +483,7 @@ class SalesOrdersController extends AppController
 							->execute();
 						}
 					}
-					
-					
-					
+
 					$salesOrder->job_card_status='Pending';
 					$query2 = $this->SalesOrders->query();
 					$query2->update()
@@ -495,7 +493,7 @@ class SalesOrdersController extends AppController
 					
 					$this->Flash->success(__('The sales order has been saved.'));
 					return $this->redirect(['action' => 'confirm/'.$salesOrder->id]);
-				} else { pr($salesOrder); exit;
+				} else { 
 					$this->Flash->error(__('The sales order could not be saved. Please, try again.'));
 				}
 			}

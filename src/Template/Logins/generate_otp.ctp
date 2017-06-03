@@ -36,8 +36,25 @@ $this->Form->templates([
 			<button type="submit" class="btn green-haze pull-right">
 			LOGIN <i class="m-icon-swapright m-icon-white"></i>
 			</button>
-			<?php echo $this->Html->link('Resend code','/Logins/otpCodeConfirm/'.$Employee->id.'/?request=resendotpcode',array('escape'=>false)); ?>
+			<?php echo $this->Html->link('Resend code',array('class' =>'resendotp','escape'=>false)); ?>
 			
 		</div>
 	<?= $this->Form->end() ?>
 	<!-- END LOGIN FORM -->
+<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+<script>
+$(document).ready(function() {
+$('.resendotp').die().live("click",function() {
+	
+		var emp_id=<?php echo $Employee->id; ?>
+		var url1="<?php echo $this->Url->build(['controller'=>'Logins','action'=>'resendOtp']); ?>";
+		url1=url1+'/'+emp_id,
+		$.ajax({
+			url: url1,
+		}).done(function(response) { 
+		
+  			
+		});
+	});	
+});
+</script>

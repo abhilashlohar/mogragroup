@@ -520,9 +520,12 @@ class SalesOrdersController extends AppController
 						}
 					}
 					
-					$quotation_rows_data = $this->SalesOrders->Quotations->QuotationRows->find()->where(['quotation_id'=>$salesOrder->quotation_id]);
-					
-					
+					if($salesOrder->quotation_id>0){
+					$quotation_rows_datas = $this->SalesOrders->Quotations->QuotationRows->find()->where(['quotation_id'=>$salesOrder->quotation_id])->toArray();
+					foreach($quotation_rows_datas as $quotation_rows_data){
+						pr($quotation_rows_data);
+					} exit;
+					}
 					
 					
 					$salesOrder->job_card_status='Pending';

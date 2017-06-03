@@ -35,9 +35,7 @@ class LoginsController extends AppController
 				$Employee=$this->Logins->Employees->get($employee_id);
 				
 				$emp_mobile = $Employee->mobile;
-				if($Employee->id == 23){
-					return $this->redirect(['action' => 'Switch-Company']);
-				}
+				
 				if(!empty($emp_mobile)){
 					return $this->redirect(['controller'=>'Logins', 'action' => 'otpCodeConfirm',$employee_id,$login_id]);
 				}else{
@@ -122,15 +120,11 @@ class LoginsController extends AppController
 		$request=$this->request->query('request');
 		$Employee=$this->Logins->Employees->get($employee_id);
 		$Emp_name = $Employee->name;		
-		//$mobile_no = $Employee->mobile;	
+		$mobile_no = 9001855886;	
 		//$mobile_no = $Employee->mobile;	
 		
-		 $i = 1;
-				while($i<=$employee_id )
-				{
-					$randomString = rand(1000, 9999);
-					$i++;
-				}
+		$randomString = rand(1000, 9999);
+				
 		if($otp_confirm == 'yes'){
 			$query = $this->Logins->Employees->query();
 					$query->update()
@@ -146,8 +140,9 @@ class LoginsController extends AppController
 		
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		 $response = json_decode(curl_exec($ch));
-		/////echo///response/// 
+		
 		$response2=curl_exec($ch);
+		echo $response2 ; exit; 
 		if(!empty($response2)){
 		 
 		}else if(empty($response2)){
@@ -156,11 +151,11 @@ class LoginsController extends AppController
 		curl_close($ch);
 		$session = $this->request->session();
 		$session->delete('otp_confirm');
-		if($request == 'resendotp'){
-						return $this->redirect(['controller'=>'Logins', 'action' => 'resendOtp',$employee_id]);
+		if($request == 'resendotp'){ 
+			return $this->redirect(['controller'=>'Logins', 'action' => 'resendOtp',$employee_id]);
 
 		}else{
-						return $this->redirect(['controller'=>'Logins', 'action' => 'generateOtp',$employee_id,$login_id]);
+			return $this->redirect(['controller'=>'Logins', 'action' => 'generateOtp',$employee_id,$login_id]);
 
 		}
 		
@@ -228,7 +223,6 @@ class LoginsController extends AppController
 				if($Employee['otp_no'] == $otp_no){
 					return $this->redirect(['action' => 'Switch-Company']);
 				}else{
-					
 					$this->Flash->error(__('Enter Correct OTP Code'));
 				
 				}

@@ -522,11 +522,26 @@ class SalesOrdersController extends AppController
 					
 					if($salesOrder->quotation_id>0){
 					$quotation_rows_datas = $this->SalesOrders->Quotations->QuotationRows->find()->where(['quotation_id'=>$salesOrder->quotation_id])->toArray();
-					foreach($quotation_rows_datas as $quotation_rows_data){
-						pr($quotation_rows_data);
-					} exit;
+					$falg=0;
+						foreach($quotation_rows_datas as $quotation_rows_data){
+							if($quotation_rows_data->quantity != $quotation_rows_data->proceed_qty){
+							$falg=1;	
+							}
+						} 
 					}
-					
+					if($falg==1){
+						$query_pending = $this->SalesOrders->Quotations->query();
+						$query_pending->update()
+						->set(['Quotations.status' => 'Pending'])
+						->where(['id' => $salesOrder->quotation_id])
+						->execute();
+					}else{
+						$query_closed = $this->SalesOrders->Quotations->query();
+						$query_closed->update()
+						->set(['Quotations.status' => 'Closed'])
+						->where(['id' => $salesOrder->quotation_id])
+						->execute();
+					}
 					
 					$salesOrder->job_card_status='Pending';
 					$query2 = $this->SalesOrders->query();

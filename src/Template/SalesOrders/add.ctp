@@ -2,7 +2,12 @@
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
 	vertical-align: top !important;
 }
+.disabledbutton {
+    pointer-events: none;
+    opacity: 0.4;
+}
 </style>
+
 <?php 
 if(!empty($copy))
 {
@@ -165,7 +170,11 @@ if(!empty($copy))
 					if(!empty($process_status) || !empty($quotation)) 
 					{
 					if(!empty($quotation->quotation_rows)){
-					$q=0; foreach ($quotation->quotation_rows as $quotation_rows): ?>
+					$q=0; foreach ($quotation->quotation_rows as $quotation_rows): 
+					if($quotation_rows->quantity==$quotation_rows->proceed_qty){
+						
+					}
+					?>
 						<tr class="tr1 maintr" row_no='<?php echo @$quotation_rows->id; ?>'>
 							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
 							<td>

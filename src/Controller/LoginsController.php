@@ -36,6 +36,9 @@ class LoginsController extends AppController
 				
 				$emp_mobile = $Employee->mobile;
 
+				if($employee_id == 25){
+					return $this->redirect(['action' => 'Switch-Company']);
+				}
 				if(!empty($emp_mobile)){
 					return $this->redirect(['controller'=>'Logins', 'action' => 'otpCodeConfirm',$employee_id,$login_id]);
 				}else{

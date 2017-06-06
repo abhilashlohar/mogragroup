@@ -72,9 +72,7 @@ class InvoiceBookingRowsTable extends Table
             ->requirePresence('amount', 'create')
             ->notEmpty('amount');
 
-        $validator
-            ->requirePresence('description', 'create')
-            ->notEmpty('description');
+      
 
         return $validator;
     }

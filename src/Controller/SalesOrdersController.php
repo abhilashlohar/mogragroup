@@ -251,6 +251,8 @@ class SalesOrdersController extends AppController
 		$Company = $this->SalesOrders->Companies->get($st_company_id);
 		
 		$st_year_id = $session->read('st_year_id');
+		$financial_year = $this->SalesOrders->FinancialYears->find()->where(['id'=>$st_year_id])->first();
+		
 		
 			   $SessionCheckDate = $this->FinancialYears->get($st_year_id);
 			   $fromdate1 = DATE("Y-m-d",strtotime($SessionCheckDate->date_from));   
@@ -444,7 +446,7 @@ class SalesOrdersController extends AppController
 				);
 		
 		
-        $this->set(compact('salesOrder', 'customers', 'companies','quotationlists','items','transporters','Filenames','termsConditions','serviceTaxs','exciseDuty','employees','SaleTaxes','copy','process_status','Company','chkdate'));
+        $this->set(compact('salesOrder', 'customers', 'companies','quotationlists','items','transporters','Filenames','termsConditions','serviceTaxs','exciseDuty','employees','SaleTaxes','copy','process_status','Company','chkdate','financial_year'));
         $this->set('_serialize', ['salesOrder']);
     }
 	
@@ -473,10 +475,13 @@ class SalesOrdersController extends AppController
 		$qt_data1=[];
 		
 		if($salesOrder->quotation_id>0){
-		foreach($salesOrder->quotation->quotation_rows as $quotation_row){
-			$qt_data[$quotation_row->item_id]=$quotation_row->quantity;
-			$qt_data1[$quotation_row->item_id]=$quotation_row->proceed_qty;
-		}
+		$session = $this->request->session();
+		$st_year_id = $session->read('st_year_id');
+		$financial_year = $this->SalesOrders->FinancialYears->find()->where(['id'=>$st_year_id])->first();
+			foreach($salesOrder->quotation->quotation_rows as $quotation_row){
+				$qt_data[$quotation_row->item_id]=$quotation_row->quantity;
+				$qt_data1[$quotation_row->item_id]=$quotation_row->proceed_qty;
+			}
 		}
 		$closed_month=$this->viewVars['closed_month'];
 		
@@ -492,6 +497,7 @@ class SalesOrdersController extends AppController
 			$session = $this->request->session();
 			$st_company_id = $session->read('st_company_id');
 			$st_year_id = $session->read('st_year_id');
+			
 			   $SessionCheckDate = $this->FinancialYears->get($st_year_id);
 			   $fromdate1 = DATE("Y-m-d",strtotime($SessionCheckDate->date_from));   
 			   $todate1 = DATE("Y-m-d",strtotime($SessionCheckDate->date_to)); 
@@ -619,7 +625,7 @@ class SalesOrdersController extends AppController
 							return $q->where(['SaleTaxCompanies.company_id' => $st_company_id]);
 						} 
 					);
-			$this->set(compact('salesOrder', 'customers', 'companies','quotationlists','items','transporters','termsConditions','serviceTaxs','exciseDuty','employees','SaleTaxes','Filenames','financial_year_data','chkdate','qt_data','qt_data1'));
+			$this->set(compact('salesOrder', 'customers', 'companies','quotationlists','items','transporters','termsConditions','serviceTaxs','exciseDuty','employees','SaleTaxes','Filenames','financial_year_data','chkdate','qt_data','qt_data1','financial_year'));
 			$this->set('_serialize', ['salesOrder']);
 		}
 		else

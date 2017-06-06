@@ -12,10 +12,10 @@
 					
 						<div class="row">
 							<div class="col-md-3">
-								<input type="text" name="date" class="form-control date-picker" placeholder="From Date" data-date-format='dd-mm-yyyy' data-date-end-date='0d' value="<?php  echo $date; ?>">
+								<input type="text" name="date" class="form-control date-picker from_date" placeholder="From Date" data-date-format='dd-mm-yyyy' data-date-end-date='0d' value="<?php  echo $date; ?>">
 							</div>
 							<div class="col-md-3">
-								<input type="text" name="to_date" class="form-control date-picker" placeholder="To Date" data-date-format='dd-mm-yyyy' data-date-end-date='0d' value="<?php  echo $to_date; ?>">
+								<input type="text" name="to_date" class="form-control date-picker to_date" placeholder="To Date" data-date-format='dd-mm-yyyy' data-date-end-date='0d' value="<?php  echo $to_date; ?>">
 							</div>
 							<div class="col-md-3">
 								<span class="input-group-btn">
@@ -32,21 +32,23 @@
 						<table class="table table-condensed table-hover">
 							<tbody>
 							<?php $Total_Liablities=0; $Total_exp_Dr=0; $Total_exp_Cr=0; 
-							foreach($Ledgers_Expense as $Ledger){ 
-							$Total_Liablities+=$Ledger->total_debit-$Ledger->total_credit; ?>
+							foreach($Expense_groups as $Expense_group){ 
+			
+							$Total_Liablities+=$Expense_group['debit']-$Expense_group['credit']; ?>
 								<tr>
-									<td>
-									<?php if(!empty(h($Ledger->ledger_account->alias))){ ?><?= h($Ledger->ledger_account->name) ?> (<?= h($Ledger->ledger_account->alias) ?>)<?php }
-									else{ ?><?= h($Ledger->ledger_account->name) ?><?php } ?>
+									<td> 
+									<a href='#' role='button' status='close' class="group_name" group_id='<?php echo $Expense_group['group_id']; ?>' style='color:black;'>
+									<?= h($Expense_group['name']) ?>
+									</a> 
 									</td>
-									<?php if($Ledger->total_debit>$Ledger->total_credit){?>
-										<td style=" text-align: right; "><?= h($Ledger->total_debit-$Ledger->total_credit); echo "Dr" ;
-										$Total_exp_Dr+=$Ledger->total_debit-$Ledger->total_credit; 
+									<?php if($Expense_group['debit'] > $Expense_group['credit']){?>
+										<td style=" text-align: right; "><?= h($Expense_group['debit']-$Expense_group['credit']); echo "Dr" ;
+										$Total_exp_Dr+=$Expense_group['debit']-$Expense_group['credit']; 
 										?></td>
 									<?php } else { ?>
 											
-										<td style=" text-align: right; "><?= h(abs($Ledger->total_debit-$Ledger->total_credit)); echo "Cr" ;
-										$Total_exp_Cr+=$Ledger->total_debit-$Ledger->total_credit; 
+										<td style=" text-align: right; "><?= h(abs($Expense_group['debit']-$Expense_group['credit'])); echo "Cr" ;
+										$Total_exp_Cr+=$Expense_group['debit']-$Expense_group['credit']; 
 										?></td>
 									<?php } ?>
 								</tr>
@@ -72,21 +74,22 @@
 						<table class="table table-condensed">
 							<tbody>
 							<?php $Total_Assets=0; $Total_Dr=0; $Total_Cr=0;
-							foreach($Ledgers_Income as $Ledger){ 
-							$Total_Assets+=$Ledger->total_debit-$Ledger->total_credit; ?>
+							foreach($Income_groups as $Income_group){ 
+							$Total_Assets+=$Income_group['debit']-$Income_group['credit']; ?>
 								<tr>
 									<td>
-									<?php if(!empty(h($Ledger->ledger_account->alias))){ ?><?= h($Ledger->ledger_account->name) ?> (<?= h($Ledger->ledger_account->alias) ?>)<?php }
-									else{ ?><?= h($Ledger->ledger_account->name) ?><?php } ?>
+									<a href="#" role='button' status='close' class="group_name" group_id='<?php      echo $Income_group['group_id']; ?>' style='color:black;'>
+											<?= h($Income_group['name']) ?>
+															 </a>  
 									</td>
-									<?php if($Ledger->total_debit>$Ledger->total_credit){?>
-										<td style=" text-align: right; "><?= h($Ledger->total_debit-$Ledger->total_credit); echo "Dr" ;
-										$Total_Dr+=$Ledger->total_debit-$Ledger->total_credit; 
+									<?php if($Income_group['debit'] > $Income_group['credit']){?>
+										<td style=" text-align: right; "><?= h($Income_group['debit']-$Income_group['credit']); echo "Dr" ;
+										$Total_Dr+=$Income_group['debit']-$Income_group['credit']; 
 										?></td>
 									<?php } else { ?>
 											
-										<td style=" text-align: right; "><?= h(abs($Ledger->total_debit-$Ledger->total_credit)); echo "Cr" ;
-										$Total_Cr+=$Ledger->total_debit-$Ledger->total_credit; 
+										<td style=" text-align: right; "><?= h(abs($Income_group['debit']-$Income_group['credit'])); echo "Cr" ;
+										$Total_Cr+=$Income_group['debit']-$Income_group['credit']; 
 										?></td>
 									<?php } ?>
 								</tr>
@@ -114,3 +117,97 @@
 		</div>
 	</div>
 </div>
+
+<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+
+<script>
+$(document).ready(function() {
+	$(".group_name").die().live('click',function(e){
+	   var current_obj=$(this);
+	   var group_id=$(this).attr('group_id');
+	  
+	  if(current_obj.attr('status') == 'open')
+	   {
+			$('tr.row_for_'+group_id+'').remove();
+			current_obj.attr('status','close');
+		   $('table > tbody > tr > td> a').removeClass("group_a");
+		   $('table > tbody > tr > td> span').removeClass("group_a");
+
+		}
+	   else
+	   {  
+		   var from_date = $('.from_date').val();
+		   var to_date = $('.to_date').val();
+		   
+		   var url="<?php echo $this->Url->build(['controller'=>'LedgerAccounts','action'=>'firstSubGroupsPnl']); ?>";
+		   url=url+'/'+group_id +'/'+from_date+'/'+to_date,
+			$.ajax({
+				url: url,
+			}).done(function(response) {
+				current_obj.attr('status','open');
+				 current_obj.addClass("group_a");
+				current_obj.closest('tr').find('span').addClass("group_a");
+				$('<tr class="append_tr row_for_'+group_id+'"><td colspan="2">'+response+'</td></tr>').insertAfter(current_obj.closest('tr'));
+			});			   
+		}   
+	});	 
+
+	
+	$(".first_grp_name").die().live('click',function(e){ 
+	   var current_obj=$(this);
+	   var first_grp_id=$(this).attr('first_grp_id');
+	  
+	  if(current_obj.attr('status') == 'open')
+	   {
+			$('tr.row_for_'+first_grp_id+'').remove();
+			current_obj.attr('status','close');
+		   $('table > tbody > tr > td> a').removeClass("group_a");
+		   $('table > tbody > tr > td> span').removeClass("group_a");
+
+		}
+	   else
+	   {  
+		   var from_date = $('.from_date').val();
+		   var to_date = $('.to_date').val();
+		   var url="<?php echo $this->Url->build(['controller'=>'LedgerAccounts','action'=>'secondSubGroupsPnl']); ?>";
+		   url=url+'/'+first_grp_id +'/'+from_date+'/'+to_date,
+			$.ajax({
+				url: url,
+			}).done(function(response) {
+				current_obj.attr('status','open');
+				 current_obj.addClass("group_a");
+				current_obj.closest('tr').find('span').addClass("group_a");
+				$('<tr class="append_tr row_for_'+first_grp_id+'"><td colspan="2">'+response+'</td></tr>').insertAfter(current_obj.closest('tr'));
+			});			   
+		}   
+	});	
+	$(".second_grp_name").die().live('click',function(e){ 
+	   var current_obj=$(this);
+	   var second_grp_id=$(this).attr('second_grp_id');
+	  
+	  if(current_obj.attr('status') == 'open')
+	   {
+			$('tr.row_for_'+second_grp_id+'').remove();
+			current_obj.attr('status','close');
+		   $('table > tbody > tr > td> a').removeClass("group_a");
+		   $('table > tbody > tr > td> span').removeClass("group_a");
+
+		}
+	   else
+	   {  
+		   var from_date = $('.from_date').val();
+		   var to_date = $('.to_date').val();
+		   var url="<?php echo $this->Url->build(['controller'=>'LedgerAccounts','action'=>'ledgerAccountDataPnl']); ?>";
+		   url=url+'/'+second_grp_id +'/'+from_date+'/'+to_date,
+			$.ajax({
+				url: url,
+			}).done(function(response) {
+				current_obj.attr('status','open');
+				 current_obj.addClass("group_a");
+				current_obj.closest('tr').find('span').addClass("group_a");
+				$('<tr class="append_tr row_for_'+second_grp_id+'"><td colspan="2">'+response+'</td></tr>').insertAfter(current_obj.closest('tr'));
+			});			   
+		}   
+	});
+});	
+</script>

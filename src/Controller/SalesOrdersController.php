@@ -278,19 +278,28 @@ class SalesOrdersController extends AppController
 				
 
 		$quotation_id=@(int)$this->request->query('quotation');
-		
-		
 		$quotation=array(); 
 		$process_status='New';
 		if(!empty($quotation_id)){
 			$quotation = $this->SalesOrders->Quotations->get($quotation_id, [
-				'contain' => ['QuotationRows' => ['Items'],'Customers'=>['CustomerAddress' => function($q){
+				'contain' => ['QuotationRows.Items' => function ($q) use($st_company_id) {
+						   return $q
+								->where(['QuotationRows.quantity > QuotationRows.proceed_qty']);
+								
+						}
+					],'Customers'=>['CustomerAddress' => function($q){
 					return $q->where(['default_address'=>1]);
-				}]]
+				}]
 			]);
 			$process_status='Pulled From Quotation';
-			
 		}
+		
+		
+		
+		
+		
+		
+		
 		$this->set(compact('quotation','process_status'));
 		
 		$id=$this->request->query('copy');
@@ -360,6 +369,29 @@ class SalesOrdersController extends AppController
 						->set(['status' => 'Closed'])
 						->where(['id' => $quotation_id])
 						->execute();
+				} else{
+						$falg=0;
+					if($salesOrder->quotation_id > 0){ 
+					$quotation_rows_datas = $this->SalesOrders->Quotations->QuotationRows->find()->where(['quotation_id'=>$salesOrder->quotation_id])->toArray();
+						foreach($quotation_rows_datas as $quotation_rows_data){
+							if($quotation_rows_data->quantity != $quotation_rows_data->proceed_qty){ 
+							$falg=1;	
+							}
+						} 
+					} 
+					if($falg==1){
+						$query_pending = $this->SalesOrders->Quotations->query();
+						$query_pending->update()
+						->set(['Quotations.status' => 'Pending'])
+						->where(['id' => $salesOrder->quotation_id])
+						->execute();
+					}else{ 
+						$query_closed = $this->SalesOrders->Quotations->query();
+						$query_closed->update()
+						->set(['Quotations.status' => 'Closed'])
+						->where(['id' => $salesOrder->quotation_id])
+						->execute();
+					}
 				}
 				
 				$this->Flash->success(__('The sales order has been saved.'));
@@ -440,9 +472,11 @@ class SalesOrdersController extends AppController
 		$qt_data=[];
 		$qt_data1=[];
 		
+		if($salesOrder->quotation_id>0){
 		foreach($salesOrder->quotation->quotation_rows as $quotation_row){
 			$qt_data[$quotation_row->item_id]=$quotation_row->quantity;
 			$qt_data1[$quotation_row->item_id]=$quotation_row->proceed_qty;
+		}
 		}
 		$closed_month=$this->viewVars['closed_month'];
 		
@@ -520,22 +554,22 @@ class SalesOrdersController extends AppController
 						}
 					}
 					
-					if($salesOrder->quotation_id>0){
-					$quotation_rows_datas = $this->SalesOrders->Quotations->QuotationRows->find()->where(['quotation_id'=>$salesOrder->quotation_id])->toArray();
 					$falg=0;
+					if($salesOrder->quotation_id > 0){ 
+					$quotation_rows_datas = $this->SalesOrders->Quotations->QuotationRows->find()->where(['quotation_id'=>$salesOrder->quotation_id])->toArray();
 						foreach($quotation_rows_datas as $quotation_rows_data){
-							if($quotation_rows_data->quantity != $quotation_rows_data->proceed_qty){
+							if($quotation_rows_data->quantity != $quotation_rows_data->proceed_qty){ 
 							$falg=1;	
 							}
 						} 
-					}
+					} 
 					if($falg==1){
 						$query_pending = $this->SalesOrders->Quotations->query();
 						$query_pending->update()
 						->set(['Quotations.status' => 'Pending'])
 						->where(['id' => $salesOrder->quotation_id])
 						->execute();
-					}else{
+					}else{ 
 						$query_closed = $this->SalesOrders->Quotations->query();
 						$query_closed->update()
 						->set(['Quotations.status' => 'Closed'])

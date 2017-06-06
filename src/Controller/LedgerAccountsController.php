@@ -270,16 +270,79 @@ class LedgerAccountsController extends AppController
 			$this->set(compact('liablitie_groups'));
 		
 	}
+	
+	public function secondSubGroups($group_id,$date)
+	{
+		$this->viewBuilder()->layout('');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
+		$query2=$this->LedgerAccounts->Ledgers->find();
+			$Ledgers_Liablities=$query2->select(['total_debit' => $query2->func()->sum('debit'),'total_credit' => $query2->func()->sum('credit')])
+			->matching('LedgerAccounts.AccountSecondSubgroups.AccountFirstSubgroups', function ($q) use($group_id) {
+				return $q->where(['AccountFirstSubgroups.id' => $group_id]);
+			})
+			->where(['transaction_date <='=>date('Y-m-d',strtotime($date)),'Ledgers.company_id'=>$st_company_id])
+			->contain(['LedgerAccounts'])
+			->group(['ledger_account_id'])
+			->autoFields(true)->toArray();
+			$liablitie_groups=[];
+			foreach($Ledgers_Liablities as $Ledgers_Liablitie){
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountSecondSubgroups']->id]['group_id']
+					=$Ledgers_Liablitie->_matchingData['AccountSecondSubgroups']->id;
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountSecondSubgroups']->id]['debit']
+					=@$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountSecondSubgroups']->id]['debit']+($Ledgers_Liablitie->total_debit);
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountSecondSubgroups']->id]['credit']
+					=@$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountSecondSubgroups']->id]['credit']+($Ledgers_Liablitie->total_credit);
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountSecondSubgroups']->id]['name']
+					=$Ledgers_Liablitie->_matchingData['AccountSecondSubgroups']->name;
+			}
+
+			$this->set(compact('liablitie_groups'));
+		
+	}
+	
+	public function ledgerAccountData($group_id,$date)
+	{
+		$this->viewBuilder()->layout('');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
+		$query2=$this->LedgerAccounts->Ledgers->find();
+			$Ledgers_Liablities=$query2->select(['total_debit' => $query2->func()->sum('debit'),'total_credit' => $query2->func()->sum('credit')])
+			->matching('LedgerAccounts.AccountSecondSubgroups', function ($q) use($group_id) {
+				return $q->where(['AccountSecondSubgroups.id' => $group_id]);
+			})
+			->where(['transaction_date <='=>date('Y-m-d',strtotime($date)),'Ledgers.company_id'=>$st_company_id])
+			->contain(['LedgerAccounts'])
+			->group(['ledger_account_id'])
+			->autoFields(true)->toArray();
+			$liablitie_groups=[];
+			foreach($Ledgers_Liablities as $Ledgers_Liablitie){
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['LedgerAccounts']->id]['group_id']
+					=$Ledgers_Liablitie->_matchingData['LedgerAccounts']->id;
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['LedgerAccounts']->id]['debit']
+					=@$liablitie_groups[$Ledgers_Liablitie->_matchingData['LedgerAccounts']->id]['debit']+($Ledgers_Liablitie->total_debit);
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['LedgerAccounts']->id]['credit']
+					=@$liablitie_groups[$Ledgers_Liablitie->_matchingData['LedgerAccounts']->id]['credit']+($Ledgers_Liablitie->total_credit);
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['LedgerAccounts']->id]['name']
+					=$Ledgers_Liablitie->_matchingData['LedgerAccounts']->name;
+			}
+
+			$this->set(compact('liablitie_groups'));
+		
+	}
 
 
 	
-	public function ProfitLossStatement (){
+public function ProfitLossStatement (){
 		$this->viewBuilder()->layout('index_layout');
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		$date=$this->request->query('date');
 		$to_date=$this->request->query('to_date');
-		if($date){
+	
+	if($date){
 			$query=$this->LedgerAccounts->Ledgers->find();
 			$Ledgers_Expense=$query->select(['total_debit' => $query->func()->sum('debit'),'total_credit' => $query->func()->sum('credit')])
 			->matching('LedgerAccounts.AccountSecondSubgroups.AccountFirstSubgroups.AccountGroups.AccountCategories', function ($q) {
@@ -290,8 +353,20 @@ class LedgerAccountsController extends AppController
 			'Ledgers.company_id'=>$st_company_id])
 			->contain(['LedgerAccounts'])
 			->group(['ledger_account_id'])
-			->autoFields(true)->toArray();
+			->autoFields(true);
 			
+			$Expense_groups=[];
+			foreach($Ledgers_Expense as $Ledgers_Expense){
+				$Expense_groups[$Ledgers_Expense->_matchingData['AccountGroups']->id]['group_id']
+					=$Ledgers_Expense->_matchingData['AccountGroups']->id;
+				$Expense_groups[$Ledgers_Expense->_matchingData['AccountGroups']->id]['debit']
+					=@$Expense_groups[$Ledgers_Expense->_matchingData['AccountGroups']->id]['debit']+($Ledgers_Expense->total_debit);
+				$Expense_groups[$Ledgers_Expense->_matchingData['AccountGroups']->id]['credit']
+					=@$Expense_groups[$Ledgers_Expense->_matchingData['AccountGroups']->id]['credit']+($Ledgers_Expense->total_credit);
+				$Expense_groups[$Ledgers_Expense->_matchingData['AccountGroups']->id]['name']
+					=$Ledgers_Expense->_matchingData['AccountGroups']->name;
+			}
+			//pr($Expense_groups); exit;
 			$query2=$this->LedgerAccounts->Ledgers->find();
 			$Ledgers_Income=$query2->select(['total_debit' => $query2->func()->sum('debit'),'total_credit' => $query2->func()->sum('credit')])
 			->matching('LedgerAccounts.AccountSecondSubgroups.AccountFirstSubgroups.AccountGroups.AccountCategories', function ($q) {
@@ -302,9 +377,120 @@ class LedgerAccountsController extends AppController
 			->contain(['LedgerAccounts'])
 			->group(['ledger_account_id'])
 			->autoFields(true)->toArray();
-			$this->set(compact('Ledgers_Expense','Ledgers_Income'));
+			
+			$Income_groups=[];
+			foreach($Ledgers_Income as $Ledgers_Income){ //pr($Ledgers_Liablitie->total_credit);
+				$Income_groups[$Ledgers_Income->_matchingData['AccountGroups']->id]['group_id']
+					=$Ledgers_Income->_matchingData['AccountGroups']->id;
+				$Income_groups[$Ledgers_Income->_matchingData['AccountGroups']->id]['debit']
+					=@$Income_groups[$Ledgers_Income->_matchingData['AccountGroups']->id]['debit']+($Ledgers_Income->total_debit);
+				$Income_groups[$Ledgers_Income->_matchingData['AccountGroups']->id]['credit']
+					=@$Income_groups[$Ledgers_Income->_matchingData['AccountGroups']->id]['credit']+($Ledgers_Income->total_credit);
+				$Income_groups[$Ledgers_Income->_matchingData['AccountGroups']->id]['name']
+					=$Ledgers_Income->_matchingData['AccountGroups']->name;
+			}
+			
+			
+			
+			$this->set(compact('Expense_groups','Income_groups'));
 		}
 		$this->set(compact('date','to_date'));
+	}
+	
+public function firstSubGroupsPnl($group_id,$from_date,$to_date)
+	{
+		$this->viewBuilder()->layout('');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
+		$query2=$this->LedgerAccounts->Ledgers->find();
+			$Ledgers_Liablities=$query2->select(['total_debit' => $query2->func()->sum('debit'),'total_credit' => $query2->func()->sum('credit')])
+			->matching('LedgerAccounts.AccountSecondSubgroups.AccountFirstSubgroups.AccountGroups', function ($q) use($group_id) {
+				return $q->where(['AccountGroups.id' => $group_id]);
+			})
+			->where(['transaction_date >='=>date('Y-m-d',strtotime($from_date)),
+			'transaction_date <='=>date('Y-m-d',strtotime($to_date)),'Ledgers.company_id'=>$st_company_id])
+			->contain(['LedgerAccounts'])
+			->group(['ledger_account_id'])
+			->autoFields(true)->toArray();
+			$liablitie_groups=[];
+			foreach($Ledgers_Liablities as $Ledgers_Liablitie){
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountFirstSubgroups']->id]['group_id']
+					=$Ledgers_Liablitie->_matchingData['AccountFirstSubgroups']->id;
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountFirstSubgroups']->id]['debit']
+					=@$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountFirstSubgroups']->id]['debit']+($Ledgers_Liablitie->total_debit);
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountFirstSubgroups']->id]['credit']
+					=@$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountFirstSubgroups']->id]['credit']+($Ledgers_Liablitie->total_credit);
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountFirstSubgroups']->id]['name']
+					=$Ledgers_Liablitie->_matchingData['AccountFirstSubgroups']->name;
+			}
+
+			$this->set(compact('liablitie_groups'));
+		
+	}
+	
+		public function secondSubGroupsPnl($group_id,$from_date,$to_date)
+	{
+		$this->viewBuilder()->layout('');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
+		$query2=$this->LedgerAccounts->Ledgers->find();
+			$Ledgers_Liablities=$query2->select(['total_debit' => $query2->func()->sum('debit'),'total_credit' => $query2->func()->sum('credit')])
+			->matching('LedgerAccounts.AccountSecondSubgroups.AccountFirstSubgroups', function ($q) use($group_id) {
+				return $q->where(['AccountFirstSubgroups.id' => $group_id]);
+			})
+			->where(['transaction_date >='=>date('Y-m-d',strtotime($from_date)),
+			'transaction_date <='=>date('Y-m-d',strtotime($to_date)),'Ledgers.company_id'=>$st_company_id])
+			->contain(['LedgerAccounts'])
+			->group(['ledger_account_id'])
+			->autoFields(true)->toArray();
+			$liablitie_groups=[];
+			foreach($Ledgers_Liablities as $Ledgers_Liablitie){
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountSecondSubgroups']->id]['group_id']
+					=$Ledgers_Liablitie->_matchingData['AccountSecondSubgroups']->id;
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountSecondSubgroups']->id]['debit']
+					=@$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountSecondSubgroups']->id]['debit']+($Ledgers_Liablitie->total_debit);
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountSecondSubgroups']->id]['credit']
+					=@$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountSecondSubgroups']->id]['credit']+($Ledgers_Liablitie->total_credit);
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountSecondSubgroups']->id]['name']
+					=$Ledgers_Liablitie->_matchingData['AccountSecondSubgroups']->name;
+			}
+
+			$this->set(compact('liablitie_groups'));
+		
+	}
+	
+	public function ledgerAccountDataPnl($group_id,$from_date,$to_date)
+	{
+		$this->viewBuilder()->layout('');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
+		$query2=$this->LedgerAccounts->Ledgers->find();
+			$Ledgers_Liablities=$query2->select(['total_debit' => $query2->func()->sum('debit'),'total_credit' => $query2->func()->sum('credit')])
+			->matching('LedgerAccounts.AccountSecondSubgroups', function ($q) use($group_id) {
+				return $q->where(['AccountSecondSubgroups.id' => $group_id]);
+			})
+			->where(['transaction_date >='=>date('Y-m-d',strtotime($from_date)),
+			'transaction_date <='=>date('Y-m-d',strtotime($to_date)),'Ledgers.company_id'=>$st_company_id])
+			->contain(['LedgerAccounts'])
+			->group(['ledger_account_id'])
+			->autoFields(true)->toArray();
+			$liablitie_groups=[];
+			foreach($Ledgers_Liablities as $Ledgers_Liablitie){
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['LedgerAccounts']->id]['group_id']
+					=$Ledgers_Liablitie->_matchingData['LedgerAccounts']->id;
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['LedgerAccounts']->id]['debit']
+					=@$liablitie_groups[$Ledgers_Liablitie->_matchingData['LedgerAccounts']->id]['debit']+($Ledgers_Liablitie->total_debit);
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['LedgerAccounts']->id]['credit']
+					=@$liablitie_groups[$Ledgers_Liablitie->_matchingData['LedgerAccounts']->id]['credit']+($Ledgers_Liablitie->total_credit);
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['LedgerAccounts']->id]['name']
+					=$Ledgers_Liablitie->_matchingData['LedgerAccounts']->name;
+			}
+
+			$this->set(compact('liablitie_groups'));
+		
 	}
 	
 	function checkBillToBillAccountingStatus($received_from_id){
@@ -385,5 +571,25 @@ public function CheckCompany($ledger_id=null,$company_id=null)
 			return $this->redirect(['action' => 'EditCompany/'.$ledger_id]);
 		}
 	}
+	
+		public function updateSequence()
+    {
+		$Finishgooddata=$this->request->query('Finishgooddata');
+		$Finishgooddata_js=json_decode($Finishgooddata);
+        foreach($Finishgooddata_js as  $info)
+		{  
+          foreach($info as $key => $info1)
+		  {
+            if($info1)
+			{
+				    $this->request->allowMethod(['get', 'update']);
+					$FinishGood = $this->FinishGoods->get($key);
+					$FinishGood->sequence=$info1;
+					$this->FinishGoods->save($FinishGood);
+			}
+          }
+		}
+		exit;
+    }
 	
 }

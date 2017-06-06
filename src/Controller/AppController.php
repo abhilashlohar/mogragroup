@@ -61,7 +61,7 @@ class AppController extends Controller
 			$st_login_id = $session->read('st_login_id');
 			$st_company_id = $session->read('st_company_id');
 			$st_year_id =  $session->read('st_year_id');
-			$st_opt_confirm =  $session->read('st_opt_confirm');
+			//$st_opt_confirm =  $session->read('st_opt_confirm');
 			
 			//pr($st_opt_confirm);exit;
 			

@@ -79,6 +79,28 @@ margin-bottom: 0;
 				</table>
 			</td>
 		</tr>
+		<tr>
+			<td width="50%" valign="top" align="left">
+				<table>
+					<tr>
+						<td><b>Supplier Name</b></td>
+						<td width="20" align="center">:</td>
+						<td><?= h($invoiceBooking->vendor->company_name) ?></td>
+					</tr>
+				</table>
+			</td>
+			<td width="50%" valign="top" align="right">
+				<table>
+					<tr>
+						<td><b>Purchase Account</b></td>
+						<td width="20" align="center">:</td>
+						<td><?= h($purchase_acc) ?></td>
+					</tr>
+				</table>
+			</td>
+			
+		</tr>
+		
 	</table>
 	
 </br>

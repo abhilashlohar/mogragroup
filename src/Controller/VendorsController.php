@@ -265,8 +265,7 @@ class VendorsController extends AppController
 
 	
 		$query2 = $this->Vendors->LedgerAccounts->query();
-		//pr(['source_model' => 'Vendors','source_id'=>$vendor_id,'company_id'=>$company_id]); 
-		//pr(['bill_to_bill_account' => $bill_to_bill_account]); exit;
+		
 		$query2->update()
 			->set(['bill_to_bill_account' => $bill_to_bill_account])
 			->where(['source_model' => 'Vendors','source_id'=>$vendor_id,'company_id'=>$company_id])

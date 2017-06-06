@@ -171,11 +171,10 @@ if(!empty($copy))
 					{
 					if(!empty($quotation->quotation_rows)){
 					$q=0; foreach ($quotation->quotation_rows as $quotation_rows): 
-					if($quotation_rows->quantity==$quotation_rows->proceed_qty){
-						
-					}
+					if($quotation_rows->quantity==$quotation_rows->proceed_qty){$disable_class="disabledbutton";
+					}else{ $disable_class=""; } 
 					?>
-						<tr class="tr1 maintr" row_no='<?php echo @$quotation_rows->id; ?>'>
+						<tr class="tr1 <?php echo $disable_class; ?> maintr" row_no='<?php echo @$quotation_rows->id; ?>'>
 							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
 							<td>
 
@@ -217,7 +216,7 @@ if(!empty($copy))
 							</td>
 							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
-						<tr class="tr2 maintr" row_no='<?php echo @$quotation_rows->id; ?>'>
+						<tr class="tr2 <?php echo $disable_class; ?> maintr" row_no='<?php echo @$quotation_rows->id; ?>'>
 							<td colspan="6">
 							<div class="note-editable" id="summer<?php echo $q; ?>" ><?php echo $quotation_rows->description; ?></div>
 							</td>
@@ -727,6 +726,7 @@ $(document).ready(function() {
 		rename_rows();
 	}
 	rename_rows();
+	calculate_total();
 	function rename_rows(){
 		var i=0;
 		

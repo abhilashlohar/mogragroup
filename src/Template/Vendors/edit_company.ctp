@@ -24,6 +24,7 @@
 				<?php $i=0; foreach ($Company_array as $key=>$Company_array){ $i++;
 				$c_namrr=$Company_array1[$key];
 				$bill_to_bill=@$Company_array2[$key];
+				
 				?>
 					<tr>
 						<td><?= h($i) ?></td>

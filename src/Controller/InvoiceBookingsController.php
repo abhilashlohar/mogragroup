@@ -98,11 +98,33 @@ class InvoiceBookingsController extends AppController
 		
 		$this->viewBuilder()->layout('index_layout');
         $invoiceBooking = $this->InvoiceBookings->get($id, [
-            'contain' => ['InvoiceBookingRows'=>['Items'],'Creator','Companies']
+            'contain' => ['InvoiceBookingRows'=>['Items'],'Vendors','Creator','Companies']
         ]);
-		if($invoiceBooking->ledger_account_for_vat>0){
+		if($invoiceBooking->ledger_account_for_vat > 0){
 			$LedgerAccount=$this->InvoiceBookings->LedgerAccounts->get($invoiceBooking->ledger_account_for_vat);
 		}
+		
+		$purchase_acc='';
+		if($st_company_id==25){  
+			if($invoiceBooking->purchase_ledger_account==35){
+				$purchase_acc="CST Purchase";
+			}else{
+				$purchase_acc="VAT Purchase";
+			}
+		}else if($st_company_id==26){
+			if($invoiceBooking->purchase_ledger_account==161){
+				$purchase_acc="CST Purchase";
+			}else{
+				$purchase_acc="VAT Purchase";
+			}
+		}else if($st_company_id==27){
+			if($invoiceBooking->purchase_ledger_account==309){
+				$purchase_acc="CST Purchase";
+			}else{
+				$purchase_acc="VAT Purchase";
+			}
+		}
+		
 		
 		$c_LedgerAccount=$this->InvoiceBookings->LedgerAccounts->find()->where(['company_id'=>$st_company_id,'source_model'=>'Vendors','source_id'=>$invoiceBooking->vendor_id])->first();
 		
@@ -110,7 +132,7 @@ class InvoiceBookingsController extends AppController
 		
 		
         $this->set('invoiceBooking', $invoiceBooking);
-		$this->set(compact('LedgerAccount', 'ReferenceDetails'));
+		$this->set(compact('LedgerAccount', 'ReferenceDetails','purchase_acc'));
         $this->set('_serialize', ['invoiceBooking']);
     }
 

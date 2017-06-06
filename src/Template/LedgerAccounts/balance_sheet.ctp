@@ -18,22 +18,29 @@
 				</form>
 				<?php if($date){ ?>
 				<div class="row">
-					<table width="100%" style="margin-top: 10px;">
-						<tr style="width:50%;">
+					<table width="100%" style="margin-top: 10px;"  >
+						<tr   style="width:50%;">
 						    <td><div align="center"><h4>Liablities</h4></div></td>
 						    <td><div align="center"><h4>Assets</h4></div></td>
 						</tr>
 						<tr style="width:50%;">
 						    <td valign="top">
 								<div class="col-md-12">
-									<table class="table table-condensed">
-										<tbody>
+									<table id="main_tble" class="table table-condensed">
+										<tbody class="main_tbody">
 										<?php $total_lib = 0;
 										$lib_tr = 0; $ass_tr = 0; $liablitie_tr =0; $assets_tr = 0; $Total_Liablities=0; $Total_lib_Dr=0; $Total_lib_Cr=0;
 										//pr($liablitie_groups);exit;
+										$i=0;
+										
+										usort($liablitie_groups, function ($a, $b) {
+										return $a['sequence'] - $b['sequence'];
+										});
 										foreach($liablitie_groups as $liablitie_group){ 
+										$i++;
+										
 										$Total_Liablities=$liablitie_group['debit']-$liablitie_group['credit']; ?>
-											<tr> <?php $liablitie_tr++; ?>
+											<tr group_id=<?php  echo $liablitie_group['group_id'] ?> class="main_tr">
 												<td> 
 													<a href='#' role='button' status='close' class="group_name" group_id='<?php echo $liablitie_group['group_id']; ?>' style='color:black;'> 
 														<?=  h($liablitie_group['name']) ?> 
@@ -49,6 +56,8 @@
 												</td>
 											</tr> 
 										<?php } ?>
+										
+										
 											
 											<?php $Total_lib_Dr= abs($Total_lib_Dr);  $Total_lib_Cr= abs($Total_lib_Cr); ?>
 										</tbody>
@@ -57,12 +66,16 @@
 							</td>
 						    <td valign="top">
 								<div class="col-md-12">
-										<table class="table table-condensed">
-											<tbody>
-											<?php  $Total_Assets=0; $Total_Dr=0; $Total_Cr=0;
+										<table id="main_tble1" class="table table-condensed">
+											<tbody class="main_tbody1">
+											<?php
+											usort($asset_groups, function ($a, $b) {
+											return $a['sequence'] - $b['sequence'];
+											});
+											$Total_Assets=0; $Total_Dr=0; $Total_Cr=0;
 											foreach($asset_groups as $asset_group){
 											$Total_Assets= $asset_group['debit'] - $asset_group['credit'];?>
-													<tr> <?php $assets_tr++; ?>
+													<tr group_id=<?php  echo $asset_group['group_id'] ?> class="main_tr1"> <?php $assets_tr++; ?>
 														<td> <a href="#" role='button' status='close' class="group_name" group_id='<?php      echo $asset_group['group_id']; ?>' style='color:black;'>
 																<?= h($asset_group['name']) ?>
 															 </a>  
@@ -133,34 +146,36 @@
 </style>
 
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
 <script type="text/javascript">
-$('tbody').sortable();	
-$(document).ready(function() {
+$('tbody.main_tbody').sortable();	
+$(document).ready(function() { 
 	var isDragging = false;
-	$("tr").mousedown(function() {
+	$("tr.main_tr").mousedown(function() {
 		isDragging = false;
 	}).mousemove(function() {
 		isDragging = true;
 	}).mouseup(function() {
 		var wasDragging = isDragging;
-		var rowCount = $("#main_tble > tbody > tr").length;
+		var rowCount = $("#main_tble > tbody > tr.main_tr").length;
 		var abc=[];
 		var k=0;
 	setTimeout(
 		function(){
-			$(".all").each(function(){ 
+			$(".main_tr").each(function(){ 
 			k++;
-			var finish_good_id=$(this).attr("finish_good_id");
+			var group_id=$(this).attr("group_id");
       
-            abc.push({[finish_good_id]:k});
+            abc.push({[group_id]:k});
 		});
 		
 	}, 1000);
     
 	setTimeout( function(){	 
 		myJSON = JSON.stringify(abc);
-		var url="<?php echo $this->Url->build(['controller'=>'FinishGoods','action'=>'updateSequence']); ?>";
-		url=url+'?Finishgooddata='+myJSON;
+		
+		var url="<?php echo $this->Url->build(['controller'=>'LedgerAccounts','action'=>'updateSequence']); ?>";
+		url=url+'?AccountGroup='+myJSON;
         $.ajax({
 		url: url,
 		type: 'GET',
@@ -178,6 +193,51 @@ $(document).ready(function() {
 });
 </script>
 
+
+<script type="text/javascript">
+$('tbody.main_tbody1').sortable();	
+$(document).ready(function() {
+	var isDragging = false;
+	$("tr.main_tr1").mousedown(function() {
+		isDragging = false;
+	}).mousemove(function() {
+		isDragging = true;
+	}).mouseup(function() {
+		var wasDragging = isDragging;
+		var rowCount = $("#main_tble1 > tbody > tr.main_tr1").length;
+		var abc=[];
+		var k=0;
+	setTimeout(
+		function(){
+			$(".main_tr1").each(function(){ 
+			k++;
+			var group_id=$(this).attr("group_id");
+      
+            abc.push({[group_id]:k});
+		});
+		
+	}, 1000);
+    
+	setTimeout( function(){	 
+		myJSON = JSON.stringify(abc);
+		var url="<?php echo $this->Url->build(['controller'=>'LedgerAccounts','action'=>'updateSequence']); ?>";
+		url=url+'?AccountGroup='+myJSON;
+        $.ajax({
+		url: url,
+		type: 'GET',
+		dataType: 'text'
+		}).done(function(response) {});
+		}, 2000);
+
+		isDragging = false;
+		if (!wasDragging) {
+		$("#throbble").toggle();
+		}
+	});
+
+	$("ul").sortable();
+});
+</script>
 
 
 <script>

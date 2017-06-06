@@ -6,6 +6,7 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
+
 /**
  * LedgerAccounts Model
  *
@@ -58,6 +59,7 @@ class LedgerAccountsTable extends Table
 		
 		$this->belongsTo('AccountCategories');
 		$this->belongsTo('Companies');
+		$this->belongsTo('AccountGroups');
     }
 
     /**

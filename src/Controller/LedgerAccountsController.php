@@ -198,6 +198,7 @@ class LedgerAccountsController extends AppController
 			->where(['transaction_date <='=>date('Y-m-d',strtotime($date)),'Ledgers.company_id'=>$st_company_id])
 			->contain(['LedgerAccounts'])
 			->group(['ledger_account_id'])
+			->order(['AccountGroups.sequence'=>'ASC'])
 			->autoFields(true);
 
 			$asset_groups=[];
@@ -210,6 +211,8 @@ class LedgerAccountsController extends AppController
 					=@$asset_groups[$Ledgers_Asset->_matchingData['AccountGroups']->id]['credit']+($Ledgers_Asset->total_credit);
 				$asset_groups[$Ledgers_Asset->_matchingData['AccountGroups']->id]['name']
 					=$Ledgers_Asset->_matchingData['AccountGroups']->name;
+				$asset_groups[$Ledgers_Asset->_matchingData['AccountGroups']->id]['sequence']
+					=$Ledgers_Asset->_matchingData['AccountGroups']->sequence;
 			}
 			
 			$query2=$this->LedgerAccounts->Ledgers->find();
@@ -232,7 +235,9 @@ class LedgerAccountsController extends AppController
 					=@$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountGroups']->id]['credit']+($Ledgers_Liablitie->total_credit);
 				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountGroups']->id]['name']
 					=$Ledgers_Liablitie->_matchingData['AccountGroups']->name;
-			} //pr($liablitie_groups); exit;
+				$liablitie_groups[$Ledgers_Liablitie->_matchingData['AccountGroups']->id]['sequence']
+					=$Ledgers_Liablitie->_matchingData['AccountGroups']->sequence;
+			} 
 			
 			$this->set(compact('Ledgers_Assets','Ledgers_Liablities', 'asset_groups', 'liablitie_groups'));
 		}
@@ -365,6 +370,8 @@ public function ProfitLossStatement (){
 					=@$Expense_groups[$Ledgers_Expense->_matchingData['AccountGroups']->id]['credit']+($Ledgers_Expense->total_credit);
 				$Expense_groups[$Ledgers_Expense->_matchingData['AccountGroups']->id]['name']
 					=$Ledgers_Expense->_matchingData['AccountGroups']->name;
+				$Expense_groups[$Ledgers_Expense->_matchingData['AccountGroups']->id]['sequence']
+					=$Ledgers_Expense->_matchingData['AccountGroups']->sequence;
 			}
 			//pr($Expense_groups); exit;
 			$query2=$this->LedgerAccounts->Ledgers->find();
@@ -388,6 +395,8 @@ public function ProfitLossStatement (){
 					=@$Income_groups[$Ledgers_Income->_matchingData['AccountGroups']->id]['credit']+($Ledgers_Income->total_credit);
 				$Income_groups[$Ledgers_Income->_matchingData['AccountGroups']->id]['name']
 					=$Ledgers_Income->_matchingData['AccountGroups']->name;
+				$Income_groups[$Ledgers_Income->_matchingData['AccountGroups']->id]['sequence']
+					=$Ledgers_Income->_matchingData['AccountGroups']->sequence;
 			}
 			
 			
@@ -572,20 +581,20 @@ public function CheckCompany($ledger_id=null,$company_id=null)
 		}
 	}
 	
-		public function updateSequence()
+	public function updateSequence()
     {
-		$Finishgooddata=$this->request->query('Finishgooddata');
-		$Finishgooddata_js=json_decode($Finishgooddata);
-        foreach($Finishgooddata_js as  $info)
+		$AccountGroup=$this->request->query('AccountGroup');
+		$AccountGroup_js=json_decode($AccountGroup);
+        foreach($AccountGroup_js as  $info)
 		{  
           foreach($info as $key => $info1)
 		  {
             if($info1)
 			{
 				    $this->request->allowMethod(['get', 'update']);
-					$FinishGood = $this->FinishGoods->get($key);
-					$FinishGood->sequence=$info1;
-					$this->FinishGoods->save($FinishGood);
+					$AccountGroup = $this->LedgerAccounts->AccountGroups->get($key);
+					$AccountGroup->sequence=$info1;
+					$this->LedgerAccounts->AccountGroups->save($AccountGroup);
 			}
           }
 		}

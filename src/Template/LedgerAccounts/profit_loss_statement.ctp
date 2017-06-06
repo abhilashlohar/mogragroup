@@ -29,13 +29,17 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div align="center"><h4>Expense</h4></div>
-						<table class="table table-condensed table-hover">
-							<tbody>
-							<?php $Total_Liablities=0; $Total_exp_Dr=0; $Total_exp_Cr=0; 
+						<table id="main_tble"  class="table table-condensed table-hover">
+							<tbody class="main_tbody">
+							<?php
+							usort($Expense_groups, function ($a, $b) {
+								return $a['sequence'] - $b['sequence'];
+							});
+							$Total_Liablities=0; $Total_exp_Dr=0; $Total_exp_Cr=0; 
 							foreach($Expense_groups as $Expense_group){ 
 			
 							$Total_Liablities+=$Expense_group['debit']-$Expense_group['credit']; ?>
-								<tr>
+								<tr group_id=<?php  echo $Expense_group['group_id'] ?> class="main_tr">
 									<td> 
 									<a href='#' role='button' status='close' class="group_name" group_id='<?php echo $Expense_group['group_id']; ?>' style='color:black;'>
 									<?= h($Expense_group['name']) ?>
@@ -71,14 +75,18 @@
 					</div>
 					<div class="col-md-6">
 						<div align="center"><h4>Income</h4></div>
-						<table class="table table-condensed">
-							<tbody>
-							<?php $Total_Assets=0; $Total_Dr=0; $Total_Cr=0;
+						<table id="main_tble1"  class="table table-condensed">
+							<tbody class="main_tbody1">
+							<?php 
+							usort($Income_groups, function ($a, $b) {
+								return $a['sequence'] - $b['sequence'];
+							});
+							$Total_Assets=0; $Total_Dr=0; $Total_Cr=0;
 							foreach($Income_groups as $Income_group){ 
 							$Total_Assets+=$Income_group['debit']-$Income_group['credit']; ?>
-								<tr>
+								<tr group_id=<?php  echo $Income_group['group_id'] ?> class="main_tr1">
 									<td>
-									<a href="#" role='button' status='close' class="group_name" group_id='<?php      echo $Income_group['group_id']; ?>' style='color:black;'>
+									<a href="#" role='button' status='close' class="group_name" group_id='<?php  echo $Income_group['group_id']; ?>' style='color:black;'>
 											<?= h($Income_group['name']) ?>
 															 </a>  
 									</td>
@@ -119,6 +127,99 @@
 </div>
 
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
+<script type="text/javascript">
+$('tbody.main_tbody').sortable();	
+$(document).ready(function() { 
+	var isDragging = false;
+	$("tr.main_tr").mousedown(function() {
+		isDragging = false;
+	}).mousemove(function() {
+		isDragging = true;
+	}).mouseup(function() {
+		var wasDragging = isDragging;
+		var rowCount = $("#main_tble > tbody > tr.main_tr").length;
+		var abc=[];
+		var k=0;
+	setTimeout(
+		function(){
+			$(".main_tr").each(function(){ 
+			k++;
+			var group_id=$(this).attr("group_id");
+      
+            abc.push({[group_id]:k});
+		});
+		
+	}, 1000);
+    
+	setTimeout( function(){	 
+		myJSON = JSON.stringify(abc);
+		var url="<?php echo $this->Url->build(['controller'=>'LedgerAccounts','action'=>'updateSequence']); ?>";
+		url=url+'?AccountGroup='+myJSON;
+        $.ajax({
+		url: url,
+		type: 'GET',
+		dataType: 'text'
+		}).done(function(response) {});
+		}, 2000);
+
+		isDragging = false;
+		if (!wasDragging) {
+		$("#throbble").toggle();
+		}
+	});
+
+	$("ul").sortable();
+});
+</script>
+
+
+<script type="text/javascript">
+$('tbody.main_tbody1').sortable();	
+$(document).ready(function() {
+	var isDragging = false;
+	$("tr.main_tr1").mousedown(function() {
+		isDragging = false;
+	}).mousemove(function() {
+		isDragging = true;
+	}).mouseup(function() {
+		var wasDragging = isDragging;
+		var rowCount = $("#main_tble1 > tbody > tr.main_tr1").length;
+		var abc=[];
+		var k=0;
+	setTimeout(
+		function(){
+			$(".main_tr1").each(function(){ 
+			k++;
+			var group_id=$(this).attr("group_id");
+      
+            abc.push({[group_id]:k});
+		});
+		
+	}, 1000);
+    
+	setTimeout( function(){	 
+		myJSON = JSON.stringify(abc);
+		var url="<?php echo $this->Url->build(['controller'=>'LedgerAccounts','action'=>'updateSequence']); ?>";
+		url=url+'?AccountGroup='+myJSON;
+        $.ajax({
+		url: url,
+		type: 'GET',
+		dataType: 'text'
+		}).done(function(response) {});
+		}, 2000);
+
+		isDragging = false;
+		if (!wasDragging) {
+		$("#throbble").toggle();
+		}
+	});
+
+	$("ul").sortable();
+});
+</script>
+
 
 <script>
 $(document).ready(function() {

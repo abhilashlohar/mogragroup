@@ -1093,12 +1093,14 @@ $(document).ready(function() {
 							}
 						});
 			}
-			var is_ref_old_amount=$(this).find("td:nth-child(3) input:eq(0)").length;
-			if(is_ref_old_amount){
-				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"ref_rows["+i+"][ref_old_amount]", id:"ref_rows-"+i+"-ref_old_amount"});
+			var is_ref_old_amount=$(this).find("td:nth-child(3) input").length;
+			if(is_ref_old_amount==2){
+				$(this).find("td:nth-child(3) input[type=text]").attr({name:"ref_rows["+i+"][ref_amount]", id:"ref_rows-"+i+"-ref_amount"}).rules("add", "required");
+				$(this).find("td:nth-child(3) input[type=hidden]").attr({name:"ref_rows["+i+"][ref_old_amount]", id:"ref_rows-"+i+"-ref_old_amount"}).rules("add", "required");
 			}
-			$(this).find("td:nth-child(3) input:eq(1)").attr({name:"ref_rows["+i+"][ref_amount]", id:"ref_rows-"+i+"-ref_amount"}).rules("add", "required");
+			$(this).find("td:nth-child(3) input[type=text]").attr({name:"ref_rows["+i+"][ref_amount]", id:"ref_rows-"+i+"-ref_amount"}).rules("add", "required");
 			i++;
+			
 		});
 		
 		var is_tot_input=$("table.main_ref_table tfoot tr:eq(1) td:eq(1) input").length;

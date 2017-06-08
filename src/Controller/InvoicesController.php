@@ -389,6 +389,7 @@ class InvoicesController extends AppController
         if ($this->request->is('post')) {
 		
 			$invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
+			
 			foreach($invoice->invoice_rows as $invoice_row){
 				if($invoice_row->item_serial_numbers){
 					$item_serial_no=implode(",",$invoice_row->item_serial_numbers );
@@ -416,6 +417,8 @@ class InvoicesController extends AppController
 			}else{
 				$invoice->due_payment=$invoice->grand_total-$invoice->total_amount_agst;
 			}
+			//pr($invoice->ref_rows); exit;
+			$ref_rows=$invoice->ref_rows;
 			
             if ($this->Invoices->save($invoice)) {
 				foreach($invoice->invoice_rows as $invoice_row){

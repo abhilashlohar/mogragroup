@@ -114,8 +114,6 @@ class QuotationsController extends AppController
 		}else{
 		
         $quotations = $this->paginate($this->Quotations->find()->contain(['QuotationRows'=>['Items']])->where($where)->where(['company_id'=>$st_company_id])->order(['Quotations.id' => 'DESC']));
-		
-										
 		}
 		 
 		$companies = $this->Quotations->Companies->find('list');
@@ -124,6 +122,25 @@ class QuotationsController extends AppController
         $this->set(compact('quotations','status','copy_request','companies','closeReasons','closed_month'));
         $this->set('_serialize', ['quotations']);
 		$this->set(compact('url'));
+	}
+	
+	public function quotationReport()
+    {
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		$this->viewBuilder()->layout('index_layout');
+		
+		$quotations = $this->Quotations->find()->contain(['ItemGroups','Customers','Employees','QuotationRows'=>function ($q) {
+						   return $q->where(['quantity ='=>'proceed_qty'])
+								->contain(['Items']);
+						}
+		])->where(['Quotations.company_id'=>$st_company_id,'Quotations.status'=>'Pending'])->order(['Quotations.id' => 'DESC']);
+		//pr($quotations->toArray()); exit;
+		
+		$this->set(compact('quotations'));
+		$this->set('_serialize', ['quotations']);
+		$this->set(compact('url'));
+		
 	}
 	
 	 public function exportExcel($status=null)

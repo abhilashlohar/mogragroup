@@ -430,7 +430,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 									</td>
 									<td>
 									<?php 
-											echo $this->Form->input('old_amount', ['label' => false,'class' => '','type'=>'hidden','value'=>$old_ref_row->debit]);
+											echo $this->Form->input('old_amount', ['label' => false,'class' => 'old_amount_data','type'=>'hidden','value'=>$old_ref_row->debit]);
 											echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm ref_amount_textbox','placeholder'=>'Amount','value'=>$old_ref_row->debit]);
 																
 									?>
@@ -1093,14 +1093,17 @@ $(document).ready(function() {
 							}
 						});
 			}
-			var is_ref_old_amount=$(this).find("td:nth-child(3) input").length;
-			if(is_ref_old_amount==2){
-				$(this).find("td:nth-child(3) input[type=text]").attr({name:"ref_rows["+i+"][ref_amount]", id:"ref_rows-"+i+"-ref_amount"}).rules("add", "required");
-				$(this).find("td:nth-child(3) input[type=hidden]").attr({name:"ref_rows["+i+"][ref_old_amount]", id:"ref_rows-"+i+"-ref_old_amount"}).rules("add", "required");
+			var is_ref_old_amount=$(this).find("td:nth-child(3) input.old_amount_data").length;
+			if(is_ref_old_amount){
+				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"ref_rows["+i+"][ref_old_amount]", id:"ref_rows-"+i+"-ref_old_amount"});
+				$(this).find("td:nth-child(3) input:eq(1)").attr({name:"ref_rows["+i+"][ref_amount]", id:"ref_rows-"+i+"-ref_amount"}).rules("add", "required");
+
+			}else{
+				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"ref_rows["+i+"][ref_amount]", id:"ref_rows-"+i+"-ref_amount"}).rules("add", "required");
+
 			}
-			$(this).find("td:nth-child(3) input[type=text]").attr({name:"ref_rows["+i+"][ref_amount]", id:"ref_rows-"+i+"-ref_amount"}).rules("add", "required");
-			i++;
 			
+			i++;
 		});
 		
 		var is_tot_input=$("table.main_ref_table tfoot tr:eq(1) td:eq(1) input").length;
@@ -1156,7 +1159,8 @@ $(document).ready(function() {
 		
 		var total_ref=0;
 		$("table.main_ref_table tbody tr").each(function(){
-			var am=parseFloat($(this).find('td:nth-child(3) input:eq(1)').val());
+			var am=parseFloat($(this).find('td:nth-child(3) input.ref_amount_textbox').val());
+			
 			if(!am){ am=0; }
 			total_ref=total_ref+am;
 			 

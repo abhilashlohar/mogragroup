@@ -312,8 +312,23 @@ class SaleReturnsController extends AppController
 					}
 				
 				
+				
+				$inventory_return_out=[];
+				foreach($saleReturn->sale_return_rows as $sale_return_row){
+					$invoice_data=$this->SaleReturns->Invoices->InvoiceRows->find()->where(['invoice_id'=>$saleReturn->invoice_id,
+					'item_id'=>$sale_return_row->item_id,
+					'inventory_voucher_applicable' => 'Yes'])->first();
+					
+					$inventory_return_out[$sale_return_row->item_id]=$sale_return_row->quantity;
+					pr($invoice_data); exit;
+					
+				}
+				
+				
+			//$to_be_send=$this->request->data['to_be_send'];
+			$this->redirect(['controller'=>'SaleReturns','action' => 'inventory_return/'.$saleReturn->id]);
                 $this->Flash->success(__('The sale return has been saved.'));
-
+				
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The sale return could not be saved. Please, try again.'));
@@ -335,6 +350,11 @@ class SaleReturnsController extends AppController
         $this->set('_serialize', ['saleReturn']);
     }
 
+	public function inventoryReturn($id = null)
+    {
+		
+	}
+	
     /**
      * Edit method
      *

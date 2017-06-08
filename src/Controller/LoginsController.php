@@ -36,7 +36,7 @@ class LoginsController extends AppController
 				
 				$emp_mobile = $Employee->mobile;
 
-				if($employee_id == 25){
+				if($employee_id == 23){
 					return $this->redirect(['action' => 'Switch-Company']);
 				}
 				if(!empty($emp_mobile)){
@@ -140,7 +140,7 @@ class LoginsController extends AppController
 						->execute();
 						
 		
-		 $sms=str_replace(' ', '+', 'Dear '.$Emp_name.', Your one time password is '.$randomString.'.');
+	 $sms=str_replace(' ', '+', 'Dear '.$Emp_name.', Your one time password is '.$randomString.'.');
           $working_key='A7a76ea72525fc05bbe9963267b48dd96';
         $sms_sender='MOGRAG';
         $ch = curl_init('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile_no.'&message='.$sms.'');

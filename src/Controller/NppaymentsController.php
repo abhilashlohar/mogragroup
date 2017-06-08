@@ -379,6 +379,7 @@ class NppaymentsController extends AppController
         
         if ($this->request->is(['patch', 'post', 'put'])) {
             $nppayment = $this->Nppayments->patchEntity($nppayment, $this->request->data);
+		
             $nppayment->company_id=$st_company_id;
             
             $nppayment->edited_on=date("Y-m-d");
@@ -387,7 +388,7 @@ class NppaymentsController extends AppController
                 
             //Save receipt
             //pr($payment); exit;
-            if ($this->Nppayments->save($nppayment)) {
+            if ($this->Nppayments->save($nppayment)) { 
                 $this->Nppayments->Ledgers->deleteAll(['voucher_id' => $nppayment->id, 'voucher_source' => 'Non Print Payment Voucher']);
                 $total_cr=0; $total_dr=0;
                 foreach($nppayment->nppayment_rows as $nppayment_row){

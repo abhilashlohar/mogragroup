@@ -225,6 +225,11 @@ function rename_rows(){
 			i++;
 			});
 }
+
+$('.remove_row').live("click",function() {
+        var sel=$(this);
+        $(this).closest("tr").remove();
+    });
 	
 });	
 </script>

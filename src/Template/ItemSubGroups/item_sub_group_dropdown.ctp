@@ -1,1 +1,0 @@
-<?php echo $this->Form->input('item_sub_group_id', ['empty'=>'--Select--','options' => $itemSubGroups,'label' => false,'class' => 'form-control input-sm']); ?>
